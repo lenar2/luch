@@ -1,4 +1,4 @@
-# LUCH Managed Agents — product concept / P036 UX
+# LUCH Managed Agents — a distinct service direction
 
 LUCH is a free-to-use **tooling layer** for users who already have an AI assistant and want it to act on approved browsers, files, servers and apps.
 
@@ -41,4 +41,4 @@ All self-directed LUCH capability families remain free from feature paywalls und
 
 Before a product can be marked for sale: real independent hosted execution, tenant isolation, permission and revocation tests, valid cost controls, QA gate, support, and production owner approval. An ACK, Peer Bus receipt or model-named thread is not authenticated execution.
 
-**P036 design review state:** DRAFT / INDEPENDENT HEA QA REQUIRED.
+**Service state:** concept and experience specification. Not yet launched for general subscription or checkout.

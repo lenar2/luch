@@ -1,4 +1,4 @@
-# LUCH capability inventory — P036/P029, 5 November 2026
+# LUCH capabilities — verified tool inventory
 
 **Scope:** one authenticated owner ChatGPT environment exposing **158 LUCH tools**. The numbers describe the mounted LUCH tool catalog, not necessarily public skills, independent customer access or permissions granted in every host. It is a capability inventory, **not a certification that every action can currently run on every user account**.
 
@@ -56,6 +56,6 @@ LUCH Core offers the tool substrate; separate **Managed Agents** are the future 
 
 ## QA requirements
 
-Product and capability claims need actual host-bound receipts, not mere tool names. Independent P036/HEA QA must evaluate the rendered EN/RU site at mobile and desktop widths, source-to-copy traceability, brand, accessibility, first-task success, permissions and no invented store/price/status claim. P036 human studies are **Founder + AI only**; no volunteer testing.
+Product and capability claims need actual host-bound receipts, not mere tool names. Independent design and accessibility QA must evaluate the rendered EN/RU site at mobile and desktop widths, source-to-copy traceability, brand, accessibility, first-task success, permissions and no invented store/price/status claim. No participant data is required for the published capability overview.
 
-**Status:** P036 author evidence, release admission remains with responsible release owner and independent QA.
+**Evidence scope:** tool inventory and sampled runtime checks from the connected account. Public-client installation, service access and individual permissions have separate acceptance criteria.

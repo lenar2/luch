@@ -88,6 +88,8 @@ LUCH does not need indiscriminate access to be useful. Work is bounded by **the 
 
 The platform is already used operationally. Availability of onboarding and marketplace distribution differs across clients; [see the precise release and access states](docs/RELEASE_READINESS.md) rather than a blanket label for the whole product.
 
+**About this repository:** it is the platform-neutral home for LUCH and its integrations, not a copy of the hosted backend. Individual client packages live in their own repositories. Public documentation does not expose private devices, accounts, or credentials.
+
 ---
 
 <div align="center">

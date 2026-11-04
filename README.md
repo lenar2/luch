@@ -1,81 +1,71 @@
 # LUCH
 
-**Your AI, beyond the chat.**
+**One connection. Your entire digital workspace within reach of AI.**
 
-**LUCH is a permissions-aware execution layer that connects AI assistants to the browsers, files, computers, and servers you explicitly authorize.**
+LUCH is a **powerful, permissioned MCP execution platform**. It connects AI to the tools that normally live apart: **cloud and desktop browsers, computers, Apple Notes, files, terminal, servers, GitHub, connected services and agent coordination**. AI can move from understanding a task to taking authorized steps and showing what really happened.
 
-[**Website**](https://luch.lenarsalimov.ru/) · [**See capabilities**](https://luch.lenarsalimov.ru/#capabilities) · [**Get started**](https://luch.lenarsalimov.ru/docs/get-started/) · [**Русский**](README.ru.md) · [**Security**](SECURITY.md)
+[**Explore LUCH**](https://luch.lenarsalimov.ru/) · [**Full capabilities**](docs/CAPABILITIES.md) · [**Connect your AI**](docs/CLIENTS.md) · [**Managed Agents**](docs/AGENTS.md) · [**Русский**](README.ru.md)
 
-> **EARLY ACCESS — public client code, limited service access.** LUCH already operates for enabled accounts. **Independent self-service signup → OAuth → device pairing → first authorized action has not yet been verified for an arbitrary new user.** Installing a client alone does not grant an account or access to anyone's devices.
+### 158 connected tool operations. One operating layer.
 
-## What can LUCH do for you?
+The current owner's ChatGPT connection exposes **158 LUCH tool operations**, including 54 for web/browser execution, 23 for GitHub, 17 for server/device operations, and 12 for Peer Bus and Chat Bridge. Those are **real tool definitions available in that connected environment**, not a guarantee that every fresh user or AI host receives the same permissions or tools.
 
-You describe a task to your AI. LUCH provides a permitted way to carry it out and report what actually happened.
+## What becomes possible?
 
-| Ask your AI | What LUCH can do, when enabled and authorized |
-| :--- | :--- |
-| **“Compare the information on these two websites.”** | Launch an isolated, temporary **cloud browser**; read or interact with supported public pages; release the session. It does not require your Mac to stay online. |
-| **“Check whether my Linux server is healthy.”** | Select an explicitly paired **server**, run a bounded permitted command, and return the actual status and output. |
-| **“Summarize the documents in the folder I shared.”** | Read **approved files** through a supported, online device or connected resource, within that account's permissions. |
-| **“Show me which of my computers are online.”** | Discover **your paired devices**, their current state, and available actions — without silently switching to another user's machine. |
-| **“Use my open browser or app to complete this step.”** | Where supported, operate a **paired computer** using its permitted browser or computer-control tools. |
+Imagine asking an AI to **investigate an engineering issue**, read a set of approved project notes, inspect the relevant GitHub history, work in an isolated browser or a paired computer, prepare a bounded code change, open a pull request, check the server and return links to verified results.
 
-**Why this matters:** AI is useful when it can move from suggesting an action to executing one with your permission. LUCH provides multiple execution paths — an isolated remote browser, a paired computer, or a connected server — rather than assuming everything has a convenient API.
+That is the power of LUCH: **connected execution across tools rather than a single disconnected plugin action**. Each action uses a real available tool, explicit authorization and observable evidence.
 
-### A concrete example
+#### Browser orchestration beyond a tab
 
-> **You:** “Open these two product documentation pages, compare the relevant API limits, and show the source links. Don't change anything.”
+Open public pages in temporary cloud browsers; use connected local browsers when the task depends on your session. Read DOM/accessibility information, navigate, fill forms, click, scroll, capture screenshots, upload/download within the available permission scope, and release temporary sessions afterward.
 
-An appropriately authorized AI can acquire a temporary browser, visit the pages, read the content, cite the information it found, and release that browser. If a site or tool is unavailable, it should report the failure — **not invent a result**. This is an illustrative workflow, **not** evidence of fresh-customer end-to-end certification.
+#### Computer, files and Apple Notes
 
-## One LUCH. Your choice of AI.
+Read screen, window and application state; carry out authorized mouse, keyboard and accessibility actions on a paired Mac. Search, read and update permitted files and notes. File writes can use stale-write protection; Apple Notes mutations use explicit two-phase confirmation.
 
-| Client | Source / installation information | Actual status |
-| :--- | :--- | :--- |
-| **ChatGPT / Codex** | [Client candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Preview ZIP](https://luch.lenarsalimov.ru/downloads/luch-chatgpt-0.1.6-preview.zip) | Existing **private** LUCH 0.3.51 integration; public submission and new-user OAuth review not complete |
-| **Claude** | [LUCH for Claude](https://github.com/lenar2/luch-claude-plugin) | Public source; marketplace review is separate |
-| **Cursor** | [LUCH for Cursor](https://github.com/lenar2/luch-cursor) | Public client source; new-user access not yet guaranteed |
-| **Gemini CLI** | [LUCH for Gemini CLI](https://github.com/lenar2/luch-gemini) | Public extension source; fresh-user verification pending |
-| **Kimi** | [Kimi candidate](https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate) | Candidate only; no confirmed public catalogue listing |
+#### Terminal, servers and development
 
-**This is the official product hub.** Individual client repositories remain separate so installation links and marketplace submissions do not break. The product is **LUCH**, not “LUCH for Claude.”
+Operate explicitly paired server infrastructure, inspect real command results and task status. GitHub tools extend beyond cloning: search repositories, compare commits, create branches, modify files, work with issues and pull requests, and use release and evidence workflows where permitted.
 
-### Getting started
+#### Business applications and visual design
 
-1. **Explore the [capabilities](https://luch.lenarsalimov.ru/#capabilities)** and choose a supported AI client above.
-2. **Review the [connection instructions](https://luch.lenarsalimov.ru/docs/get-started/)**. An enabled account and host-compatible OAuth flow are required for live tool access.
-3. **Start read-only.** Ask the AI to show only the LUCH devices and tools authorized for your account, or run a bounded public-page read in a temporary browser.
-4. **Verify the actual result**, including the chosen device, permission scope, and whether the operation truly executed.
+LUCH has integrations for GetCourse account/access checks and Tilda page/editor operations, with actual read/write capability determined by authorization and host readiness. There is a Figma bridge workstream, alongside a separately connected Figma provider; do not confuse a design bridge candidate with verified universal Figma control.
 
-The source ZIP is **not a native desktop or iPhone installer**, and no client contains server-side implementation, passwords, or owner tokens.
+#### Agent coordination
 
-## Built around your permission
+LUCH includes a **Peer Bus**, task handoffs, receipts and **Chat Bridge** transport for ChatGPT and Claude. Those mechanisms are real components of the product. Autonomous invocation of each external AI conversation is a *separate host-specific readiness check*, rather than a promise derived from a queued message.
 
-- **Explicit device selection.** A specified offline or unpaired device must fail closed, not reroute silently.
-- **Account-scoped access.** Permissions depend on the user, device, host, and available tool.
-- **Isolated server browser.** Temporary sessions are scoped to a task and released afterward.
-- **Actual execution evidence.** A transport receipt or “accepted” response is not proof that a requested action was completed.
-- **No authorization bypass.** LUCH does not override OAuth, operating-system permissions, or your chosen access controls.
+#### Photos and iPhone
 
-Native iPhone control, autonomous coordination of independent AI agents, and all-platform public availability are **separate development tracks**, not promises of the current public Core release.
+Read/search authorized photo sources and selected paired/cached mobile media. Native system-wide iPhone app control belongs to an independent engineering track.
 
-## Release status
+[**Explore the detailed capability map →**](docs/CAPABILITIES.md)
 
-| Item | State |
-| :--- | :--- |
-| International website and English/Russian versions | **Live** |
-| Public client source for Claude, Cursor, Gemini | **Available** |
-| OpenAI portable package schema validation | **Passed (static only)** |
-| Public MCP rejecting unauthenticated requests | **Verified (401)** |
-| Fresh-user signup, OAuth, pairing, permitted action and cross-account denial | **Not independently verified — HOLD** |
-| General public subscription, complete platform approvals and production-scale launch | **Not claimed** |
+## Work through the AI you prefer
 
-See [release verification gates](docs/RELEASE_READINESS.md). We do not treat **UNKNOWN** as **PASS**.
+**[ChatGPT / Codex](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt)** — existing private LUCH plugin plus a public client candidate.  
+**[Claude](https://github.com/lenar2/luch-claude-plugin)** — public package; latest submission passed an automated Anthropic scan and awaits the next publisher/review step.  
+**[Cursor](https://github.com/lenar2/luch-cursor)** — public plugin source.  
+**[Gemini CLI](https://github.com/lenar2/luch-gemini)** — public extension source.  
+**[Kimi](https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate)** — adapter candidate.
 
-## Follow and contribute
+LUCH is **not** a Claude product. This is the independent product repository; each platform-specific package remains in its own repository for installer and review compatibility.
 
-If you find LUCH useful or want to follow its development, click **⭐ Star** at the top of this repository. Stars show interest; they are **not** installation or active-user counts.
+## Your tools are free. Managed work is a separate offer.
 
-[Report an issue](https://github.com/lenar2/luch/issues/new) · [Request a feature](https://github.com/lenar2/luch/issues/new) · [Support](https://luch.lenarsalimov.ru/support/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/)
+Self-directed LUCH Core tools are intended to be available without individual paid feature unlocks, subject to appropriate security and fair-use limits. **LUCH Managed Agents** is the planned separate service for long-running, coordinated tasks, QA, recovery and managed compute. Read its [product concept](docs/AGENTS.md); no nonexistent paid subscription is being sold.
 
-**Repository scope:** This hub contains public documentation and integration pointers. It does **not** publish the hosted LUCH server, private control infrastructure, user credentials, or user data. Public client packages have their own stated licenses; this hub does not relicense backend code.
+## Trust and observed behavior
+
+Use OAuth and user/device-specific grants. An explicitly selected offline or unauthorized device must not silently reroute to a different machine. A received message is not equivalent to a task executed. The public client packages do **not** expose the proprietary hosted LUCH service or anyone's credentials.
+
+For transparency, the [capability matrix](docs/CAPABILITIES.md) distinguishes functions observed in an authorized account, functions requiring a paired device, and host-specific release checks. **LUCH has been used operationally for months in the owner's environment**. Broader marketplace approvals and independent first-time sign-in are evaluated separately; they do not define the product's capability ceiling.
+
+## Follow LUCH
+
+Click **⭐ Star** if you want to follow the project. Stars show interest, not installation numbers.
+
+[Get started](https://luch.lenarsalimov.ru/docs/get-started/) · [Support](https://luch.lenarsalimov.ru/support/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [Security](SECURITY.md)
+
+*The license of this documentation hub does not include hosted backend code, customer data or LUCH trademarks. Version and permission scopes are specific to individual AI clients.*

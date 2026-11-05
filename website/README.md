@@ -1,9 +1,11 @@
-# LUCH homepage candidate
+# LUCH homepage review overlay
 
-**Review-only. Not deployed.** This directory contains the proposed English and Russian homepages, shared styles, interaction script and LUCH mark.
+**Review-only. Not deployed.** This directory contains the bilingual homepage, original identity assets and shared navigation runtime used by the complete 33-route site.
 
-The homepage is designed around a human task, the tools that may be authorized for it, and a result the person can inspect. The workflow cards are editorial examples, not live executions or customer evidence.
+The homepage is designed around a human task, authorized tools and an inspectable result. The workflow cards are illustrative examples, not live executions or customer evidence.
 
-The exact SHA-256 list for this branch's homepage overlay is in [MANIFEST.sha256](MANIFEST.sha256). The existing capability, connection, safety, legal and support routes are intentionally unchanged. This branch is a homepage review layer, not a standalone deployment bundle. Keep the complete static-site tree when previewing or preparing a future deployment.
+The full 33-route static source ZIP is the **sole deployable input**. This GitHub branch is a reviewable overlay and engineer-facing README, not a complete website. Merging this PR alone must never be treated as a full-site deployment.
+
+The shared homepage and navigation assets are mirrored byte-for-byte into the full source ZIP. Exact source ZIP and commit provenance are pinned in `RELEASE_SOURCE.md` and Factory issue #4001.
 
 No production website, backend, OAuth, MCP or customer data was changed.

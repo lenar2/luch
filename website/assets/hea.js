@@ -3,7 +3,7 @@
   if(menu&&nav){
     const openLabel=menu.dataset.labelOpen||menu.getAttribute('aria-label')||'Open menu';
     const closeLabel=menu.dataset.labelClose||'Close menu';
-    const setOpen=open=>{menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?closeLabel:openLabel);nav.classList.toggle('is-open',open)};
+    const setOpen=open=>{menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?closeLabel:openLabel);nav.classList.toggle('is-open',open);if(open){const first=nav.querySelector('a[href]');if(first)first.focus();}};
     const close=()=>setOpen(false);
     menu.addEventListener('click',()=>setOpen(menu.getAttribute('aria-expanded')!=='true'));
     nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));

@@ -6,7 +6,7 @@ This branch is a review overlay, not a complete website and not a production dep
 
 The complete 33-route static source ZIP is the sole deployable input. It contains all EN/RU routes, root aliases, shared assets, legal/support pages and its complete file manifest. The exact immutable ZIP SHA-256 and its overlay commit are recorded in the PR body and Factory issue #4001.
 
-The homepage and shared navigation assets in this branch are mirrored byte-for-byte into the full source ZIP. Do not combine files from different branch commits or source ZIP versions. Merging this PR alone does not deploy the complete website.
+The branch overlay and full source ZIP are separately versioned artifacts, not byte-for-byte duplicates. Use the full ZIP alone as the canonical deployable input. Do not combine files from different branch commits or source ZIP versions. Merging this PR alone does not deploy the complete website.
 
 ## Release gates
 

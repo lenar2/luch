@@ -61,11 +61,11 @@ No install archive is an iPhone or native Mac installer, and no public client co
 
 See [SECURITY.md](SECURITY.md), [release readiness](docs/RELEASE_READINESS.md) and [support](https://luch.lenarsalimov.ru/support/).
 
-## Website design candidate — AI-HEA V7
+## Website design candidate
 
-The experimental, bilingual homepage is in [website/](website/). It is **not deployed**. It replaces the old brochure-style lead with a human task → authorized tools → inspectable outcome narrative. It includes editable HTML/CSS/JS, no external font or runtime dependency, and clearly labeled editorial examples rather than fake activity.
+The bilingual homepage layer is in [website/](website/). It is **not deployed**. It replaces the brochure-style lead with a human task → authorized tools → inspectable outcome narrative. The editorial workflows are explicitly examples, not live activity.
 
-Its other routes remain in the separately preserved V6 source package. To preview: overlay the four files in `website/en/`, `website/ru/` and `website/assets/` onto the V6 static site and run a static server. **Do not deploy or merge before Founder visual acceptance and independent QA.**
+This branch contains the homepage layer and its design assets; existing capability, connection, safety, legal and support routes remain unchanged. The branch alone is not a standalone deployment bundle. Preview it only against the complete static-site tree. **Do not deploy or merge before independent QA and Founder visual acceptance.**
 
 [Suggest an improvement](https://github.com/lenar2/luch/issues/new) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/)
 

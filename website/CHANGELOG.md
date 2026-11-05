@@ -11,3 +11,11 @@
 - Removed the synthetic review/fixture page from the deployable archive; robots.txt is not treated as access control.
 - Defined the complete 32-route source ZIP as the sole deployable input; the GitHub branch is a separate review overlay.
 - Preserved existing legal, support and safety content; no production change.
+
+## 2026-11-05 — Static website published
+
+- Published the full 32-route EN/RU static website at https://luch.lenarsalimov.ru/.
+- Preserved the existing 4.38 KB /docs/get-started/ guide, download binary, substantive privacy/security/support/terms pages and their hashes.
+- Deleted the legacy synthetic review/fixture from the public document root.
+- Verified staging and public HTTP routes, 44/44 deployed files and preserved endpoints; rollback snapshot kept.
+- Published matching live text source in GitHub; new-customer OAuth/device-pairing E2E remains UNKNOWN.

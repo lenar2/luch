@@ -7,7 +7,7 @@
 
 [Website](https://luch.lenarsalimov.ru/) · [Get started](https://luch.lenarsalimov.ru/docs/get-started/) · [Security](SECURITY.md) · [Русский](README.ru.md)
 
-> **Availability, without guesswork:** LUCH is operating in its founder's connected environment. Independent end-to-end activation for an arbitrary new customer (account → OAuth → pairing → first permitted action) is **not yet verified**. Published client source is not a guarantee of service access. The current live website is separate from the HEA V7 draft in this repository.
+> **Availability, without guesswork:** LUCH is operating in its founder's connected environment. Independent end-to-end activation for an arbitrary new customer (account → OAuth → pairing → first permitted action) is **not yet verified**. Published client source is not a guarantee of service access. The bilingual public website is now live at https://luch.lenarsalimov.ru/ and its text-based source is published under `website/`. This does not verify fresh-customer OAuth or device pairing.
 
 ---
 
@@ -61,11 +61,13 @@ No install archive is an iPhone or native Mac installer, and no public client co
 
 See [SECURITY.md](SECURITY.md), [release readiness](docs/RELEASE_READINESS.md) and [support](https://luch.lenarsalimov.ru/support/).
 
-## Website design candidate
+## Published bilingual product website
 
-The bilingual homepage layer is in [website/](website/). It is **not deployed**. It replaces the brochure-style lead with a human task → authorized tools → inspectable outcome narrative. The editorial workflows are explicitly examples, not live activity.
+The public EN/RU product site is [live](https://luch.lenarsalimov.ru/). Its static HTML, CSS, JS and SVG sources for 32 routes are maintained in [website/](website/), with a [SHA-256 source manifest](website/MANIFEST.sha256). The human task → permitted tools → inspectable result examples are illustrations, not records of customer executions.
 
-This branch contains the homepage layer and its design assets; existing capability, connection, safety, legal and support routes remain unchanged. The branch alone is not a standalone deployment bundle. Preview it only against the complete static-site tree. **Do not deploy or merge before independent QA and Founder visual acceptance.**
+The released site preserved the existing getting-started guide, legal/support pages and downloadable preview client. The download binary is hosted at the public site rather than duplicated in Git history. See [deployment provenance](website/DEPLOYMENT.md).
+
+**Scope:** static-site release and HTTP checks passed. Fresh-customer signup, OAuth, pairing and first real authorized action remain **UNKNOWN / HOLD**.
 
 [Suggest an improvement](https://github.com/lenar2/luch/issues/new) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/)
 

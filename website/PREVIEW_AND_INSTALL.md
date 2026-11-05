@@ -1,19 +1,7 @@
-# Preview and installation
+# Preview, test and deploy
 
-This branch is a review overlay, not a complete website and not a production deployment.
+This directory now contains the static **published** EN/RU product-site source. Serve `website/` as a static document root to inspect the pages (32 HTML routes). Run `sha256sum -c website/MANIFEST.sha256` from the repository root to verify all 43 tracked public text files.
 
-## Canonical source
+The live site is a route-preserving composite: it includes the current substantive `/docs/get-started/` guide and existing policy/support pages, plus a downloadable preview-client ZIP hosted separately. The binary ZIP is intentionally not stored in Git. Its digest is documented in `website/downloads/README.md`.
 
-The complete 32-route static source ZIP is the sole deployable input. It contains all EN/RU routes, root aliases, shared assets, legal/support pages and its complete file manifest. The synthetic reviewer fixture is excluded. The exact immutable ZIP SHA-256 and its overlay commit are recorded in the PR body and Factory issue #4001.
-
-The branch overlay and full source ZIP are separately versioned artifacts, not byte-for-byte duplicates. Use the full ZIP alone as the canonical deployable input. Do not combine files from different branch commits or source ZIP versions. Merging this PR alone does not deploy the complete website.
-
-The README EN/RU connection links point to the verified public getting-started guide until the complete source ZIP is separately deployed. The guide is available at https://luch.lenarsalimov.ru/docs/get-started/; the candidate /en/connect/ and /ru/connect/ routes are not live yet.
-
-## Release gates
-
-1. Independent QA reviews the exact source ZIP and overlay commit.
-2. Founder visually accepts the candidate.
-3. A separately authorized deployment is reviewed over public HTTP before production changes.
-
-Production website, OAuth, MCP, server infrastructure and customer data remain unchanged.
+Publishing source or a static page is **not** evidence of a new user's successful OAuth, device pairing or first authorized action. For the release archive, backup and HTTP checks see `DEPLOYMENT.md`.

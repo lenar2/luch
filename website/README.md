@@ -1,11 +1,9 @@
-# LUCH homepage review overlay
+# LUCH — live static product website
 
-**Review-only. Not deployed.** This directory contains the bilingual homepage, original identity assets and shared navigation runtime used by the complete 32-route site.
+The bilingual static website is published at **https://luch.lenarsalimov.ru/** with EN and RU routes.
 
-The homepage is designed around a human task, authorized tools and an inspectable result. The workflow cards are illustrative examples, not live executions or customer evidence.
+This directory contains the text-based **live website source** (HTML/CSS/JS/SVG/XML/robots) for 32 routes. Use [MANIFEST.sha256](MANIFEST.sha256) to verify all 43 tracked public text files: from repository root run `sha256sum -c website/MANIFEST.sha256`. The downloadable preview client ZIP is hosted separately under the live site's `/downloads/` path; see [downloads/README.md](downloads/README.md) for its hash.
 
-The full 32-route static source ZIP is the **sole deployable input**. This GitHub branch is a reviewable overlay and engineer-facing README, not a complete website. Merging this PR alone must never be treated as a full-site deployment.
+The first screen uses a human task → authorized tools → inspectable result story. The workflow illustrations are examples, **not** evidence of autonomous customer activity.
 
-The branch overlay and complete source ZIP are separate, version-pinned artifacts and are not byte-for-byte duplicates. The full ZIP is the sole deployable input; its exact SHA-256 and manifest are pinned in `RELEASE_SOURCE.md` and Factory issue #4001.
-
-No production website, backend, OAuth, MCP or customer data was changed.
+Release provenance, staging/rollback and the distinctions between the audited R3.1 source and the production composite are documented in [DEPLOYMENT.md](DEPLOYMENT.md). Existing substantive onboarding guidance, downloads and legal/support resources were preserved in the deployed composite. New-customer OAuth, device pairing and first authorized action remain **UNKNOWN**; static publication is not a claim of full product readiness.

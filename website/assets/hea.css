@@ -25,3 +25,9 @@
 /* Small-screen content must never widen the document. */
 .cap-item{min-width:0;overflow-wrap:anywhere}
 @media(max-width:600px){.cap-grid{grid-template-columns:minmax(0,1fr)}}
+/* HEA V7 accessibility correction: small metadata meets readable contrast. */
+.art-top,.art-label,.art-disclaimer{color:#425f52}
+.label-sm,.example-head .eyebrow,.example-scope p,.small-note{color:#415d50}
+.cap-sub,.cap-index,.tools-foot span{color:#405e50}
+.cap-copy p:last-child,.trust-grid p{color:#405e50}
+.cta a:focus-visible{outline-color:#112826}

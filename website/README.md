@@ -1,39 +1,9 @@
-# LUCH website — AI-HEA V7 candidate
+# LUCH homepage candidate
 
-**Review-only. Not deployed.** Exact site source and browser evidence are in ChatGPT Library:
+**Review-only. Not deployed.** This directory contains the proposed English and Russian homepages, shared styles, interaction script and LUCH mark.
 
-- `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7B_WEBSITE_SOURCE_20261105.zip` (source bundle)
-- `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7B_QA_20261105.zip` (Chromium screenshots in WebP format + test scripts/results)
-- `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7B_PREVIEW_20261105.png` (visual preview)
+The homepage is designed around a human task, the tools that may be authorized for it, and a result the person can inspect. The workflow cards are editorial examples, not live executions or customer evidence.
 
-Source SHA256: `da294ff97e6453411fc7ece71b32babaf09ff898be313882132a3f5ff55c2e0e`
+The existing capability, connection, safety, legal and support routes are intentionally unchanged. This branch is a homepage review layer, not a standalone deployment bundle. Keep the complete static-site tree when previewing or preparing a future deployment.
 
-QA bundle SHA256: `a4cc7eadcbf4087034d8a2bc6428530100190126828cc77bce539ca0e38ff39e`
-
-## What changes
-
-- `index.html`, `en/index.html`, `ru/index.html`: **original AI-HEA-owned homepage design** in EN/RU with permission-aware task story and no fake activity UI.
-- `assets/hea.css`: responsive visual system. Dark ink, warm paper, coral ray mark, typographic hierarchy, hand-built editable diagrams.
-- `assets/hea.js`: accessible mobile menu, Escape close, tabs and arrow-key navigation.
-- `assets/luch-ray.svg`: original vector mark for repository identity.
-
-The source ZIP also contains **33 routes**, retaining V6 secondary pages (unchanged) plus their legacy CSS/JS. The content/visual system on those secondary pages is inherited, not claimed as independently redesigned. This PR includes the **new overlay source**, not the inherited 33-route tree; use the source ZIP for a full offline review.
-
-## Preview locally
-
-Copy the four HTML/CSS/JS overlay files and root homepage into the V6 static tree at the equivalent paths, then serve the static root using any local HTTP server. E.g. `python3 -m http.server 8080 --directory site` from a checkout that contains the full ZIP source. Open `http://localhost:8080/ru/` or `/en/`.
-
-No CDN, remote font or analytics scripts are required. No OAuth, payments, server services or LUCH control plane are changed.
-
-## Observed test scope
-
-- **132/132 Chromium source renders**, 33 routes × 320/390/768/1440 px.
-- **1,524 static local-link resolutions**, no missing local links or horizontal overflow.
-- EN/RU homepage menu, Escape, tabs, arrow keys, first viewport and asset-free source rendering checked separately; 80 local link checks in these 8 home states.
-- All tests are **local-source UI tests**, **not proof of deployed HTTP**, independent-user activation, browser availability across hosts, or real LUCH task completion.
-
-## Quality gate
-
-**SELF_READY: HOLD** until independent QA reads exact source, challenges visual coherence and copy, checks screenshots, and the Founder accepts visually. No production deployment or merge is authorized.
-
-Original P036 V4/V5/V6 artifacts remain in Library as comparative history. Product capability claims are bounded by account/host/device and permission; GetCourse read-only, Tilda authoring limited, Chat Bridge execution conditional, iPhone native remote control not claimed.
+No production website, backend, OAuth, MCP or customer data was changed.

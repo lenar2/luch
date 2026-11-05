@@ -3,12 +3,12 @@
 **Review-only. Not deployed.** Exact site source and browser evidence are in ChatGPT Library:
 
 - `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7_WEBSITE_SOURCE_20261105.zip` (source bundle)
-- `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7_QA_20261105.zip` (Chromium screenshots + test reports)
+- `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7_QA_SCREENSHOTS_20261105.zip` (Chromium screenshots in WebP format + test scripts/results)
 - `/LUCH-P036/QA/HEA-V7/LUCH_AI_HEA_V7_PREVIEW_20261105.png` (visual preview)
 
 Source SHA256: `e5d9d597b4648f9c615f5273e7c790c17ce5df5bf4fb5adde220491ff2835844`
 
-QA bundle SHA256: `e77e336e79215a52ba293b9e1d8758943e1b8190f6afb507938f48c1b610e688`
+QA bundle SHA256: `0f67c646d3a9e749712a45571126ac0d1a60ce0a91f6ecc84af67718aff66479`
 
 ## What changes
 

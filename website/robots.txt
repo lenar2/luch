@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://luch.lenarsalimov.ru/sitemap.xml

@@ -57,3 +57,8 @@ Not yet justified:
 ## Official status
 
 The authoritative runtime is the authenticated LUCH tool inventory and independently captured test receipts. README claims do not override runtime permissions, access policy, or a host's actual plugin availability.
+
+
+## Static website publication — 2026-11-05
+
+The bilingual static product website is published at https://luch.lenarsalimov.ru/ using the versioned R3.1 source and a route-preserving release overlay. The public release was verified by HTTP smoke tests: main EN/RU pages, connection pages, 32 HTML routes, previously active getting-started guide, download, legal/support endpoints and removal of the synthetic reviewer fixture. This is **static website availability only**. It does not change the UNKNOWN / HOLD gates above for arbitrary new-customer OAuth, pairing or end-to-end service use. For code and backup provenance see [website/DEPLOYMENT.md](../website/DEPLOYMENT.md).

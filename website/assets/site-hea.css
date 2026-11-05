@@ -1,0 +1,22 @@
+/* LUCH ray identity overlay for secondary routes. */
+.brand{align-items:center;gap:10px}.brand::before{content:"";display:block;flex:0 0 24px;width:24px;height:24px;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fc8e6d%22%20stroke-width%3D%223.2%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M24%202v44M2%2024h44M8.5%208.5l31%2031m0-31-31%2031%22%2F%3E%3C%2Fg%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2224%22%20r%3D%226.5%22%20fill%3D%22%23fc8e6d%22%2F%3E%3C%2Fsvg%3E%0A") center/contain no-repeat}@media(max-width:600px){.brand::before{flex-basis:21px;width:21px;height:21px}}
+
+/* Whole-site continuity: the restrained dark LUCH masthead ties
+   light editorial detail pages back to the homepage. */
+.site-header {background:#112826;border-bottom:1px solid #36534c;backdrop-filter:none}
+.site-header .brand-word {color:#fffdf7;font-weight:850;letter-spacing:-.065em}
+.site-header .brand-period {color:#fc8e6d}
+.site-header .nav a {color:#dce9e1;font-weight:610}
+.site-header .nav a:hover,.site-header .nav a[aria-current="page"] {color:#ffb090;border-bottom-color:#fc8e6d}
+.site-header .lang-switch {color:#dce9e1}
+.site-header .lang-switch span {color:#ffb090}
+.site-header .nav-start {background:#fc8e6d;color:#112826;border-radius:2px;font-weight:800}
+.site-header .nav-start:hover {background:#ffb090}
+.site-header .mobile-menu {border:1px solid #66817a}
+.site-header .mobile-menu span {background:#fffdf7}
+.site-header a:focus-visible,.site-header button:focus-visible {outline:3px solid #fc8e6d;outline-offset:4px}
+@media (max-width:860px) {
+ .site-header .nav {background:#112826;border-bottom:1px solid #36534c;box-shadow:0 22px 42px rgba(5,26,24,.3)}
+ .site-header .nav a {color:#dce9e1}
+ .site-header .nav a:hover,.site-header .nav a[aria-current="page"] {color:#ffb090}
+}

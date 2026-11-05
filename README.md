@@ -1,81 +1,74 @@
+<p align="left"><img src="website/assets/luch-ray.svg" width="62" alt="LUCH eight-ray symbol"></p>
+
 # LUCH
+### Your AI. Your tools. Work you can verify.
 
-**Your AI, beyond the chat.**
+**LUCH is a permission-aware execution layer** that lets supported AI clients use authorized browsers, paired computers, approved files, GitHub, terminals and connected services.
 
-**LUCH is a permissions-aware execution layer that connects AI assistants to the browsers, files, computers, and servers you explicitly authorize.**
+[Website](https://luch.lenarsalimov.ru/) · [Get started](https://luch.lenarsalimov.ru/docs/get-started/) · [Security](SECURITY.md) · [Русский](README.ru.md)
 
-[**Website**](https://luch.lenarsalimov.ru/) · [**See capabilities**](https://luch.lenarsalimov.ru/#capabilities) · [**Get started**](https://luch.lenarsalimov.ru/docs/get-started/) · [**Русский**](README.ru.md) · [**Security**](SECURITY.md)
+> **Availability, without guesswork:** LUCH is operating in its founder's connected environment. Independent end-to-end activation for an arbitrary new customer (account → OAuth → pairing → first permitted action) is **not yet verified**. Published client source is not a guarantee of service access. The bilingual public website is now live at https://luch.lenarsalimov.ru/ and its text-based source is published under `website/`. This does not verify fresh-customer OAuth or device pairing.
 
-> **EARLY ACCESS — public client code, limited service access.** LUCH already operates for enabled accounts. **Independent self-service signup → OAuth → device pairing → first authorized action has not yet been verified for an arbitrary new user.** Installing a client alone does not grant an account or access to anyone's devices.
+---
 
-## What can LUCH do for you?
+## Begin with the work, not a plugin
 
-You describe a task to your AI. LUCH provides a permitted way to carry it out and report what actually happened.
+**“Find why the page changed after the update. Prepare a fix I can review.”**
 
-| Ask your AI | What LUCH can do, when enabled and authorized |
-| :--- | :--- |
-| **“Compare the information on these two websites.”** | Launch an isolated, temporary **cloud browser**; read or interact with supported public pages; release the session. It does not require your Mac to stay online. |
-| **“Check whether my Linux server is healthy.”** | Select an explicitly paired **server**, run a bounded permitted command, and return the actual status and output. |
-| **“Summarize the documents in the folder I shared.”** | Read **approved files** through a supported, online device or connected resource, within that account's permissions. |
-| **“Show me which of my computers are online.”** | Discover **your paired devices**, their current state, and available actions — without silently switching to another user's machine. |
-| **“Use my open browser or app to complete this step.”** | Where supported, operate a **paired computer** using its permitted browser or computer-control tools. |
+With the necessary permissions, the AI can inspect a webpage, compare approved files and repository context, reproduce a problem where supported, then prepare a **reviewable change with evidence**. This is a workflow illustration, not a claim that a particular run has happened.
 
-**Why this matters:** AI is useful when it can move from suggesting an action to executing one with your permission. LUCH provides multiple execution paths — an isolated remote browser, a paired computer, or a connected server — rather than assuming everything has a convenient API.
+Other concrete jobs include comparing two sources in a temporary browser, collecting referenced information from approved files, and checking the state of an explicitly selected server.
 
-### A concrete example
+**LUCH changes what the assistant can reach — not who has authority.** A submitted task is not execution. A PR is not a production release. An ACK from another AI is not proof the work completed.
 
-> **You:** “Open these two product documentation pages, compare the relevant API limits, and show the source links. Don't change anything.”
+## What it connects
 
-An appropriately authorized AI can acquire a temporary browser, visit the pages, read the content, cite the information it found, and release that browser. If a site or tool is unavailable, it should report the failure — **not invent a result**. This is an illustrative workflow, **not** evidence of fresh-customer end-to-end certification.
+- **Websites and web apps** — bounded page reads or supported interactions in isolated or authorized browser sessions.
+- **Paired computers** — GUI, keyboard, mouse, window and accessibility operations when the host and OS permit them.
+- **Files and documents** — authorized discovery, reading, comparison and specific permitted changes.
+- **Development** — GitHub code, branches, PRs, supported terminals and named servers.
+- **Other AI contexts** — Peer Bus messages and optional bridges; execution availability requires separate evidence.
+- **Specialized sources** — GetCourse (read-only); Tilda authoring (not currently available; authorization required); Apple Notes, photos and separate Figma integration work.
 
-## One LUCH. Your choice of AI.
+These capabilities are **account-, device-, host- and permission-dependent**. Native full iPhone control and unrestricted autonomous multi-agent execution are not part of the verified public Core.
 
-| Client | Source / installation information | Actual status |
-| :--- | :--- | :--- |
-| **ChatGPT / Codex** | [Client candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Preview ZIP](https://luch.lenarsalimov.ru/downloads/luch-chatgpt-0.1.6-preview.zip) | Existing **private** LUCH 0.3.51 integration; public submission and new-user OAuth review not complete |
-| **Claude** | [LUCH for Claude](https://github.com/lenar2/luch-claude-plugin) | Public source; marketplace review is separate |
-| **Cursor** | [LUCH for Cursor](https://github.com/lenar2/luch-cursor) | Public client source; new-user access not yet guaranteed |
-| **Gemini CLI** | [LUCH for Gemini CLI](https://github.com/lenar2/luch-gemini) | Public extension source; fresh-user verification pending |
-| **Kimi** | [Kimi candidate](https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate) | Candidate only; no confirmed public catalogue listing |
+## Choose a client
 
-**This is the official product hub.** Individual client repositories remain separate so installation links and marketplace submissions do not break. The product is **LUCH**, not “LUCH for Claude.”
+- [ChatGPT integration source](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Preview package](https://luch.lenarsalimov.ru/downloads/luch-chatgpt-0.1.6-preview.zip) — package/public submission and fresh-user verification remain separate gates.
+- [Claude](https://github.com/lenar2/luch-claude-plugin) — public integration source; marketplace approval may differ.
+- [Cursor](https://github.com/lenar2/luch-cursor) — client source; service activation not guaranteed.
+- [Gemini CLI](https://github.com/lenar2/luch-gemini) — extension source; independent fresh-user test pending.
+- [Kimi candidate](https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate) — candidate, not an approved public catalog listing.
 
-### Getting started
+### First safe task
 
-1. **Explore the [capabilities](https://luch.lenarsalimov.ru/#capabilities)** and choose a supported AI client above.
-2. **Review the [connection instructions](https://luch.lenarsalimov.ru/docs/get-started/)**. An enabled account and host-compatible OAuth flow are required for live tool access.
-3. **Start read-only.** Ask the AI to show only the LUCH devices and tools authorized for your account, or run a bounded public-page read in a temporary browser.
-4. **Verify the actual result**, including the chosen device, permission scope, and whether the operation truly executed.
+1. Read the [connection guide](https://luch.lenarsalimov.ru/docs/get-started/) and verify the account is enabled.
+2. Ask the client which **LUCH tools and devices are authorized** for the current account. Never assume a device name or routing target.
+3. Start with one **read-only** browser or file operation.
+4. Inspect the actual output, scope, provenance and any errors before granting write access.
 
-The source ZIP is **not a native desktop or iPhone installer**, and no client contains server-side implementation, passwords, or owner tokens.
+No install archive is an iPhone or native Mac installer, and no public client contains hosted backend secrets.
 
-## Built around your permission
+## Trust model
 
-- **Explicit device selection.** A specified offline or unpaired device must fail closed, not reroute silently.
-- **Account-scoped access.** Permissions depend on the user, device, host, and available tool.
-- **Isolated server browser.** Temporary sessions are scoped to a task and released afterward.
-- **Actual execution evidence.** A transport receipt or “accepted” response is not proof that a requested action was completed.
-- **No authorization bypass.** LUCH does not override OAuth, operating-system permissions, or your chosen access controls.
+**Explicit selection.** Unpaired/offline devices fail closed; LUCH must not silently substitute another device.
 
-Native iPhone control, autonomous coordination of independent AI agents, and all-platform public availability are **separate development tracks**, not promises of the current public Core release.
+**Scoped permission.** Tool access depends on the account, connection, device, host and operation.
 
-## Release status
+**Evidence over receipts.** Transport success or task acceptance does not mean the action actually happened.
 
-| Item | State |
-| :--- | :--- |
-| International website and English/Russian versions | **Live** |
-| Public client source for Claude, Cursor, Gemini | **Available** |
-| OpenAI portable package schema validation | **Passed (static only)** |
-| Public MCP rejecting unauthenticated requests | **Verified (401)** |
-| Fresh-user signup, OAuth, pairing, permitted action and cross-account denial | **Not independently verified — HOLD** |
-| General public subscription, complete platform approvals and production-scale launch | **Not claimed** |
+**No bypass.** OAuth and OS access checks remain in force. Private infrastructure, credentials and real user data are not in this repository.
 
-See [release verification gates](docs/RELEASE_READINESS.md). We do not treat **UNKNOWN** as **PASS**.
+See [SECURITY.md](SECURITY.md), [release readiness](docs/RELEASE_READINESS.md) and [support](https://luch.lenarsalimov.ru/support/).
 
-## Follow and contribute
+## Published bilingual product website
 
-If you find LUCH useful or want to follow its development, click **⭐ Star** at the top of this repository. Stars show interest; they are **not** installation or active-user counts.
+The public EN/RU product site is [live](https://luch.lenarsalimov.ru/). Its static HTML, CSS, JS and SVG sources for 32 routes are maintained in [website/](website/), with a [SHA-256 source manifest](website/MANIFEST.sha256). The human task → permitted tools → inspectable result examples are illustrations, not records of customer executions.
 
-[Report an issue](https://github.com/lenar2/luch/issues/new) · [Request a feature](https://github.com/lenar2/luch/issues/new) · [Support](https://luch.lenarsalimov.ru/support/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/)
+The released site preserved the existing getting-started guide, legal/support pages and downloadable preview client. The download binary is hosted at the public site rather than duplicated in Git history. See [deployment provenance](website/DEPLOYMENT.md).
 
-**Repository scope:** This hub contains public documentation and integration pointers. It does **not** publish the hosted LUCH server, private control infrastructure, user credentials, or user data. Public client packages have their own stated licenses; this hub does not relicense backend code.
+**Scope:** static-site release and HTTP checks passed. Fresh-customer signup, OAuth, pairing and first real authorized action remain **UNKNOWN / HOLD**.
+
+[Suggest an improvement](https://github.com/lenar2/luch/issues/new) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/)
+
+This hub does not relicense other client packages or publish the hosted service.

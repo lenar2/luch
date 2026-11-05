@@ -1,8 +1,8 @@
 # Canonical full-site release source
 
-The complete 33-route static site is released only from the immutable full-source ZIP in the Founder Library. This GitHub PR is the reviewable homepage/README overlay plus shared navigation runtime; merging this PR alone is **not** a complete website deployment.
+The complete 32-route static site is released only from the immutable full-source ZIP in the Founder Library. This GitHub PR is the reviewable homepage/README overlay plus shared navigation runtime; merging this PR alone is **not** a complete website deployment.
 
-The full ZIP is the sole deployable input. It contains all EN/RU routes, root aliases, shared assets, legal/support pages and a complete file manifest. The exact ZIP SHA-256 and the GitHub overlay commit used to synchronize shared files are pinned in the PR body and Factory issue #4001.
+The full ZIP is the sole deployable input. It contains all EN/RU routes, root aliases, shared assets, legal/support pages and a complete file manifest. The synthetic reviewer fixture at review/fixture has been removed from the archive. The exact ZIP SHA-256 and the GitHub overlay commit are pinned in the PR body and Factory issue #4001.
 
 The GitHub overlay and full-source ZIP are separate, version-pinned artifacts and are not byte-for-byte duplicates. The full ZIP is the sole deployable input; the GitHub branch is a review layer. The full-site manifest and overlay manifest are checked separately.
 

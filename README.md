@@ -28,7 +28,7 @@ Other concrete jobs include comparing two sources in a temporary browser, collec
 - **Files and documents** — authorized discovery, reading, comparison and specific permitted changes.
 - **Development** — GitHub code, branches, PRs, supported terminals and named servers.
 - **Other AI contexts** — Peer Bus messages and optional bridges; execution availability requires separate evidence.
-- **Specialized sources** — GetCourse (currently read-only), Tilda authoring is not currently available in the connected environment (authorization required); Apple Notes, photos and separate Figma integration work.
+- **Specialized sources** — GetCourse (read-only); Tilda authoring (not currently available; authorization required); Apple Notes, photos and separate Figma integration work.
 
 These capabilities are **account-, device-, host- and permission-dependent**. Native full iPhone control and unrestricted autonomous multi-agent execution are not part of the verified public Core.
 

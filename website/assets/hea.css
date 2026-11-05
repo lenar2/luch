@@ -1,4 +1,4 @@
-/* LUCH / AI-HEA-owned website concept — no external assets, no tracking scripts. */
+/* LUCH website styles. No external assets or tracking scripts. */
 :root{--ink:#16302e;--night:#112826;--paper:#f5f2eb;--cream:#fffdf7;--line:#d6d7cb;--orange:#fc8e6d;--green:#a7c8ad;--mid:#5b746d;--white:#fffdf5;--pad:clamp(20px,5.6vw,90px)}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:82px}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button{font:inherit}button,a{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:3px solid var(--orange);outline-offset:4px}p,h1,h2,h3,blockquote{margin-top:0}p{line-height:1.65}::selection{background:#f3bca7;color:var(--night)}.shell{width:min(100% - var(--pad)*2,1600px);margin-inline:auto}.skip{position:absolute;z-index:999;top:-100px;left:20px;padding:12px 18px;background:var(--white);color:var(--night)}.skip:focus{top:16px}
 /* Header, identity */
@@ -25,9 +25,25 @@
 /* Small-screen content must never widen the document. */
 .cap-item{min-width:0;overflow-wrap:anywhere}
 @media(max-width:600px){.cap-grid{grid-template-columns:minmax(0,1fr)}}
-/* HEA V7 accessibility correction: small metadata meets readable contrast. */
+/* Accessible contrast for small metadata. */
 .art-top,.art-label,.art-disclaimer{color:#425f52}
 .label-sm,.example-head .eyebrow,.example-scope p,.small-note{color:#415d50}
 .cap-sub,.cap-index,.tools-foot span{color:#405e50}
 .cap-copy p:last-child,.trust-grid p{color:#405e50}
+.cta a:focus-visible{outline-color:#112826}
+
+/* Final contrast and CTA palette correction. */
+.kicker{color:#8f4934;margin-top:12px}
+.art-top,.art-label,.art-disclaimer{color:#4f665c}
+.tab{color:#4f665c}
+.tab span{color:#8f4934}
+.example-head .eyebrow,.example-id,.label-sm,.example-scope p,.small-note{color:#4f665c}
+.example-scope span{color:#8f4934}
+.cap-index,.cap-sub,.tools-foot span,.cap-copy p:last-child,.trust-grid p{color:#4f665c}
+.trust-number{color:#8f4934}
+.cta{background:#a3573f;color:#fff3df}
+.cta .kicker{color:#fff3df}
+.cta h2 em{color:#fffdf7}
+.cta-links{border-top-color:#d6a08b}
+.cta-links a{border-bottom-color:#d6a08b}
 .cta a:focus-visible{outline-color:#112826}

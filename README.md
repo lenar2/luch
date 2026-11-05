@@ -5,7 +5,7 @@
 
 **LUCH is a permission-aware execution layer** that lets supported AI clients use authorized browsers, paired computers, approved files, GitHub, terminals and connected services.
 
-[Website](https://luch.lenarsalimov.ru/) · [Connect](https://luch.lenarsalimov.ru/en/connect/) · [Security](SECURITY.md) · [Русский](README.ru.md)
+[Website](https://luch.lenarsalimov.ru/) · [Get started](https://luch.lenarsalimov.ru/docs/get-started/) · [Security](SECURITY.md) · [Русский](README.ru.md)
 
 > **Availability, without guesswork:** LUCH is operating in its founder's connected environment. Independent end-to-end activation for an arbitrary new customer (account → OAuth → pairing → first permitted action) is **not yet verified**. Published client source is not a guarantee of service access. The current live website is separate from the HEA V7 draft in this repository.
 

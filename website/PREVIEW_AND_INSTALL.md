@@ -1,7 +1,17 @@
-# Preview notes
+# Preview and installation
 
-This branch contains the bilingual homepage layer only. It is not a complete static-site distribution and must not be deployed by itself.
+This branch is a review overlay, not a complete website and not a production deployment.
 
-For review, apply the homepage files and shared assets to the complete static-site source tree, then serve that tree from its root so absolute EN/RU routes continue to resolve. The existing non-homepage routes remain unchanged.
+## Canonical source
 
-All workflow diagrams are examples, not records of live executions. Do not publish or merge before independent QA and Founder visual acceptance.
+The complete 33-route static source ZIP is the sole deployable input. It contains all EN/RU routes, root aliases, shared assets, legal/support pages and its complete file manifest. The exact immutable ZIP SHA-256 and its overlay commit are recorded in the PR body and Factory issue #4001.
+
+The homepage and shared navigation assets in this branch are mirrored byte-for-byte into the full source ZIP. Do not combine files from different branch commits or source ZIP versions. Merging this PR alone does not deploy the complete website.
+
+## Release gates
+
+1. Independent QA reviews the exact source ZIP and overlay commit.
+2. Founder visually accepts the candidate.
+3. A separately authorized deployment is reviewed over public HTTP before production changes.
+
+Production website, OAuth, MCP, server infrastructure and customer data remain unchanged.

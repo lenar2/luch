@@ -7,7 +7,7 @@
     const close=()=>setOpen(false);
     menu.addEventListener('click',()=>setOpen(menu.getAttribute('aria-expanded')!=='true'));
     nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
-    document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){close();menu.focus();}});
     document.addEventListener('click',e=>{if(!menu.contains(e.target)&&!nav.contains(e.target))close()});
   }
   const tabs=[...document.querySelectorAll('[role="tab"]')];if(!tabs.length)return;

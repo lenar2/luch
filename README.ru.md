@@ -5,7 +5,7 @@
 
 **Расскажите ИИ, что вы хотите сделать.** LUCH помогает ему работать с сайтами, документами, компьютерами и инструментами разработки, которые вы сами подключаете. Вы управляете доступом и видите, что он действительно нашёл, подготовил или изменил.
 
-[Открыть сайт](https://luch.lenarsalimov.ru/ru/) · [Как подключиться](https://luch.lenarsalimov.ru/docs/get-started/) · [English](README.md)
+[Открыть сайт](https://luch.lenarsalimov.ru/ru/) · [Как подключиться](https://luch.lenarsalimov.ru/ru/connect/) · [English](README.md)
 
 ## Начните с того, что важно вам
 
@@ -41,7 +41,7 @@
 
 [ChatGPT](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Claude](https://github.com/lenar2/luch-claude-plugin) · [Cursor](https://github.com/lenar2/luch-cursor) · [Gemini CLI](https://github.com/lenar2/luch-gemini)
 
-Способы подключения различаются. [Посмотреть актуальные возможности](https://luch.lenarsalimov.ru/ru/status/) или [открыть инструкцию](https://luch.lenarsalimov.ru/docs/get-started/).
+Способы подключения различаются. [Посмотреть актуальные возможности](https://luch.lenarsalimov.ru/ru/status/) или [открыть инструкцию](https://luch.lenarsalimov.ru/ru/connect/).
 
 ## Вы решаете, что доверить ИИ
 

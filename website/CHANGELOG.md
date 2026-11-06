@@ -4,7 +4,6 @@
 - Added an original LUCH visual system: deep green, warm paper, coral accent, eight-ray mark and editorial typography.
 - Added three keyboard-operable workflow examples, each explicitly labeled as illustrative rather than live execution.
 - Fixed mobile navigation: opening places focus on the first visible link; Escape closes and restores focus to the trigger on homepage and secondary routes.
-- Corrected Tilda availability: authoring is not currently available in the connected environment; authorization is required.
 - Removed the unsupported Claude automated-scan success claim; scan status is unverified without a receipt.
 - Corrected Opera capability truth: the paired Mac inventory reports Opera installed but not running (NOT_RUNNING); no active connection is claimed.
 - Changed EN/RU README connection links to the verified /docs/get-started/ guide (HTTP 200), avoiding the currently broken /en/connect/ and /ru/connect/ public routes.
@@ -19,3 +18,10 @@
 - Deleted the legacy synthetic review/fixture from the public document root.
 - Verified staging and public HTTP routes, 44/44 deployed files and preserved endpoints; rollback snapshot kept.
 - Published matching live text source in GitHub; new-customer OAuth/device-pairing E2E remains UNKNOWN.
+
+## Human Experience editorial refresh — 2026-11-06
+
+- Reframed the bilingual homepage around a real human task, meaningful outcome and clear choice.
+- Simplified connection guidance and public README content; moved technical diagnostics away from the first impression.
+- Removed unavailable integration marketing and clarified status wording without claiming universal access.
+- Preserved legal and security policy content and the existing available client links.

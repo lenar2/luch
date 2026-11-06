@@ -5,7 +5,7 @@
 
 **Tell your AI what you need to get done.** LUCH helps it work with the websites, documents, computers and development tools you choose to connect. You stay in control of access and see what it actually found, prepared or changed.
 
-[Explore the website](https://luch.lenarsalimov.ru/) · [How to connect](https://luch.lenarsalimov.ru/docs/get-started/) · [Русский](README.ru.md)
+[Explore the website](https://luch.lenarsalimov.ru/) · [How to connect](https://luch.lenarsalimov.ru/en/connect/) · [Русский](README.ru.md)
 
 ## Start with something that matters to you
 
@@ -41,7 +41,7 @@ These are examples of possible workflows; available actions depend on your accou
 
 [ChatGPT integration](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Claude](https://github.com/lenar2/luch-claude-plugin) · [Cursor](https://github.com/lenar2/luch-cursor) · [Gemini CLI](https://github.com/lenar2/luch-gemini)
 
-Integrations have different installation and availability requirements. [See current availability](https://luch.lenarsalimov.ru/en/status/) or [read the connection guide](https://luch.lenarsalimov.ru/docs/get-started/).
+Integrations have different installation and availability requirements. [See current availability](https://luch.lenarsalimov.ru/en/status/) or [read the connection guide](https://luch.lenarsalimov.ru/en/connect/).
 
 ## A clear choice, every time
 

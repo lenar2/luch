@@ -1,74 +1,54 @@
-<p align="left"><img src="website/assets/luch-ray.svg" width="62" alt="LUCH eight-ray symbol"></p>
+<p align="left"><img src="website/assets/luch-ray.svg" width="62" alt="LUCH"></p>
 
 # LUCH
-### Your AI. Your tools. Work you can verify.
+### Your AI. Your tools. More of your day back.
 
-**LUCH is a permission-aware execution layer** that lets supported AI clients use authorized browsers, paired computers, approved files, GitHub, terminals and connected services.
+**Tell your AI what you need to get done.** LUCH helps it work with the websites, documents, computers and development tools you choose to connect. You stay in control of access and see what it actually found, prepared or changed.
 
-[Website](https://luch.lenarsalimov.ru/) · [Get started](https://luch.lenarsalimov.ru/docs/get-started/) · [Security](SECURITY.md) · [Русский](README.ru.md)
+[Explore the website](https://luch.lenarsalimov.ru/) · [How to connect](https://luch.lenarsalimov.ru/docs/get-started/) · [Русский](README.ru.md)
 
-> **Availability, without guesswork:** LUCH is operating in its founder's connected environment. Independent end-to-end activation for an arbitrary new customer (account → OAuth → pairing → first permitted action) is **not yet verified**. Published client source is not a guarantee of service access. The bilingual public website is now live at https://luch.lenarsalimov.ru/ and its text-based source is published under `website/`. This does not verify fresh-customer OAuth or device pairing.
+## Start with something that matters to you
 
----
+**“The website changed after an update. Can you find out why?”**
 
-## Begin with the work, not a plugin
+With the right connections, your AI can look at the page, check relevant materials and prepare a fix for you to review. Instead of moving information between tabs and chats, you can focus on the outcome.
 
-**“Find why the page changed after the update. Prepare a fix I can review.”**
+A few more ways to use LUCH:
 
-With the necessary permissions, the AI can inspect a webpage, compare approved files and repository context, reproduce a problem where supported, then prepare a **reviewable change with evidence**. This is a workflow illustration, not a claim that a particular run has happened.
+- **Make a decision.** Compare information across websites and get a clear summary with sources.
+- **Move a document forward.** Find the materials you approved and prepare changes you can review.
+- **Understand a technical problem.** Inspect code or an authorized server, then see the evidence and possible next steps.
 
-Other concrete jobs include comparing two sources in a temporary browser, collecting referenced information from approved files, and checking the state of an explicitly selected server.
+These are examples of possible workflows; available actions depend on your account and connected tools.
 
-**LUCH changes what the assistant can reach — not who has authority.** A submitted task is not execution. A PR is not a production release. An ACK from another AI is not proof the work completed.
+## Three steps, with you in the driver's seat
 
-## What it connects
+1. **Describe the outcome.** Ask your AI in plain language.
+2. **Choose what to connect.** Give access only to the browser, files or devices the task needs.
+3. **See what happened.** Review the result and decide whether a proposed change should go ahead.
 
-- **Websites and web apps** — bounded page reads or supported interactions in isolated or authorized browser sessions.
-- **Paired computers** — GUI, keyboard, mouse, window and accessibility operations when the host and OS permit them.
-- **Files and documents** — authorized discovery, reading, comparison and specific permitted changes.
-- **Development** — GitHub code, branches, PRs, supported terminals and named servers.
-- **Other AI contexts** — Peer Bus messages and optional bridges; execution availability requires separate evidence.
-- **Specialized sources** — GetCourse (read-only); Tilda authoring (not currently available; authorization required); Apple Notes, photos and separate Figma integration work.
+**Human Experience is the point:** less time explaining where your work lives, more clarity about what your AI can do and what is still your decision.
 
-These capabilities are **account-, device-, host- and permission-dependent**. Native full iPhone control and unrestricted autonomous multi-agent execution are not part of the verified public Core.
+## Where LUCH can help
 
-## Choose a client
+- **Websites:** research, compare pages and work with supported web applications.
+- **Files and notes:** find, read and prepare work from materials you authorize.
+- **Computers:** interact with supported apps and windows on a paired, permitted device.
+- **Development:** investigate GitHub repositories, review proposed changes and use authorized server tools.
+- **Connected services:** bring available work context into the same task, subject to permissions.
 
-- [ChatGPT integration source](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Preview package](https://luch.lenarsalimov.ru/downloads/luch-chatgpt-0.1.6-preview.zip) — package/public submission and fresh-user verification remain separate gates.
-- [Claude](https://github.com/lenar2/luch-claude-plugin) — public integration source; marketplace approval may differ.
-- [Cursor](https://github.com/lenar2/luch-cursor) — client source; service activation not guaranteed.
-- [Gemini CLI](https://github.com/lenar2/luch-gemini) — extension source; independent fresh-user test pending.
-- [Kimi candidate](https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate) — candidate, not an approved public catalog listing.
+## Use it with your AI
 
-### First safe task
+[ChatGPT integration](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt) · [Claude](https://github.com/lenar2/luch-claude-plugin) · [Cursor](https://github.com/lenar2/luch-cursor) · [Gemini CLI](https://github.com/lenar2/luch-gemini)
 
-1. Read the [connection guide](https://luch.lenarsalimov.ru/docs/get-started/) and verify the account is enabled.
-2. Ask the client which **LUCH tools and devices are authorized** for the current account. Never assume a device name or routing target.
-3. Start with one **read-only** browser or file operation.
-4. Inspect the actual output, scope, provenance and any errors before granting write access.
+Integrations have different installation and availability requirements. [See current availability](https://luch.lenarsalimov.ru/en/status/) or [read the connection guide](https://luch.lenarsalimov.ru/docs/get-started/).
 
-No install archive is an iPhone or native Mac installer, and no public client contains hosted backend secrets.
+## A clear choice, every time
 
-## Trust model
+You choose what your AI can access. LUCH does not silently connect to an unrelated device or treat an uncompleted request as a finished task. If an action needs additional permission, the boundary remains visible.
 
-**Explicit selection.** Unpaired/offline devices fail closed; LUCH must not silently substitute another device.
+**For developers:** [website source](website/) · [security](SECURITY.md) · [release readiness](docs/RELEASE_READINESS.md) · [deployment record](website/DEPLOYMENT.md)
 
-**Scoped permission.** Tool access depends on the account, connection, device, host and operation.
+[Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [Support](https://luch.lenarsalimov.ru/support/)
 
-**Evidence over receipts.** Transport success or task acceptance does not mean the action actually happened.
-
-**No bypass.** OAuth and OS access checks remain in force. Private infrastructure, credentials and real user data are not in this repository.
-
-See [SECURITY.md](SECURITY.md), [release readiness](docs/RELEASE_READINESS.md) and [support](https://luch.lenarsalimov.ru/support/).
-
-## Published bilingual product website
-
-The public EN/RU product site is [live](https://luch.lenarsalimov.ru/). Its static HTML, CSS, JS and SVG sources for 32 routes are maintained in [website/](website/), with a [SHA-256 source manifest](website/MANIFEST.sha256). The human task → permitted tools → inspectable result examples are illustrations, not records of customer executions.
-
-The released site preserved the existing getting-started guide, legal/support pages and downloadable preview client. The download binary is hosted at the public site rather than duplicated in Git history. See [deployment provenance](website/DEPLOYMENT.md).
-
-**Scope:** static-site release and HTTP checks passed. Fresh-customer signup, OAuth, pairing and first real authorized action remain **UNKNOWN / HOLD**.
-
-[Suggest an improvement](https://github.com/lenar2/luch/issues/new) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/)
-
-This hub does not relicense other client packages or publish the hosted service.
+The website is live. Self-service onboarding and device pairing vary by AI client and account; the status page distinguishes verified integrations from those still being validated.

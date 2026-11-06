@@ -47,12 +47,12 @@ PAGE={
 ("Claude, Cursor, Gemini CLI","Integration source is available. Directory publication and independent sign-in vary and are assessed separately."),
 ("Kimi and others","The Kimi adapter is a candidate. Public catalog listing has not been confirmed.")],"A choice","“I already use ChatGPT. Can I connect LUCH?”","Check the client and your account's access rather than promising an unavailable button.")},
 "connect":{
-"ru":("Один следующий шаг.<br><em>Без лабиринта.</em>","Сначала выберите свой ИИ-клиент. Затем проверьте доступ учётной записи. Если он открыт — подключите только нужный инструмент и начните с небольшой задачи.","Самостоятельная регистрация для всех желающих пока не подтверждена.","Инструкция для технического подключения","Путь от запроса к результату",[
+"ru":("Один следующий шаг.<br><em>Без лабиринта.</em>","Сначала выберите свой ИИ-клиент. Затем проверьте доступ учётной записи. Если он открыт — подключите только нужный инструмент и начните с небольшой задачи.","Начните с того, что уже работает у вас.","Инструкция для технического подключения","Путь от запроса к результату",[
 ("1. Выберите ИИ","ChatGPT, Claude, Cursor и Gemini CLI имеют отдельные интеграции и требования."),
 ("2. Проверьте доступ","Для LUCH нужен разрешённый аккаунт и поддерживаемый способ входа. Публичный пакет не открывает доступ автоматически."),
 ("3. Разрешите нужное","Выберите браузер, файлы или устройство под конкретную задачу. Не требуется давать доступ ко всему сразу."),
 ("4. Посмотрите результат","Сверьте сделанное с запросом. Сессию браузера можно завершить, разрешения устройства — отозвать.")],"Первый запрос","«Посмотри эту открытую страницу и кратко перескажи её с ссылкой».","Начните без записи и убедитесь, что подключение действительно работает."),
-"en":("One next step.<br><em>No maze.</em>","Choose your AI client first. Check your account's access. If enabled, connect only what's needed and start with a small task.","Open self-service signup for every visitor is not yet verified.","Technical connection guide","From first request to useful result",[
+"en":("One next step.<br><em>No maze.</em>","Choose your AI client first. Check your account's access. If enabled, connect only what's needed and start with a small task.","Start where your AI already works.","Technical connection guide","From first request to useful result",[
 ("1. Choose your AI","ChatGPT, Claude, Cursor and Gemini CLI each have different integration requirements."),
 ("2. Check access","LUCH requires an enabled account and supported sign-in. A public client package alone doesn't grant access."),
 ("3. Approve what's needed","Pick the browser, files or device for the task. You needn't authorize everything."),
@@ -194,7 +194,7 @@ def home(lang):
  return html+cta(lang)+'</main>'+footer(lang)
 def subpage(lang,slug):
  d=LOC[lang];title,lead,aside,feature,sectiontitle,rows,exlabel,example,outcome=PAGE[slug][lang];ru=lang=="ru"
- summary=escape(re.sub('<[^>]*>','',title)+'. '+lead[:130],quote=True)
+ summary=escape(re.sub('<[^>]*>','',title.replace('<br>',' '))+'. '+lead[:130],quote=True)
  more=f"/privacy/" if slug=="privacy" else "/terms/" if slug=="terms" else "/docs/get-started/"
  if slug=="privacy" or slug=="terms": featurehref=more
  elif slug=="clients":featurehref=LINKS["chatgpt"]
@@ -202,10 +202,10 @@ def subpage(lang,slug):
  elif slug=="help":featurehref="/support/"
  else:featurehref=f"/{lang}/connect/"
  items=''.join(f'<div class="detail-item"><span class="number">{i:02}</span><h3>{a}</h3><p>{b}</p></div>' for i,(a,b) in enumerate(rows,1))
- html=head(lang,slug,re.sub('<[^>]*>','',title).replace('<br>',''),summary)+header(lang,slug)
- html+=f'<main id="main"><section class="page-hero"><div class="wrap"><div><div class="eyebrow"><i></i>LUCH / {slug.upper()}</div><h1 class="page-h1">{title}</h1><p class="page-intro">{lead}</p></div><aside class="page-aside"><strong>{"Важная мысль" if ru else "The essential point"}</strong>{aside}</aside></div></section>'
+ html=head(lang,slug,re.sub('<[^>]*>','',title.replace('<br>',' ')),summary)+header(lang,slug)
+ html+=f'<main id="main"><section class="page-hero"><div class="wrap"><div><div class="eyebrow"><i></i>LUCH / {slug.upper()}</div><h1 class="page-h1">{title}</h1><p class="page-intro">{lead}</p><div class="hero-actions"><a class="button" href="#details">{"Посмотреть подробнее" if ru else "Explore details"} ↗</a></div></div><aside class="page-aside"><strong>{"Важная мысль" if ru else "The essential point"}</strong>{aside}</aside></div></section>'
  html+=f'<section class="feature-band"><div class="wrap"><h2>{feature}</h2><div><p>{outcome}</p><p><a href="{featurehref}">{d["read"]} ↗</a></p></div></div></section>'
- html+=f'<section class="details"><div class="wrap"><h2>{sectiontitle}</h2><div class="detail-list">{items}</div>'
+ html+=f'<section class="details" id="details"><div class="wrap"><h2>{sectiontitle}</h2><div class="detail-list">{items}</div>'
  if slug=="clients":
   links=' · '.join(f'<a href="{u}">{n} ↗</a>' for n,u in [("ChatGPT",LINKS["chatgpt"]),("Claude",LINKS["claude"]),("Cursor",LINKS["cursor"]),("Gemini CLI",LINKS["gemini"]),("Kimi",LINKS["kimi"])])
   html+=f'<div class="soft-note"><strong>{"Исходный код интеграций" if ru else "Integration source"}:</strong> {links}. {"Публикация кода не означает открытый доступ для всех." if ru else "Published code does not imply open access for everyone."}</div>'

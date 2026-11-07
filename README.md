@@ -1,93 +1,86 @@
 <p><img src="website/assets/luch-ray.svg" alt="" width="40"></p>
 
 # LUCH
-### Give your AI a way to work beyond the answer.
+### I want AI to do more than answer. I want it to help get work done.
 
-I’m building **LUCH to connect AI with real work**, not just conversations. It brings the tools you choose — a browser, authorized files, a paired computer or a server — into the task, so you can see and check what was actually done.
+I am building **LUCH to connect AI with real digital work**. Not another chat window: a connection to the browser, files, apps, devices, servers and services you choose. The AI can inspect, compare, prepare changes and — with the right authority — act, then show you what happened.
 
-[**See a real LUCH outcome**](docs/REAL_WORK.md) · [**Choose your AI**](docs/START_HERE.md) · [Русский](README.ru.md) · [Website](https://luch.lenarsalimov.ru/en/)
+[**Explore every capability**](docs/CAPABILITIES.md) · [**A real result**](docs/REAL_WORK.md) · [**Connect your AI**](docs/START_HERE.md) · [Русский](README.ru.md) · [Website](https://luch.lenarsalimov.ru/en/)
 
-![LUCH connects a human request to selected tools and a result that can be checked](docs/visual/platform-journey-en.svg)
+![From a human request to selected tools and a result that can be checked](docs/visual/platform-journey-en.svg)
 
-## From a request to work you can inspect
+## The full LUCH experience
 
-I wanted LUCH’s public experience to make its real capabilities clear. I asked AI working with my connected tools to inspect the website and GitHub source, prepare a bilingual redesign and deliver a result I could verify.
+**12 documented skills. One connected way of working.** I have organized the public capabilities by the part of your life or work they can improve, rather than by internal API names.
 
-The assistant checked 32 routes at four screen sizes, corrected a mobile layout defect and published the change **after I authorized it**.
+### Understand and navigate the web
 
-<blockquote>
-<strong>The result:</strong> a published website and an exact, inspectable source commit — not just advice about what someone else should do.
-</blockquote>
+| What I want AI to help with | What LUCH provides |
+| --- | --- |
+| **Explore public websites** | An isolated server browser: navigate pages, follow links, read content, enter text, click and capture screenshots in a permitted session |
+| **Work in my own browser** | A separately authorized local browser or profile when an existing signed-in session is genuinely needed |
+| **Manage a task's tabs** | Inspect and operate granted tabs and windows, preserving the rest of your browsing session |
 
-[**See the actual work, commit and release record →**](docs/REAL_WORK.md)
+[Browser, local browser and tabs →](docs/CAPABILITIES.md#browser-and-web)
 
-## What LUCH brings into the task
+### Work with my files, apps and devices
 
-| Your AI needs to… | LUCH can connect it to… | What comes back |
+| What I want AI to help with | What LUCH provides |
+| --- | --- |
+| **Find and work with files** | Search, read, compare, create or edit selected files and folders, with verification and sensible backups |
+| **Use a connected computer** | Where available, inspect the screen and work with native apps, windows, mouse and keyboard on the exact permitted device |
+| **Inspect my servers** | Discover a selected paired server, read its status and run bounded terminal diagnostics |
+
+[Files, computer and server →](docs/CAPABILITIES.md#files-devices-and-servers)
+
+### Connect services and carry work across steps
+
+| What I want AI to help with | What LUCH provides |
+| --- | --- |
+| **Work with a linked service** | Use a supported service API or approved browser session within my account's permissions |
+| **Complete multi-step tasks** | Coordinate browser, files, server and other exposed tools; check actual outcomes rather than just reporting “done” |
+| **Know what is available** | Discover the real tools, connected resources and permissions in this specific session |
+| **Stay in control** | Select the target, confirm important changes, keep access limited, and diagnose connection or permission problems |
+
+[Services, workflows, access and troubleshooting →](docs/CAPABILITIES.md#services-workflows-and-control)
+
+A capability in a public skill is **not automatically an available tool** on every device or AI host. The full map distinguishes demonstrated actions, device-dependent routes and future features.
+
+## What I have already used LUCH to do
+
+I wanted to redesign the LUCH website around people rather than technical terminology. Using my authorized environment, AI read the live site and GitHub source, prepared the bilingual changes, checked **32 routes at four screen sizes**, corrected a mobile issue and published the change after my approval.
+
+**This is a real, inspectable result**, not an imaginary product demo.
+
+[Read my account of the work](docs/REAL_WORK.md) · [View the exact commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931) · [Release checks](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
+
+## One LUCH, different ways to begin
+
+| Your AI | A useful starting point | Integration |
 | --- | --- | --- |
-| Understand a website | An isolated server browser for permitted public pages | Findings, comparisons and source links |
-| Work with your material | Files and folders you explicitly authorize | A summary, draft or verified file change |
-| Check a real environment | A selected, paired computer or server | Observed status and bounded diagnostic results |
-| Carry a task across steps | The tools actually available to your account | A result with the actions and checks that took place |
+| **ChatGPT** | Research a question with source-backed comparisons | [ChatGPT candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) |
+| **Claude** | Connect selected documents and sources into a decision brief | [Claude plugin](https://github.com/lenar2/luch-claude-plugin) |
+| **Cursor** | Diagnose a code problem against a selected environment and prepare a patch | [Cursor plugin](https://github.com/lenar2/luch-cursor) |
+| **Gemini CLI** | Check a paired server and turn observed output into an operational report | [Gemini extension](https://github.com/lenar2/luch-gemini) |
 
-The computer and server routes are separate capabilities: they appear only when the host, device and current permission support them.
+These are examples of how each host can use the LUCH tool set where the necessary tools and grants are exposed — not four different products.
 
-## LUCH meets you where you already work
+[Choose your connection path](docs/START_HERE.md) · [Host-specific readiness](docs/RELEASE_READINESS.md)
 
-<details open><summary><strong>ChatGPT</strong> — start with a conversation</summary>
+## The direction I am building toward
 
-Turn a question into a source-backed brief. Ask for a public-page comparison, a concise research summary or a check of resources your account has authorized.
+**LUCH Core** is intended as a free set of tools for working with your own authorized resources, subject to sensible security and capacity limits. A separate managed-agent service for longer autonomous work is a future direction, **not a product currently being sold**.
 
-[ChatGPT integration candidate and package →](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/README.md)
-
-</details>
-
-<details><summary><strong>Claude</strong> — think across sources and documents</summary>
-
-Bring a project brief together with selected files and public sources. Ask Claude to compare, synthesize and prepare a decision note you can review.
-
-[Claude plugin →](https://github.com/lenar2/luch-claude-plugin)
-
-</details>
-
-<details><summary><strong>Cursor</strong> — take a code task beyond the editor</summary>
-
-Investigate a bug using the code you selected and, when connected, the exact test server you authorized. Bring back a diagnosis and a reviewable patch — not an unapproved deployment.
-
-[Cursor plugin →](https://github.com/lenar2/luch-cursor)
-
-</details>
-
-<details><summary><strong>Gemini CLI</strong> — bring operational checks into the terminal</summary>
-
-Inspect a selected server, run bounded diagnostics and turn the observed output into a clear status report and next action.
-
-[Gemini CLI extension →](https://github.com/lenar2/luch-gemini)
-
-</details>
-
-## A simple way to begin
-
-1. **Choose your AI client.** Each integration has its own setup and working style.
-2. **Connect the resources you want to use.** The available tools are determined by your account, host and explicit grants.
-3. **Start with an inspect-only task.** Ask for a page to be read, a file to be summarized or a selected server to be checked.
-4. **Review the result.** Decide separately whether anything should be changed, saved or published.
-
-I already use LUCH for real work in my connected environment. Public client source is available to inspect; service access and host-specific onboarding are separate from downloading a package. [Choose your connection path →](docs/START_HERE.md)
+My principle is simple: **the task belongs to the human; the tools are there to help it move.** Your permissions, your ability to inspect what happened, and your decision about consequential changes remain central.
 
 ---
 
-[Product website](https://luch.lenarsalimov.ru/) · [Safety](https://luch.lenarsalimov.ru/en/safety/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [Support](https://luch.lenarsalimov.ru/support/)
+[Full capabilities](docs/CAPABILITIES.md) · [Product site](https://luch.lenarsalimov.ru/en/) · [Safety](https://luch.lenarsalimov.ru/en/safety/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Support](https://luch.lenarsalimov.ru/support/)
 
 <details><summary>For developers and reviewers</summary>
 
-This repository is the platform-neutral product hub. The public site source lives in [`website/`](website/); host adapters are maintained separately. The repository does not contain private account credentials, the hosted backend or device grants.
+This repository is the public LUCH platform hub and website source. The 12 portable skills live in the separate client repositories; they are workflow descriptions, not an implicit grant of runtime tools. The hosted backend, credentials and user device permissions are not published here.
 
-- [Technical getting started](https://luch.lenarsalimov.ru/docs/get-started/)
-- [Security](SECURITY.md)
-- [Contributing](CONTRIBUTING.md)
-- [Release readiness and evidence gates](docs/RELEASE_READINESS.md)
-
-Apache-2.0 applies to the public files in this repository, not to the hosted service or other client packages.
+[Technical setup](https://luch.lenarsalimov.ru/docs/get-started/) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Release-readiness gates](docs/RELEASE_READINESS.md). The Apache-2.0 license applies to this repository's public files, not the hosted service or other packages.
 
 </details>

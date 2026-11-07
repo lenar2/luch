@@ -1,6 +1,6 @@
 # LUCH — Public release readiness
 
-**Last reviewed: 2026-11-05.** This page distinguishes source availability from a fully verified public product. **UNKNOWN ≠ PASS.**
+**Last reviewed: 2026-11-07.** This is the technical release record; the human-facing product story starts in [README](../README.md). This page distinguishes source availability from a fully verified public product. **UNKNOWN ≠ PASS.**
 
 ## Product surfaces
 
@@ -11,6 +11,18 @@
 - Gemini adapter: https://github.com/lenar2/luch-gemini
 - ChatGPT/Codex portable candidate: https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt
 - Kimi adapter: candidate, not a confirmed public catalogue listing.
+
+## Human-facing entry points — HEA R3
+
+The public GitHub experience now has a different working story for each client:
+
+- [Platform hub](../README.md) — the full LUCH value and the documented founder-environment outcome.
+- [ChatGPT candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) — conversation to a source-backed brief.
+- [Claude](https://github.com/lenar2/luch-claude-plugin) — selected project materials to a decision note.
+- [Cursor](https://github.com/lenar2/luch-cursor) — code issue to a reviewable patch using the selected test environment.
+- [Gemini CLI](https://github.com/lenar2/luch-gemini) — bounded terminal checks to an operational report.
+
+These are designed workflows based on the public client skills. They are not claims that every host-specific scenario has been independently executed by a fresh customer. The exact tools exposed to a live session remain the runtime source of truth.
 
 ## Independent evidence gates
 
@@ -67,3 +79,21 @@ The bilingual static product website is published at https://luch.lenarsalimov.r
 ## Human-experience release note — 2026-11-07
 
 The human-first site and GitHub product README were published from [commit `06daa8d`](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931). See [release evidence](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064). The earlier “2026-11-05” passage above remains a **historical record**, not the current site release. A subsequent [author self-audit](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6705944671) marked the human journey for further design. **All new-user OAuth and pairing gates above remain UNKNOWN/HOLD.** The [real-work narrative](REAL_WORK.md) covers the founder's already-authorized environment and does not replace independent customer evidence.
+
+
+## HEA R3 — GitHub experience release, 2026-11-07
+
+The four public product repositories were updated in their default `main` branches:
+
+- Platform: [`fe2b63c`](https://github.com/lenar2/luch/commit/fe2b63c14f1872708bd99b05088bf79d8bd01b7c)
+- Claude and ChatGPT candidate: [`909b51a`](https://github.com/lenar2/luch-claude-plugin/commit/909b51a9db2a2fa4bfe15eb3ea0b8581881920cc)
+- Cursor: [`c30f3a6`](https://github.com/lenar2/luch-cursor/commit/c30f3a67c1f91b7fb87725dacec43003e5dc1c10)
+- Gemini CLI: [`cfb4e38`](https://github.com/lenar2/luch-gemini/commit/cfb4e38962b531b0bc8f5bd8fb23ee8ec6a9fca5)
+
+The release includes bilingual entry pages and client-specific workflow guides. The ChatGPT package builder includes its localized README, workflow guide and SVG asset. See the [founder's release note](https://github.com/lenar2/luch/issues/3#issuecomment-6706766299) and [AI Factory evidence](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6706768041).
+
+**Audit scope:** 22 public Markdown entry/workflow pages had no missing relative links or temporary-branch URLs; ten primary README pages had no broken heading anchors. Four integration manifests parsed as JSON and five workflow SVG sources passed structural checks. The ChatGPT ZIP was not built in this release, and rendered GitHub screenshot QA remains UNKNOWN.
+
+**Browser demo note:** two attempts to navigate the synthetic review fixture through an isolated LUCH server-browser session returned a closed page/context error. Sessions are now released or expired and the router reports zero active/queued sessions. No successful fixture execution is claimed. This result is specific to that audit attempt; it does not establish a general browser-service outage.
+
+The repository About descriptions are not updated in this release; the connected GitHub file/ref actions do not expose repository-settings writes. The current metadata remains visible in GitHub's About panels.

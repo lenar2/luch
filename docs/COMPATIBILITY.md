@@ -1,47 +1,45 @@
-# LUCH compatibility and getting started
+# Where LUCH works
 
-[← LUCH](../README.md) · [Русский](COMPATIBILITY.ru.md) · [Get started](START_HERE.md)
+[← LUCH](../README.md) · [Русский](COMPATIBILITY.ru.md) · [Connect](START_HERE.md)
 
-## Start from the AI you already use
+You can work with LUCH from the AI chat you already use. Reaching public websites, personal tabs, a computer and a server involves different connections and permissions.
 
-**ChatGPT:** LUCH works inside an ordinary text conversation for an account where the LUCH plugin/tools are connected. You can ask in your own words. The assistant can use only the resources exposed to that chat; it is not a general promise that every ChatGPT user already has access. Work mode is optional, not required.
+## In your AI client
 
-**Claude:** Plugin integration exists; use its supported client connection route and verify the actual tool inventory.
+**ChatGPT.** With an enabled account, LUCH works inside an ordinary text conversation. Work mode is not required. Available tools are scoped to that account and conversation.
 
-**Cursor:** Plugin/IDE integration for coding and selected resources.
+**Claude, Cursor and Gemini CLI.** Each has a separate integration. Check the client requirements and available tools before starting a job.
 
-**Gemini CLI:** Terminal extension for workflows with approved tools and servers.
+[ChatGPT integration](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) · [Claude](https://github.com/lenar2/luch-claude-plugin) · [Cursor](https://github.com/lenar2/luch-cursor) · [Gemini CLI](https://github.com/lenar2/luch-gemini)
 
-[ChatGPT candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) · [Claude](https://github.com/lenar2/luch-claude-plugin) · [Cursor](https://github.com/lenar2/luch-cursor) · [Gemini CLI](https://github.com/lenar2/luch-gemini)
+## Two ways of working with websites
 
-## Browsers: two different ways to work
+**A separate browser on a server.** LUCH's Firefox session can explore public sites independently of your computer: navigating, reading, following links, typing, clicking and capturing screenshots when permitted. Your personal signed-in accounts are not automatically available in this session.
 
-**Server browser:** An isolated Firefox/Playwright session can visit public websites, read pages, follow links, interact with supported forms and provide screenshots without using your laptop. It does not inherit your signed-in local browser state.
+**Your browser on a connected computer.** For an already open tab or authenticated personal session, LUCH needs the authorized browser on that exact device.
 
-**Local browser:** Working in your logged-in tabs requires a connected computer/browser with explicit authorization. Chrome and Opera have been used in the current owner environment. Local Safari and Firefox control, and universal compatibility across Edge/Brave/other Chromium variants, have not been independently confirmed.
+**Browser history.** The founder has personally confirmed use of Chrome, Opera, Opera Neon, Yandex Browser, Microsoft Edge, Brave, Firefox and Safari with LUCH. Retained technical records include an Opera Neon start and live Edge/Brave tab inventories; the depth of documented checks varies by browser. This is not a claim that every browser has passed the same automated end-to-end suite on every operating system.
 
-**Viewing the LUCH website:** the public site is a standard responsive HTML website. This is separate from which browsers LUCH can control.
+## Windows: three distinct questions
 
-## Computers, servers and phones
+1. **You open ordinary ChatGPT or another compatible AI on Windows.** Remote LUCH uses HTTPS/MCP and does not architecturally require macOS on the user's machine. Server tasks are expected to work with a supported client, connected account and appropriate permissions. An independent new-user Windows end-to-end test is still outstanding.
+2. **LUCH explores a website in server-side Firefox.** This browser runs on a server, independently of whether your ChatGPT window is open on Windows or macOS.
+3. **You want AI to control apps and windows on the Windows PC itself.** That requires a compatible Windows-specific provider, device connection and OS permissions. Demonstrated macOS local control does not establish native Windows desktop control.
 
-**macOS:** Paired desktop control, files and Notes are implemented and exercised on an authorized Mac. Permissions and online status determine which action is possible.
+The untested third mode should not be mistaken for an inability to access LUCH from a Windows-hosted chat.
 
-**Linux server:** Paired/direct server operations and isolated browser execution have been exercised. A remote Linux server does not imply general Linux desktop control.
+## Other devices
 
-**Windows:** No verified general Windows desktop companion/control route is claimed yet.
+**macOS.** Authorized operations on the screen, windows, apps and files of a connected Mac have been demonstrated. Exact availability depends on the device and its permissions.
 
-**iPhone and Android:** Some iPhone media/companion functions exist in the connected environment, but full device-wide native app control has not been demonstrated. Android full device control is not claimed.
+**Linux server.** Bounded server commands and a separate browser have been demonstrated. This does not imply full graphical control of every Linux desktop.
 
-## What else matters before connecting?
+**iPhone and Android.** Certain iPhone-related capabilities exist in the connected environment, but universal control of phone apps is not claimed. Full Android control has not been established either.
 
-**Access:** Open-source code is available; first-time public self-service enrollment and full new-account OAuth E2E have not yet been established as universally available.
+## Your first connection
 
-**Installation:** A chat with server/web tools does not require a standalone LUCH desktop app. Working on your own computer requires explicit device pairing and system permissions.
+Approved web and server tools do not require a separate LUCH desktop app. Personal tabs, files and applications require pairing the relevant device. Public integration source does not establish that independent registration and OAuth are already available to every new account.
 
-**Privacy:** You choose permitted resources. A website, an authorized file, a signed-in tab and a device are different permission scopes. Never paste passwords into chat; confirm consequential writes or publication separately.
+Begin without changing anything: *“Compare these two public pages and show the sources behind your answer.”*
 
-**Price:** Core is intended as a free toolkit with sensible security/usage limits; this is a product direction, not an announced unlimited plan or a live paid checkout.
-
-**First task:** If your account is enabled, ask: *“Open these two public pages and compare the essential differences with sources.”* Verify the result before granting access to private resources.
-
-[Choose a connection path](START_HERE.md) · [Capability detail](CAPABILITIES.md) · [Readiness evidence](RELEASE_READINESS.md)
+[Choose your AI](START_HERE.md) · [Capabilities](CAPABILITIES.md) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Support](https://luch.lenarsalimov.ru/support/)

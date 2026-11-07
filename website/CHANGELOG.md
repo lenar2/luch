@@ -19,3 +19,14 @@
 - Deleted the legacy synthetic review/fixture from the public document root.
 - Verified staging and public HTTP routes, 44/44 deployed files and preserved endpoints; rollback snapshot kept.
 - Published matching live text source in GitHub; new-customer OAuth/device-pairing E2E remains UNKNOWN.
+
+## Unreleased — HEA evidence-first revision (2026-11-07)
+
+- Replaced the homepage's imaginary completed-task illustration with an explicitly first-party, verifiable release story.
+- Added bilingual real-work routes with source, release evidence, self-criticism and limits.
+- Rebuilt connection, client directory, capability map and status as distinct human decision paths.
+- Fixed first-action loops in the connection header; separated account eligibility from installation.
+- Kept 32 existing routes, effective policy/support content and preview distribution boundaries; added two case pages.
+- Candidate static QA: 34 routes × four widths, including 320px, 390px, 768px and 1280px (136 checks); issues corrected before any release.
+
+This entry describes the candidate branch. It does not assert publication or independent new-user E2E.

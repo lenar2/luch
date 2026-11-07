@@ -2,6 +2,7 @@
 """LUCH human-first website. Deterministic bilingual static build; no secrets."""
 from pathlib import Path
 from html import escape
+from human_pages import render as human_render
 import re, hashlib
 P=Path(__file__).resolve().parent
 BRAND="https://luch.lenarsalimov.ru"
@@ -14,8 +15,8 @@ LINKS={
 "kimi":"https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate",
 }
 LOC={
-"ru":{"work":"Что меняется","story":"Примеры задач","tools":"Возможности","connect":"Подключение","start":"Как подключиться","switch":"EN","lang":"en","skip":"К содержимому","support":"Помощь","status":"Доступность","rights":"Работа остаётся под вашим контролем.","footer":"Настоящая работа начинается с человеческой задачи.","legal":"Правовая информация","privacy":"Конфиденциальность","terms":"Условия","safe":"Безопасность","read":"Читать подробнее","next":"Следующий шаг","example":"Пример сценария, не запись выполненной задачи."},
-"en":{"work":"What changes","story":"Real situations","tools":"Capabilities","connect":"Connect","start":"How to connect","switch":"РУ","lang":"ru","skip":"Skip to content","support":"Support","status":"Availability","rights":"You stay in control.","footer":"Real work begins with a human need.","legal":"Legal","privacy":"Privacy","terms":"Terms","safe":"Safety","read":"Read more","next":"Next step","example":"Illustrative workflow, not a record of execution."},
+"ru":{"work":"Что меняется","story":"Реальная работа","tools":"Возможности","connect":"Подключение","start":"Как подключиться","switch":"EN","lang":"en","skip":"К содержимому","support":"Помощь","status":"Доступность","rights":"Работа остаётся под вашим контролем.","footer":"Настоящая работа начинается с человеческой задачи.","legal":"Правовая информация","privacy":"Конфиденциальность","terms":"Условия","safe":"Безопасность","read":"Читать подробнее","next":"Следующий шаг","example":"Пример сценария, не запись выполненной задачи."},
+"en":{"work":"What changes","story":"Real work","tools":"Capabilities","connect":"Connect","start":"How to connect","switch":"РУ","lang":"ru","skip":"Skip to content","support":"Support","status":"Availability","rights":"You stay in control.","footer":"Real work begins with a human need.","legal":"Legal","privacy":"Privacy","terms":"Terms","safe":"Safety","read":"Read more","next":"Next step","example":"Illustrative workflow, not a record of execution."},
 }
 # Each page has a real person's job, specific meaning, context, useful directions, and honest access boundaries.
 PAGE={
@@ -136,11 +137,13 @@ def logo(lang):return f'<a class="logo" href="/{lang}/" aria-label="LUCH"><img s
 def head(lang,slug,title,desc,canonical=None):
  url=canonical or (f"/{lang}/"+(slug+"/" if slug else ""))
  hreflang=f'<link rel="alternate" hreflang="ru" href="{BRAND}/ru/{slug+"/" if slug else ""}"><link rel="alternate" hreflang="en" href="{BRAND}/en/{slug+"/" if slug else ""}">'
- return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f9f7f1"><title>{escape(title)} — LUCH</title><meta name="description" content="{escape(desc,quote=True)}"><link rel="canonical" href="{BRAND}{url}">{hreflang}<link rel="icon" type="image/svg+xml" href="/assets/luch-ray.svg"><link rel="stylesheet" href="/assets/experience.css"><script defer src="/assets/experience.js"></script></head><body><a class="skip" href="#main">{LOC[lang]["skip"]}</a>'
+ return f'<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f9f7f1"><title>{escape(title)} — LUCH</title><meta name="description" content="{escape(desc,quote=True)}"><link rel="canonical" href="{BRAND}{url}">{hreflang}<link rel="icon" type="image/svg+xml" href="/assets/luch-ray.svg"><link rel="stylesheet" href="/assets/experience.css"><link rel="stylesheet" href="/assets/proof.css"><script defer src="/assets/experience.js"></script></head><body><a class="skip" href="#main">{LOC[lang]["skip"]}</a>'
 def header(lang,slug=""):
- d=LOC[lang];links=[("work",f"/{lang}/#work"),("story",f"/{lang}/#stories"),("tools",f"/{lang}/platform/")]
+ d=LOC[lang];links=[("work",f"/{lang}/#work"),("story",f"/{lang}/case/"),("tools",f"/{lang}/platform/")]
  menu=''.join(f'<a href="{u}">{d[k]}</a>' for k,u in links)
- return f'<header class="site-header"><div class="wrap header-inner">{logo(lang)}<nav class="main-nav" id="main-nav" data-main-nav aria-label="Main">{menu}</nav><div class="nav-actions"><a class="locale" href="/{d["lang"]}/{slug+"/" if slug else ""}" lang="{d["lang"]}">{d["switch"]}</a><a class="header-cta" href="/{lang}/connect/">{d["start"]} ↗</a><button data-menu-toggle class="nav-toggle" type="button" aria-label="Menu" aria-controls="main-nav" aria-expanded="false">☰</button></div></div></header>'
+ action_href = f"/{lang}/status/" if slug=="connect" else (f"/{lang}/clients/" if slug=="status" else f"/{lang}/connect/")
+ action_label = d["status"] if slug=="connect" else (("Выбрать ИИ" if lang=="ru" else "Choose AI") if slug=="status" else d["start"])
+ return f'<header class="site-header"><div class="wrap header-inner">{logo(lang)}<nav class="main-nav" id="main-nav" data-main-nav aria-label="Main">{menu}</nav><div class="nav-actions"><a class="locale" href="/{d["lang"]}/{slug+"/" if slug else ""}" lang="{d["lang"]}">{d["switch"]}</a><a class="header-cta" href="{action_href}">{action_label} ↗</a><button data-menu-toggle class="nav-toggle" type="button" aria-label="Menu" aria-controls="main-nav" aria-expanded="false">☰</button></div></div></header>'
 def footer(lang):
  d=LOC[lang];l=f"/{lang}/"
  return f'<footer class="site-footer"><div class="wrap"><div class="foot-head"><div>{logo(lang)}<p>{d["footer"]}</p></div><nav class="foot-nav"><a href="{l}platform/">{d["tools"]}</a><a href="{l}clients/">AI</a><a href="{l}connect/">{d["connect"]}</a><a href="{l}help/">{d["support"]}</a></nav></div><div class="foot-bottom"><span>© 2026 LUCH · {d["rights"]}</span><nav><a href="/privacy/">{d["privacy"]}</a><a href="/terms/">{d["terms"]}</a><a href="/security/">{d["safe"]}</a><a href="/support/">{d["support"]}</a><a href="{l}status/">{d["status"]}</a><a href="{GITHUB}">GitHub ↗</a></nav></div></div></footer></body></html>'
@@ -152,11 +155,11 @@ def cta(lang):
 def home(lang):
  ru=lang=="ru";s=LOC[lang]
  if ru:
-  t="Скажи, что важно.<br><em>Пусть дело движется.</em>"
-  lead="Ваш ИИ уже понимает задачу. LUCH помогает ему работать с нужными сайтами, файлами и инструментами — с вашего разрешения. Меньше ручных шагов, больше времени на главное."
-  ask="«Сравни два предложения, проверь условия и помоги выбрать»"
-  stages=[("Разобраться","Прочитать доступные страницы и материалы."),("Сопоставить","Показать реальные отличия и источники."),("Вернуться к вам","Предложить решение, не принимая его за вас.")]
-  end="Ясная картина. Решение — за вами."
+  t="Дело сдвинулось.<br><em>Это можно проверить.</em>"
+  lead="Основатель попросил переделать сайт LUCH и не трогать Mac. ИИ работал через разрешённый сервер и GitHub: изучил сайт, подготовил новую версию, проверил и опубликовал её с разрешения. Коммит и результаты открыты."
+  ask="«Переделай сайт LUCH для человека. Mac не трогай»"
+  stages=[("Изучено","Живой сайт и исходники GitHub."),("Проверено","32 страницы × 4 размера экрана; дефект 320 px исправлен."),("Выпущено","С разрешения основателя; есть точный публичный коммит.")]
+  end="Проверяемый результат. Не просто обещание."
   h2="От задачи<br><em>до ясного результата.</em>"
   subtitle="Вместо списка интеграций — знакомые ситуации. LUCH соединяет инструменты тогда, когда это нужно делу."
   rows=[("Разобраться","«Найди, почему после обновления страница изменилась».<br><a href='/ru/browser/'>Работа с сайтами ↗</a>"),("Собрать воедино","«Сверь материалы и подготовь новое письмо».<br><a href='/ru/computer/'>Файлы и компьютер ↗</a>"),("Двинуть проект","«Посмотри код, собери возможное исправление и покажи мне».<br><a href='/ru/platform/'>Инструменты разработки ↗</a>")]
@@ -165,13 +168,13 @@ def home(lang):
   vignette="Не ещё один экран,<br><em>а немного свободы.</em>"
   vtext="Вы формулируете желаемое. ИИ помогает пройти путь через доступные инструменты. Вы возвращаетесь к тому, что действительно требует вашего внимания."
   result="Не «открыл десять вкладок». А «вот различия, вот источники, вот что стоит решить»."
-  foot="Это иллюстрации возможных задач, не история реальной сессии. Доступность зависит от учётной записи и разрешений."
+  foot="Реальный случай из окружения основателя, а не проверка подключения нового пользователя."
  else:
-  t="Say what matters.<br><em>Let work move.</em>"
-  lead="Your AI understands the task. LUCH helps it work across the websites, files and tools you approve. Less manual back-and-forth. More time for what matters."
-  ask="“Compare these two offers, check the terms and help me decide.”"
-  stages=[("Find out","Read the available pages and source material."),("Make sense of it","Show meaningful differences and where they came from."),("Come back to you","Suggest a direction without deciding for you.")]
-  end="A clearer picture. Your decision."
+  t="Work moved.<br><em>Here is the proof.</em>"
+  lead="The founder asked to redesign LUCH without touching the Mac. The AI used permitted server and GitHub tools to inspect, revise, test and release the site with approval. You can inspect the commit and evidence."
+  ask="“Redesign LUCH for people. Do not touch my Mac.”"
+  stages=[("Inspected","The published website and GitHub source."),("Tested","32 pages × 4 widths; 320px overflow fixed."),("Released","With the founder’s authorization, linked to the exact commit.")]
+  end="An inspectable result. Not a promise."
   h2="From intention<br><em>to a clear outcome.</em>"
   subtitle="Not a list of integrations, but situations you recognize. LUCH connects tools when the work calls for them."
   rows=[("Understand","“Find why the page changed after an update.”<br><a href='/en/browser/'>Working on the web ↗</a>"),("Bring it together","“Use these materials to prepare a better document.”<br><a href='/en/computer/'>Files and computers ↗</a>"),("Move the project","“Look at the code, suggest a fix and bring it back to me.”<br><a href='/en/platform/'>Development tools ↗</a>")]
@@ -180,19 +183,21 @@ def home(lang):
   vignette="Not another screen.<br><em>A little freedom.</em>"
   vtext="Describe what you want. Your AI follows the available, permitted path across tools. You come back when your judgment matters."
   result="Not “I opened ten tabs.” But “Here are the differences, the sources and what needs your decision.”"
-  foot="Illustrations of possible work, not a recorded session. Availability depends on account and permissions."
+  foot="A real founder-environment case, not an independent new-customer onboarding test."
  steps=''.join(f'<div class="taskline"><span class="sign">✓</span><div><strong>{a}</strong><p>{b}</p></div></div>' for a,b in stages)
  story=''.join(f'<div class="storyrow"><span class="story-index">0{i}</span><h3>{a}</h3><p>{b}</p></div>' for i,(a,b) in enumerate(rows,1))
  v3=''.join(f'<article><span class="why-number">0{i}</span><h3>{a}</h3><p>{b}</p></article>' for i,(a,b) in enumerate(values,1))
- sample="ПРИМЕР ЗАДАЧИ" if ru else "SAMPLE TASK"
- note="Ваше решение" if ru else "Your decision"
+ sample="РЕАЛЬНЫЙ СЛУЧАЙ" if ru else "REAL WORK / FOUNDER"
+ note="Есть исходники" if ru else "See source"
  html=f'{head(lang,"","ЛУЧ — жизнь без лишних шагов" if ru else "LUCH — work that moves",lead)}{header(lang)}'
- html+=f'<main id="main"><section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow"><i></i>{"ИИ, который может работать с миром" if ru else "AI that can work across your world"}</div><h1>{t}</h1><p class="hero-lead">{lead}</p><div class="hero-actions"><a class="button" href="#stories">{"Посмотреть, что меняется" if ru else "See what changes"} ↗</a><a class="button button-light" href="/{lang}/connect/">{s["start"]} ↗</a></div><p class="hero-micro">{foot}</p></div><div class="hero-art-wrap"><div class="experience"><div class="experience-top"><span>LUCH / {sample}</span><b>✳</b></div><div class="experience-body"><div class="message-label">{"Вы просите" if ru else "You ask"}</div><p class="human-ask">{ask}</p>{steps}<div class="handoff"><div><strong>{end}</strong><br><small>{"Вы выбираете дальнейший шаг" if ru else "You choose what happens next"}</small></div><span class="decision">{note}</span></div></div></div><span class="experience-caption">{s["example"]}</span></div></div></section>'
+ html+=f'<main id="main"><section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow"><i></i>{"ИИ, который может работать с миром" if ru else "AI that can work across your world"}</div><h1>{t}</h1><p class="hero-lead">{lead}</p><div class="hero-actions"><a class="button" href="/{lang}/case/">{"Посмотреть реальные действия" if ru else "See the actual work"} ↗</a><a class="button button-light" href="/{lang}/connect/">{s["start"]} ↗</a></div><p class="hero-micro">{foot}</p></div><div class="hero-art-wrap"><div class="experience"><div class="experience-top"><span>LUCH / {sample}</span><b>✳</b></div><div class="experience-body"><div class="message-label">{"Основатель попросил" if ru else "The founder asked"}</div><p class="human-ask">{ask}</p>{steps}<div class="handoff"><div><strong>{end}</strong><br><small>{"Коммит и проверка доступны" if ru else "Commit and checks are public"}</small></div><span class="decision">{note}</span></div></div></div><span class="experience-caption">{"Реальный собственный случай. Подробнее — по ссылке слева." if ru else "A real first-party case. Follow the link on the left for evidence."}</span></div></div></section>'
  html+=f'<section id="stories" class="section sage"><div class="wrap"><div class="section-top"><div class="eyebrow"><i></i>{s["story"]}</div><div><h2>{h2}</h2><p class="section-intro">{subtitle}</p></div></div><div class="storylist">{story}</div></div></section>'
  html+=f'<section id="work" class="section dark"><div class="wrap"><div class="section-top"><div class="eyebrow"><i></i>{s["work"]}</div><div><h2>{way}</h2><p class="section-intro">{"LUCH создаётся не для того, чтобы впечатлять количеством кнопок. Он освобождает человека от необходимости управлять каждым техническим шагом." if ru else "LUCH is not here to impress you with more buttons. It is here to spare you from managing every technical step."}</p></div></div><div class="three-up">{v3}</div></div></section>'
- html+=f'<section class="section light"><div class="wrap"><div class="showcase"><div class="showcase-left"><div class="eyebrow"><i></i>LUCH</div><h3>{vignette}</h3><p>{vtext}</p><a class="button" href="/{lang}/platform/">{s["tools"]} ↗</a></div><div class="showcase-right"><div class="outcome-note"><strong>{"Итог, а не процесс" if ru else "The outcome, not the process"}</strong><p>“{result}”</p><small>{s["example"]}</small></div></div></div></div></section>'
+ html+=f'<section class="section light"><div class="wrap"><div class="showcase"><div class="showcase-left"><div class="eyebrow"><i></i>LUCH</div><h3>{vignette}</h3><p>{vtext}</p><a class="button" href="/{lang}/platform/">{s["tools"]} ↗</a></div><div class="showcase-right"><div class="outcome-note"><strong>{"Возможный другой сценарий" if ru else "Another possible workflow"}</strong><p>“{result}”</p><small>{s["example"]}</small></div></div></div></div></section>'
+ html+=f'<section class="proof-next"><div class="wrap"><p>{"Разбор реальной работы: действия, исходники и ограничения" if ru else "The real trail: work, source and limitations"}</p><a class="button" href="/{lang}/case/">{"Открыть настоящий случай" if ru else "Open the real case"} ↗</a></div></section>'
  return html+cta(lang)+'</main>'+footer(lang)
 def subpage(lang,slug):
+ if slug in ("connect","clients","platform","status"):return human_render(lang,slug,head,header,footer,cta)
  d=LOC[lang];title,lead,aside,feature,sectiontitle,rows,exlabel,example,outcome=PAGE[slug][lang];ru=lang=="ru"
  summary=escape(re.sub('<[^>]*>','',title.replace('<br>',' '))+'. '+lead[:130],quote=True)
  more=f"/privacy/" if slug=="privacy" else "/terms/" if slug=="terms" else "/docs/get-started/"
@@ -241,9 +246,10 @@ def main():
  for l in ("en","ru"):
   write(f"{l}/index.html",home(l))
   for slug in PAGE:write(f"{l}/{slug}/index.html",subpage(l,slug))
+  write(f"{l}/case/index.html",human_render(l,"case",head,header,footer,cta))
  write("index.html",home("en").replace(f'<link rel="canonical" href="{BRAND}/en/">',f'<link rel="canonical" href="{BRAND}/">'))
  for slug,raw in original.items():write(f"{slug}/index.html",legacy("en",slug,raw))
- urls=["/","/en/","/ru/"]+[f"/{l}/{k}/" for l in ("en","ru") for k in PAGE]+[f"/{k}/" for k in original]
+ urls=["/","/en/","/ru/"]+[f"/{l}/{k}/" for l in ("en","ru") for k in PAGE]+[f"/{l}/case/" for l in ("en","ru")]+[f"/{k}/" for k in original]
  write("sitemap.xml",'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join(f'<url><loc>{BRAND}{u}</loc></url>\n' for u in urls)+'</urlset>\n')
  files=sorted([f for f in P.rglob("*") if f.is_file() and f.name!="MANIFEST.sha256" and ".git" not in f.parts and "__pycache__" not in f.parts and f.suffix!=".pyc"])
  write("MANIFEST.sha256",''.join(f'{hashlib.sha256(f.read_bytes()).hexdigest()}  {f.relative_to(P)}\n' for f in files))

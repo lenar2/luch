@@ -9,6 +9,38 @@ I am building **LUCH to connect AI with real digital work**. Not another chat wi
 
 ![From a human request to selected tools and a result that can be checked](docs/visual/platform-journey-en.svg)
 
+## Real work. Not hypothetical superpowers.
+
+I use LUCH for much more than improving LUCH itself. These are three different kinds of work my connected environment has helped complete — each with a real outcome, not just a prompt.
+
+### 01 · Two customers paid. Their access never arrived.
+
+A live audio-to-text service had accepted payments, but the associated minutes had not reached the customers' balances.
+
+**Through my authorized cloud server,** the work traced the original transactions to the payment provider, reconciled the exact affected accounts, restored **240 minutes to each of two customers**, verified the ledger and sent two separate Telegram apologies. Other customers and canceled orders were left unchanged.
+
+**Why this matters:** an AI working through LUCH can help investigate a real business failure, safely repair the specific records and verify that customers receive what they paid for.
+
+### 02 · My computer had connectivity trouble. I wanted it usable again.
+
+After complex system changes, an old network-relay profile had interrupted internet access on my Mac. I needed to understand the actual device state without losing the remaining remote connections.
+
+**Through authorized computer and terminal access,** the recovery checked network routes, proxy settings, running services and the connection path, then established a working direct Wi-Fi route without the phone connection at the recorded checkpoint. Long-term stability remained a separate check.
+
+**Why this matters:** rather than telling me which settings to click, connected AI could inspect the machine, take bounded recovery steps and report the observed outcome.
+
+### 03 · A website needed a real fix, not another design suggestion.
+
+I asked for a human-centered bilingual redesign. The work inspected the actual website and GitHub source, checked **32 routes at four screen sizes**, found a narrow-screen defect, corrected it and published the approved version.
+
+[**See the public source commit and the real result →**](docs/REAL_WORK.md)
+
+**Why this matters:** browser research, source changes, verification and a published artifact can be connected into one task.
+
+[**Read all three real stories and their evidence limits →**](docs/REAL_JOBS.md)
+
+*The prompts above describe the intent of each task; they are not presented as verbatim transcripts. The website release has public source evidence. The customer-restoration and computer-recovery logs contain private operational data and are summarized here without exposing accounts, secrets or personal files. These founder-environment cases do not establish that every new account has all routes enabled.*
+
 ## The full LUCH experience
 
 **12 documented skills. One connected way of working.** I have organized the public capabilities by the part of your life or work they can improve, rather than by internal API names.

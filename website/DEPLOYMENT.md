@@ -17,3 +17,8 @@
 **Operational rollback:** host-side timestamped pre-release snapshot is retained under `/home/lenar/luch-public-release-backups/` on the authorized LUCH server. An atomic-ish rsync deployment used delayed file updates and a scripted rollback on failed checks. Preserve this snapshot before further releases.
 
 **Boundary:** Publishing the static product website does not prove fresh-user signup, OAuth, pairing, or execution by an arbitrary user. Those remain UNKNOWN. Do not misrepresent the independent source QA as full production product E2E.
+
+
+## New website release — 2026-11-07
+
+The publication described above is a **historical 2026-11-05 R3.1 record**. The later human-first redesign was published from exact GitHub `main` commit [`06daa8d6b89a3dfd65e74628b895879e79a0c931`](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931), tree `a6d91332181d8d639dc95b7cd159ad456c97edfe`. It retained 32 HTML routes, the preview client ZIP and the effective legal and technical pages. [Release evidence](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064) includes backup, hashes and smoke tests. This was a website/content release, **not** an independent new-customer activation test. [Creative self-audit](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6705944671) found further experience problems, motivating the next design branch.

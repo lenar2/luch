@@ -62,3 +62,8 @@ The authoritative runtime is the authenticated LUCH tool inventory and independe
 ## Static website publication — 2026-11-05
 
 The bilingual static product website is published at https://luch.lenarsalimov.ru/ using the versioned R3.1 source and a route-preserving release overlay. The public release was verified by HTTP smoke tests: main EN/RU pages, connection pages, 32 HTML routes, previously active getting-started guide, download, legal/support endpoints and removal of the synthetic reviewer fixture. This is **static website availability only**. It does not change the UNKNOWN / HOLD gates above for arbitrary new-customer OAuth, pairing or end-to-end service use. For code and backup provenance see [website/DEPLOYMENT.md](../website/DEPLOYMENT.md).
+
+
+## Human-experience release note — 2026-11-07
+
+The human-first site and GitHub product README were published from [commit `06daa8d`](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931). See [release evidence](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064). The earlier “2026-11-05” passage above remains a **historical record**, not the current site release. A subsequent [author self-audit](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6705944671) marked the human journey for further design. **All new-user OAuth and pairing gates above remain UNKNOWN/HOLD.** The [real-work narrative](REAL_WORK.md) covers the founder's already-authorized environment and does not replace independent customer evidence.

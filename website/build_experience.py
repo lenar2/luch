@@ -153,74 +153,18 @@ def cta(lang):
  info="Если LUCH уже подключён к вашему ИИ, начните с двух публичных страниц и попросите сравнить их по существу. Личные ресурсы подключайте отдельно." if ru else "If LUCH is enabled for your AI, start with two public pages and ask for a source-backed comparison. Connect private resources separately."
  return f'<section class="cta-section"><div class="wrap cta-grid"><div><div class="eyebrow"><i></i>{LOC[lang]["next"]}</div><h2>{title}</h2><p>{info}</p></div><div class="cta-actions"><a class="button" href="/{lang}/connect/">{LOC[lang]["start"]} ↗</a><a class="button button-light" href="/{lang}/status/">{LOC[lang]["status"]} ↗</a></div></div></section>'
 def home(lang):
- ru=lang=="ru"; s=LOC[lang]
- if ru:
-  t="Вы пишете задачу.<br><em>LUCH помогает её выполнить.</em>"
-  lead="Я создаю LUCH, чтобы работать с браузером, файлами, компьютером и сервером прямо из привычного ИИ-чата. Вы выбираете доступ, а затем видите, что получилось."
-  ask="Проверить, почему двум клиентам не начислили оплаченные минуты"
-  stages=[("Нашли причину","Сверили заказы с реальными данными платёжной системы."),("Вернули доступ","Каждому клиенту начислены 240 минут, записи проверены."),("Сообщили людям","Telegram принял два сообщения с извинением.")]
-  end="Клиентам вернули оплаченный доступ."
-  h2="Три задачи.<br><em>Три результата.</em>"
-  subtitle="Я выбрал примеры, где важна сама работа — и где результат можно подтвердить."
-  rows=[("Клиентам вернули доступ","Два платежа прошли, а оплаченные минуты не поступили. Через сервер сверили транзакции, восстановили по 240 минут двум клиентам и проверили начисления."),("Компьютер снова вышел в интернет","После изменения сетевых настроек проверили маршруты, прокси и работающие службы. Прямой Wi-Fi восстановился на зафиксированном этапе."),("Сайт исправлен и опубликован","ИИ исследовал сайт и исходники, проверил 32 страницы на четырёх размерах экрана, исправил мобильный дефект и опубликовал согласованную версию.")]
-  way="Ваши инструменты.<br><em>Ваше решение.</em>"
-  values=[("В привычном чате","В подключённом ChatGPT достаточно описать задачу обычным сообщением."),("С вашим разрешением","LUCH получает доступ только к выбранным ресурсам. Запись и публикация требуют отдельного решения."),("С проверяемым итогом","После работы можно увидеть изменённый файл, состояние сервера, результат в браузере или запись о выполнении.")]
-  foot="Реальная история из моей рабочей среды. Личные данные клиентов не публикуются."
-  context="В обычном ChatGPT и других поддерживаемых ИИ"
-  promptlabel="Смысл задачи, не дословная цитата"
-  sample="РЕАЛЬНАЯ РАБОТА"
-  href="https://github.com/lenar2/luch/blob/main/docs/REAL_JOBS.ru.md"
-  labels=[("Обычный чат ChatGPT","Я использую LUCH в обычной текстовой беседе ChatGPT. Work для этого не нужен. Для Claude, Cursor и Gemini CLI предусмотрены отдельные интеграции."),("Браузеры","Публичные сайты можно исследовать в отдельном Firefox на сервере. Для работы в своих вкладках нужен подключённый браузер; в моей среде проверены Chrome и Opera."),("Компьютеры и серверы","Подтверждены действия на подключённом macOS-компьютере и Linux-сервере. Полное управление Windows, iPhone и Android пока не заявлено."),("Подключение","Веб-задачи в доступном чате не требуют отдельного приложения на компьютере. Для личных файлов и программ нужно подключить устройство. Доступ новых аккаунтов проверяется отдельно.")]
-  compat="Где это работает"
-  compatHead="Ваш ИИ.<br><em>Ваши инструменты.</em>"
-  compatLead="LUCH действует там, где у вашего аккаунта есть подключение и разрешения. У веб-браузера на сервере и личных вкладок на компьютере разные способы доступа."
-  more="Совместимость и первый шаг"
-  workintro="Вы определяете цель и выбираете ресурсы. LUCH соединяет доступные инструменты с задачей."
-  proof="Я собрал подробности трёх реальных случаев, сохранив приватность клиентов и компьютера."
-  proofButton="Открыть истории"
-  start="Начать с подключения"
-  details="Посмотреть примеры"
-  caselead="Результат можно увидеть в рабочей системе"
-  caption="Два сообщения приняты Telegram; это не значит, что клиенты их прочитали."
- else:
-  t="Tell AI what needs doing.<br><em>LUCH helps get it done.</em>"
-  lead="I'm building LUCH so I can work with websites, files, a computer and a server from the AI chat I already use. I choose access and can inspect what actually happened."
-  ask="Find out why two paying customers did not receive their service minutes"
-  stages=[("Traced","Matched original orders with the payment provider."),("Restored","Added 240 minutes to each customer and checked the ledger."),("Followed up","Telegram accepted two apology messages.")]
-  end="Customers' paid access was restored."
-  h2="Three jobs.<br><em>Three outcomes.</em>"
-  subtitle="I chose jobs where the work matters and the outcome can be checked."
-  rows=[("Customers got their access","Two payments had succeeded, but service minutes had not appeared. Through the server, the transactions were reconciled and 240 minutes per customer were restored and verified."),("The computer reconnected","After a network configuration change, the recovery inspected routes, proxies and services. Direct Wi-Fi was working at the documented checkpoint."),("A website was fixed and published","The AI inspected the site and source, checked 32 pages at four widths, fixed a mobile issue and published the approved update.")]
-  way="Your tools.<br><em>Your decision.</em>"
-  values=[("In the chat you already use","With LUCH connected to ChatGPT, you can ask in ordinary language."),("Only with your permission","Choose the resources that may be accessed. Publishing and consequential changes require separate approval."),("An outcome you can inspect","Return with an updated file, observed server state, browser results or a traceable record of the work.")]
-  foot="A real job in my environment. Customer data remains private."
-  context="In ordinary ChatGPT and other supported AI clients"
-  promptlabel="Task intent, paraphrased"
-  sample="REAL WORK"
-  href="https://github.com/lenar2/luch/blob/main/docs/REAL_JOBS.md"
-  labels=[("Ordinary ChatGPT conversation","I use LUCH inside normal ChatGPT text chats. Work mode is not required. Claude, Cursor and Gemini CLI have their own integration paths."),("Browsers","An isolated Firefox browser on the server can research public pages. Existing signed-in tabs need an authorized local browser; Chrome and Opera have been exercised in my environment."),("Computers and servers","Authorized macOS computer actions and Linux server work have been demonstrated. Full Windows, iPhone and Android device control is not claimed."),("Connection","An enabled chat can use web/server tools without a separate desktop app. Local files and apps require device pairing. New-account access is assessed separately.")]
-  compat="Compatibility"
-  compatHead="Your AI.<br><em>Your tools.</em>"
-  compatLead="LUCH can act where your account is connected and authorized. Its isolated server browser is distinct from your personal, signed-in tabs."
-  more="Compatibility and first step"
-  workintro="You set the goal and choose which resources may be accessed. LUCH brings the available tools to the job."
-  proof="I documented all three jobs while keeping customer and device information private."
-  proofButton="Read the stories"
-  start="How to connect"
-  details="See real examples"
-  caselead="The result was checked in the working service"
-  caption="Telegram accepted two messages; that doesn't establish that the customers read them."
- steps=''.join(f'<div class="taskline"><span class="sign">✓</span><div><strong>{a}</strong><p>{b}</p></div></div>' for a,b in stages)
- story=''.join(f'<div class="storyrow"><span class="story-index">0{i}</span><h3>{a}</h3><p>{b} <a href="{href}">{"Подробнее" if ru else "Read the case"} ↗</a></p></div>' for i,(a,b) in enumerate(rows,1))
- valuesHtml=''.join(f'<article><span class="why-number">0{i}</span><h3>{a}</h3><p>{b}</p></article>' for i,(a,b) in enumerate(values,1))
- cards=''.join(f'<article><h3>{a}</h3><p>{b}</p></article>' for a,b in labels)
- html=head(lang,"","LUCH — работа с ИИ через привычный чат" if ru else "LUCH — real work from your AI chat",lead)+header(lang)
- html+=f'<main id="main"><section class="hero"><div class="wrap hero-grid"><div><div class="eyebrow"><i></i>{context}</div><h1>{t}</h1><p class="hero-lead">{lead}</p><div class="hero-actions"><a class="button" href="#stories">{details} ↗</a><a class="button button-light" href="#compat">{compat} ↗</a></div><p class="hero-micro">{foot}</p></div><div class="hero-art-wrap"><div class="experience"><div class="experience-top"><span>LUCH / {sample}</span><b>✳</b></div><div class="experience-body"><div class="message-label">{promptlabel}</div><p class="human-ask">{ask}</p>{steps}<div class="handoff"><div><strong>{end}</strong><br><small>{caselead}</small></div><span class="decision">{"Проверено" if ru else "Verified"}</span></div></div></div><span class="experience-caption">{caption}</span></div></div></section>'
- html+=f'<section id="stories" class="section sage"><div class="wrap"><div class="section-top"><div class="eyebrow"><i></i>{s["story"]}</div><div><h2>{h2}</h2><p class="section-intro">{subtitle}</p></div></div><div class="storylist">{story}</div></div></section>'
- html+=f'<section id="compat" class="section light"><div class="wrap"><div class="section-top"><div class="eyebrow"><i></i>{compat}</div><div><h2>{compatHead}</h2><p class="section-intro">{compatLead}</p></div></div><div class="compat-grid">{cards}</div><p class="compat-more"><a href="https://github.com/lenar2/luch/blob/main/docs/COMPATIBILITY{".ru" if ru else ""}.md">{more} ↗</a> · <a href="/{lang}/connect/">{start} ↗</a></p></div></section>'
- html+=f'<section id="work" class="section dark"><div class="wrap"><div class="section-top"><div class="eyebrow"><i></i>{s["work"]}</div><div><h2>{way}</h2><p class="section-intro">{workintro}</p></div></div><div class="three-up">{valuesHtml}</div></div></section>'
- html+=f'<section class="proof-next"><div class="wrap"><p>{proof}</p><a class="button" href="{href}">{proofButton} ↗</a></div></section>'
- return html+cta(lang)+'</main>'+footer(lang)
+    # The homepage is authored as a static HTML source fragment. All published
+    # home routes are deterministically regenerated from this same source.
+    assert lang in ("ru", "en")
+    title = "LUCH — поручите ИИ настоящее дело" if lang == "ru" else "LUCH — give AI real work"
+    desc = ("LUCH помогает вашему ИИ работать с сайтами, файлами, подключёнными устройствами и серверами."
+            if lang == "ru" else
+            "LUCH helps your AI work with websites, files, connected computers and servers.")
+    h = head(lang, "", title, desc)
+    h = h.replace("</head>", '<link rel="stylesheet" href="/assets/editorial.css"></head>')
+    content = (P / "source" / f"home-{lang}.html").read_text(encoding="utf-8")
+    assert '<main class="ed-main"' in content and content.endswith("</main>")
+    return h + header(lang) + content + footer(lang)
 
 def subpage(lang,slug):
  if slug in ("connect","clients","platform","status"):return human_render(lang,slug,head,header,footer,cta)

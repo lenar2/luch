@@ -3,7 +3,7 @@
 # LUCH
 ### Give your AI a way to work beyond the answer.
 
-Your AI can help you think. **LUCH connects that thinking to the tools around your task** — a selected browser, authorized files, a paired computer or an approved server — and brings back work you can inspect.
+I’m building **LUCH to connect AI with real work**, not just conversations. It brings the tools you choose — a browser, authorized files, a paired computer or a server — into the task, so you can see and check what was actually done.
 
 [**See a real LUCH outcome**](docs/REAL_WORK.md) · [**Choose your AI**](docs/START_HERE.md) · [Русский](README.ru.md) · [Website](https://luch.lenarsalimov.ru/en/)
 
@@ -11,9 +11,9 @@ Your AI can help you think. **LUCH connects that thinking to the tools around yo
 
 ## From a request to work you can inspect
 
-A founder asked for a complete redesign of the LUCH experience — with one clear boundary: leave the Mac untouched while Xcode was being installed.
+I wanted LUCH’s public experience to make its real capabilities clear. I asked AI working with my connected tools to inspect the website and GitHub source, prepare a bilingual redesign and deliver a result I could verify.
 
-LUCH's connected environment let the assistant inspect the live website and GitHub source, prepare a bilingual redesign, check 32 routes at four screen sizes, fix a mobile layout issue and publish the approved change.
+The assistant checked 32 routes at four screen sizes, corrected a mobile layout defect and published the change **after I authorized it**.
 
 <blockquote>
 <strong>The result:</strong> a published website and an exact, inspectable source commit — not just advice about what someone else should do.
@@ -73,7 +73,7 @@ Inspect a selected server, run bounded diagnostics and turn the observed output 
 3. **Start with an inspect-only task.** Ask for a page to be read, a file to be summarized or a selected server to be checked.
 4. **Review the result.** Decide separately whether anything should be changed, saved or published.
 
-LUCH is already used for real work in its connected founder environment. Public client source is available to inspect; service access and host-specific onboarding are separate from downloading a package. [Choose your connection path →](docs/START_HERE.md)
+I already use LUCH for real work in my connected environment. Public client source is available to inspect; service access and host-specific onboarding are separate from downloading a package. [Choose your connection path →](docs/START_HERE.md)
 
 ---
 

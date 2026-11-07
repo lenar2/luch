@@ -1,34 +1,32 @@
-# From a human request to a result you can inspect
+# From my request to a result I could inspect
 
-**A real LUCH workflow · November 2026 · founder-authorized environment**
+**A real LUCH workflow · November 2026**
 
 [← LUCH](../README.md) · [Choose your AI](START_HERE.md) · [Русский](REAL_WORK.ru.md)
 
-## The request
+## What I wanted
 
-The founder wanted LUCH to feel like a product built around people, not an engineering manual. One explicit boundary: **do not touch the Mac** while Xcode was being installed.
+I wanted LUCH’s public website to show what the product actually makes possible, not to read like an internal engineering manual. I set the outcome and the boundaries of the task, and authorized the final publication separately.
 
-## The work
+## What the connected AI did
 
-1. Inspect the live bilingual website and the public GitHub source.
-2. Rebuild the experience around the visitor's goal and a clear route into the product.
-3. Check the 32 existing website routes at four screen widths.
-4. Find and fix a horizontal-overflow defect on a narrow mobile screen.
-5. Preserve the legal pages, installation download and existing routes.
-6. Publish the approved change and keep an inspectable source history.
+1. Inspected the live bilingual website and its public GitHub source.
+2. Prepared a redesign around the visitor’s goal and a clearer product entry path.
+3. Checked the 32 existing website routes at four screen widths.
+4. Found and fixed a horizontal-overflow issue on a narrow mobile layout.
+5. Preserved the existing legal pages, installation download and public routes.
+6. Published the approved update and left an inspectable record of the change.
 
-## The result
+## What I received
 
-- [Published LUCH website](https://luch.lenarsalimov.ru/)
-- [Exact GitHub source commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
-- [Release record and verification details](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
+- [The published LUCH website](https://luch.lenarsalimov.ru/)
+- [The exact source commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
+- [The release record and checks](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
 
-The work crossed the browser, server-side checks and GitHub. The important outcome was not a test count: the founder received a published result, retained the Mac boundary and could inspect the exact change.
+What matters to me is not the number of checks. **A real task moved from my request to a published, verifiable result.** I could examine both the work and its source history.
 
-## What this example says about LUCH
+## Why I am building LUCH
 
-LUCH can connect an AI workflow to real resources around a task, carry out bounded work and bring back a result that can be inspected. The founder remains the person who defines the goal, sets boundaries and authorizes publication.
+I want AI to work with the resources needed for a task — not stop at telling me what somebody should do. I choose what it may access and what outcome I need; the tools make bounded actions possible, and the result comes back for review.
 
-This is a documented founder-environment workflow, not a customer testimonial or a claim that every host integration has passed independent onboarding. For the current client paths, see [Start here](START_HERE.md).
-
-*The original request is paraphrased, not quoted verbatim.*
+This is **my own documented workflow**, not a fabricated customer testimonial. Availability for a newly connected account or a particular AI client is a separate question. [Choose a client and see how to start](START_HERE.md).

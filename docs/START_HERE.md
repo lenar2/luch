@@ -35,6 +35,6 @@ Review the result before granting write access. Publication, deletion and other 
 
 ## Access and availability
 
-LUCH is used for real work in the founder's connected environment. Public client source is available; a new account, host authorization and device pairing are separate steps. If your account is not enabled yet, check [current availability](https://luch.lenarsalimov.ru/en/status/) or [contact support](https://luch.lenarsalimov.ru/support/).
+I already use LUCH for real work in my connected environment. Public client source is available; a new account, host authorization and device pairing are separate steps. If your account is not enabled yet, check [current availability](https://luch.lenarsalimov.ru/en/status/) or [contact support](https://luch.lenarsalimov.ru/support/).
 
-[See a real founder-environment outcome →](REAL_WORK.md)
+[See a real result from my connected environment →](REAL_WORK.md)

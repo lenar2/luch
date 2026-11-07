@@ -1,35 +1,34 @@
-# A real request, a checkable result
+# From a human request to a result you can inspect
 
-**November 2026 · LUCH's own website · founder-authorized work**
+**A real LUCH workflow · November 2026 · founder-authorized environment**
 
-[← LUCH](../README.md) · [How to connect](START_HERE.md) · [Русский](REAL_WORK.ru.md)
+[← LUCH](../README.md) · [Choose your AI](START_HERE.md) · [Русский](REAL_WORK.ru.md)
 
 ## The request
 
-**Paraphrase of the founder's original request, not a verbatim quotation:** “The website feels too technical. Redesign LUCH for people, across GitHub and the site. Do not touch the Mac while Xcode is being installed.”
+The founder wanted LUCH to feel like a product built around people, not an engineering manual. One explicit boundary: **do not touch the Mac** while Xcode was being installed.
 
-The person wanted **a less confusing product experience**. The request was not “run 32 tests” or “move a CSS file.” Those were tools and intermediate steps, not the human goal.
+## The work
 
-## What happened — with boundaries
+1. Inspect the live bilingual website and the public GitHub source.
+2. Rebuild the experience around the visitor's goal and a clear route into the product.
+3. Check the 32 existing website routes at four screen widths.
+4. Find and fix a horizontal-overflow defect on a narrow mobile screen.
+5. Preserve the legal pages, installation download and existing routes.
+6. Publish the approved change and keep an inspectable source history.
 
-| Stage | Observed action | Inspectable evidence |
-| --- | --- | --- |
-| Understand | The assistant read the live LUCH website, GitHub source and predecessor's design handoff | [Human Experience handoff](https://github.com/lenar2/ai-factory-evidence/issues/4009) |
-| Prepare | A separate GitHub branch held the bilingual redesign; the Mac was not used | [Public release commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931) |
-| Inspect | The candidate's 32 HTML routes were checked at four viewport sizes; a 320px horizontal overflow was found and fixed | [Release QA record](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064) |
-| Finish | With the founder's authorization, GitHub `main` and the public website were updated; a backup and preservation checks were recorded | [Same evidence record](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064) |
-| Keep improving | A later creative self-audit identified a weak onboarding journey and a too-generic demonstration. That assessment is *not hidden*. | [HEA self-audit](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6705944671) |
+## The result
 
-**What this case proves:** a real, permissioned chain from a person's request through authorized server work and GitHub changes to a published, inspectable result, in the **founder's environment**.
+- [Published LUCH website](https://luch.lenarsalimov.ru/)
+- [Exact GitHub source commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
+- [Release record and verification details](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
 
-**What it does not prove:** arbitrary new customers can sign in, that Claude/Cursor/Gemini/ChatGPT integrations are all approved or equivalent, that access controls are independently certified, or that a technically successful release is an exceptional design.
+The work crossed the browser, server-side checks and GitHub. The important outcome was not a test count: the founder received a published result, retained the Mac boundary and could inspect the exact change.
 
-## What the person retained
+## What this example says about LUCH
 
-The founder chose the outcome, explicitly excluded the Mac, authorized publishing, and could inspect the released site and exact source. Nothing in this example implies that LUCH may ignore a user's permission boundaries.
+LUCH can connect an AI workflow to real resources around a task, carry out bounded work and bring back a result that can be inspected. The founder remains the person who defines the goal, sets boundaries and authorizes publication.
 
-## If you want to try LUCH
+This is a documented founder-environment workflow, not a customer testimonial or a claim that every host integration has passed independent onboarding. For the current client paths, see [Start here](START_HERE.md).
 
-[Start with your client and actual access status](START_HERE.md). If your account is enabled, choose one read-only task and check the real result. Otherwise, the public source is available to inspect, but an installation alone cannot enable access.
-
-*This is an openly self-referential product case, not a customer testimonial.*
+*The original request is paraphrased, not quoted verbatim.*

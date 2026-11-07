@@ -1,26 +1,40 @@
-# Start with the AI you already use
+# Choose where you want LUCH to work
 
-[← LUCH](../README.md) · [Русский](START_HERE.ru.md) · [Service availability](https://luch.lenarsalimov.ru/en/status/)
+[← LUCH](../README.md) · [Русский](START_HERE.ru.md) · [Service status](https://luch.lenarsalimov.ru/en/status/)
 
-**First, an honest check:** LUCH is operating for enabled accounts, but independent self-service onboarding of a new customer has not yet been verified. There is no universal “connect now” action that can truthfully promise access.
+Your AI stays familiar. LUCH adds a connection to the resources your task needs.
 
-| If you use… | Go here | What to expect now |
+## Pick your working style
+
+| Your starting point | A good first LUCH task | Open the integration |
 | --- | --- | --- |
-| **ChatGPT** | [Integration candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) | Founder private integration works; the public package is **not** an approved OpenAI Directory listing |
-| **Claude** | [Claude adapter](https://github.com/lenar2/luch-claude-plugin/) | Published client source; host approval and new-user access must be checked |
-| **Cursor** | [Cursor adapter](https://github.com/lenar2/luch-cursor/) | Local installation instructions exist; an enabled account and OAuth sign-in are required |
-| **Gemini CLI** | [Gemini CLI extension](https://github.com/lenar2/luch-gemini/) | CLI installation steps exist; successful new-user OAuth end-to-end is not verified |
-| **Kimi** | [Candidate branch](https://github.com/lenar2/luch-claude-plugin/tree/kimi-v0.1.6-candidate) | Candidate only, not a confirmed public catalog release |
+| **ChatGPT — conversation and research** | Read public pages, compare sources and return a concise brief with links | [ChatGPT candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) |
+| **Claude — documents and synthesis** | Compare an approved project folder with public sources; prepare a decision note | [Claude plugin](https://github.com/lenar2/luch-claude-plugin/) |
+| **Cursor — code and debugging** | Inspect a selected repository, check an authorized test server and prepare a reviewable patch | [Cursor plugin](https://github.com/lenar2/luch-cursor/) |
+| **Gemini CLI — terminal and operations** | Check a selected server with bounded commands and return an evidence-based status | [Gemini CLI extension](https://github.com/lenar2/luch-gemini/) |
 
-## If you already have an enabled account
+These are workflows the clients are designed to support through LUCH's tool set. The actual tools shown to you depend on your host, account and grants.
 
-1. Follow your host-specific README. Authenticate through the supported flow, never by copying an owner's credentials.
-2. Find the exact authorized browser, file or server. An offline or unpaired device is not an invitation to use another one.
-3. Start read-only: *“Read this public page and tell me what it says, with a source link.”*
-4. Confirm the actual result and any permissions used. Ask before external publication, deletion or other consequential actions.
+## The first four steps
 
-## If you do not have access
+1. Open the repository for your AI client and follow its host-specific setup.
+2. Authenticate with your own enabled LUCH account through the supported host flow.
+3. Inspect the tools and resources actually visible to that account.
+4. Start read-only. Ask for a page to be read, an authorized file to be summarized or a selected server to be checked.
 
-The public adapters let you inspect code, **not** bypass account enrollment. Do not attempt unsupported workarounds or use private endpoints. Read [service status](https://luch.lenarsalimov.ru/en/status/) and [support options](https://luch.lenarsalimov.ru/support/). The onboarding gap is explicitly [tracked as unverified](RELEASE_READINESS.md).
+## If you are already connected
 
-The [real founder-environment case](REAL_WORK.md) illustrates what permissioned work can look like, without pretending the same access is generally available.
+Try one small task with a clear target and a result you can verify. For example:
+
+- ChatGPT: “Compare these two public pages and give me the three differences with links.”
+- Claude: “Read the two documents in my approved project folder and prepare a one-page comparison.”
+- Cursor: “Inspect this issue and the selected repository. Propose a patch, but do not deploy.”
+- Gemini CLI: “Check the status of the server I selected and summarize the observed output.”
+
+Review the result before granting write access. Publication, deletion and other consequential changes remain separate decisions.
+
+## Access and availability
+
+LUCH is used for real work in the founder's connected environment. Public client source is available; a new account, host authorization and device pairing are separate steps. If your account is not enabled yet, check [current availability](https://luch.lenarsalimov.ru/en/status/) or [contact support](https://luch.lenarsalimov.ru/support/).
+
+[See a real founder-environment outcome →](REAL_WORK.md)

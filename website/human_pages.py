@@ -7,6 +7,7 @@ CASE_AUDIT="https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomme
 HOSTS=[
  ("ChatGPT","https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/"),
  ("Claude","https://github.com/lenar2/luch-claude-plugin/"),
+ ("Grok","https://github.com/lenar2/luch"),
  ("Cursor","https://github.com/lenar2/luch-cursor/"),
  ("Gemini CLI","https://github.com/lenar2/luch-gemini/"),
 ]
@@ -48,15 +49,16 @@ WORDS={
   "firstTask":"«Прочитай эту публичную страницу и дай короткое резюме с ссылкой». Сначала проверьте фактический результат.",
   "notes":"Не отправляйте пароли в чат, не подменяйте отключённое устройство другим и отдельно подтверждайте публикацию, удаление или покупки.",
   "host":[
-   ("ChatGPT","Кандидат публичной интеграции","Я использую LUCH из обычного текстового чата ChatGPT в подключённом аккаунте. Для новых аккаунтов подключение и каталог проверяются отдельно.","Изучить пакет ChatGPT"),
-   ("Claude","Открытый исходный код адаптера","Требуются поддерживаемый способ подключения и разрешённый аккаунт; статус каталога проверяется отдельно.","Открыть адаптер Claude"),
+   ("ChatGPT","Обычный чат и Work","LUCH уже использовали в обычных чатах ChatGPT и в Work на подключённом аккаунте. Подключение нового пользователя проверяется отдельно.","Изучить подключение ChatGPT"),
+   ("Claude","Использовался в реальной работе","LUCH уже применяли через Claude. Для другого аккаунта нужны поддерживаемое подключение и разрешения.","Открыть подключение Claude"),
+   ("Grok","Использовался в реальной работе","LUCH уже применяли через Grok. Публичный путь самостоятельного подключения нового пользователя ещё не проверен.","Посмотреть статус доступа"),
    ("Cursor","Локальный плагин и OAuth","Есть инструкция для Cursor; вход нового независимого пользователя ещё требует проверки.","Открыть инструкцию Cursor"),
    ("Gemini CLI","Расширение командной строки","Есть команды установки; независимый полный OAuth-сценарий пока не подтверждён.","Открыть расширение Gemini")
   ],
   "hostsInfo":"Подключение зависит от клиента и вашего аккаунта. Наличие кода не обещает рабочий вход.",
   "different":"Что действительно различается между интеграциями",
   "differentDetails":[
-   ("01","Среда работы","ChatGPT — разговор, Claude — помощник, Cursor — редактор, Gemini CLI — терминал. LUCH не заменяет эти интерфейсы."),
+   ("01","Среда работы","ChatGPT, Claude и Grok — знакомые диалоги; Cursor — редактор, Gemini CLI — терминал. LUCH не заставляет менять среду."),
    ("02","Путь установки","Публикация в каталоге, локальный плагин, CLI-расширение и персональная интеграция — не одно и то же."),
    ("03","Разрешения","Даже при наличии клиента LUCH видит только те инструменты и устройства, которые разрешены вашему аккаунту.")
   ],
@@ -113,15 +115,16 @@ WORDS={
   "firstTask":"“Read this public page and summarize it with a source link.” Inspect the actual result before granting more access.",
   "notes":"Never paste passwords into chat, substitute an unavailable device, or let publication, deletion or purchases happen without specific approval.",
   "host":[
-   ("ChatGPT","Public integration candidate","I use LUCH in ordinary ChatGPT text conversations on my connected account. New-user onboarding and public directory approval are separate checks.","See ChatGPT candidate"),
-   ("Claude","Published adapter source","Requires a supported host connection and enabled account; catalog approval is a separate check.","Explore Claude adapter"),
+   ("ChatGPT","Ordinary chat and Work","LUCH has been used in ordinary ChatGPT chats and Work with an authorized account. Fresh-user setup still needs separate verification.","Explore ChatGPT setup"),
+   ("Claude","Used in real work","LUCH has already been used through Claude. Another account needs a supported connection and permission.","Explore Claude setup"),
+   ("Grok","Used in real work","LUCH has been used through Grok. A public self-service connection path for new users has not been verified.","See access status"),
    ("Cursor","Local plugin with OAuth","Installation instructions exist; independent fresh-user sign-in still needs verification.","See Cursor installation"),
    ("Gemini CLI","Command-line extension","Install commands exist; independent full OAuth flow is not yet proven.","Explore Gemini extension")
   ],
   "hostsInfo":"Connection depends on your host and account. Source code is not proof of authorized access.",
   "different":"What actually differs between clients",
   "differentDetails":[
-   ("01","Where you work","ChatGPT is a conversation, Claude an assistant, Cursor an editor and Gemini CLI a terminal. LUCH does not replace them."),
+   ("01","Where you work","ChatGPT, Claude and Grok are familiar conversations; Cursor is an editor, Gemini CLI a terminal. LUCH does not ask you to change how you work."),
    ("02","Installation and approval","Directory publication, local plugins, CLI extensions and private installations are different things."),
    ("03","Your permission scope","Even with a client installed, LUCH can only reach what is authorized for your account.")
   ],
@@ -170,14 +173,16 @@ def connect(lang,head,header,footer,cta):
  body+='</div></section>'
  body+=f'<section class="host-select" id="host-choices"><div class="wrap"><div class="proof-heading"><span>LUCH / AI</span><h2>{d["chooseHeader"]}</h2><p>{d["hostsInfo"]}</p></div><div class="host-grid">'
  for i,((name,url),(nm,status,detail,act)) in enumerate(zip(HOSTS,d["host"]),1):
+  url=f"/{lang}/status/" if name=="Grok" else url
   body+=f'<article class="host-card"><span>0{i} / {escape(name)}</span><h3>{nm}</h3><p class="host-status">{status}</p><p>{detail}</p><a href="{url}">{act} ↗</a></article>'
  body+='</div></div></section>'
  body+=f'<section class="first-task"><div class="wrap first-task-inner"><div>{eyebrow(d["first"])}<h2>{d["firstTask"]}</h2></div><p>{d["notes"]}</p></div></section>'
  return frame(lang,"connect",body,head,header,footer,cta)
 def clients(lang,head,header,footer,cta):
  d=WORDS[lang];body=intro(lang,"clients")
- body+=f'<section class="client-ledger"><div class="wrap"><div class="proof-heading"><span>01 / 04</span><h2>{d["chooseHeader"]}</h2></div><div class="client-rows">'
+ body+=f'<section class="client-ledger"><div class="wrap"><div class="proof-heading"><span>01 / {len(HOSTS):02d}</span><h2>{d["chooseHeader"]}</h2></div><div class="client-rows">'
  for i,((name,url),(nm,status,detail,act)) in enumerate(zip(HOSTS,d["host"]),1):
+  url=f"/{lang}/status/" if name=="Grok" else url
   body+=f'<article class="client-row"><span>0{i}</span><h3>{name}</h3><div><strong>{nm}</strong><p>{detail}</p><small>{status}</small></div><a href="{url}">{act} ↗</a></article>'
  body+='</div></div></section>'
  body+=f'<section class="client-differences"><div class="wrap"><h2>{d["different"]}</h2><div class="client-diff-grid">'

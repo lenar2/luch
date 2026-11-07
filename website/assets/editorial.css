@@ -4,9 +4,9 @@
 .ed-main h1,.ed-main h2,.ed-main h3{color:inherit;margin:0;letter-spacing:-.06em;overflow-wrap:normal;hyphens:none}
 .ed-main a:focus-visible{outline:3px solid #bb946a;outline-offset:4px}
 .ed-hero{background:radial-gradient(circle at 91% 0%,#e4ebdf,transparent 42%),var(--ed-cream)}
-.ed-hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:7%;align-items:center;padding:96px 0 90px}
+.ed-hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:7%;align-items:center;padding:73px 0 65px}
 .ed-kicker{font-size:11px;font-weight:720;letter-spacing:.16em;color:#557c69}
-.ed-hero h1{font-size:clamp(50px,5.6vw,84px);font-weight:555;line-height:1.06;margin:29px 0;max-width:720px}
+.ed-hero h1{font-size:clamp(50px,5.1vw,78px);font-weight:555;line-height:1.06;margin:23px 0;max-width:720px}
 .ed-hero-copy>p{font-size:19px;line-height:1.72;max-width:570px;color:#4b685c;margin:0 0 33px}
 .ed-hero-copy>small{display:block;color:#677d70;font-size:12px;line-height:1.6;margin-top:26px}
 .ed-actions{display:flex;gap:13px;align-items:center;flex-wrap:wrap}

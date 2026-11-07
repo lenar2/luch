@@ -1,118 +1,61 @@
 <p><img src="website/assets/luch-ray.svg" alt="" width="40"></p>
 
 # LUCH
-### I’m building LUCH so I can give AI real work to do from the chat I already use.
 
-I connect LUCH to the AI I already use, so I can give it work involving websites, files, computers and servers. I choose which resources it may access and can inspect the results of consequential actions.
+## Give your AI something that really needs doing.
 
-[**Explore every capability**](docs/CAPABILITIES.md) · [**A real result**](docs/REAL_WORK.md) · [**Connect your AI**](docs/START_HERE.md) · [Русский](README.ru.md) · [Website](https://luch.lenarsalimov.ru/en/)
+Find the right webpage. Work through files. Check a server. Help with applications on a connected computer. LUCH lets the AI you already use reach the tools you've authorized — and show you what actually happened.
 
-![From a human request to selected tools and a result that can be checked](docs/visual/platform-journey-en.svg)
+I'm building LUCH out of a simple need in my own work: when something needs attention, I want to describe it in ordinary words and get real help carrying it through. In the same conversation I'm already having.
 
-## What I have already done with LUCH
+**[Explore the website](https://luch.lenarsalimov.ru/en/)** · [Capabilities](docs/CAPABILITIES.md) · [Connect your AI](docs/START_HERE.md) · [Русский](README.ru.md)
 
-I use LUCH every day. These three jobs show what becomes possible when AI has access to the right tools.
+## What has happened with LUCH
 
-### 01 · Restoring access for paying customers
+### Customers received the service they paid for
 
-A live audio-to-text service had accepted payments, but the associated minutes had not reached the customers' balances.
+Two customers of a transcription service had paid, but their minutes never appeared. With authorized server access, the orders were matched against the payment provider, the successful payments identified and the balances repaired. **Each customer was credited with 240 minutes.** The live ledger was checked and unrelated balances left unchanged. Telegram accepted the customer messages; that does not prove they were read.
 
-**Through my authorized cloud server,** the work traced the original transactions to the payment provider, reconciled the exact affected accounts, restored **240 minutes to each of two customers**, verified the ledger and sent two separate Telegram apologies. Other customers and canceled orders were left unchanged.
+### A computer recovered its internet connection
 
-### 02 · Recovering a computer's internet connection
+After network settings changed, normal connectivity failed. Connected tools were used to inspect routes, proxies and services. **At the recorded checkpoint, direct Wi-Fi worked without the phone connection**, and external HTTPS responded. Long-term stability is a separate question.
 
-A system configuration change had interrupted the computer's connection. I needed direct internet restored while keeping the available remote access routes intact.
+### A mobile website defect was fixed
 
-**Through authorized computer and terminal access,** the recovery checked network routes, proxy settings, running services and the connection path, then established a working direct Wi-Fi route without the phone connection at the recorded checkpoint. Long-term stability remained a separate check.
+Work on a bilingual website uncovered a narrow-screen layout problem. It was corrected, **32 routes were checked at four screen widths**, and the update was published. [Inspect the public commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931).
 
-### 03 · Fixing and publishing a website
+These are real cases from my connected environment. Private customer and device details are not published. The outcomes do not imply that any new account automatically has the same permissions.
 
-I asked for a human-centered bilingual redesign. The work inspected the actual website and GitHub source, checked **32 routes at four screen sizes**, found a narrow-screen defect, corrected it and published the approved version.
+[Read the full stories and evidence boundaries](docs/REAL_JOBS.md)
 
-[**See the public source commit and the real result →**](docs/REAL_WORK.md)
+## What LUCH helps with
 
-[**Read all three real stories and their evidence limits →**](docs/REAL_JOBS.md)
+**Websites and browsers.** Explore public pages in a separate Firefox browser on a server: navigate, read, follow links, type, click and capture screenshots. Working inside your already signed-in tabs requires a separate authorized connection to your computer.
 
-*The prompts above describe the intent of each task; they are not presented as verbatim transcripts. The website release has public source evidence. The customer-restoration and computer-recovery logs contain private operational data and are summarized here without exposing accounts, secrets or personal files. These cases from my environment do not establish that every new account has all routes enabled.*
+**Files and applications.** Find the right material, compare documents, prepare or make an approved edit. Supported screen, window and app actions are available on a connected Mac.
 
-## Where can I use LUCH?
+**Servers and services.** Inspect actual state, investigate failures, perform approved actions and check the outcome.
 
-**In a normal ChatGPT conversation?** Yes. I use LUCH in ordinary ChatGPT text chats with my connected account. I describe the task in natural language, and ChatGPT calls the tools actually available in that conversation. Work mode is not required for this integration.
+**Work across several steps.** A job may involve multiple tools. What is available depends on the current AI client, the resources connected and the permissions granted.
 
-**With other AI clients?** The platform also has integrations for Claude, Cursor and Gemini CLI. Claude uses its supported plugin flow; Cursor works in the editor and Gemini CLI in the terminal. Each client and account has its own setup and permissions.
+[Explore all 12 open skills](docs/CAPABILITIES.md)
 
-**Which browsers?** LUCH can use an isolated Firefox-based browser on a server to work with public websites, without opening your computer's browser. Working in your *existing signed-in session* is separate: local Chrome and Opera have been exercised in my connected environment. Compatibility with every Chrome-based browser, Firefox local profiles and Safari is not yet verified.
+## Stay with the AI you already use
 
-**Which computers?** Connected macOS desktop controls and Linux server commands are demonstrated. I do not claim equivalent Windows desktop control, or full native control of iPhone and Android, without a separate verified connection.
+**ChatGPT.** LUCH works inside ordinary ChatGPT text conversations on a connected account. Work mode is not required. You describe the job, and ChatGPT calls the tools available in that conversation.
 
-**Do I need to install anything?** For enabled chat-based server/web tasks, a separate desktop application is not needed. To reach files, local tabs or apps on a particular computer, that device must be paired with permission. New-user self-service activation is still being verified.
+**Claude, Cursor and Gemini CLI.** Each has its own integration and setup path. [Choose your AI](docs/START_HERE.md).
 
-[**Full compatibility and practical setup →**](docs/COMPATIBILITY.md) · [**Choose my AI →**](docs/START_HERE.md)
+**Browsers.** The founder has historically tested Chrome, Opera, Opera Neon, Yandex Browser, Microsoft Edge, Brave, Firefox and Safari with LUCH. All eight have been used; the depth of retained engineering receipts varies. A separate server browser and your personal browser tabs are different modes.
 
-## The full LUCH experience
+**Windows.** Using LUCH remote tools from a normal AI chat on Windows is architecturally expected: the connection runs over HTTPS and the work happens on authorized remote resources. A dedicated Windows end-to-end test has not yet been completed. Controlling the windows and applications *on the Windows machine itself* requires a compatible local provider.
 
-**12 documented skills. One connected way of working.** I have organized the public capabilities by the part of your life or work they can improve, rather than by internal API names.
+[Compatibility by use case](docs/COMPATIBILITY.md)
 
-### Understand and navigate the web
+## Start with one job
 
-| What I want AI to help with | What LUCH provides |
-| --- | --- |
-| **Explore public websites** | An isolated server browser: navigate pages, follow links, read content, enter text, click and capture screenshots in a permitted session |
-| **Work in my own browser** | A separately authorized local browser or profile when an existing signed-in session is genuinely needed |
-| **Manage a task's tabs** | Inspect and operate granted tabs and windows, preserving the rest of your browsing session |
+If your account is already connected, try: *“Compare these two public pages and show me three important differences with sources.”* See what was done, then decide whether to connect any personal files or devices.
 
-[Browser, local browser and tabs →](docs/CAPABILITIES.md#browser-and-web)
+If you don't yet have access, [choose an AI client](docs/START_HERE.md) and check availability. Integration source is public, but independent self-service activation for new accounts is still being verified. Approved server tasks do not require a separate desktop app; local files and applications do require connecting the device.
 
-### Work with my files, apps and devices
-
-| What I want AI to help with | What LUCH provides |
-| --- | --- |
-| **Find and work with files** | Search, read, compare, create or edit selected files and folders, with verification and sensible backups |
-| **Use a connected computer** | Where available, inspect the screen and work with native apps, windows, mouse and keyboard on the exact permitted device |
-| **Inspect my servers** | Discover a selected paired server, read its status and run bounded terminal diagnostics |
-
-[Files, computer and server →](docs/CAPABILITIES.md#files-devices-and-servers)
-
-### Connect services and carry work across steps
-
-| What I want AI to help with | What LUCH provides |
-| --- | --- |
-| **Work with a linked service** | Use a supported service API or approved browser session within my account's permissions |
-| **Complete multi-step tasks** | Coordinate browser, files, server and other exposed tools; check actual outcomes rather than just reporting “done” |
-| **Know what is available** | Discover the real tools, connected resources and permissions in this specific session |
-| **Stay in control** | Select the target, confirm important changes, keep access limited, and diagnose connection or permission problems |
-
-[Services, workflows, access and troubleshooting →](docs/CAPABILITIES.md#services-workflows-and-control)
-
-A capability in a public skill is **not automatically an available tool** on every device or AI host. The full map distinguishes demonstrated actions, device-dependent routes and future features.
-
-## One LUCH, different ways to begin
-
-| Your AI | A useful starting point | Integration |
-| --- | --- | --- |
-| **ChatGPT** | Research a question with source-backed comparisons | [ChatGPT candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) |
-| **Claude** | Connect selected documents and sources into a decision brief | [Claude plugin](https://github.com/lenar2/luch-claude-plugin) |
-| **Cursor** | Diagnose a code problem against a selected environment and prepare a patch | [Cursor plugin](https://github.com/lenar2/luch-cursor) |
-| **Gemini CLI** | Check a paired server and turn observed output into an operational report | [Gemini extension](https://github.com/lenar2/luch-gemini) |
-
-These are examples of how each host can use the LUCH tool set where the necessary tools and grants are exposed — not four different products.
-
-[Choose your connection path](docs/START_HERE.md) · [Host-specific readiness](docs/RELEASE_READINESS.md)
-
-## The direction I am building toward
-
-**LUCH Core** is intended as a free set of tools for working with your own authorized resources, subject to sensible security and capacity limits. A separate managed-agent service for longer autonomous work is a future direction, **not a product currently being sold**.
-
-My principle is simple: **the task belongs to the human; the tools are there to help it move.** Your permissions, your ability to inspect what happened, and your decision about consequential changes remain central.
-
----
-
-[Full capabilities](docs/CAPABILITIES.md) · [Product site](https://luch.lenarsalimov.ru/en/) · [Safety](https://luch.lenarsalimov.ru/en/safety/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Support](https://luch.lenarsalimov.ru/support/)
-
-<details><summary>For developers and reviewers</summary>
-
-This repository is the public LUCH platform hub and website source. The 12 portable skills live in the separate client repositories; they are workflow descriptions, not an implicit grant of runtime tools. The hosted backend, credentials and user device permissions are not published here.
-
-[Technical setup](https://luch.lenarsalimov.ru/docs/get-started/) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Release-readiness gates](docs/RELEASE_READINESS.md). The Apache-2.0 license applies to this repository's public files, not the hosted service or other packages.
-
-</details>
+[LUCH website](https://luch.lenarsalimov.ru/en/) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Security](https://luch.lenarsalimov.ru/security/) · [Support](https://luch.lenarsalimov.ru/support/)

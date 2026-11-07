@@ -19,23 +19,17 @@ A live audio-to-text service had accepted payments, but the associated minutes h
 
 **Through my authorized cloud server,** the work traced the original transactions to the payment provider, reconciled the exact affected accounts, restored **240 minutes to each of two customers**, verified the ledger and sent two separate Telegram apologies. Other customers and canceled orders were left unchanged.
 
-The work compared actual payment-provider records with production database entries, then checked the restored balances again.
-
 ### 02 · Recovering a computer's internet connection
 
 A system configuration change had interrupted the computer's connection. I needed direct internet restored while keeping the available remote access routes intact.
 
 **Through authorized computer and terminal access,** the recovery checked network routes, proxy settings, running services and the connection path, then established a working direct Wi-Fi route without the phone connection at the recorded checkpoint. Long-term stability remained a separate check.
 
-The checks covered real network settings and external service responses. Long-term connection stability was tracked separately.
-
 ### 03 · Fixing and publishing a website
 
 I asked for a human-centered bilingual redesign. The work inspected the actual website and GitHub source, checked **32 routes at four screen sizes**, found a narrow-screen defect, corrected it and published the approved version.
 
 [**See the public source commit and the real result →**](docs/REAL_WORK.md)
-
-The exact source commit remains available for anyone who wants to inspect what changed.
 
 [**Read all three real stories and their evidence limits →**](docs/REAL_JOBS.md)
 

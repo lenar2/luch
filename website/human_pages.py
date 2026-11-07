@@ -68,7 +68,7 @@ WORDS={
   ],
   "reality":"Реальный пример одного пути",
   "levels":[
-   ("ПОКАЗАНО В ОКРУЖЕНИИ ОСНОВАТЕЛЯ","Изолированный браузер, разрешённые команды на выбранном сервере и работа с GitHub применялись в настоящих задачах. Доказательство одного выпуска — в открытом кейсе.","proved"),
+   ("ПОКАЗАНО В МОЕЙ РАБОЧЕЙ СРЕДЕ","Изолированный браузер, разрешённые команды на выбранном сервере и работа с GitHub применялись в настоящих задачах. Доказательство одного выпуска — в открытом кейсе.","proved"),
    ("ЗАВИСИТ ОТ УСЛОВИЙ","Файлы, управление Mac, заметки, личные сайты и сервисы требуют соответствующего устройства, аккаунта и разрешений.","conditional"),
    ("НЕ ПОДТВЕРЖДЕНО ДЛЯ ВСЕХ","Самостоятельная регистрация нового пользователя, полный OAuth E2E, доступ ко всем устройствам, нативное управление iPhone и платные управляемые агенты.","unknown")
   ],
@@ -133,7 +133,7 @@ WORDS={
   ],
   "reality":"A real example of the path",
   "levels":[
-   ("OBSERVED IN THE FOUNDER'S ENVIRONMENT","Isolated browser sessions, permitted server commands and GitHub work were used for real tasks. One release is documented in the public case.","proved"),
+   ("OBSERVED IN MY CONNECTED ENVIRONMENT","Isolated browser sessions, permitted server commands and GitHub work were used for real tasks. One release is documented in the public case.","proved"),
    ("DEPENDS ON CONNECTION","Files, Mac control, notes, personal sites and other services depend on paired devices, accounts and grants.","conditional"),
    ("NOT VERIFIED FOR EVERYONE","Open fresh-user enrollment, complete OAuth E2E, every device type, native full iPhone control and managed agents as a paid service.","unknown")
   ],

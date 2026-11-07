@@ -39,7 +39,7 @@ The exact source commit remains available for anyone who wants to inspect what c
 
 [**Read all three real stories and their evidence limits →**](docs/REAL_JOBS.md)
 
-*The prompts above describe the intent of each task; they are not presented as verbatim transcripts. The website release has public source evidence. The customer-restoration and computer-recovery logs contain private operational data and are summarized here without exposing accounts, secrets or personal files. These founder-environment cases do not establish that every new account has all routes enabled.*
+*The prompts above describe the intent of each task; they are not presented as verbatim transcripts. The website release has public source evidence. The customer-restoration and computer-recovery logs contain private operational data and are summarized here without exposing accounts, secrets or personal files. These cases from my environment do not establish that every new account has all routes enabled.*
 
 ## Where can I use LUCH?
 

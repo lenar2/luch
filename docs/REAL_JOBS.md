@@ -2,7 +2,7 @@
 
 [← LUCH](../README.md) · [Русский](REAL_JOBS.ru.md) · [Capabilities](CAPABILITIES.md)
 
-I want to show how LUCH makes a difference when the work involves more than one app. These are **three founder-environment outcomes**, with the evidence boundaries stated plainly.
+I want to show how LUCH makes a difference when the work involves more than one app. These are **three outcomes from my connected environment**, with the evidence boundaries stated plainly.
 
 ## 01 · A paid service did not deliver access
 

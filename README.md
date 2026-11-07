@@ -38,7 +38,7 @@ The computer and server routes are separate capabilities: they appear only when 
 
 Turn a question into a source-backed brief. Ask for a public-page comparison, a concise research summary or a check of resources your account has authorized.
 
-[ChatGPT integration candidate and package →](integrations/chatgpt/README.md)
+[ChatGPT integration candidate and package →](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/README.md)
 
 </details>
 

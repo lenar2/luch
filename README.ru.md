@@ -38,7 +38,7 @@
 
 Превратите вопрос в исследование с источниками. Попросите сравнить публичные страницы, подготовить краткую справку или изучить ресурсы, к которым у аккаунта есть доступ.
 
-[Кандидат интеграции ChatGPT и пакет →](integrations/chatgpt/README.ru.md)
+[Кандидат интеграции ChatGPT и пакет →](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/README.ru.md)
 
 </details>
 

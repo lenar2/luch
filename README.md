@@ -10,9 +10,11 @@ You already know what matters. **LUCH helps your AI work with the websites, file
 
 ---
 
+![A real LUCH workflow: human request, authorized work, inspectable result](docs/visual/real-work-en.svg)
+
 ## One real job, not an imaginary dashboard
 
-> “The LUCH website feels like an engineering manual. Rebuild it around a human experience. Do not touch my Mac.”
+**The founder's brief, paraphrased:** “The LUCH website feels too technical. Rebuild it for people; do not touch my Mac.”
 
 This was an actual founder request in November 2026. In the founder's authorized environment, the assistant inspected the live website and GitHub source, prepared a bilingual redesign, checked 32 routes at four viewport sizes, fixed a mobile overflow defect and published the reviewed site after approval.
 

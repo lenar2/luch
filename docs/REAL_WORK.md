@@ -6,7 +6,7 @@
 
 ## The request
 
-> “This website feels too technical. Redesign LUCH for people, across GitHub and the website. Don't touch the Mac — Xcode is being installed.”
+**Paraphrase of the founder's original request, not a verbatim quotation:** “The website feels too technical. Redesign LUCH for people, across GitHub and the site. Do not touch the Mac while Xcode is being installed.”
 
 The person wanted **a less confusing product experience**. The request was not “run 32 tests” or “move a CSS file.” Those were tools and intermediate steps, not the human goal.
 

@@ -1,13 +1,59 @@
 <p><img src="website/assets/luch-ray.svg" alt="" width="40"></p>
 
 # LUCH
-### I want AI to do more than answer. I want it to help get work done.
+### I’m building LUCH so I can give AI real work to do from the chat I already use.
 
-I am building **LUCH to connect AI with real digital work**. Not another chat window: a connection to the browser, files, apps, devices, servers and services you choose. The AI can inspect, compare, prepare changes and — with the right authority — act, then show you what happened.
+I connect LUCH to the AI I already use, so I can give it work involving websites, files, computers and servers. I choose which resources it may access and can inspect the results of consequential actions.
 
 [**Explore every capability**](docs/CAPABILITIES.md) · [**A real result**](docs/REAL_WORK.md) · [**Connect your AI**](docs/START_HERE.md) · [Русский](README.ru.md) · [Website](https://luch.lenarsalimov.ru/en/)
 
 ![From a human request to selected tools and a result that can be checked](docs/visual/platform-journey-en.svg)
+
+## What I have already done with LUCH
+
+I use LUCH every day. These three jobs show what becomes possible when AI has access to the right tools.
+
+### 01 · Restoring access for paying customers
+
+A live audio-to-text service had accepted payments, but the associated minutes had not reached the customers' balances.
+
+**Through my authorized cloud server,** the work traced the original transactions to the payment provider, reconciled the exact affected accounts, restored **240 minutes to each of two customers**, verified the ledger and sent two separate Telegram apologies. Other customers and canceled orders were left unchanged.
+
+The work compared actual payment-provider records with production database entries, then checked the restored balances again.
+
+### 02 · Recovering a computer's internet connection
+
+A system configuration change had interrupted the computer's connection. I needed direct internet restored while keeping the available remote access routes intact.
+
+**Through authorized computer and terminal access,** the recovery checked network routes, proxy settings, running services and the connection path, then established a working direct Wi-Fi route without the phone connection at the recorded checkpoint. Long-term stability remained a separate check.
+
+The checks covered real network settings and external service responses. Long-term connection stability was tracked separately.
+
+### 03 · Fixing and publishing a website
+
+I asked for a human-centered bilingual redesign. The work inspected the actual website and GitHub source, checked **32 routes at four screen sizes**, found a narrow-screen defect, corrected it and published the approved version.
+
+[**See the public source commit and the real result →**](docs/REAL_WORK.md)
+
+The exact source commit remains available for anyone who wants to inspect what changed.
+
+[**Read all three real stories and their evidence limits →**](docs/REAL_JOBS.md)
+
+*The prompts above describe the intent of each task; they are not presented as verbatim transcripts. The website release has public source evidence. The customer-restoration and computer-recovery logs contain private operational data and are summarized here without exposing accounts, secrets or personal files. These founder-environment cases do not establish that every new account has all routes enabled.*
+
+## Where can I use LUCH?
+
+**In a normal ChatGPT conversation?** Yes. I use LUCH in ordinary ChatGPT text chats with my connected account. I describe the task in natural language, and ChatGPT calls the tools actually available in that conversation. Work mode is not required for this integration.
+
+**With other AI clients?** The platform also has integrations for Claude, Cursor and Gemini CLI. Claude uses its supported plugin flow; Cursor works in the editor and Gemini CLI in the terminal. Each client and account has its own setup and permissions.
+
+**Which browsers?** LUCH can use an isolated Firefox-based browser on a server to work with public websites, without opening your computer's browser. Working in your *existing signed-in session* is separate: local Chrome and Opera have been exercised in my connected environment. Compatibility with every Chrome-based browser, Firefox local profiles and Safari is not yet verified.
+
+**Which computers?** Connected macOS desktop controls and Linux server commands are demonstrated. I do not claim equivalent Windows desktop control, or full native control of iPhone and Android, without a separate verified connection.
+
+**Do I need to install anything?** For enabled chat-based server/web tasks, a separate desktop application is not needed. To reach files, local tabs or apps on a particular computer, that device must be paired with permission. New-user self-service activation is still being verified.
+
+[**Full compatibility and practical setup →**](docs/COMPATIBILITY.md) · [**Choose my AI →**](docs/START_HERE.md)
 
 ## The full LUCH experience
 
@@ -45,14 +91,6 @@ I am building **LUCH to connect AI with real digital work**. Not another chat wi
 [Services, workflows, access and troubleshooting →](docs/CAPABILITIES.md#services-workflows-and-control)
 
 A capability in a public skill is **not automatically an available tool** on every device or AI host. The full map distinguishes demonstrated actions, device-dependent routes and future features.
-
-## What I have already used LUCH to do
-
-I wanted to redesign the LUCH website around people rather than technical terminology. Using my authorized environment, AI read the live site and GitHub source, prepared the bilingual changes, checked **32 routes at four screen sizes**, corrected a mobile issue and published the change after my approval.
-
-**This is a real, inspectable result**, not an imaginary product demo.
-
-[Read my account of the work](docs/REAL_WORK.md) · [View the exact commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931) · [Release checks](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
 
 ## One LUCH, different ways to begin
 

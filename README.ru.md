@@ -84,7 +84,7 @@
 
 **Это реальный результат, который можно проверить**, а не придуманная демонстрация.
 
-[Мой рассказ о работе](docs/REAL_WORK.ru.md) · [Точный коммит](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931) · [Проверки выпуска](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
+[Мой рассказ о работе](docs/REAL_WORK.ru.md) · [Точный коммит](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
 
 ## Один LUCH — разные способы начать
 

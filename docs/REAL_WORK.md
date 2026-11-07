@@ -21,7 +21,6 @@ I wanted LUCH’s public website to show what the product actually makes possibl
 
 - [The published LUCH website](https://luch.lenarsalimov.ru/)
 - [The exact source commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
-- [The release record and checks](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
 
 What matters to me is not the number of checks. **A real task moved from my request to a published, verifiable result.** I could examine both the work and its source history.
 

@@ -84,7 +84,7 @@ I wanted to redesign the LUCH website around people rather than technical termin
 
 **This is a real, inspectable result**, not an imaginary product demo.
 
-[Read my account of the work](docs/REAL_WORK.md) · [View the exact commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931) · [Release checks](https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064)
+[Read my account of the work](docs/REAL_WORK.md) · [View the exact commit](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
 
 ## One LUCH, different ways to begin
 

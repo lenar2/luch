@@ -6,9 +6,7 @@ You can work with LUCH from the AI chat you already use. Reaching public website
 
 ## In your AI client
 
-**ChatGPT.** With an enabled account, LUCH works inside an ordinary text conversation. Work mode is not required. Available tools are scoped to that account and conversation.
-
-**Claude, Cursor and Gemini CLI.** Each has a separate integration. Check the client requirements and available tools before starting a job.
+**Your familiar AI.** LUCH has already been used with **ChatGPT, Claude and Grok** in the founder's own work. In ChatGPT it works in both ordinary chats and **Work mode**, when the account is connected and authorized. Exact tools vary by client and permissions. Cursor and Gemini CLI have additional connection paths.
 
 [ChatGPT integration](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) · [Claude](https://github.com/lenar2/luch-claude-plugin) · [Cursor](https://github.com/lenar2/luch-cursor) · [Gemini CLI](https://github.com/lenar2/luch-gemini)
 
@@ -30,9 +28,9 @@ The untested third mode should not be mistaken for an inability to access LUCH f
 
 ## Other devices
 
-**macOS.** Authorized operations on the screen, windows, apps and files of a connected Mac have been demonstrated. Exact availability depends on the device and its permissions.
+**macOS.** Authorized operations on the screen, windows, apps, files, browsers and terminal of a connected Mac have been demonstrated. Access to personal tabs and apps requires permission for that specific device.
 
-**Linux server.** Bounded server commands and a separate browser have been demonstrated. This does not imply full graphical control of every Linux desktop.
+**Linux server.** Diagnostics, bounded commands, file operations and a separate Firefox browser have been demonstrated. These remote tasks do not depend on the user's Mac. This does not imply full graphical control of every Linux desktop.
 
 **iPhone and Android.** Certain iPhone-related capabilities exist in the connected environment, but universal control of phone apps is not claimed. Full Android control has not been established either.
 

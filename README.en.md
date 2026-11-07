@@ -1,64 +1,56 @@
-<p align="center">
-  <img src="website/assets/luch-ray.svg" width="54" alt="LUCH symbol">
-</p>
-
+<p align="center"><img src="website/assets/luch-ray.svg" width="54" alt="LUCH"></p>
 <h1 align="center">LUCH</h1>
+<p align="center"><strong>Your tools. Your choices. Your AI.</strong></p>
+<p align="center">Describe a task in the AI conversation you already use.<br>LUCH lets your AI reach authorized websites, files, devices and servers — and helps you verify what actually happened.</p>
+<p align="center"><a href="#how-luch-works">See real work</a> · <a href="#getting-started">Get started</a> · <a href="https://luch.lenarsalimov.ru/en/">Explore the site</a> · <a href="README.md">Русский</a></p>
 
-<p align="center">
-  <strong>Give your AI real work to do.</strong>
-</p>
+## How LUCH works
 
-<p align="center">
-  Your websites, files, computers and servers — within the AI conversation you already use.<br>
-  You choose what it can access. LUCH helps carry the task through and verify the outcome.
-</p>
+**The problem:** two people paid for transcription minutes, but the minutes never reached their accounts.
 
-<p align="center">
-  <a href="https://luch.lenarsalimov.ru/en/"><strong>Explore the site</strong></a>
-  &nbsp; · &nbsp;
-  <a href="https://luch.lenarsalimov.ru/en/connect/">Connect your AI</a>
-  &nbsp; · &nbsp;
-  <a href="README.md">Русский</a>
-</p>
+<p align="center"><picture><source media="(max-width: 600px)" srcset="docs/media/luch-real-work-en-mobile.svg"><img src="docs/media/luch-real-work-en.svg" alt="Three stages of a completed task: the request, payment reconciliation on an authorized server, and a verified restoration of 240 minutes for each customer. An illustration of the workflow, not a chat screenshot." width="760"></picture></p>
 
-[![The real LUCH website, desktop homepage](docs/media/luch-home-en-20261108.png)](https://luch.lenarsalimov.ru/en/)
+**The result:** **240 minutes restored to each customer**. The live records were checked and unrelated balances left untouched. [The full account and evidence boundaries](docs/REAL_JOBS.md). *This diagram reconstructs the stages of a real completed job; it is not an interface screenshot.*
 
-## From asking to seeing the result
+LUCH is being built for work that needs to continue beyond an AI's advice — into tools, authorized actions and checkable outcomes.
 
-Describe what needs doing in your own words. LUCH gives your chosen AI access to the resources you've approved: websites, documents, paired devices or servers. You can inspect what really happened.
+## One environment, many kinds of work
 
-**Three cases from actual work:**
+**Websites and browsers.** Read, navigate, click, type and capture pages. Public websites can use an isolated server-side Firefox. Your personal signed-in tabs require a separate computer connection.
 
-| The situation | The result |
-| --- | --- |
-| Two customers paid for transcription minutes that never appeared. | Payments were traced, balances restored — **240 minutes each** — and records checked. |
-| A computer lost its connection after network changes. | Routes and proxies were examined; **direct Wi-Fi and HTTPS** were restored at the recorded checkpoint. |
-| A website failed on narrow screens. | The layout was fixed, **32 routes checked at four widths**, and the correction published. |
+**Computers and files.** Find documents, compare materials, prepare edits; on an authorized Mac, interact with windows, applications and the terminal.
 
-[Real work and evidence boundaries](docs/REAL_JOBS.md) · [Website change you can inspect](https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931)
+**Servers and services.** Investigate issues, take explicitly approved actions and inspect results. Server tasks can run independently of your personal Mac.
 
-## Work with the AI you already know
+**One platform, not a separate product for every tool.** LUCH Core is intended as a free foundation for supported authorized resources, subject to safety and fair-use limits. The Developer Platform is a future path for third-party AI products to receive scoped access from resource owners; self-service developer onboarding is not claimed as available.
 
-| AI conversations | Tools you control |
-| --- | --- |
-| **ChatGPT**, in ordinary chats and **Work** with an authorized connection. **Claude** and **Grok** have also been used for real LUCH work. **Cursor** and **Gemini CLI** have their own integration paths. | **Browser:** read, navigate, click, type, capture screenshots. **Mac:** authorized windows, apps, files and terminal. **Linux:** approved server commands, files and Firefox. |
+[All 12 capabilities](docs/CAPABILITIES.md) · [Safety and permissions](https://luch.lenarsalimov.ru/en/safety/) · [More real cases](docs/REAL_JOBS.md)
 
-The project has used **Chrome, Opera, Opera Neon, Yandex Browser, Edge, Brave, Firefox and Safari**, with different levels of retained testing evidence. Remote server tools are expected to work from compatible Windows AI clients, but a dedicated Windows test is still outstanding.
+## Use the AI you already know
 
-[Explore capabilities](docs/CAPABILITIES.md) · [Compatibility by scenario](docs/COMPATIBILITY.md) · [All 12 LUCH skills](docs/CAPABILITIES.md)
+LUCH has been used for real work in **ChatGPT, Claude and Grok**. In **ChatGPT**, it has been used in ordinary chats and **Work**. **Cursor** and **Gemini CLI** have separate integration paths. New account availability differs between hosts.
 
-## Start with one job
+The project has used **Chrome, Opera, Opera Neon, Yandex Browser, Edge, Brave, Firefox and Safari**, with different levels of retained evidence. Connected **Mac** and authorized **Linux server** workflows are demonstrated; a dedicated Windows end-to-end test is outstanding, and native Windows app control is not claimed.
 
-If LUCH is already enabled for your AI, try: *“Compare these two pages, show the important differences and cite your sources.”*
+[Compatibility, with evidence boundaries](docs/COMPATIBILITY.md)
 
-Access for new accounts depends on the host and connection permissions; **self-service onboarding is not yet verified for every visitor**. Personal files and apps need device access. Native control of Windows apps is not claimed as proven.
+## Getting started
 
-<p align="center">
-  <a href="https://luch.lenarsalimov.ru/en/connect/"><strong>Check your connection path</strong></a>
-  &nbsp; · &nbsp;
-  <a href="docs/START_HERE.md">Technical setup</a>
-  &nbsp; · &nbsp;
-  <a href="https://luch.lenarsalimov.ru/en/status/">Availability and limits</a>
-</p>
+**Already connected?** Begin with a read-only task:
 
-<sub>LUCH · <a href="https://luch.lenarsalimov.ru/privacy/">Privacy</a> · <a href="https://luch.lenarsalimov.ru/security/">Security</a> · <a href="https://luch.lenarsalimov.ru/support/">Support</a> · <a href="README.md">По-русски</a></sub>
+> “Which LUCH tools are available to you right now? Then read these two public pages, compare them and cite your sources.”
+
+Review what actually happened before authorizing any write actions.
+
+**Not yet connected?** [Choose your AI and check access](docs/START_HERE.md). Setup differs between ChatGPT, Claude, Grok, Cursor and Gemini CLI. Public source code does not imply open self-service sign-up.
+
+[**Connection guide**](docs/START_HERE.md) · [Current availability](https://luch.lenarsalimov.ru/en/status/) · [Support](https://luch.lenarsalimov.ru/support/)
+
+<details>
+<summary><strong>See the real LUCH website</strong></summary>
+
+[![The verified desktop LUCH website](docs/media/luch-home-en-20261108.png)](https://luch.lenarsalimov.ru/en/)
+
+</details>
+
+<sub>LUCH · [Open-source repository](https://github.com/lenar2/luch) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [По-русски](README.md)</sub>

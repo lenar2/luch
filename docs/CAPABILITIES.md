@@ -102,6 +102,6 @@ My direction for **Core** is free access to supported tools for your own authori
 
 ## How to begin
 
-Choose [ChatGPT, Claude, Cursor or Gemini CLI](START_HERE.md), connect through your account's supported flow, inspect the live tool inventory, choose one resource, and start with a read-only action. Then decide what should happen next.
+Choose [ChatGPT, Claude, Grok, Cursor or Gemini CLI](START_HERE.md), connect through your account's supported flow, inspect the live tool inventory, choose one resource, and start with a read-only action. Then decide what should happen next.
 
 *The capability list is intentionally complete as a description of the public product design, while the evidence labels keep it accurate as a statement about today's access.*

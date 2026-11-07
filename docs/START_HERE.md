@@ -1,40 +1,43 @@
-# Choose where you want LUCH to work
+# Connect LUCH
 
-[← LUCH](../README.md) · [Русский](START_HERE.ru.md) · [Service status](https://luch.lenarsalimov.ru/en/status/)
+[← Home](../README.en.md) · [Русский](START_HERE.ru.md) · [Current availability](https://luch.lenarsalimov.ru/en/status/)
 
-Your AI stays familiar. LUCH adds a connection to the resources your task needs.
+LUCH extends the AI you already use. Setup varies by client. The important distinction is between **a connection shown in real work** and **a self-service path verified for new users**.
 
-## Pick your working style
+## If you're already connected
 
-| Your starting point | A good first LUCH task | Open the integration |
-| --- | --- | --- |
-| **ChatGPT — conversation and research** | Read public pages, compare sources and return a concise brief with links | [ChatGPT candidate](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) |
-| **Claude — documents and synthesis** | Compare an approved project folder with public sources; prepare a decision note | [Claude plugin](https://github.com/lenar2/luch-claude-plugin/) |
-| **Cursor — code and debugging** | Inspect a selected repository, check an authorized test server and prepare a reviewable patch | [Cursor plugin](https://github.com/lenar2/luch-cursor/) |
-| **Gemini CLI — terminal and operations** | Check a selected server with bounded commands and return an evidence-based status | [Gemini CLI extension](https://github.com/lenar2/luch-gemini/) |
+1. Open the AI chat or client where LUCH is already authorized.
+2. Ask: *“Which LUCH tools are really available right now? Only list tools you can verify.”*
+3. Start read-only: *“Read these two public pages and compare them with source links.”*
+4. Check the result. Grant separate access for private tabs, files, devices and write operations.
 
-These are workflows the clients are designed to support through LUCH's tool set. The actual tools shown to you depend on your host, account and grants.
+**ChatGPT:** LUCH has been used in both ordinary chats and Work. One connected account doesn't make it automatically available to another.
 
-## The first four steps
+**Claude:** LUCH has been used for real work. [Integration source](https://github.com/lenar2/luch-claude-plugin).
 
-1. Open the repository for your AI client and follow its host-specific setup.
-2. Authenticate with your own enabled LUCH account through the supported host flow.
-3. Inspect the tools and resources actually visible to that account.
-4. Start read-only. Ask for a page to be read, an authorized file to be summarized or a selected server to be checked.
+**Grok:** LUCH has been used for real work. A general public self-service Grok integration path has not been verified; an existing connection is not proof of universal availability.
 
-## If you are already connected
+**Cursor:** [Cursor integration](https://github.com/lenar2/luch-cursor) with its own requirements.
 
-Try one small task with a clear target and a result you can verify. For example:
+**Gemini CLI:** [Gemini CLI integration](https://github.com/lenar2/luch-gemini) with its own requirements.
 
-- ChatGPT: “Compare these two public pages and give me the three differences with links.”
-- Claude: “Read the two documents in my approved project folder and prepare a one-page comparison.”
-- Cursor: “Inspect this issue and the selected repository. Propose a patch, but do not deploy.”
-- Gemini CLI: “Check the status of the server I selected and summarize the observed output.”
+## If you're connecting for the first time
 
-Review the result before granting write access. Publication, deletion and other consequential changes remain separate decisions.
+**Check your account eligibility first.** Independent fresh-user enrollment and complete OAuth have not yet been verified as working for every visitor. There is no claimed universal install button.
 
-## Access and availability
+- [Status and limitations](https://luch.lenarsalimov.ru/en/status/).
+- [ChatGPT integration](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/).
+- Separate host paths: [Claude](https://github.com/lenar2/luch-claude-plugin), [Cursor](https://github.com/lenar2/luch-cursor), [Gemini CLI](https://github.com/lenar2/luch-gemini).
+- [Support](https://luch.lenarsalimov.ru/support/) if your access is unclear.
 
-I already use LUCH for real work in my connected environment. Public client source is available; a new account, host authorization and device pairing are separate steps. If your account is not enabled yet, check [current availability](https://luch.lenarsalimov.ru/en/status/) or [contact support](https://luch.lenarsalimov.ru/support/).
+Public source code **does not create an account** or **grant access to a personal device**.
 
-[See a real result from my connected environment →](REAL_WORK.md)
+## Match the connection to the job
+
+**Public websites:** use the authorized isolated server browser if your connected host exposes it.
+
+**Your tabs or files:** authorize the exact device or service and scope the permissions to the task.
+
+**Server actions:** select an explicitly approved server. Your personal Mac doesn't have to be online.
+
+[Compatibility by scenario](COMPATIBILITY.md) · [Three real cases](REAL_JOBS.md)

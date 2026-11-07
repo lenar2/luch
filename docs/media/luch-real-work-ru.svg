@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="610" viewBox="0 0 780 610" role="img" aria-label="Одна настоящая задача">
+<rect width="780" height="610" rx="20" fill="#0e352f"/>
+<path d="M0 0H780V610H0Z" fill="none" stroke="#628a7a" stroke-opacity=".35"/>
+<circle cx="714" cy="38" r="137" fill="#22483e" opacity=".55"/>
+<g font-family="Arial,Helvetica,sans-serif">
+<text x="42" y="54" font-size="14" font-weight="700" letter-spacing="2.4" fill="#b7d6c8">LUCH  /  REAL WORK</text>
+<text x="42" y="106" font-size="34" font-weight="700" letter-spacing="-1.2" fill="#faf9f2">Одна настоящая задача</text>
+<text x="42" y="141" font-size="16" fill="#c4d5ca">Сервис расшифровки · факты проверены в действующей базе</text>
+<rect x="42" y="175" width="696" height="105" rx="12" fill="#f6f6ec" opacity="1"/>
+<text x="69" y="215" font-size="28" font-weight="700" fill="#27705a">01</text>
+<text x="144" y="204" font-size="12" letter-spacing="1.7" font-weight="700" fill="#667d70">ЗАПРОС</text>
+<text x="144" y="233" font-size="22" font-weight="700" fill="#17392f">Люди оплатили,</text>
+<text x="144" y="259" font-size="21" fill="#3d594c">минуты не пришли.</text>
+<path d="M390 280 v15" stroke="#abd6b6" stroke-width="3"/>
+<rect x="42" y="295" width="696" height="105" rx="12" fill="#f6f6ec" opacity="1"/>
+<text x="69" y="335" font-size="28" font-weight="700" fill="#27705a">02</text>
+<text x="144" y="324" font-size="12" letter-spacing="1.7" font-weight="700" fill="#667d70">ДЕЙСТВИЕ</text>
+<text x="144" y="353" font-size="22" font-weight="700" fill="#17392f">Сверили заказы</text>
+<text x="144" y="379" font-size="21" fill="#3d594c">и оплаты на сервере.</text>
+<path d="M390 400 v15" stroke="#abd6b6" stroke-width="3"/>
+<rect x="42" y="415" width="696" height="105" rx="12" fill="#f6f6ec" opacity="1"/>
+<text x="69" y="455" font-size="28" font-weight="700" fill="#27705a">03</text>
+<text x="144" y="444" font-size="12" letter-spacing="1.7" font-weight="700" fill="#667d70">РЕЗУЛЬТАТ</text>
+<text x="144" y="473" font-size="22" font-weight="700" fill="#17392f">240 минут каждому.</text>
+<text x="144" y="499" font-size="21" fill="#3d594c">Балансы проверены.</text>
+<text x="42" y="561" font-size="12" font-weight="700" letter-spacing="1.4" fill="#c2d7c9">СХЕМА ПО ВЫПОЛНЕННОМУ КЕЙСУ · НЕ СКРИНШОТ ЧАТА</text>
+<path d="M42 577H738" stroke="#6b9988" stroke-opacity=".4"/><text x="42" y="595" font-size="12" fill="#a5c4b4">github.com/lenar2/luch</text></g></svg>

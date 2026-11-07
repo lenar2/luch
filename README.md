@@ -30,9 +30,11 @@ These are real cases from my connected environment. Private customer and device 
 
 ## What LUCH helps with
 
-**Websites and browsers.** Explore public pages in a separate Firefox browser on a server: navigate, read, follow links, type, click and capture screenshots. Working inside your already signed-in tabs requires a separate authorized connection to your computer.
+**Websites and browsers.** LUCH can open and close tabs, navigate, read, type, click, scroll, work with browser windows, capture screenshots and handle permitted uploads and downloads. Public sites can be explored in a separate Firefox browser on a server; your signed-in tabs need an authorized connection to your computer. Available actions vary by browser and mode.
 
-**Files and applications.** Find the right material, compare documents, prepare or make an approved edit. Supported screen, window and app actions are available on a connected Mac.
+**Mac.** On a connected Mac, LUCH can work with the screen, windows, apps, files and terminal, within the permissions granted to that device.
+
+**Linux.** On an authorized server, LUCH can inspect status and files, run bounded commands and use a separate Firefox browser for websites — without depending on your personal computer.
 
 **Servers and services.** Inspect actual state, investigate failures, perform approved actions and check the outcome.
 
@@ -42,13 +44,11 @@ These are real cases from my connected environment. Private customer and device 
 
 ## Stay with the AI you already use
 
-**ChatGPT.** LUCH works inside ordinary ChatGPT text conversations on a connected account. Work mode is not required. You describe the job, and ChatGPT calls the tools available in that conversation.
-
-**Claude, Cursor and Gemini CLI.** Each has its own integration and setup path. [Choose your AI](docs/START_HERE.md).
+I've used LUCH while working with **ChatGPT, Claude and Grok** — the AI conversations I already return to when something needs doing. In ChatGPT, LUCH works in **both ordinary chat and Work mode** when the account is connected and authorized. Exact tools depend on the client and resources available. Cursor and Gemini CLI have their own connection paths. [Connect](docs/START_HERE.md).
 
 **Browsers.** The founder has historically tested Chrome, Opera, Opera Neon, Yandex Browser, Microsoft Edge, Brave, Firefox and Safari with LUCH. All eight have been used; the depth of retained engineering receipts varies. A separate server browser and your personal browser tabs are different modes.
 
-**Windows.** Using LUCH remote tools from a normal AI chat on Windows is architecturally expected: the connection runs over HTTPS and the work happens on authorized remote resources. A dedicated Windows end-to-end test has not yet been completed. Controlling the windows and applications *on the Windows machine itself* requires a compatible local provider.
+**Computers.** Work on a connected Mac and Linux server tasks have been demonstrated. Remote tools are expected to be available from a compatible Windows AI client over HTTPS, although a dedicated Windows end-to-end test remains outstanding. Controlling apps on the Windows PC itself needs a separate compatible component.
 
 [Compatibility by use case](docs/COMPATIBILITY.md)
 

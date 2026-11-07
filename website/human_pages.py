@@ -2,7 +2,7 @@
 from html import escape
 
 CASE_COMMIT="https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b895879e79a0c931"
-CASE_RELEASE="https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6692683064"
+CASE_RELEASE="https://github.com/lenar2/luch/blob/main/docs/REAL_WORK.md"
 CASE_AUDIT="https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6705944671"
 HOSTS=[
  ("ChatGPT","https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/"),
@@ -12,25 +12,25 @@ HOSTS=[
 ]
 WORDS={
  "ru":{
-  "case":("Реальная задача.<br><em>Проверяемый след.</em>","Мы начали не с описания функций, а с просьбы человека: переделать чрезмерно технический сайт LUCH и не трогать его Mac. Ниже — что действительно сделано, что можно проверить и чего этот случай не доказывает.","Это собственный случай LUCH, не отзыв клиента."),
+  "case":("Реальная задача.<br><em>Проверяемый след.</em>","Я поручил переработать двуязычный сайт LUCH и сохранить проверяемость изменений. Здесь описана работа с настоящими страницами, кодом и выпуском.","Документированная задача из моей рабочей среды."),
   "connect":("Начните там,<br><em>где уже работает ваш ИИ.</em>","Прежде чем устанавливать что-либо, важно понять две вещи: доступен ли LUCH вашему аккаунту и какой ИИ вы используете.","Нет универсальной кнопки регистрации, которая гарантированно работает для всех."),
   "clients":("Одна задача.<br><em>Разные способы начать.</em>","LUCH — самостоятельный продукт. Интеграции для разных ИИ-клиентов не одинаковы по установке, подтверждённому доступу и готовности.","Открытый код — не действующий доступ."),
   "platform":("Не список возможностей.<br><em>Путь к результату.</em>","От вашей задачи к информации, материалам и изменениям — через те инструменты, к которым вы явно разрешили доступ.","Инструмент не выбирает полномочия за вас."),
   "status":("Что работает.<br><em>А что ещё нет.</em>","Здесь разделены фактически показанные возможности, действия с дополнительными условиями и неподтверждённый доступ для нового пользователя.","Не мониторинг доступности в текущую секунду."),
   "caseLabel":"СОБСТВЕННЫЙ ПОДТВЕРЖДЁННЫЙ СЛУЧАЙ",
   "human":"СМЫСЛ ЗАПРОСА · НЕ ДОСЛОВНАЯ ЦИТАТА",
-  "asked":"«Переделай сайт LUCH для человека. Mac не трогай — там устанавливается Xcode».",
-  "owner":"Работа в окружении основателя · ноябрь 2026",
+  "asked":"Сделать сайт LUCH понятным людям, проверить изменения и опубликовать согласованную версию.",
+  "owner":"Мой документированный случай · ноябрь 2026",
   "fact":"Факт, который можно открыть",
   "steps":[
    ("01","Разобраться в настоящей проблеме","Открыты опубликованный LUCH и исходники GitHub. Запрос касался человеческого опыта, а не количества компонентов."),
-   ("02","Подготовить отдельно от публикации","Переработаны русские и английские страницы в рабочей ветке, без взаимодействия с Mac."),
+   ("02","Подготовить отдельно от публикации","Русские и английские страницы переработаны в отдельной рабочей ветке."),
    ("03","Проверить и исправить","32 страницы проверены на четырёх размерах экрана; найден и исправлен горизонтальный выход за границы на 320 px."),
-   ("04","Выпустить с разрешения","После согласия основателя обновлены GitHub и сайт, сохранена резервная копия. Публичный коммит и запись о выпуске доступны."),
+   ("04","Выпустить с разрешения","После моего разрешения обновлены GitHub и сайт, сохранена резервная копия и публичный коммит."),
    ("05","Остаться критичным","Позднейший самоаудит обнаружил слабый путь подключения и недостаточно убедительный первый экран. Это повод переделывать, а не скрывать ошибку.")
   ],
   "whatproved":"Что этот случай доказывает",
-  "proved":"Реальный переход от человеческого запроса к выполненным действиям на разрешённом сервере и в GitHub — с проверяемой публикацией и без касания Mac.",
+  "proved":"Запрос привёл к работе на разрешённом сервере, изменениям в GitHub и проверяемой публикации.",
   "whatnot":"Чего он не доказывает",
   "notproved":"Самостоятельное подключение нового клиента, поддержку всех ИИ-хостов, независимую сертификацию безопасности или окончательное совершенство выпущенного дизайна.",
   "evidence":"Открыть публичный коммит",
@@ -48,7 +48,7 @@ WORDS={
   "firstTask":"«Прочитай эту публичную страницу и дай короткое резюме с ссылкой». Сначала проверьте фактический результат.",
   "notes":"Не отправляйте пароли в чат, не подменяйте отключённое устройство другим и отдельно подтверждайте публикацию, удаление или покупки.",
   "host":[
-   ("ChatGPT","Кандидат публичной интеграции","Частная интеграция основателя работает; публичное включение нового пользователя и каталог OpenAI не подтверждены.","Изучить пакет ChatGPT"),
+   ("ChatGPT","Кандидат публичной интеграции","Я использую LUCH из обычного текстового чата ChatGPT в подключённом аккаунте. Для новых аккаунтов подключение и каталог проверяются отдельно.","Изучить пакет ChatGPT"),
    ("Claude","Открытый исходный код адаптера","Требуются поддерживаемый способ подключения и разрешённый аккаунт; статус каталога проверяется отдельно.","Открыть адаптер Claude"),
    ("Cursor","Локальный плагин и OAuth","Есть инструкция для Cursor; вход нового независимого пользователя ещё требует проверки.","Открыть инструкцию Cursor"),
    ("Gemini CLI","Расширение командной строки","Есть команды установки; независимый полный OAuth-сценарий пока не подтверждён.","Открыть расширение Gemini")
@@ -77,25 +77,25 @@ WORDS={
   "back":"Вернуться к LUCH"
  },
  "en":{
-  "case":("A real request.<br><em>An inspectable trail.</em>","We began with a person's problem: LUCH felt like an engineering manual, and the Mac had to remain untouched. Here is what actually happened, what can be checked and what this case cannot prove.","An openly self-referential product case, not a customer testimonial."),
+  "case":("A real request.<br><em>An inspectable trail.</em>","I asked for a bilingual redesign of LUCH that people could understand and changes I could inspect. The case shows real site, source and release work.","A documented product task from my own connected environment."),
   "connect":("Start with the AI<br><em>you already use.</em>","Before installing anything, answer two questions: is LUCH enabled for your account, and which AI host do you use?","There is no verified one-click signup for every visitor."),
   "clients":("One outcome.<br><em>Different ways in.</em>","LUCH is independent of any particular AI. Host adapters have different installation paths, availability and evidence of readiness.","Open source is not an access grant."),
   "platform":("Not a tool list.<br><em>A path to an outcome.</em>","From your request to information, materials and potential changes, using only tools you have explicitly allowed.","Tools do not choose authority for you."),
   "status":("What works.<br><em>And what doesn't yet.</em>","Separate capabilities observed in an authorized environment, features requiring a connected device and unverified fresh-user access.","A capability record, not a live uptime monitor."),
   "caseLabel":"A REAL FIRST-PARTY CASE",
   "human":"THE REQUEST · PARAPHRASED",
-  "asked":"“Redesign LUCH for human beings. Don't touch my Mac — Xcode is being installed.”",
-  "owner":"Founder-authorized environment · November 2026",
+  "asked":"Make the LUCH website clear for people, verify the changes and publish the approved version.",
+  "owner":"My documented workflow · November 2026",
   "fact":"Something you can inspect",
   "steps":[
    ("01","Understand the real problem","The published LUCH site and GitHub source were inspected. The request was about human experience, not how many components existed."),
-   ("02","Prepare before publishing","English and Russian pages were redesigned on a separate branch, without using the Mac."),
+   ("02","Prepare before publishing","English and Russian pages were redesigned on a separate branch."),
    ("03","Test and correct","32 pages were checked at four viewport widths. Horizontal overflow on a 320px display was detected and fixed."),
-   ("04","Release with permission","After the founder authorized release, GitHub and the live site were updated, with a backup. The public commit and release record are available."),
+   ("04","Release with permission","After I authorized release, GitHub and the live site were updated with a backup and a public commit."),
    ("05","Keep the critical eye","A later self-audit identified weak onboarding and an unconvincing hero. That is a reason to improve the work, not conceal its limits.")
   ],
   "whatproved":"What this case proves",
-  "proved":"An actual chain from a human request to permitted server and GitHub work, ending in an inspectable publication, with the Mac excluded.",
+  "proved":"A real task progressed through an authorized server and GitHub to an inspectable public release.",
   "whatnot":"What it does not prove",
   "notproved":"Self-service onboarding of a new customer, every AI host working equally, independent security certification or final design excellence.",
   "evidence":"Inspect the public commit",
@@ -113,7 +113,7 @@ WORDS={
   "firstTask":"“Read this public page and summarize it with a source link.” Inspect the actual result before granting more access.",
   "notes":"Never paste passwords into chat, substitute an unavailable device, or let publication, deletion or purchases happen without specific approval.",
   "host":[
-   ("ChatGPT","Public integration candidate","Founder private integration works; independent new-user onboarding and OpenAI Directory approval are unverified.","See ChatGPT candidate"),
+   ("ChatGPT","Public integration candidate","I use LUCH in ordinary ChatGPT text conversations on my connected account. New-user onboarding and public directory approval are separate checks.","See ChatGPT candidate"),
    ("Claude","Published adapter source","Requires a supported host connection and enabled account; catalog approval is a separate check.","Explore Claude adapter"),
    ("Cursor","Local plugin with OAuth","Installation instructions exist; independent fresh-user sign-in still needs verification.","See Cursor installation"),
    ("Gemini CLI","Command-line extension","Install commands exist; independent full OAuth flow is not yet proven.","Explore Gemini extension")
@@ -158,7 +158,7 @@ def case(lang,head,header,footer,cta):
  body+='<section class="case-timeline"><div class="wrap"><div class="proof-heading"><span>01 — 05</span><h2>'+("От желания к выполненному делу" if lang=="ru" else "From intention to completed work")+'</h2></div><div class="case-steps">'
  for number,title,detail in d["steps"]:
   body+=f'<article><span class="case-number">{number}</span><h3>{title}</h3><p>{detail}</p></article>'
- body+='</div><div class="case-receipts">'+a(d["evidence"],CASE_COMMIT)+a(d["release"],CASE_RELEASE,"button button-light")+a(d["audit"],CASE_AUDIT,"proof-link")+'</div></div></section>'
+ body+='</div><div class="case-receipts">'+a(d["evidence"],CASE_COMMIT)+a(d["release"],CASE_RELEASE,"button button-light")+'</div></div></section>'
  body+=f'<section class="case-boundaries"><div class="wrap boundary-pair"><article><h2>{d["whatproved"]}</h2><p>{d["proved"]}</p></article><article><h2>{d["whatnot"]}</h2><p>{d["notproved"]}</p></article></div></section>'
  body+=f'<section class="proof-next"><div class="wrap"><p>{d["owner"]}</p>{a(d["guide"],f"/{lang}/connect/")}</div></section>'
  return frame(lang,"case",body,head,header,footer,cta)

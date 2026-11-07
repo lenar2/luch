@@ -18,3 +18,12 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 /* Narrow mobile devices: keep language, connect and menu accessible without sideways scroll. */
 @media(max-width:360px){.wrap{width:calc(100% - 28px)}.header-inner{gap:5px}.logo{font-size:20px;gap:5px}.logo img{width:24px;height:24px}.nav-actions{gap:5px}.header-cta{font-size:11px;padding:9px 7px}.nav-toggle{padding:0;font-size:21px;min-width:24px}.locale{font-size:11px}.feature-band h2,.showcase h3,.outcome-note p,.page-h1{overflow-wrap:anywhere}.showcase-left,.showcase-right{min-width:0;overflow-wrap:anywhere}.showcase{min-width:0}}
+
+/* HEA: useful capabilities beside real human outcomes. */
+.compat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.compat-grid article{min-width:0;background:#f4f7f1;border:1px solid #d8e1d6;border-radius:17px;padding:27px 30px}
+.compat-grid h3{font-size:23px;font-weight:560;letter-spacing:-.035em;line-height:1.27;margin:0 0 12px}
+.compat-grid p{font-size:15px;line-height:1.77;color:#536e5c;margin:0}
+.compat-more{margin:27px 0 0;color:#315b49;font-size:15px}
+.compat-more a{text-underline-offset:5px;font-weight:650}
+@media(max-width:760px){.compat-grid{grid-template-columns:1fr}.compat-grid article{padding:24px}.hero h1{overflow-wrap:anywhere}}

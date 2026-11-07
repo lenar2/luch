@@ -31,3 +31,11 @@ Do not copy private server source, secrets, tokens, browser profiles, paired dev
 - Describe a result as verified only when the matching test actually ran. **UNKNOWN ≠ PASS.**
 
 The Apache-2.0 license in this repository applies to its public documentation and source files, **not** to the separately hosted LUCH service, user data, or trademarks.
+
+## Mandatory independent creative release gate
+
+Changes to any public LUCH product experience (site, README, integration entry, onboarding, visuals, demos or marketplace presentation) must satisfy [HEA Creative Release Gate](docs/HEA_CREATIVE_GATE.md) / [русский](docs/HEA_CREATIVE_GATE.ru.md).
+
+**Author self-review is not sufficient.** A verifiable non-author creative critic, real five-person uncoached first-impression test and exact-commit founder authorization are required before public merge or release. Missing evidence means **HOLD**. Technical QA does not override creative NO_GO.
+
+Current GitHub rulesets have not yet been configured. Treat this as an explicit **manual release hold**, not an automated branch-protection guarantee. Do not use GitHub Actions for enforcement.

@@ -1,0 +1,17 @@
+{
+  "status": "PASS_SHADOW_STOCK_LUCH_MCP",
+  "checks": [
+    "real_stock_luch_mcp_adapter_connected",
+    "stock_browser_tabs_reports_unpaired_and_isolated",
+    "stock_browser_tabs_reports_consented_personal_tab_first",
+    "stock_browser_read_text_resolves_granted_dom",
+    "stock_browser_click_denied_for_consented_readonly_tab",
+    "stock_browser_read_text_denied_after_revoke",
+    "stock_browser_status_distinguishes_permission"
+  ],
+  "limitations": [
+    "Signed-in user tabs were NOT read",
+    "All tests used synthetic localhost broker session",
+    "Production LUCH MCP endpoint was NOT switched"
+  ]
+}

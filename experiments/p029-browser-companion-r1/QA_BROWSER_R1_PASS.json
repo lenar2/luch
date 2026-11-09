@@ -1,0 +1,45 @@
+{
+  "status": "PASS_ISOLATED_CHROMIUM",
+  "browser": "153.0.8010.12",
+  "tests": [
+    {
+      "name": "real_mv3_worker",
+      "chrome": "153.0.8010.12",
+      "extensionId": "pcecdpmpbenhbigchkaganhppjmeeecn"
+    },
+    {
+      "name": "popup_pair_via_real_button"
+    },
+    {
+      "name": "ungranted_user_tab_is_inaccessible"
+    },
+    {
+      "name": "real_browser_action_grants_active_tab",
+      "popupInteractive": false
+    },
+    {
+      "name": "only_approved_tab_listed"
+    },
+    {
+      "name": "ungranted_tab_not_listed"
+    },
+    {
+      "name": "ungranted_tab_read_denied"
+    },
+    {
+      "name": "authorized_dom_read_through_broker",
+      "characters": 46
+    },
+    {
+      "name": "revoke_blocks_future_reads"
+    },
+    {
+      "name": "origin_change_auto_revoke"
+    }
+  ],
+  "limitations": [
+    "Real browser action invoked through test-only shortcut in temporary manifest; grant button in native popup not independently clicked",
+    "No production LUCH route switched",
+    "No signed-in user Chrome tested"
+  ]
+}

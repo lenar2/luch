@@ -33,7 +33,7 @@ The MCP adapter's existing \`FACTORY_BROWSER_BRIDGE_URL\` configuration can poin
 - **Router regression suite**: 4/4 cases PASS, including expired/revoked grants, isolation of unapproved native-window metadata, unavailable isolated CDP and strict fail-closed behavior.
 - R1 broker authorization regression remains 12/12 PASS in its earlier QA run.
 
-See [R1.1 QA report](QA_REPORT_R11_20261109.md) and [source adapter](integration/local-bridge-proxy.mjs).
+See [R1.1 QA report](QA_REPORT_R11_20261109.md) and [source adapter](../integration/local-bridge-proxy.mjs).
 
 ### Still HOLD
 

@@ -19,7 +19,7 @@ try{
  const manifestPath=path.join(ext,'manifest.json'),manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
  manifest.commands={'_execute_action':{'suggested_key':{'default':'Ctrl+Shift+Y'},'description':'Open Browser Companion for approved tab'}};
  fs.writeFileSync(manifestPath,JSON.stringify(manifest));
- ctx=await chromium.launchPersistentContext('/qa/profile-e2e-'+process.pid,{headless:false,executablePath:chromium.executablePath(),args:['--no-sandbox','--disable-extensions-except='+ext,'--load-extension='+ext],timeout:23000});
+ ctx=await chromium.launchPersistentContext('/tmp/r1-popup-cdp-'+process.pid+'-'+Date.now(),{headless:false,executablePath:'/qa/chrome-linux64/chrome',args:['--no-sandbox','--disable-extensions-except='+ext,'--load-extension='+ext],timeout:38000});
  let worker=ctx.serviceWorkers()[0];if(!worker)worker=await ctx.waitForEvent('serviceworker',{timeout:12000});
  const workerUrl=worker.url();assert.match(workerUrl,/^chrome-extension:\/\/[a-p]{32}\/background\.js$/);
  const extensionId=workerUrl.split('/')[2];
@@ -45,22 +45,21 @@ try{
  const send=require('node:child_process').spawnSync('python3',['/qa/send-shortcut.py'],{encoding:'utf8',timeout:6000,env:process.env});
  assert.equal(send.status,0,send.stderr);
  await new Promise(r=>setTimeout(r,600));
- const popupOpened=ctx.pages().find(p=>p.url().startsWith('chrome-extension://'+extensionId+'/popup.html'));
- let grant;
- if(popupOpened){
-  console.log('EXTENSION_POPUP_OPENED_BY_BROWSER_ACTION');
-  await popupOpened.locator('#grant').click();
-  await popupOpened.waitForTimeout(250);
-  const fb=await popupOpened.locator('#feedback').innerText();
-  console.log('GRANT_FEEDBACK',fb.slice(0,170));
-  assert.match(fb,/15 минут/);
-  grant={message:fb};
- }else{
-  // The browser still recorded a real extension action, which grants activeTab.
-  grant=await worker.evaluate('grantActive()');
- }
- assert.match(grant.message,/15 минут/);
- pass('real_browser_action_grants_active_tab',{popupInteractive:!!popupOpened});
+ const rootSession=await ctx.browser().newBrowserCDPSession();
+ const infos=(await rootSession.send('Target.getTargets')).targetInfos;
+ const actionPopup=infos.find(t=>t.url==='chrome-extension://'+extensionId+'/popup.html'&&t.type==='page');
+ console.log('ACTION_POPUP_TARGET',!!actionPopup,infos.filter(t=>t.url.includes(extensionId)).map(t=>({type:t.type,url:t.url})));
+ assert.ok(actionPopup,'real browser action popup should exist');
+ const attach=await rootSession.send('Target.attachToTarget',{targetId:actionPopup.targetId,flatten:false});
+ console.log('POPUP_CDP_SESSION',attach.sessionId.slice(0,18));
+ rootSession.on('Target.receivedMessageFromTarget',e=>{if(e.sessionId===attach.sessionId)console.log('POPUP_CDP_REPLY',String(e.message).slice(0,200))});
+ await rootSession.send('Target.sendMessageToTarget',{sessionId:attach.sessionId,message:JSON.stringify({id:1,method:'Runtime.evaluate',params:{expression:"document.querySelector('#grant').click();'CLICK_SENT'",returnByValue:true}})});
+ await new Promise(r=>setTimeout(r,850));
+ const grantList=await request('GET','/v1/tabs');
+ console.log('AFTER_REAL_POPUP_BUTTON',grantList.status,grantList.data.tabs?.length);
+ assert.equal(grantList.data.tabs.length,1,'clicking the real popup Grant button must publish one tab');
+ pass('real_chrome_action_popup_grant_button');
+ await rootSession.detach().catch(()=>{});
  const list=await request('GET','/v1/tabs');
  assert.equal(list.status,200);assert.equal(list.data.tabs.length,1);
  const target=list.data.tabs[0];
@@ -90,7 +89,7 @@ try{
  const revokedByOrigin=await request('GET','/v1/tabs');assert.equal(revokedByOrigin.data.tabs.length,0);
  pass('origin_change_auto_revoke');
  await page.screenshot({path:'/qa/qa-approved-r1.png'});
- fs.writeFileSync('/qa/QA_BROWSER_R1_PASS.json',JSON.stringify({status:'PASS_ISOLATED_CHROMIUM',browser:ctx.browser()?.version(),tests:results,limitations:['Real browser action invoked through test-only shortcut in temporary manifest; grant button in native popup not independently clicked','No production LUCH route switched','No signed-in user Chrome tested']},null,2));
+ fs.writeFileSync('/qa/QA_BROWSER_R1_PASS.json',JSON.stringify({status:'PASS_ISOLATED_CHROMIUM',browser:ctx.browser()?.version(),tests:results,limitations:['QA-only keyboard shortcut invoked Chrome action; actual popup button used with CDP synthetic click','No production LUCH route switched','No signed-in user Chrome tested']},null,2));
  console.log('FINAL',results.length,'ISOLATED_E2E_PASS');
 }catch(e){console.error('R1_E2E_FAIL',e.stack||e);process.exitCode=1}
 finally{

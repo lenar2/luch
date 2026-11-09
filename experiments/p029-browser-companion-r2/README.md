@@ -28,7 +28,10 @@ The release must not be called fully functional until:
 **No change to production LUCH, the founder's browser profile, or Xcode is authorized by this package.**
 
 ## Executed R2 evidence
-10/10 genuine graphical Chromium 153 isolated integration scenarios passed, 18/18 broker negatives and 4/4 R2 contract tests. See `QA_RUNTIME_REPORT.md` and `QA_BROWSER_R2_ISOLATED_E2E.json`. The actual native popup grant button and user-account integration remain HOLD; this is **not** independent release approval.
+10/10 genuine graphical Chromium 153 isolated integration scenarios passed, 18/18 broker negatives, 4/4 R2 contract tests and 3/3 isolated Bridge adapter integration tests. See `QA_RUNTIME_REPORT.md` and `QA_BROWSER_R2_ISOLATED_E2E.json`. The actual native popup grant button and user-account integration remain HOLD; this is **not** independent release approval.
+
+## Local Bridge adapter staging
+The isolated `bridge-adapter/consented-tab-adapter.mjs` is a tested, additive broker adapter intended for future Browser Bridge integration. It does **not** modify the Mac Browser Bridge or cloud production. It requires an external, already-authenticated device-scoped LUCH caller and an internal secret provider. It exposes consented tab IDs exclusively, rejects CDP-target IDs and non-loopback broker addresses, and uses explicit errors (`WRONG_PROFILE`, `USER_TAB_PERMISSION_REQUIRED`, `BROWSER_COMPANION_UNAVAILABLE`) rather than silently returning an unrelated automation profile. Its integration suite runs against the actual ephemeral R2 broker.
 
 ## Developer checks
 - `node --test tests/*.test.mjs` checks public branding, permissions, local grant lifecycle, revoke and failure rollback using real extension JS in a controlled VM mock.

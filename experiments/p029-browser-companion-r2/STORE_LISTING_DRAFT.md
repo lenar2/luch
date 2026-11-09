@@ -21,3 +21,5 @@ Data: after approval, the page URL, title and up to 65,536 characters of visible
 Links: https://luch.lenarsalimov.ru/en/ ; https://luch.lenarsalimov.ru/en/privacy/ ; https://luch.lenarsalimov.ru/en/help/
 
 **Submission hold:** live pairing/onboarding not ready, platform QA incomplete, publisher identity pending.
+
+Current package v0.4.0 is uploaded as a **Chrome Web Store DRAFT**, public name without QA. The staged adapter is **not included** in the Store extension ZIP: it runs on the LUCH companion side, not in the browser.

@@ -10,6 +10,7 @@ Run: `docker run --rm --network none --shm-size=512m --security-opt no-new-privi
 Results:
 - R2 real MV3 Chromium E2E: **10/10 PASS**.
 - R2 contract/service worker mocked execution: **4/4 PASS**.
+- R2 isolated native Bridge adapter integration with real ephemeral broker: **3/3 PASS**.
 - R2 negative broker HTTP suite: **18/18 PASS**.
 
 ## What is confirmed
@@ -24,3 +25,7 @@ Real extension worker starts, native popup can submit a code for pairing, server
 - Public production / Xcode unchanged.
 
 **Verdict: ISOLATED_CHROMIUM_PASS / PRODUCT_RELEASE_HOLD / INDEPENDENT_QA_PENDING.**
+
+## Isolated native Browser Bridge adapter staging
+
+Added `bridge-adapter/consented-tab-adapter.mjs` and `tests/bridge-adapter.test.mjs`. 3/3 tests passed against a real local broker: loopback enforcement, explicit unpaired/denied profile state, isolated target refusal, real granted read/revoke, disconnected broker errors. This is a **non-deployed source module**; cannot be counted as a production LUCH bridge integration or as cloud tenant-bound authorization.

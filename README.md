@@ -1,56 +1,56 @@
 <p align="center"><img src="website/assets/luch-ray.svg" width="54" alt="LUCH"></p>
 <h1 align="center">LUCH</h1>
-<p align="center"><strong>Ваши инструменты. Ваш выбор. Ваш ИИ.</strong></p>
-<p align="center">Вы описываете задачу в привычном ИИ-чате.<br>LUCH даёт доступ к разрешённым сайтам, файлам, устройствам и серверам — и помогает проверить, что действительно сделано.</p>
-<p align="center"><a href="#как-luch-работает">Увидеть реальную работу</a> · <a href="#как-начать">Как начать</a> · <a href="https://luch.lenarsalimov.ru/ru/">Открыть сайт</a> · <a href="README.en.md">English</a></p>
+<p align="center"><strong>Your tools. Your choices. Your AI.</strong></p>
+<p align="center">Describe a task in the AI conversation you already use.<br>LUCH lets your AI reach authorized websites, files, devices and servers — and helps you verify what actually happened.</p>
+<p align="center"><a href="#how-luch-works">See real work</a> · <a href="#getting-started">Get started</a> · <a href="https://luch.lenarsalimov.ru/en/">Explore the site</a> · <a href="README.ru.md">Русский</a></p>
 
-## Как LUCH работает
+## How LUCH works
 
-**Задача:** два человека оплатили расшифровку, но не получили оплаченные минуты.
+**The problem:** two people paid for transcription minutes, but the minutes never reached their accounts.
 
-<p align="center"><picture><source media="(max-width: 600px)" srcset="docs/media/luch-real-work-ru-mobile.svg"><img src="docs/media/luch-real-work-ru.svg" alt="Три этапа реального случая: поступил запрос о двух ошибочных балансах, на разрешённом сервере сверили платежи, каждому восстановили 240 минут и проверили базу. Схема, не снимок чата." width="760"></picture></p>
+<p align="center"><picture><source media="(max-width: 600px)" srcset="docs/media/luch-real-work-en-mobile.svg"><img src="docs/media/luch-real-work-en.svg" alt="Three stages of a completed task: the request, payment reconciliation on an authorized server, and a verified restoration of 240 minutes for each customer. An illustration of the workflow, not a chat screenshot." width="760"></picture></p>
 
-**Результат:** каждому восстановлено **240 минут**. Записи проверены в действующей базе; посторонние балансы не изменялись. [Полная история и границы доказательств](docs/REAL_JOBS.ru.md). *Схема показывает ход выполненного случая, но не является скриншотом интерфейса.*
+**The result:** **240 minutes restored to each customer**. The live records were checked and unrelated balances left untouched. [The full account and evidence boundaries](docs/REAL_JOBS.md). *This diagram reconstructs the stages of a real completed job; it is not an interface screenshot.*
 
-Именно для этого создаётся LUCH: чтобы задача не обрывалась на совете от ИИ, когда дальше нужно действовать в реальных инструментах.
+LUCH is being built for work that needs to continue beyond an AI's advice — into tools, authorized actions and checkable outcomes.
 
-## Одна среда — разные задачи
+## One environment, many kinds of work
 
-**Браузер.** Исследовать сайты, переходить по страницам, читать, нажимать, вводить текст и получать снимки. Для открытых сайтов есть отдельный серверный Firefox. Доступ к вашим личным вкладкам требует подключения компьютера.
+**Websites and browsers.** Read, navigate, click, type and capture pages. Public websites can use an isolated server-side Firefox. Your personal signed-in tabs require a separate computer connection.
 
-**Компьютер и файлы.** Найти материал, сопоставить документы, подготовить изменение; на разрешённом Mac — работать с окнами, приложениями и терминалом.
+**Computers and files.** Find documents, compare materials, prepare edits; on an authorized Mac, interact with windows, applications and the terminal.
 
-**Серверы и сервисы.** Проверить проблему, выполнить конкретное разрешённое действие, сверить результат. Работа с сервером не требует включённого домашнего Mac.
+**Servers and services.** Investigate issues, take explicitly approved actions and inspect results. Server tasks can run independently of your personal Mac.
 
-**Одна платформа, а не отдельный продукт на каждую функцию.** LUCH Core развивается как бесплатная основа для собственных разрешённых ресурсов с разумными лимитами. Developer Platform — направление для сторонних ИИ-продуктов, которым владелец сможет делегировать ограниченный доступ; общедоступный самостоятельный вход разработчиков пока не заявлен.
+**One platform, not a separate product for every tool.** LUCH Core is intended as a free foundation for supported authorized resources, subject to safety and fair-use limits. The Developer Platform is a future path for third-party AI products to receive scoped access from resource owners; self-service developer onboarding is not claimed as available.
 
-[Все 12 навыков](docs/CAPABILITIES.ru.md) · [Безопасность и разрешения](https://luch.lenarsalimov.ru/ru/safety/) · [Другие выполненные задачи](docs/REAL_JOBS.ru.md)
+[All 12 capabilities](docs/CAPABILITIES.md) · [Safety and permissions](https://luch.lenarsalimov.ru/en/safety/) · [More real cases](docs/REAL_JOBS.md)
 
-## Работайте в привычном ИИ
+## Use the AI you already know
 
-Через **ChatGPT, Claude и Grok** LUCH уже использовался в реальной работе. В **ChatGPT** он применялся и в обычном чате, и в **Work**. Для **Cursor** и **Gemini CLI** есть отдельные интеграции. Не все способы подключения доступны новым аккаунтам.
+LUCH has been used for real work in **ChatGPT, Claude and Grok**. In **ChatGPT**, it has been used in ordinary chats and **Work**. **Cursor** and **Gemini CLI** have separate integration paths. New account availability differs between hosts.
 
-В проекте использовали **Chrome, Opera, Opera Neon, Яндекс Браузер, Edge, Brave, Firefox и Safari**. Подтверждения по браузерам различаются. **Mac** и разрешённый **Linux-сервер** проверены; независимый сквозной тест Windows ещё не завершён, управление его приложениями отдельно не обещается.
+The project has used **Chrome, Opera, Opera Neon, Yandex Browser, Edge, Brave, Firefox and Safari**, with different levels of retained evidence. Connected **Mac** and authorized **Linux server** workflows are demonstrated; a dedicated Windows end-to-end test is outstanding, and native Windows app control is not claimed.
 
-[Совместимость без преувеличений](docs/COMPATIBILITY.ru.md)
+[Compatibility, with evidence boundaries](docs/COMPATIBILITY.md)
 
-## Как начать
+## Getting started
 
-**LUCH уже подключён к вашему ИИ?** Начните без изменения данных:
+**Already connected?** Begin with a read-only task:
 
-> «Какие инструменты LUCH у тебя доступны сейчас? Затем прочитай эти две публичные страницы, сравни их и покажи ссылки на источники».
+> “Which LUCH tools are available to you right now? Then read these two public pages, compare them and cite your sources.”
 
-Посмотрите, что действительно выполнено, прежде чем разрешать запись или изменение ресурсов.
+Review what actually happened before authorizing any write actions.
 
-**Подключения ещё нет?** [Выберите свой ИИ и проверьте доступ](docs/START_HERE.ru.md). Для ChatGPT, Claude, Grok, Cursor и Gemini CLI пути отличаются. Публикация исходников не означает, что самостоятельная регистрация нового пользователя уже открыта.
+**Not yet connected?** [Choose your AI and check access](docs/START_HERE.md). Setup differs between ChatGPT, Claude, Grok, Cursor and Gemini CLI. Public source code does not imply open self-service sign-up.
 
-[**Путь подключения**](docs/START_HERE.ru.md) · [Текущий статус](https://luch.lenarsalimov.ru/ru/status/) · [Помощь](https://luch.lenarsalimov.ru/support/)
+[**Connection guide**](docs/START_HERE.md) · [Current availability](https://luch.lenarsalimov.ru/en/status/) · [Support](https://luch.lenarsalimov.ru/support/)
 
 <details>
-<summary><strong>Показать настоящий сайт LUCH</strong></summary>
+<summary><strong>See the real LUCH website</strong></summary>
 
-[![Сайт LUCH, проверенная версия для компьютера](docs/media/luch-home-ru-20261108.png)](https://luch.lenarsalimov.ru/ru/)
+[![The verified desktop LUCH website](docs/media/luch-home-en-20261108.png)](https://luch.lenarsalimov.ru/en/)
 
 </details>
 
-<sub>LUCH · [Исходный код](https://github.com/lenar2/luch) · [Конфиденциальность](https://luch.lenarsalimov.ru/privacy/) · [Условия](https://luch.lenarsalimov.ru/terms/) · [English](README.en.md)</sub>
+<sub>LUCH · [Open-source repository](https://github.com/lenar2/luch) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [По-русски](README.ru.md)</sub>

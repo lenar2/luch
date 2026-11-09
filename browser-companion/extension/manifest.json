@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "LUCH Browser Companion (QA)",
+  "description": "Access only tabs that you explicitly grant to LUCH. A grant expires after 15 minutes or can be revoked immediately.",
+  "version": "0.3.0",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:9248/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LUCH · Tabs"
+  }
+}

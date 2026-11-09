@@ -2,7 +2,7 @@
 <h1 align="center">LUCH</h1>
 <p align="center"><strong>Your tools. Your choices. Your AI.</strong></p>
 <p align="center">Describe a task in the AI conversation you already use.<br>LUCH lets your AI reach authorized websites, files, devices and servers — and helps you verify what actually happened.</p>
-<p align="center"><a href="#how-luch-works">See real work</a> · <a href="#getting-started">Get started</a> · <a href="https://luch.lenarsalimov.ru/en/">Explore the site</a> · <a href="README.md">Русский</a></p>
+<p align="center"><a href="#how-luch-works">See real work</a> · <a href="#getting-started">Get started</a> · <a href="https://luch.lenarsalimov.ru/en/">Explore the site</a> · <a href="README.ru.md">Русский</a></p>
 
 ## How LUCH works
 
@@ -53,4 +53,4 @@ Review what actually happened before authorizing any write actions.
 
 </details>
 
-<sub>LUCH · [Open-source repository](https://github.com/lenar2/luch) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [По-русски](README.md)</sub>
+<sub>LUCH · [Open-source repository](https://github.com/lenar2/luch) · [Privacy](https://luch.lenarsalimov.ru/privacy/) · [Terms](https://luch.lenarsalimov.ru/terms/) · [По-русски](README.ru.md)</sub>

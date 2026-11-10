@@ -116,8 +116,8 @@ copy.addEventListener("click",async()=>{
  ...Array.from(entries.entries()).map(([id,name],i)=>(i+1)+". "+name+" — "+rub(tentativePrices[id]||0)),
  "","Сумма выбранного: "+rub(Array.from(entries.keys()).reduce((sum,id)=>sum+(tentativePrices[id]||0),0)),
  "Все материалы в записи, самостоятельное прохождение, доступ 1 год.",
- "Цены акции утверждены; переход к оплате подключим через GetCourse."].join("\n");
- try{await navigator.clipboard.writeText(message);note.textContent="Скопировано в буфер обмена."}
+ "Когда откроется оплата, ты сможешь оформить заказ на этой странице."].join("\n");
+ try{await navigator.clipboard.writeText(message);note.textContent="Список сохранён в буфер обмена."}
  catch(_){note.textContent="Копирование недоступно в этом браузере."}
 });
 function toggleMenu(open){nav.classList.toggle("is-open",open);menu.setAttribute("aria-expanded",String(open));menu.setAttribute("aria-label",open?"Закрыть меню":"Открыть меню")}

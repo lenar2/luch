@@ -43,7 +43,7 @@ function render(){
    const row=document.createElement("div");row.className="selection-row";
    const info=document.createElement("div");
    const label=document.createElement("strong");label.textContent=title;
-   const meta=document.createElement("small");meta.textContent="В записи · 1 год · "+rub(tentativePrices[id]||0)+" · цена коллекции";
+   const meta=document.createElement("small");meta.textContent="В записи · 1 год · "+rub(tentativePrices[id]||0)+" · цена акции";
    info.append(label,meta);
    const del=document.createElement("button");del.type="button";del.textContent="×";del.setAttribute("aria-label","Удалить "+title);
    del.addEventListener("click",()=>{entries.delete(id);render()});
@@ -62,7 +62,7 @@ function render(){
   const box=document.createElement("div");
   box.className="selection-suggest";
   const label=document.createElement("p");
-  label.textContent="Есть готовый сет: "+rub(offer)+" вместо "+rub(regular)+" за те же программы (цены новой коллекции).";
+  label.textContent="Есть готовый сет: "+rub(offer)+" вместо "+rub(regular)+" за те же программы (цены акции).";
   const action=document.createElement("button");
   action.type="button";
   action.textContent="Заменить на сет";
@@ -114,9 +114,9 @@ copy.addEventListener("click",async()=>{
  if(!entries.size)return;
  const message=["Чёрная пятница 2026 · Татьяна Салимова","Мой выбор:",
  ...Array.from(entries.entries()).map(([id,name],i)=>(i+1)+". "+name+" — "+rub(tentativePrices[id]||0)),
- "","Предварительная сумма: "+rub(Array.from(entries.keys()).reduce((sum,id)=>sum+(tentativePrices[id]||0),0)),
+ "","Сумма выбранного: "+rub(Array.from(entries.keys()).reduce((sum,id)=>sum+(tentativePrices[id]||0),0)),
  "Все материалы в записи, самостоятельное прохождение, доступ 1 год.",
- "Цены коллекции обновлены, но оплата пока не подключена."].join("\n");
+ "Цены акции утверждены; переход к оплате подключим через GetCourse."].join("\n");
  try{await navigator.clipboard.writeText(message);note.textContent="Скопировано в буфер обмена."}
  catch(_){note.textContent="Копирование недоступно в этом браузере."}
 });

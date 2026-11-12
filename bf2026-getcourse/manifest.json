@@ -1,7 +1,7 @@
 {
   "schema": "bf2026-getcourse-staging-v1",
   "date": "2026-11-12",
-  "scope": "NATIVE_GETCOURSE_PRODUCT_SHELLS_CREATED__NO_OFFERS__NO_ACCESS_GRANTS__PRODUCTION_HOLD",
+  "scope": "BF2026_R2_1_2_ALL_33_NATIVE_PRODUCT_TRAINING_BINDINGS_VERIFIED; NO_OFFERS; LEARNER_E2E_HOLD",
   "sourceBranch": "bf2026-tati-hea-r6-review-20261110",
   "getcourseHostObserved": "study.shkola-dnv.com",
   "gcConnection": {
@@ -14,7 +14,9 @@
     "writeEnabledForCampaign": false,
     "liveInventoryVerified": "PARTIAL_TRAININGS_PRODUCTS_ACCESS_RULES",
     "checkedOn": "2026-11-12",
-    "note": "Nine named GetCourse products created through authorized admin UI. No sales offers or valid entitlements configured; no E2E."
+    "note": "Nine named GetCourse products created through authorized admin UI. No sales offers or valid entitlements configured; no E2E.",
+    "nativeStagingWrite": "ACTUALLY_APPLIED_AND_READBACK_33_PRODUCT_BINDINGS",
+    "e2eCustomerAccess": "NOT_RUN"
   },
   "invariants": {
     "currency": "RUB",
@@ -43,8 +45,9 @@
       "lessonIds": [],
       "productId": "4550889",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "source_m2",
@@ -55,8 +58,9 @@
       "lessonIds": [],
       "productId": "4550891",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "dnv",
@@ -67,8 +71,9 @@
       "lessonIds": [],
       "productId": "4550894",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "union",
@@ -79,8 +84,9 @@
       "lessonIds": [],
       "productId": "4550895",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "trainer_core",
@@ -91,8 +97,9 @@
       "lessonIds": [],
       "productId": "4550897",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "trainer_cases",
@@ -103,8 +110,9 @@
       "lessonIds": [],
       "productId": "4550897",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "trainer_promotion",
@@ -115,8 +123,9 @@
       "lessonIds": [],
       "productId": "4550897",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop1_main",
@@ -127,8 +136,9 @@
       "lessonIds": [],
       "productId": "4550899",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop1_extras",
@@ -139,8 +149,9 @@
       "lessonIds": [],
       "productId": "4550899",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop2_pre",
@@ -151,8 +162,9 @@
       "lessonIds": [],
       "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop2_week1",
@@ -163,8 +175,9 @@
       "lessonIds": [],
       "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop2_week2",
@@ -175,8 +188,9 @@
       "lessonIds": [],
       "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop2_week3",
@@ -187,8 +201,9 @@
       "lessonIds": [],
       "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "knop2_week4",
@@ -199,8 +214,9 @@
       "lessonIds": [],
       "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     },
     {
       "key": "money_extended",
@@ -211,8 +227,9 @@
       "lessonIds": [],
       "productId": "4550902",
       "customerUrl": null,
-      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
-      "verified": false
+      "entitlementRule": "ATOMIC_PRODUCT_BINDING_CONFIGURED; STUDENT_LESSON_ACCESS_NOT_TESTED",
+      "verified": false,
+      "bindingConfigured": true
     }
   ],
   "offers": [
@@ -254,7 +271,9 @@
       "plannedProductKeys": [
         "P03",
         "P01"
-      ]
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "source2",
@@ -297,7 +316,9 @@
         "P03",
         "P01",
         "P02"
-      ]
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "union",
@@ -311,6 +332,14 @@
       "gcOfferId": null,
       "gcProductIds": [
         "4550894",
+        "4551366",
+        "4551370",
+        "4551371",
+        "4551372",
+        "4551374",
+        "4551375",
+        "4551376",
+        "4551422",
         "4550895"
       ],
       "gcWidgetId": null,
@@ -337,8 +366,18 @@
       },
       "plannedProductKeys": [
         "P04",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A33",
         "P05"
-      ]
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "trainer",
@@ -352,7 +391,21 @@
       ],
       "gcOfferId": null,
       "gcProductIds": [
-        "4550897"
+        "4550897",
+        "4551378",
+        "4551379",
+        "4551380",
+        "4551396",
+        "4551408",
+        "4551410",
+        "4551411",
+        "4551412",
+        "4551413",
+        "4551414",
+        "4551415",
+        "4551417",
+        "4551418",
+        "4551419"
       ],
       "gcWidgetId": null,
       "checkoutUrl": null,
@@ -377,8 +430,24 @@
         "page": "NOT_RUN"
       },
       "plannedProductKeys": [
-        "P06"
-      ]
+        "P06",
+        "A18",
+        "A19",
+        "A20",
+        "A22",
+        "A23",
+        "A24",
+        "A25",
+        "A26",
+        "A27",
+        "A28",
+        "A29",
+        "A30",
+        "A31",
+        "A32"
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "knop1",
@@ -391,7 +460,8 @@
       ],
       "gcOfferId": null,
       "gcProductIds": [
-        "4550899"
+        "4550899",
+        "4551230"
       ],
       "gcWidgetId": null,
       "checkoutUrl": null,
@@ -416,8 +486,11 @@
         "page": "NOT_RUN"
       },
       "plannedProductKeys": [
-        "P07"
-      ]
+        "P07",
+        "A10"
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "knop2",
@@ -459,7 +532,9 @@
       },
       "plannedProductKeys": [
         "P08"
-      ]
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "money",
@@ -471,7 +546,8 @@
       ],
       "gcOfferId": null,
       "gcProductIds": [
-        "4550902"
+        "4550902",
+        "4551381"
       ],
       "gcWidgetId": null,
       "checkoutUrl": null,
@@ -496,8 +572,11 @@
         "page": "NOT_RUN"
       },
       "plannedProductKeys": [
-        "P09"
-      ]
+        "P09",
+        "A21"
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "bundle-spirit-relations",
@@ -516,6 +595,14 @@
         "4550889",
         "4550891",
         "4550894",
+        "4551366",
+        "4551370",
+        "4551371",
+        "4551372",
+        "4551374",
+        "4551375",
+        "4551376",
+        "4551422",
         "4550895"
       ],
       "gcWidgetId": null,
@@ -545,8 +632,18 @@
         "P01",
         "P02",
         "P04",
+        "A11",
+        "A12",
+        "A13",
+        "A14",
+        "A15",
+        "A16",
+        "A17",
+        "A33",
         "P05"
-      ]
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     },
     {
       "key": "bundle-knop-money",
@@ -566,8 +663,10 @@
       "gcOfferId": null,
       "gcProductIds": [
         "4550899",
+        "4551230",
         "4550901",
-        "4550902"
+        "4550902",
+        "4551381"
       ],
       "gcWidgetId": null,
       "checkoutUrl": null,
@@ -593,9 +692,13 @@
       },
       "plannedProductKeys": [
         "P07",
+        "A10",
         "P08",
-        "P09"
-      ]
+        "P09",
+        "A21"
+      ],
+      "grantComposition": "EXACT_NATIVE_PRODUCTS_SPECIFIED_NO_NATIVE_OFFER_CREATED",
+      "productBindingsVerified": true
     }
   ],
   "integration": {
@@ -627,7 +730,9 @@
     "chromeObservedTraining": "Black Friday 2025, training 935051196 with Школа ДНВ listed as 75 lessons; child IDs and offer entitlements unverified",
     "getcourseInventory": "Authenticated real admin GUI via PID-scoped macOS Accessibility including training list, training content/access settings and products. Product IDs read back after save. No live payment/learner tests.",
     "importantSafety": "Historical groups with access, parent Source contains unrelated Knopochka programs; do not change existing training grant rules or enable offers until isolated access test.",
-    "ghStagingArtifacts": "MESSAGES_AND_PAGES.md contains text-only drafts outside GetCourse, not transmitted."
+    "ghStagingArtifacts": "MESSAGES_AND_PAGES.md contains text-only drafts outside GetCourse, not transmitted.",
+    "latestNativeStagingAudit": "R2_1_2_COMPLETION_20261112.md",
+    "releaseGate": "HOLD: no actual offer IDs, checkout URLs, test purchases, 12-month terms or customer lesson E2E"
   },
   "verifiedTrainings": {
     "source2026": {
@@ -656,7 +761,29 @@
         "584120008",
         "616126452"
       ],
-      "note": "6 months plus extras, historical group-scoped entitlement"
+      "note": "6 months plus extras, historical group-scoped entitlement",
+      "atomicExtras": {
+        "months": [
+          "583995141",
+          "583995142",
+          "583995144",
+          "584004641",
+          "583995147",
+          "584006165"
+        ],
+        "extras": [
+          "584120008",
+          "760049153"
+        ],
+        "inherited": [
+          "616126452",
+          "583995143",
+          "584006175",
+          "584006284",
+          "584006287"
+        ],
+        "note": "User purchase requires P04,A11-A17,A33; inheritance only hypothesized until learner access E2E."
+      }
     },
     "union": {
       "id": "933861292",
@@ -692,9 +819,14 @@
         "666920039",
         "666920045",
         "666920046",
-        null
+        "666920047"
       ],
-      "lessonsObserved": 26
+      "lessonsObserved": 26,
+      "week4": {
+        "id": "666920047",
+        "name": "Неделя 4. Закрепление и активация",
+        "rule": "INHERIT_PARENT"
+      }
     },
     "moneyExtendedCandidate": {
       "id": "549791334",
@@ -705,12 +837,69 @@
         "593213706",
         "705184102"
       ],
-      "note": "Contrasts with shortened К деньгам id 624662676, 8 core lessons; group and child access require E2E"
+      "note": "Contrasts with shortened К деньгам id 624662676, 8 core lessons; group and child access require E2E",
+      "parentAccessRule": "CHILD_TRIGGERED",
+      "requiredPurchasedChild": "593213706"
     },
     "moneyShortened": {
       "id": "624662676",
       "name": "Деньги в женском состоянии. К деньгам",
       "numberedCoreLessons": 8
+    },
+    "trainerPromotionCopied": {
+      "sourceTrainingId": "935051976",
+      "sourceAccessRule": "PARENT_AND_BF2025_GROUPS; UNCHANGED",
+      "cloneTrainingId": "936006781",
+      "cloneName": "BF2026 · A22 · Тренер — Продвижение и продажи · STAGING",
+      "copiedDirectLessons": true,
+      "copiedSubtrainings": true,
+      "actualLessonCount": "UNVERIFIED_DIRECT_COUNT",
+      "cloneAccessRule": "PURCHASE_ONLY; SAVED_READBACK_PASS",
+      "cloneChildren": [
+        {
+          "id": "936006782",
+          "name": "Внутренний Творец",
+          "rule": "INHERIT_PARENT; PASS"
+        },
+        {
+          "id": "936006783",
+          "name": "Деньги. Психология процветания",
+          "rule": "INHERIT_PARENT; PASS"
+        },
+        {
+          "id": "936006784",
+          "name": "Сторис-пулеметчик",
+          "rule": "INHERIT_PARENT; PASS"
+        }
+      ],
+      "existingCohortsTouched": false,
+      "customerLessonOpenTest": "NOT_RUN"
+    },
+    "trainerDnvAtomic": {
+      "parent": "935051960",
+      "sixMonths": [
+        "935051961",
+        "935051962",
+        "935051964",
+        "935051965",
+        "935051966",
+        "935051971"
+      ],
+      "extras": [
+        "935051972",
+        "935051973"
+      ],
+      "nestedPurchased": [
+        "935051963"
+      ],
+      "nestedInherited": [
+        "935051967",
+        "935051968",
+        "935051969",
+        "935051970"
+      ],
+      "webinarExtra": "935051959",
+      "note": "P06 and A18-A20, A22-A32 planned in trainer 15-product entitlement bundle; user readback pending"
     }
   },
   "products": [
@@ -723,10 +912,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P02",
@@ -737,10 +930,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P03",
@@ -751,10 +948,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P04",
@@ -765,10 +966,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P05",
@@ -779,10 +984,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P06",
@@ -793,10 +1002,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P07",
@@ -807,10 +1020,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P08",
@@ -821,10 +1038,14 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
     },
     {
       "key": "P09",
@@ -835,23 +1056,444 @@
       "createdInGetCourse": true,
       "createdReadBack": true,
       "firstOfferUnselected": true,
-      "grantConfigured": false,
+      "grantConfigured": true,
       "zeroOfferCreated": false,
-      "accessVerification": "NOT_RUN",
-      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "note": "Root training has child-triggered access; the purchase plan also requires A21.",
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E"
+    },
+    {
+      "key": "A10",
+      "id": "4551230",
+      "name": "BF2026 · A10 · Кнопочка I — дополнительные материалы · STAGING",
+      "targetTrainingId": "557801265",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551230",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A11",
+      "id": "4551366",
+      "name": "BF2026 · A11 · Школа ДНВ — Месяц 1 · STAGING",
+      "targetTrainingId": "583995141",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551366",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A12",
+      "id": "4551370",
+      "name": "BF2026 · A12 · Школа ДНВ — Месяц 2 · STAGING",
+      "targetTrainingId": "583995142",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551370",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A13",
+      "id": "4551371",
+      "name": "BF2026 · A13 · Школа ДНВ — Месяц 3 · STAGING",
+      "targetTrainingId": "583995144",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551371",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A14",
+      "id": "4551372",
+      "name": "BF2026 · A14 · Школа ДНВ — Месяц 4 · STAGING",
+      "targetTrainingId": "584004641",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551372",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A15",
+      "id": "4551374",
+      "name": "BF2026 · A15 · Школа ДНВ — Месяц 5 · STAGING",
+      "targetTrainingId": "583995147",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551374",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A16",
+      "id": "4551375",
+      "name": "BF2026 · A16 · Школа ДНВ — Месяц 6 · STAGING",
+      "targetTrainingId": "584006165",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551375",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A17",
+      "id": "4551376",
+      "name": "BF2026 · A17 · Школа ДНВ — Дополнительные материалы · STAGING",
+      "targetTrainingId": "584120008",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551376",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A18",
+      "id": "4551378",
+      "name": "BF2026 · A18 · Тренер — Профессия · STAGING",
+      "targetTrainingId": "935051958",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551378",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A19",
+      "id": "4551379",
+      "name": "BF2026 · A19 · Тренер — Школа ДНВ · STAGING",
+      "targetTrainingId": "935051960",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551379",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A20",
+      "id": "4551380",
+      "name": "BF2026 · A20 · Тренер — Союз · STAGING",
+      "targetTrainingId": "935051975",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551380",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A21",
+      "id": "4551381",
+      "name": "BF2026 · A21 · Деньги — Поддержание состояния · STAGING",
+      "targetTrainingId": "593213706",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551381",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A22",
+      "id": "4551396",
+      "name": "BF2026 · A22 · Тренер — Продвижение и продажи · STAGING",
+      "targetTrainingId": "936006781",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551396",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A23",
+      "id": "4551408",
+      "name": "BF2026 · A23 · Тренер — ДНВ месяц 1 · STAGING",
+      "targetTrainingId": "935051961",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551408",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A24",
+      "id": "4551410",
+      "name": "BF2026 · A24 · Тренер — ДНВ месяц 2 · STAGING",
+      "targetTrainingId": "935051962",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551410",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A25",
+      "id": "4551411",
+      "name": "BF2026 · A25 · Тренер — ДНВ месяц 3 · STAGING",
+      "targetTrainingId": "935051964",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551411",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A26",
+      "id": "4551412",
+      "name": "BF2026 · A26 · Тренер — ДНВ месяц 4 · STAGING",
+      "targetTrainingId": "935051965",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551412",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A27",
+      "id": "4551413",
+      "name": "BF2026 · A27 · Тренер — ДНВ месяц 5 · STAGING",
+      "targetTrainingId": "935051966",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551413",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A28",
+      "id": "4551414",
+      "name": "BF2026 · A28 · Тренер — ДНВ месяц 6 · STAGING",
+      "targetTrainingId": "935051971",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551414",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A29",
+      "id": "4551415",
+      "name": "BF2026 · A29 · Тренер — ДНВ допматериалы · STAGING",
+      "targetTrainingId": "935051972",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551415",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A30",
+      "id": "4551417",
+      "name": "BF2026 · A30 · Тренер — ДНВ новые ответы · STAGING",
+      "targetTrainingId": "935051973",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551417",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A31",
+      "id": "4551418",
+      "name": "BF2026 · A31 · Тренер — Я ЕСТЬ, вебинар · STAGING",
+      "targetTrainingId": "935051959",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551418",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A32",
+      "id": "4551419",
+      "name": "BF2026 · A32 · Тренер — ДНВ месяц 2, бонусы · STAGING",
+      "targetTrainingId": "935051963",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551419",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
+    },
+    {
+      "key": "A33",
+      "id": "4551422",
+      "name": "BF2026 · A33 · Школа ДНВ — Элегантные ответы · STAGING",
+      "targetTrainingId": "760049153",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4551422",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": true,
+      "bindingReadBack": true,
+      "customerAccessVerified": false,
+      "noOffers": true,
+      "accessVerification": "PRODUCT_TRAINING_LINK_SAVED_AND_RELOADED; LEARNER_NOT_TESTED",
+      "grantStatus": "NATIVE_BINDING_VERIFIED_NO_LEARNER_E2E",
+      "note": "Atomic module entitlement; member of planned offers only. No offer/checkout/payment configured."
     }
   ],
   "salePlanValidation": {
+    "status": "SUPERSEDED_NEEDS_REVALIDATION_33_PRODUCTS",
+    "previousResult": "9/9 READY with 9-product base composition, no longer current",
     "date": "2026-11-12",
-    "provider": "luch.getcourse.sale-planner.v0.1",
-    "mode": "DRY_RUN_NO_MUTATION",
-    "offersValidated": 9,
-    "readyCount": 9,
-    "conflictCount": 0,
-    "missingCount": 0,
-    "durationDaysPlanned": 365,
-    "businessDurationStillPending": "12 months vs 365 days",
-    "explicitCaveat": "READY means the JSON plans are internally consistent. It does not mean native GetCourse Offers, grants, or payments exist.",
-    "detailsFile": "OFFER_PLAN_VALIDATION.md"
+    "note": "Re-run non-mutating GetCourse Sale Planner on exact per-offer atomic product sets before creating any offers."
+  },
+  "stagingBindingAudit": {
+    "date": "2026-11-12",
+    "productsCreated": 33,
+    "bindingsReadBack": 33,
+    "readbackPass": 33,
+    "readbackFailures": 0,
+    "nativeSaleOffers": 0,
+    "realPayments": 0,
+    "customerLessonE2e": "NOT_RUN",
+    "studentNegativeRights": "NOT_RUN",
+    "accessDuration12Months": "NOT_CONFIGURED",
+    "testMode": "AUTHENTICATED_GETCOURSE_ADMIN_CDP_READONLY_AFTER_SAFE_STAGING_WRITES",
+    "nativeEvidence": "/tmp/bf26_r212_all33_readback_20261112.json on authorized Mac",
+    "copyRoot": "936006781",
+    "originalUnmodified": "935051976"
   }
 }

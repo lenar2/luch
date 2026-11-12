@@ -9,7 +9,10 @@
     "apiCredentialsConfigured": false,
     "writeEnabled": false,
     "liveInventoryVerified": false,
-    "checkedOn": "2026-11-12"
+    "checkedOn": "2026-11-12",
+    "isolatedAuthState": "AUTH_REQUIRED/CONFLICT",
+    "personalChromeGuiAuth": "CONFIRMED_BY_SCREENSHOT_2026_11_12",
+    "guiAccessLimit": "NATIVE_SCREENSHOT_AND_POINTER_ONLY__ACCESSIBILITY_TEXT_UNAVAILABLE"
   },
   "invariants": {
     "currency": "RUB",
@@ -553,6 +556,7 @@
       "https://getcourse.ru/blog/275829",
       "https://getcourse.ru/blog/420694"
     ],
-    "truth": "No authenticated training/product/offer inventory. Source site descriptions are not GetCourse facts."
+    "truth": "No authenticated training/product/offer inventory. Source site descriptions are not GetCourse facts.",
+    "chromeObservedTraining": "Black Friday 2025, training 935051196 with Школа ДНВ listed as 75 lessons; child IDs and offer entitlements unverified"
   }
 }

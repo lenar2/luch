@@ -1,6 +1,20 @@
+# BF2026 · GetCourse · CURRENT STATE (12.11.2026)
+
+**R2.1.2 NATIVE BINDINGS PASS; STUDENT E2E / SALES HOLD.**
+
+- В реальном GetCourse созданы **33 продукта**: P01–P09 + A10–A33. **33/33** после полной перезагрузки сохраняют точный Training ID и отсутствие нативного коммерческого Offer.
+- Для «Тренера» создан новый отдельный архив `936006781`, его корень доступен по покупке, все три подтренинга наследуют, исторический BF2025 неизменён.
+- Девять новых комплектаций в `manifest.json` (2/3/10/15/2/1/2/13/5 продуктов) проверены отдельным **9/9 READY dry-run** без мутаций.
+- **Нет** подтверждённых ученических прав, настроенных 12 месяцев, Offer ID, платёжных виджетов, заказов, тестовых покупок, отправленных email или изменений Tilda.
+- Приоритет: `R2_1_2_COMPLETION_20261112.md`, `QA_MATRIX.md`, `manifest.json`, `OFFER_PLAN_VALIDATION.md`, `HEA_HANDOFF.md`. Сведения ниже оставлены как **историческая хронология и не отражают текущую конфигурацию**.
+
+---
+
+## Исторические снимки этапов (superseded)
+
 # BF2026 · GetCourse / authenticated account audit (12.11.2026)
 
-**CURRENT STATUS: NINE REAL GETCOURSE PRODUCT SHELLS CREATED; NO OFFERS, NO GRANTS, NO CHECKOUT. PRODUCTION HOLD.**
+**HISTORICAL STATUS (superseded by 33 verified bindings): originally nine product shells; no offers.**
 
 GetCourse account: `study.shkola-dnv.com`. The historical record below describes the earlier period before authenticated Chrome and nine product objects existed. That earlier record is **superseded by this section and `manifest.json`**. Do not mistake the nine new Product IDs for nine Offer IDs.
 

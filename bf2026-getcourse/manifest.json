@@ -1475,10 +1475,31 @@
     }
   ],
   "salePlanValidation": {
-    "status": "SUPERSEDED_NEEDS_REVALIDATION_33_PRODUCTS",
-    "previousResult": "9/9 READY with 9-product base composition, no longer current",
     "date": "2026-11-12",
-    "note": "Re-run non-mutating GetCourse Sale Planner on exact per-offer atomic product sets before creating any offers."
+    "provider": "luch.getcourse.sale-planner.v0.1",
+    "status": "READY_9_OF_9_DRY_RUN_WITH_33_NATIVE_PRODUCTS",
+    "mode": "DRY_RUN_NO_MUTATION",
+    "offersValidated": 9,
+    "readyCount": 9,
+    "conflictCount": 0,
+    "missingCount": 0,
+    "productCompositionByOffer": {
+      "source1": 2,
+      "source2": 3,
+      "union": 10,
+      "trainer": 15,
+      "knop1": 2,
+      "knop2": 1,
+      "money": 2,
+      "bundle-spirit-relations": 13,
+      "bundle-knop-money": 5
+    },
+    "priceSource": "offers[].campaignPriceRub",
+    "durationDaysPlanned": 365,
+    "durationActual": "NOT_CONFIGURED",
+    "businessDurationStillPending": "12 months vs 365 days",
+    "explicitCaveat": "Sale Planner validates only internal consistency of plan. No native offer, actual learner access, checkout, payment or 12 month duration configured.",
+    "detailsFile": "OFFER_PLAN_VALIDATION.md"
   },
   "stagingBindingAudit": {
     "date": "2026-11-12",

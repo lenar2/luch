@@ -840,5 +840,18 @@
       "accessVerification": "NOT_RUN",
       "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
     }
-  ]
+  ],
+  "salePlanValidation": {
+    "date": "2026-11-12",
+    "provider": "luch.getcourse.sale-planner.v0.1",
+    "mode": "DRY_RUN_NO_MUTATION",
+    "offersValidated": 9,
+    "readyCount": 9,
+    "conflictCount": 0,
+    "missingCount": 0,
+    "durationDaysPlanned": 365,
+    "businessDurationStillPending": "12 months vs 365 days",
+    "explicitCaveat": "READY means the JSON plans are internally consistent. It does not mean native GetCourse Offers, grants, or payments exist.",
+    "detailsFile": "OFFER_PLAN_VALIDATION.md"
+  }
 }

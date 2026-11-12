@@ -1,14 +1,15 @@
 # BF2026 · GetCourse / prelaunch staging (12.11.2026)
 
-**Status: AUTH_BLOCKED · PRODUCTION HOLD · NO LIVE SALES.**
+**Status: CHROME_ADMIN_GUI_CONFIRMED / GETCOURSE INVENTORY INCOMPLETE · PRODUCTION HOLD · NO LIVE SALES.**
 This directory is an implementation-ready specification and text drafts **in GitHub, not created GetCourse objects**. It must never be cited as evidence of a paid purchase or a tested entitlement. Source website and native Tilda have not been modified.
 
 ## Direct observations
 
-- LUCH GetCourse v0.5 detected account host `study.shkola-dnv.com`.
-- `getcourse_status`: `AUTH_CONFLICT`, one probe redirected to `/cms/system/login`; official import/export API credential not configured; mutation readiness disabled.
-- `getcourse_inventory`: `PARTIAL / AUTH_REQUIRED`, sections empty. No training, subtraining, lesson, product, offer, widget, order, purchase or customer IDs could be authenticated.
-- Chrome on paired Lenar Mac contained a personal-tab title “Список тренингов”; reading the actual content via Browser Bridge failed or returned empty accessibility data. A tab title is **not** identity/authorization proof. Tatiana Mac was offline.
+- LUCH GetCourse v0.5 detected host `study.shkola-dnv.com`; its **isolated automation session** reported `AUTH_REQUIRED` and official import/export API credential was not configured.
+- **Personal Chrome UI independently confirmed authenticated administrator access via verified screenshot** (`https://study.shkola-dnv.com/teach/control`), showing the full training list and admin controls. The isolated-session AUTH_REQUIRED must **not** be generalized to personal Chrome.
+- Chrome GUI native read_text returns `USER_CHROME_GUI_WEB_CONTENT_NOT_EXPOSED_BY_ACCESSIBILITY`. Screenshot and pointer interactions are functional; this is a **limited GUI audit path**, not a parsed inventory or API automation.
+- Opened actual training `Black Friday 2025`: observed URL `https://study.shkola-dnv.com/teach/control/stream/view/id/935051196`, visible subtraining card `Школа ДНВ — 75 уроков`, and a `Союз нового времени` card (exact child ID/entitlements **not** yet verified). Observed historical training does not prove the same learning program must be reused in 2026.
+- Tatiana Mac was offline. No production sales entity has been created, and the GetCourse write gate remains unapproved.
 - R6 website and JS inspected on branch `bf2026-tati-hea-r6-review-20261110`: nine `data-product` keys and static tentative checkout prices, with copy-only cart.
 
 ## Proposed sales matrix — *expected*, not verified in GetCourse
@@ -65,7 +66,8 @@ All: prerecorded self-study, **12 months** from qualifying payment. Platform doc
 
 ### Release gate (all required)
 
-- [ ] Authenticated GetCourse admin with write permission in authorized **safe test contour**
+- [x] Authenticated GetCourse personal Chrome admin observed (GUI screenshot only)
+- [ ] Authorized **safe test contour** and verified non-public draft write capability
 - [ ] All training/module IDs and lessons verified with screenshots or exported evidence
 - [ ] Nine native offer IDs, product IDs, widget IDs, landing URLs recorded
 - [ ] 12-month expiry semantics approved

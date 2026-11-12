@@ -1,6 +1,38 @@
+# BF2026 · GetCourse / authenticated account audit (12.11.2026)
+
+**CURRENT STATUS: NINE REAL GETCOURSE PRODUCT SHELLS CREATED; NO OFFERS, NO GRANTS, NO CHECKOUT. PRODUCTION HOLD.**
+
+GetCourse account: `study.shkola-dnv.com`. The historical record below describes the earlier period before authenticated Chrome and nine product objects existed. That earlier record is **superseded by this section and `manifest.json`**. Do not mistake the nine new Product IDs for nine Offer IDs.
+
+**What was actually written to GetCourse:** nine separate product shells with names `BF2026 · P01 ... P09 · STAGING`. The auto-selected checkbox “Создать первое предложение” was deliberately deselected on EACH creation. A product name and stable URL/id were read back after creation, confirming nine objects. New products are marked “Актуален” in native GetCourse UI, not a special enforced draft: there are simply no new sales offers and no verified grants. Do not assert private-sale enforcement beyond this.
+
+| Product key | Real Product ID | Planned training/subtraining |
+|---|---:|---|
+| P01 Source module I | `4550889` | Source 2026 child `934905122` |
+| P02 Source module II | `4550891` | Source 2026 child `934905123` |
+| P03 Source introduction | `4550893` | Source 2026 child `934905120` |
+| P04 School DNV | `4550894` | Training `583995140` |
+| P05 Union | `4550895` | Training `933861292` |
+| P06 Trainer professional archive | `4550897` | Candidate full BF2025 archive training `935051957`, 128 lessons |
+| P07 Knopochka I | `4550899` | Training `316213861` with extras |
+| P08 Knopochka II | `4550901` | Training `666920037` + pre and 4 weeks |
+| P09 Extended money | `4550902` | Training `549791334` 10 lessons + extras |
+
+**Important hold:** the P09 product editor was left with “Доступ к тренингу” radio selected but without a selected training and **without Save**. That is an uncommitted visual change, not a configured grant. The other new products were left at initial no-group fulfillment defaults. No customer entitlements are proven; no offering, order, payment, letter, Tilda widget or thank-you page created natively. Existing user accounts, groups and historic products unchanged.
+
+**Why not complete offers yet:** Source 2026 parent `934905119` also contains copies of Knopochka I/II and a third Source module, while Source child IDs have individually selected historical access groups. Selling whole parent could overgrant; selling only child without verifying rights could undergrant. DNV, Trainer, Knopochka and Money also have complex group or subtraining permissions. No isolated test learner or confirmed full-payment E2E exists. Creating offers now would risk making nonworking or publicly purchasable checkout links. Frontmost Mac window also belonged to another Figma worker during later form inspection; avoid stealing its controls.
+
+**Verified actual content:** Source I child `934905122` 7 lessons, II `934905123` 8, III `934905124` 12; DNV six months with extras; Union 12 lessons; Trainer archive candidate `935051957` 128 lessons (24 professional +76 DNV +12 Union +16 promotion); Knop I extras; Knop II pred `673098344` and weeks; Money “Бизнес” `549791334` 10 core lessons vs shortened “К деньгам” `624662676` 8. Detailed identities and risks: `manifest.json`, `QA_MATRIX.md`.
+
+**Available preparation:** nine intended offer composition plans and prices `manifest.json`; six unsent email template types and conditional confirmation/thank-you pages as **GitHub text only** `MESSAGES_AND_PAGES.md`; rigorous nine-SKU no-money E2E `QA_MATRIX.md`; exact future HEA/Tilda mapping `HEA_HANDOFF.md`.
+
+**Next release gate:** verify grants for P01–P09 in isolation (without altering existing users), 12-month access semantics, GetCourse legal receipt/tax fields, create nine disabled/private campaign offers and widgets if platform permits genuine unpublished state, email and page drafts inside GetCourse, real no-money E2E in authorized test contour, then independent approval. Neither an offer nor production readiness should be claimed before real readback and tests.
+
+---
+
 # BF2026 · GetCourse / prelaunch staging (12.11.2026)
 
-**Status: CHROME_ADMIN_GUI_CONFIRMED / GETCOURSE INVENTORY INCOMPLETE · PRODUCTION HOLD · NO LIVE SALES.**
+**Historical snapshot (superseded): CHROME_ADMIN_GUI_CONFIRMED / GETCOURSE INVENTORY INCOMPLETE · PRODUCTION HOLD · NO LIVE SALES.**
 This directory is an implementation-ready specification and text drafts **in GitHub, not created GetCourse objects**. It must never be cited as evidence of a paid purchase or a tested entitlement. Source website and native Tilda have not been modified.
 
 ## Direct observations

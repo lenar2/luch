@@ -1,18 +1,20 @@
 {
   "schema": "bf2026-getcourse-staging-v1",
   "date": "2026-11-12",
-  "scope": "PREPARATION_ONLY__NOT_GETCOURSE_OBJECTS",
+  "scope": "NATIVE_GETCOURSE_PRODUCT_SHELLS_CREATED__NO_OFFERS__NO_ACCESS_GRANTS__PRODUCTION_HOLD",
   "sourceBranch": "bf2026-tati-hea-r6-review-20261110",
   "getcourseHostObserved": "study.shkola-dnv.com",
   "gcConnection": {
-    "authState": "AUTH_REQUIRED/CONFLICT",
+    "authState": "AUTHENTICATED_ON_PERSONAL_CHROME",
+    "session": "USER_BROWSER",
+    "account": "study.shkola-dnv.com",
     "apiCredentialsConfigured": false,
-    "writeEnabled": false,
-    "liveInventoryVerified": false,
+    "readOnlyLuchProvider": true,
+    "nativeGuiReadback": true,
+    "writeEnabledForCampaign": false,
+    "liveInventoryVerified": "PARTIAL_TRAININGS_PRODUCTS_ACCESS_RULES",
     "checkedOn": "2026-11-12",
-    "isolatedAuthState": "AUTH_REQUIRED/CONFLICT",
-    "personalChromeGuiAuth": "CONFIRMED_BY_SCREENSHOT_2026_11_12",
-    "guiAccessLimit": "NATIVE_SCREENSHOT_AND_POINTER_ONLY__ACCESSIBILITY_TEXT_UNAVAILABLE"
+    "note": "Nine named GetCourse products created through authorized admin UI. No sales offers or valid entitlements configured; no E2E."
   },
   "invariants": {
     "currency": "RUB",
@@ -35,181 +37,181 @@
     {
       "key": "source_m1",
       "expected": "Источник 2026 — модуль I; проверить состав уроков и доступ только к модулю I",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "934905119",
+      "subtrainingId": "934905122",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550889",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "source_m2",
       "expected": "Источник 2026 — модуль II; не включать в отдельную покупку I",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "934905119",
+      "subtrainingId": "934905123",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550891",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "dnv",
       "expected": "Школа ДНВ — исходная запись/доступ без посторонних потоков",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "583995140",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550894",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "union",
       "expected": "Союз нового времени — записи для личного прохождения",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "933861292",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550895",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "trainer_core",
       "expected": "Тренер — профессиональная программа, полный архив",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "935051957",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550897",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "trainer_cases",
       "expected": "Тренер — записи разборов",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "935051957",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550897",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "trainer_promotion",
       "expected": "Тренер — блок продвижения",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "935051957",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550897",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop1_main",
       "expected": "Кнопочка I — основные уроки",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "316213861",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550899",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop1_extras",
       "expected": "Кнопочка I — дополнительные материалы",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "316213861",
+      "subtrainingId": "557801265",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550899",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop2_pre",
       "expected": "Кнопочка II — предобучение",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "666920037",
+      "subtrainingId": "673098344",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop2_week1",
       "expected": "Кнопочка II — неделя практик 1",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "666920037",
+      "subtrainingId": "666920039",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop2_week2",
       "expected": "Кнопочка II — неделя практик 2",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "666920037",
+      "subtrainingId": "666920045",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop2_week3",
       "expected": "Кнопочка II — неделя практик 3",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
-      "subtrainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "666920037",
+      "subtrainingId": "666920046",
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "knop2_week4",
       "expected": "Кнопочка II — неделя практик 4",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "666920037",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550901",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     },
     {
       "key": "money_extended",
       "expected": "Деньги в женском состоянии — расширенный архив: десять уроков и допматериалы; не краткий вариант",
-      "source": "R6 website content / project brief ONLY, NOT GetCourse observed",
-      "trainingId": null,
+      "source": "LIVE_AUTHENTICATED_GETCOURSE_ADMIN_AX_NOV12; target identity observed, not grant validated",
+      "trainingId": "549791334",
       "subtrainingId": null,
       "lessonIds": [],
-      "productId": null,
+      "productId": "4550902",
       "customerUrl": null,
-      "entitlementRule": "UNKNOWN",
+      "entitlementRule": "UNCONFIGURED_PRODUCT_SHELL__TRAINING_ACCESS_RULE_EXISTING_AND_COMPLEX",
       "verified": false
     }
   ],
@@ -223,7 +225,10 @@
         "source_m1"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550893",
+        "4550889"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -231,7 +236,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -245,7 +250,11 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P03",
+        "P01"
+      ]
     },
     {
       "key": "source2",
@@ -257,7 +266,11 @@
         "source_m2"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550893",
+        "4550889",
+        "4550891"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -265,7 +278,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -279,7 +292,12 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P03",
+        "P01",
+        "P02"
+      ]
     },
     {
       "key": "union",
@@ -291,7 +309,10 @@
         "union"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550894",
+        "4550895"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -299,7 +320,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -313,7 +334,11 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P04",
+        "P05"
+      ]
     },
     {
       "key": "trainer",
@@ -326,7 +351,9 @@
         "trainer_promotion"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550897"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -334,7 +361,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -348,7 +375,10 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P06"
+      ]
     },
     {
       "key": "knop1",
@@ -360,7 +390,9 @@
         "knop1_extras"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550899"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -368,7 +400,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -382,7 +414,10 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P07"
+      ]
     },
     {
       "key": "knop2",
@@ -397,7 +432,9 @@
         "knop2_week4"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550901"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -405,7 +442,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -419,7 +456,10 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P08"
+      ]
     },
     {
       "key": "money",
@@ -430,7 +470,9 @@
         "money_extended"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550902"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -438,7 +480,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -452,7 +494,10 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P09"
+      ]
     },
     {
       "key": "bundle-spirit-relations",
@@ -466,7 +511,13 @@
         "union"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550893",
+        "4550889",
+        "4550891",
+        "4550894",
+        "4550895"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -474,7 +525,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -488,7 +539,14 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P03",
+        "P01",
+        "P02",
+        "P04",
+        "P05"
+      ]
     },
     {
       "key": "bundle-knop-money",
@@ -506,7 +564,11 @@
         "money_extended"
       ],
       "gcOfferId": null,
-      "gcProductIds": [],
+      "gcProductIds": [
+        "4550899",
+        "4550901",
+        "4550902"
+      ],
       "gcWidgetId": null,
       "checkoutUrl": null,
       "orderConfirmUrl": null,
@@ -514,7 +576,7 @@
       "emailDraftIds": [],
       "accessStart": "FULL_PAYMENT_CONFIRMED_ONLY",
       "accessEnd": "PENDING_EXACT_12_MONTH_RULE",
-      "scope": "DRAFT_SPEC_ONLY",
+      "scope": "DRAFT_SPEC_ONLY_NATIVE_GC_OFFER_NOT_CREATED",
       "gcCreated": false,
       "verified": false,
       "qa": {
@@ -528,7 +590,12 @@
         "duplicates": "NOT_RUN",
         "emails": "NOT_RUN",
         "page": "NOT_RUN"
-      }
+      },
+      "plannedProductKeys": [
+        "P07",
+        "P08",
+        "P09"
+      ]
     }
   ],
   "integration": {
@@ -557,6 +624,221 @@
       "https://getcourse.ru/blog/420694"
     ],
     "truth": "No authenticated training/product/offer inventory. Source site descriptions are not GetCourse facts.",
-    "chromeObservedTraining": "Black Friday 2025, training 935051196 with Школа ДНВ listed as 75 lessons; child IDs and offer entitlements unverified"
-  }
+    "chromeObservedTraining": "Black Friday 2025, training 935051196 with Школа ДНВ listed as 75 lessons; child IDs and offer entitlements unverified",
+    "getcourseInventory": "Authenticated real admin GUI via PID-scoped macOS Accessibility including training list, training content/access settings and products. Product IDs read back after save. No live payment/learner tests.",
+    "importantSafety": "Historical groups with access, parent Source contains unrelated Knopochka programs; do not change existing training grant rules or enable offers until isolated access test.",
+    "ghStagingArtifacts": "MESSAGES_AND_PAGES.md contains text-only drafts outside GetCourse, not transmitted."
+  },
+  "verifiedTrainings": {
+    "source2026": {
+      "id": "934905119",
+      "name": "ИСТОЧНИК 2026",
+      "modules": {
+        "intro": "934905120",
+        "consciousness": "934905122",
+        "body": "934905123",
+        "wealth": "934905124"
+      },
+      "conflict": "Parent also contains copies of Knopochka I/II and live Q&A: DO NOT GRANT WHOLE PARENT for Source I/I+II"
+    },
+    "dnv": {
+      "id": "583995140",
+      "name": "Школа ДНВ",
+      "modules": [
+        "583995141",
+        "583995142",
+        "583995144",
+        "584004641",
+        "583995147",
+        "584006165"
+      ],
+      "extras": [
+        "584120008",
+        "616126452"
+      ],
+      "note": "6 months plus extras, historical group-scoped entitlement"
+    },
+    "union": {
+      "id": "933861292",
+      "name": "СОЮЗ НОВОГО ВРЕМЕНИ",
+      "lessonsObserved": 12,
+      "note": "historical group-scoped entitlement"
+    },
+    "trainerStandalone": {
+      "id": "846748359",
+      "name": "II ступень. Тренер по созданию семьи",
+      "note": "~20 professional lessons, QA recordings and promotion block 14 lessons; not automatically full archive"
+    },
+    "trainerFullCandidate": {
+      "id": "935051957",
+      "name": "Тренер для себя + продвижение / Black Friday 2025",
+      "lessonsObserved": 128,
+      "note": "24 professional +76 DNV+12 Union+16 promotion; candidate archive, access not verified"
+    },
+    "knop1": {
+      "id": "316213861",
+      "name": "КНОПОЧКА ЖЕНСКОГО СОСТОЯНИЯ. I СТУПЕНЬ",
+      "extraIds": [
+        "557801265",
+        "615464882"
+      ],
+      "note": "core lessons and 2-lesson extras and 1-lesson money bonus"
+    },
+    "knop2": {
+      "id": "666920037",
+      "name": "КНОПОЧКА ЖЕНСКОГО СОСТОЯНИЯ II ступень",
+      "pre": "673098344",
+      "weeks": [
+        "666920039",
+        "666920045",
+        "666920046",
+        null
+      ],
+      "lessonsObserved": 26
+    },
+    "moneyExtendedCandidate": {
+      "id": "549791334",
+      "name": "Деньги в женском состоянии. Бизнес",
+      "numberedCoreLessons": 10,
+      "extras": [
+        "557801261",
+        "593213706",
+        "705184102"
+      ],
+      "note": "Contrasts with shortened К деньгам id 624662676, 8 core lessons; group and child access require E2E"
+    },
+    "moneyShortened": {
+      "id": "624662676",
+      "name": "Деньги в женском состоянии. К деньгам",
+      "numberedCoreLessons": 8
+    }
+  },
+  "products": [
+    {
+      "key": "P01",
+      "id": "4550889",
+      "name": "BF2026 · P01 · Источник — модуль I · STAGING",
+      "targetTrainingId": "934905122",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550889",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P02",
+      "id": "4550891",
+      "name": "BF2026 · P02 · Источник — модуль II · STAGING",
+      "targetTrainingId": "934905123",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550891",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P03",
+      "id": "4550893",
+      "name": "BF2026 · P03 · Источник — начало · STAGING",
+      "targetTrainingId": "934905120",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550893",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P04",
+      "id": "4550894",
+      "name": "BF2026 · P04 · Школа ДНВ · STAGING",
+      "targetTrainingId": "583995140",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550894",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P05",
+      "id": "4550895",
+      "name": "BF2026 · P05 · Союз нового времени · STAGING",
+      "targetTrainingId": "933861292",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550895",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P06",
+      "id": "4550897",
+      "name": "BF2026 · P06 · Тренер — профессиональный архив · STAGING",
+      "targetTrainingId": "935051957",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550897",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P07",
+      "id": "4550899",
+      "name": "BF2026 · P07 · Кнопочка I · STAGING",
+      "targetTrainingId": "316213861",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550899",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P08",
+      "id": "4550901",
+      "name": "BF2026 · P08 · Кнопочка II · STAGING",
+      "targetTrainingId": "666920037",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550901",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    },
+    {
+      "key": "P09",
+      "id": "4550902",
+      "name": "BF2026 · P09 · Деньги — расширенный архив · STAGING",
+      "targetTrainingId": "549791334",
+      "getcourseAdminUrl": "https://study.shkola-dnv.com/pl/sales/product/update?id=4550902",
+      "createdInGetCourse": true,
+      "createdReadBack": true,
+      "firstOfferUnselected": true,
+      "grantConfigured": false,
+      "zeroOfferCreated": false,
+      "accessVerification": "NOT_RUN",
+      "note": "Product shell is real and marked Actual in native GetCourse; no offer or fulfillment configured. P09 has unsaved training-access radio selected in UI; no training selected or saved."
+    }
+  ]
 }

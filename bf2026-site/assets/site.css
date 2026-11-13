@@ -401,3 +401,7 @@ html{scroll-padding-top:100px}
 
 /* Prevent long authentic-review heading from expanding mobile document width. */
 @media(max-width:640px){.voices-section .section-intro h2{font-size:clamp(41px,10.2vw,50px);line-height:.98;overflow-wrap:anywhere}.voices-section .section-intro h2 em{overflow-wrap:anywhere}}
+
+/* R6.1 · complete course names in the three-image bundle without clipping. */
+.bundle-photo-collage .photo-knop1 figcaption,.bundle-photo-collage .photo-knop2 figcaption{font-size:8px;line-height:1.25;letter-spacing:.035em;white-space:normal;overflow-wrap:normal;text-wrap:balance;padding-left:6px;padding-right:6px}
+@media(max-width:640px){.state-section .offer-card h3{font-size:clamp(27px,8vw,34px);line-height:1.07}.bundle-photo-collage .photo-knop1 figcaption,.bundle-photo-collage .photo-knop2 figcaption{font-size:7px}}

@@ -7,6 +7,7 @@ import http from 'node:http';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright-core';
 import crypto from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import {createBroker} from '../broker/server.mjs';
 import {makeConsentedTabAdapter} from '../bridge-adapter/consented-tab-adapter.mjs';
 import {routeCompanionRequest} from '../bridge-integration/browser-companion-routes.mjs';
@@ -58,8 +59,12 @@ test('REAL headed Chromium: MV3 registered, original popup opens and pairs to ac
   const actionCommand=shortcuts.find(x=>x.name==='_execute_action');
   assert.ok(actionCommand,'Chrome must register the extension action shortcut');
   assert.match(actionCommand.shortcut||'',/Ctrl\+Shift\+Y/i);
-  await fixturePage.keyboard.press('Control+Shift+Y');
-  await new Promise(r=>setTimeout(r,700));
+  // Playwright's CDP key events do not necessarily reach Chrome's browser-level
+  // shortcut dispatcher. Use the X server to deliver a REAL native key chord.
+  const focused=execFileSync('xdotool',['getwindowfocus','getwindowname'],{encoding:'utf8'}).trim();
+  console.log('NATIVE_CHROME_FOCUS',focused.slice(0,140));
+  execFileSync('xdotool',['key','--clearmodifiers','ctrl+shift+y']);
+  await new Promise(r=>setTimeout(r,1100));
   const tab=await sw.evaluate(async()=>{
    const tabs=await chrome.tabs.query({active:true,currentWindow:true});
    return tabs.map(t=>({id:t.id,url:t.url,title:t.title}));

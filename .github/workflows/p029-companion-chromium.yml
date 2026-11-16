@@ -26,6 +26,10 @@ jobs:
         run: |
           npm install --no-save --no-package-lock playwright@1.56.1
           npx playwright install --with-deps chromium
+      - name: Install native X11 keyboard control for real Chrome shortcut
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xdotool
       - name: Verify source and broker regressions
         working-directory: experiments/p029-browser-companion-r2
         run: |

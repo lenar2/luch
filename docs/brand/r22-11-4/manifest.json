@@ -1,0 +1,72 @@
+{
+  "schema": "luch.brand.provisional.v1",
+  "date": "2026-11-16",
+  "source": {
+    "file": "https://www.figma.com/design/98sI6aWEEqnNKgasBjR9MR",
+    "page": "216:45",
+    "master": "176:284",
+    "original_r19": "176:292"
+  },
+  "decision": {
+    "app": {
+      "node": "216:46",
+      "status": "DESIGN_FREEZE_PROVISIONAL_READY",
+      "svg": "app.svg",
+      "preview": "app-preview-256.png",
+      "width": 512,
+      "height": 512
+    },
+    "plugin": {
+      "node": "216:69",
+      "variant": "B",
+      "status": "TEMP_SELECTED_FOR_CLAUDE_REVIEW",
+      "svg": "plugin-B.svg",
+      "png": "plugin-B-128.png",
+      "width": 128,
+      "height": 128
+    },
+    "alternatives": [
+      {
+        "variant": "A",
+        "node": "216:59",
+        "status": "ALT_ONLY"
+      },
+      {
+        "variant": "C",
+        "node": "216:79",
+        "status": "ALT_ONLY"
+      }
+    ]
+  },
+  "preserved": [
+    "R19 source vectors",
+    "R22.8.2 master",
+    "R22.11.1 app/plugin",
+    "R22.11.2 previous candidates",
+    "public site and product icon assets"
+  ],
+  "release": {
+    "claude": "UNVERIFIED_NOT_SUBMITTED_BY_THIS_CHANGE",
+    "ios": "NOT_DEPLOYED",
+    "site": "NOT_CHANGED",
+    "independent_H_E_A_pass": false
+  },
+  "checksums_sha256": {
+    "app_preview_256": "0e8eb21aeb49e5afd7109fa51d987611d2287da26d0ea6217b06d1552e011f78",
+    "plugin_B_128": "48176c74a421fe5c988fe0ab7bbcdb64d936a0a7bf97b949dff4eba9ff04c72a",
+    "plugin_A_128": "166951439f88706ae6a933f7c686d32b853dedba16429f4b89e342f44e53bf34",
+    "plugin_C_128": "f62903b990bcc3ad119e6409d03b19bb2a5a10f351098f0b0b13516c758fdf69"
+  },
+  "historical_milestones": [
+    "R19",
+    "R22.8.2",
+    "R22.9",
+    "R22.10",
+    "R22.11.1",
+    "R22.12",
+    "R22.12.1",
+    "R22.12.2",
+    "R22.11.2",
+    "R22.11.4"
+  ]
+}

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
   "description": "Give your AI a browser it can understand and work with: read, explore and interact with the tabs you approve.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "minimum_chrome_version": "116",
   "permissions": [
     "activeTab",
@@ -29,5 +29,13 @@
     "32": "assets/icon-32.png",
     "48": "assets/icon-48.png",
     "128": "assets/icon-128.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      }
+    }
   }
 }

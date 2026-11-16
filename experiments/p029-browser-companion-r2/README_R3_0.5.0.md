@@ -1,4 +1,4 @@
-# LUCH Browser Companion v0.5.1 — expanded isolated candidate
+# LUCH Browser Companion v0.5.2 — expanded isolated candidate
 
 **Release status:** QA CANDIDATE / NO MARKETPLACE UPDATE YET.
 Current Chrome Web Store listing remains at v0.4.0; Opera v0.4.1 is awaiting moderation.

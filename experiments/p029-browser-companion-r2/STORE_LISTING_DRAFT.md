@@ -30,4 +30,4 @@ No user cookies, browsing history, debugger or saved passwords APIs are requeste
 Before store release, independently verify real Chrome MV3 UI, paired browser, secure revocation, OAuth/tenant routing and actual screenshots. Current public Chrome v0.4.0 is unchanged by this file.
 
 ## Media concept
-Hero should show a real example of an approved tab becoming an AI-readable page with a checkable result. Second visual: inspected headings/links/forms. Third: two distinct Read/Interact approvals. Safety and revocation belongs near the end, not the headline. Any illustrative workflow must be labeled, never passed off as a real AI result.
+Hero uses the full LUCH app icon for the store tile and micro-L variant B for the tiny toolbar button. Hero should show a real example of an approved tab becoming an AI-readable page with a checkable result. Second visual: inspected headings/links/forms. Third: two distinct Read/Interact approvals. Safety and revocation belongs near the end, not the headline. Any illustrative workflow must be labeled, never passed off as a real AI result.

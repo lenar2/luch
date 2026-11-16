@@ -7,7 +7,7 @@ Current Chrome Web Store listing remains at v0.4.0; Opera v0.4.1 is awaiting mod
 - 16 read/inspection and 23 tab-interaction/navigation operation identifiers via explicit structured jobs. No arbitrary remote JavaScript.
 - Separate user approval for reading versus interacting; grant limited to user-selected tab and origin.
 - No 15-minute permission timer. Grants are stored in Chrome's session storage; they terminate on explicit revoke, browser/tab close or cross-origin change. Broker has an internal inactivity heartbeat, not a lifetime cutoff.
-- New human-first LUCH popup; provisional founder-selected plugin B PNG icon from lenar2/luch PR #11 commit 3d74789168299daa7ce3cef91a68e949e319eeae.
+- New human-first LUCH popup. Store tile: R22.11.4 provisional full LUCH app mark exported as 128px PNG from the original 256px source. Toolbar/popup micro icons 16/32/48px: selected plugin B variant, readable at small sizes. Both from lenar2/luch PR #11 commit 3d74789168299daa7ce3cef91a68e949e319eeae.
 - Broker and local adapter expose the expanded job contract. Both preserve the original private loopback credentials and fail-closed approval checks.
 - Protected password/file inputs and form submits are blocked; non-extension-created personal tabs cannot be arbitrarily closed.
 

@@ -1,0 +1,22 @@
+# LUCH Browser Companion v0.5.0 — expanded isolated candidate
+
+**Release status:** QA CANDIDATE / NO MARKETPLACE UPDATE YET.
+Current Chrome Web Store listing remains at v0.4.0; Opera v0.4.1 is awaiting moderation.
+
+### Implemented code
+- 16 read/inspection and 23 tab-interaction/navigation operation identifiers via explicit structured jobs. No arbitrary remote JavaScript.
+- Separate user approval for reading versus interacting; grant limited to user-selected tab and origin.
+- No 15-minute permission timer. Grants are stored in Chrome's session storage; they terminate on explicit revoke, browser/tab close or cross-origin change. Broker has an internal inactivity heartbeat, not a lifetime cutoff.
+- New human-first LUCH popup; provisional founder-selected plugin B PNG icon from lenar2/luch PR #11 commit 3d74789168299daa7ce3cef91a68e949e319eeae.
+- Broker and local adapter expose the expanded job contract. Both preserve the original private loopback credentials and fail-closed approval checks.
+- Protected password/file inputs and form submits are blocked; non-extension-created personal tabs cannot be arbitrarily closed.
+
+### Boundaries
+The extension is NOT the whole LUCH Browser Bridge or its 13 server browser tools. It cannot make native OS keyboard/mouse events, arbitrary file uploads/downloads, Chrome debugger/console features or all 54 global LUCH browser calls available through this one channel. No claims of a production PASS, installed customer connector or general public onboarding.
+
+The current standalone local broker is only 127.0.0.1:9248 and not integrated with production OAuth/device routing. Review the source, tests, user consent and tenant isolation before publication.
+
+### Verify
+Run node --test tests/*.test.mjs; node security-qa.mjs; node --check extension/background.js; node --check extension/dom-ops.js; node --check extension/popup.js; then ./package.sh. This builds the MV3 ZIP, not an approved store release.
+
+The earlier v0.4.0 E2E report is historical; it does not independently certify this candidate.

@@ -14,19 +14,19 @@ const html=fs.readFileSync(path.join(ext,'popup.html'),'utf8');
 const popup=fs.readFileSync(path.join(ext,'popup.js'),'utf8');
 
 test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
- assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.4.0');
+ assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.5.0');
  assert.equal(man.manifest_version,3);
  assert.ok(!JSON.stringify({manifest:man,html}).includes('QA'));
- assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"'));
+ assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"')&&html.includes('id="interact"'));
  assert.ok(popup.includes('luch_locale'));
 });
 test('minimized scoped permissions, fixed local broker, no remotely supplied scripts',()=>{
  assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
  assert.deepEqual(man.host_permissions,['http://127.0.0.1:9248/*']);
  for(const flag of ['debugger','cookies','history','webRequest','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(flag));
- assert.ok(code.includes("job?.kind!=='read_text'"));
+ assert.ok(code.includes('const READ_OPS'));assert.ok(code.includes('const INTERACT_OPS'));
  assert.ok(code.includes("TAB_ORIGIN_CHANGED"));
- assert.ok(code.includes("const TTL_MS=15*60*1000"));
+ assert.ok(!code.includes('TTL_MS'));assert.ok(!code.includes('expiresAt'));
 });
 test('icons are real PNG 16 / 32 / 48 / 128',()=>{
  for(const size of [16,32,48,128]){
@@ -69,6 +69,8 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
   throw Error('unknown');
  }
  const context=vm.createContext({chrome,fetch:fetchStub,AbortController,setTimeout,clearTimeout,Date,URL,crypto:crypto.webcrypto,console,setInterval(){return 0}});
+ context.self=context;
+ context.importScripts=file=>vm.runInContext(fs.readFileSync(path.join(ext,file),'utf8'),context);
  vm.runInContext(code,context);
  async function send(op,extra={}){
   return await new Promise((resolve,reject)=>{
@@ -83,6 +85,10 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  assert.equal(remoteGrants.length,1);assert.equal(remoteGrants[0].tabId,11);
  assert.equal(badges.get(11),'ON');
  assert.equal((await send('status')).granted,true);
+ assert.equal((await send('status')).scope,'read');
+ const interactive=await send('allow-interaction');assert.equal(interactive.ok,true);
+ assert.equal((await send('status')).scope,'interact');
+ assert.equal(remoteGrants[0].scope,'interact');
  assert.ok(!(await send('status')).tab?.url?.includes('other.example'));
  const rev=await send('revoke-active');assert.equal(rev.ok,true);assert.equal(remoteGrants.length,0);assert.equal(badges.get(11),'');
  failGrants=true;

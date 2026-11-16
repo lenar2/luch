@@ -1,105 +1,192 @@
 'use strict';
-// Fixed local code only: an agent never supplies executable scripts or extra host permissions.
-// Grant state is scoped to one tab origin with a 15-minute expiry.
+// LUCH Browser Companion v0.5: one-click read access, separately approved
+// interactive access. Both last until the user revokes, tab is closed, browser
+// session ends, or the tab changes origin. No arbitrary 15-minute cutoff.
+importScripts('dom-ops.js');
 const BASE='http://127.0.0.1:9248';
-const TTL_MS=15*60*1000;
+const READ_OPS=Object.freeze([
+ 'read_text','inspect_page','get_links','get_headings','get_forms','get_tables',
+ 'get_selection','query_elements','find_text','accessibility_snapshot',
+ 'hit_test','get_element','scroll_position','screenshot','tab_info','window_info'
+]);
+const INTERACT_OPS=Object.freeze([
+ 'focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text',
+ 'type_text','select_option','check_element','click','click_at','double_click',
+ 'click_accessible','navigate','reload','back','forward','activate_tab',
+ 'close_tab','new_tab','new_window','window_set'
+]);
+const READ=new Set(READ_OPS), INTERACT=new Set(INTERACT_OPS);
+const PAGE_READ=new Set(READ_OPS.filter(x=>!['screenshot','tab_info','window_info'].includes(x)));
+const PAGE_WRITE=new Set(INTERACT_OPS.filter(x=>!['navigate','reload','back','forward','activate_tab','close_tab','new_tab','new_window','window_set'].includes(x)));
 let working=false;
 const now=()=>Date.now();
-const originOf=url=>{try{const u=new URL(url);return (u.protocol==='http:'||u.protocol==='https:')?u.origin:null}catch{return null}};
-const safeTitle=t=>String(t||'').slice(0,180);
+const originOf=url=>{try{const u=new URL(url);return u.protocol==='http:'||u.protocol==='https:'?u.origin:null}catch{return null}};
+const cleanUrl=url=>{try{const u=new URL(url);if(!['https:','http:'].includes(u.protocol)||u.username||u.password)throw Error();return u.href}catch{throw new Error('INVALID_WEB_URL')}};
+const safeTitle=s=>String(s||'').slice(0,180);
 const makeNonce=()=>Array.from(crypto.getRandomValues(new Uint8Array(12)),v=>v.toString(16).padStart(2,'0')).join('');
-async function state(){let [auth,record]=await Promise.all([chrome.storage.local.get('auth'),chrome.storage.session.get('grants')]);return {auth:auth.auth||null,grants:record.grants||{}};}
+async function state(){
+ const [auth,record,owned]=await Promise.all([
+  chrome.storage.local.get('auth'),chrome.storage.session.get('grants'),chrome.storage.session.get('ownedTabs')]);
+ return {auth:auth.auth||null,grants:record.grants||{},owned:owned.ownedTabs||[]};
+}
 async function setGrants(grants){
  await chrome.storage.session.set({grants});
  const active=new Set(Object.keys(grants).map(Number));
- // Session-scoped badge is updated on every grant/revoke and worker wake-up.
  const all=await chrome.tabs.query({});
- for(const t of all){
-  if(!Number.isSafeInteger(t.id))continue;
-  await chrome.action.setBadgeText({tabId:t.id,text:active.has(t.id)?'ON':''});
-  if(active.has(t.id))await chrome.action.setBadgeBackgroundColor({tabId:t.id,color:'#317a54'});
+ for(const t of all){if(!Number.isSafeInteger(t.id))continue;
+  await chrome.action.setBadgeText({tabId:t.id,text:active.has(t.id)?(grants[t.id].scope==='interact'?'AI':'ON'):''});
+  if(active.has(t.id))await chrome.action.setBadgeBackgroundColor({tabId:t.id,color:grants[t.id].scope==='interact'?'#b7794b':'#317a54'});
  }
 }
 async function api(path,{method='GET',data,token}={}){
  const headers={'Accept':'application/json'};
- if(token)headers.Authorization=`Bearer ${token}`;
+ if(token)headers.Authorization='Bearer '+token;
  if(data!==undefined)headers['Content-Type']='application/json';
- const ctl=new AbortController();const timer=setTimeout(()=>ctl.abort(),7000);
- try{const r=await fetch(BASE+path,{method,headers,body:data!==undefined?JSON.stringify(data):undefined,signal:ctl.signal,cache:'no-store'});
-  const payload=await r.json();if(!r.ok||!payload.ok)throw new Error(payload.error||`HTTP_${r.status}`);return payload;
+ const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),7500);
+ try{const response=await fetch(BASE+path,{method,headers,body:data===undefined?undefined:JSON.stringify(data),signal:ctl.signal,cache:'no-store'});
+  const body=await response.json();if(!response.ok||!body.ok)throw new Error(body.error||'BROKER_ERROR');return body;
  }finally{clearTimeout(timer)}
 }
-async function activeTab(){const t=(await chrome.tabs.query({active:true,currentWindow:true}))[0];if(!t||!originOf(t.url))return null;return t;}
+async function activeTab(){const t=(await chrome.tabs.query({active:true,currentWindow:true}))[0];return t&&originOf(t.url)?t:null}
 async function prune(grants){
  let changed=false;
- for(const [id,g] of Object.entries(grants)){
-  if(g.expiresAt<=now()){delete grants[id];changed=true;continue;}
-  try{const t=await chrome.tabs.get(Number(id));if(originOf(t.url)!==g.origin){delete grants[id];changed=true}else if(t.url!==g.url){g.url=t.url;g.title=safeTitle(t.title);changed=true}}catch{delete grants[id];changed=true}
+ for(const [key,g] of Object.entries(grants)){
+  try{const t=await chrome.tabs.get(Number(key));
+   if(originOf(t.url)!==g.origin){delete grants[key];changed=true}
+   else if(t.url!==g.url||t.title!==g.title){g.url=t.url;g.title=safeTitle(t.title);changed=true}
+  }catch{delete grants[key];changed=true}
  }
  if(changed)await setGrants(grants);
  return grants;
 }
 async function publishGrants(auth,grants){
  if(!auth?.token)return;
- const list=Object.values(grants).map(g=>({tabId:g.tabId,grantId:g.grantId,url:g.url,title:g.title,expiresAt:g.expiresAt}));
+ const list=Object.values(grants).map(g=>({tabId:g.tabId,grantId:g.grantId,url:g.url,title:g.title,scope:g.scope}));
  await api('/extension/grants',{method:'POST',token:auth.token,data:{grants:list}});
 }
-async function grantActive(){
- const t=await activeTab();if(!t)throw new Error('Откройте обычную веб-страницу');
- // activeTab has been granted by the user pressing the extension action.
+async function grantActive(scope='read'){
+ if(scope!=='read'&&scope!=='interact')throw new Error('INVALID_SCOPE');
+ const t=await activeTab();if(!t)throw new Error('Open an ordinary webpage');
+ const s=await state();if(!s.auth)throw new Error('Pair LUCH Companion first');
+ // A real user must click this extension in THIS tab to obtain activeTab access.
  await chrome.scripting.executeScript({target:{tabId:t.id},func:()=>Boolean(document.body)});
- const s=await state();if(!s.auth)throw new Error('Сначала подключите LUCH');
- const g={tabId:t.id,grantId:makeNonce(),url:t.url,origin:originOf(t.url),title:safeTitle(t.title),expiresAt:now()+TTL_MS};
+ const existing=s.grants[t.id];
+ if(scope==='interact'&&!existing)throw new Error('APPROVE_READ_FIRST');
+ const g=existing?{...existing,scope}:{
+  tabId:t.id,grantId:makeNonce(),url:t.url,origin:originOf(t.url),title:safeTitle(t.title),scope
+ };
+ if(existing&&existing.origin!==originOf(t.url))throw new Error('ORIGIN_CHANGED_REAPPROVAL_REQUIRED');
+ const previous=existing;
  s.grants[t.id]=g;
- // A broker failure must not silently leave an unpublished grant that reappears later.
- try {await publishGrants(s.auth,s.grants); await setGrants(s.grants);}
- catch(e){delete s.grants[t.id];await setGrants(s.grants);throw e}
- return {message:'Tab approved for 15 minutes / Доступ на 15 минут'};
+ try{await publishGrants(s.auth,s.grants);await setGrants(s.grants)}
+ catch(e){if(previous)s.grants[t.id]=previous;else delete s.grants[t.id];await setGrants(s.grants);throw e}
+ return {message:scope==='interact'?'Interactions allowed on this tab until you revoke':'This tab is available to LUCH until you revoke'};
 }
-async function revokeActive(){const s=await state();const t=await activeTab();if(t)delete s.grants[t.id];await setGrants(s.grants);await publishGrants(s.auth,s.grants);return{message:'Доступ отозван'};}
-async function disconnect(){const s=await state();try{if(s.auth)await api('/extension/disconnect',{method:'POST',token:s.auth.token})}catch{}
- await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants')]);return{message:'Браузер отключён от LUCH'};}
-function readDomText(){
- const body=document.body;const text=String(body?.innerText||'').slice(0,65536);
- return {title:document.title.slice(0,180),url:location.href,text};
+async function revokeActive(){
+ const s=await state(),t=await activeTab();
+ if(t)delete s.grants[t.id];
+ await setGrants(s.grants);await publishGrants(s.auth,s.grants);
+ return {message:'Sharing stopped for this tab'};
 }
-async function performJob(job,grants){
- if(job?.kind!=='read_text')return {ok:false,error:'ACTION_NOT_ALLOWED'};
- const g=Object.values(grants).find(x=>`ext:${x.tabId}:${x.grantId}`===job.targetId);
- if(!g||g.expiresAt<=now())return{ok:false,error:'TAB_GRANT_EXPIRED'};
- const t=await chrome.tabs.get(g.tabId);if(originOf(t.url)!==g.origin)return{ok:false,error:'TAB_ORIGIN_CHANGED'};
- const result=await chrome.scripting.executeScript({target:{tabId:g.tabId},func:readDomText});
- const value=result?.[0]?.result;if(!value||originOf(value.url)!==g.origin)return{ok:false,error:'TAB_CONTENT_MISMATCH'};
- return {ok:true,text:String(value.text||'').slice(0,65536),title:safeTitle(value.title),url:value.url};
+async function disconnect(){
+ const s=await state();try{if(s.auth)await api('/extension/disconnect',{method:'POST',token:s.auth.token})}catch{}
+ await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('ownedTabs')]);
+ await setGrants({});
+ return {message:'Browser disconnected from LUCH'};
+}
+async function performJob(job,grants,owned){
+ const g=grants[Number(String(job?.targetId||'').split(':')[1])];
+ if(!g||('ext:'+g.tabId+':'+g.grantId)!==job.targetId)return {ok:false,error:'USER_TAB_PERMISSION_REQUIRED'};
+ const op=String(job.op|| (job.kind==='read_text'?'read_text':''));
+ if(!READ.has(op)&&!INTERACT.has(op))return {ok:false,error:'ACTION_NOT_ALLOWED'};
+ if(INTERACT.has(op)&&g.scope!=='interact')return {ok:false,error:'INTERACTION_APPROVAL_REQUIRED'};
+ let t;try{t=await chrome.tabs.get(g.tabId)}catch{return {ok:false,error:'TAB_CLOSED'}};
+ if(originOf(t.url)!==g.origin)return {ok:false,error:'TAB_ORIGIN_CHANGED'};
+ const args=job.args&&typeof job.args==='object'&&!Array.isArray(job.args)?job.args:{};
+ try{
+  if(PAGE_READ.has(op)||PAGE_WRITE.has(op)){
+   const r=await chrome.scripting.executeScript({target:{tabId:g.tabId},func:self.luchDomExecutor,args:[{op,args}]});
+   const result=r?.[0]?.result;
+   if(!result||!result.ok)return {ok:false,error:result?.error||'NO_SCRIPT_RESULT'};
+   if(originOf(result.url)!==g.origin)return {ok:false,error:'TAB_CONTENT_MISMATCH'};
+   return {ok:true,data:result.data,title:safeTitle(t.title),source:'USER_CONSENTED_TAB',...(op==='read_text'?{text:String(result.data?.text||'').slice(0,65536)}:{})};
+  }
+  if(op==='tab_info')return {ok:true,data:{title:safeTitle(t.title),url:t.url,active:!!t.active,scope:g.scope}};
+  if(op==='window_info'){const w=await chrome.windows.get(t.windowId);return {ok:true,data:{width:w.width,height:w.height,left:w.left,top:w.top,state:w.state}}}
+  if(op==='screenshot'){
+   if(!t.active)throw new Error('TAB_MUST_BE_ACTIVE');
+   const image=await chrome.tabs.captureVisibleTab(t.windowId,{format:'jpeg',quality:42});
+   if(image.length>520000)throw new Error('SCREENSHOT_TOO_LARGE');
+   return {ok:true,data:{dataUrl:image,mimeType:'image/jpeg',source:'USER_CONSENTED_TAB'}};
+  }
+  if(op==='navigate'){const to=cleanUrl(args.url);await chrome.tabs.update(g.tabId,{url:to});return {ok:true,data:{navigating:true,url:to}}}
+  if(op==='reload'){await chrome.tabs.reload(g.tabId);return {ok:true,data:{reloading:true}}}
+  if(op==='back'||op==='forward'){if(op==='back')await chrome.tabs.goBack(g.tabId);else await chrome.tabs.goForward(g.tabId);return {ok:true,data:{navigating:true}}}
+  if(op==='activate_tab'){await chrome.tabs.update(g.tabId,{active:true});return {ok:true,data:{active:true}}}
+  if(op==='close_tab'){
+   if(!owned.includes(g.tabId))throw new Error('ONLY_EXTENSION_CREATED_TABS_CAN_CLOSE');
+   await chrome.tabs.remove(g.tabId);return {ok:true,data:{closed:true}};
+  }
+  if(op==='new_tab'||op==='new_window'){
+   const url=cleanUrl(args.url);
+   if(op==='new_tab'){const added=await chrome.tabs.create({url,active:false});await chrome.storage.session.set({ownedTabs:[...owned,added.id]});return {ok:true,data:{opened:true,tabId:added.id,requiresApproval:true}}}
+   const w=await chrome.windows.create({url,focused:false});return {ok:true,data:{opened:true,windowId:w.id,requiresApproval:true}};
+  }
+  if(op==='window_set'){
+   const values={};for(const k of ['width','height','left','top']){if(args[k]!==undefined){
+    const v=Number(args[k]);if(!Number.isInteger(v)||Math.abs(v)>5000||(k==='width'||k==='height')&&v<200)throw new Error('INVALID_WINDOW_RECT');values[k]=v;
+   }}if(!Object.keys(values).length)throw new Error('WINDOW_RECT_REQUIRED');
+   await chrome.windows.update(t.windowId,values);return {ok:true,data:{updated:true}};
+  }
+ }catch(e){return {ok:false,error:String(e.message||e).slice(0,100)}}
+ return {ok:false,error:'OPERATION_NOT_IMPLEMENTED'};
 }
 async function poll(){
  if(working)return;working=true;
- try{const s=await state();if(!s.auth?.token)return;const grants=await prune(s.grants);
+ try{const s=await state();if(!s.auth?.token)return;
+  const grants=await prune(s.grants);
+  // Also heartbeat grants; browser close/restart ends them, no arbitrary TTL.
   await publishGrants(s.auth,grants);
   const tasks=await api('/extension/jobs',{token:s.auth.token});
   for(const job of (tasks.jobs||[]).slice(0,3)){
-   let result;try{result=await performJob(job,grants)}catch(e){result={ok:false,error:String(e.message||e).slice(0,100)}}
+   let result;try{result=await performJob(job,grants,s.owned)}catch(e){result={ok:false,error:String(e.message||e).slice(0,100)}}
    await api('/extension/result',{method:'POST',token:s.auth.token,data:{jobId:job.id,result}});
   }
- }catch(e){/* fail closed; do not expose sensitive error text to page */}
- finally{working=false}
+ }catch{}finally{working=false}
 }
 chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
- if(sender.id!==chrome.runtime.id){respond({ok:false,error:'UNTRUSTED_SENDER'});return false;}
+ if(sender.id!==chrome.runtime.id){respond({ok:false,error:'UNTRUSTED_SENDER'});return false}
  (async()=>{
-  if(msg.op==='status'){const s=await state();const t=await activeTab();s.grants=await prune(s.grants);let connected=!!s.auth;
-   if(connected){try{await api('/extension/jobs',{token:s.auth.token})}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants')]);}}
-   const g=connected&&t&&s.grants[t.id];return {ok:true,connected,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,expiresAt:g?.expiresAt};}
-  if(msg.op==='pair'){if(!/^\d{8}$/.test(msg.code||''))throw new Error('Введите восьмизначный код');const r=await api('/pair',{method:'POST',data:{code:msg.code}});await chrome.storage.local.set({auth:{token:r.token}});await setGrants({});await poll();return {ok:true,message:'LUCH подключён'};}
-  if(msg.op==='grant-active')return {ok:true,...await grantActive()};
+  if(msg.op==='capabilities')return {ok:true,read:READ_OPS,interact:INTERACT_OPS,sessionScoped:true};
+  if(msg.op==='status'){
+   const s=await state(),t=await activeTab();await prune(s.grants);
+   let connected=!!s.auth;
+   if(connected){try{await api('/extension/jobs',{token:s.auth.token})}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants')]);await setGrants({})}}
+   const g=connected&&t&&s.grants[t.id];
+   return {ok:true,connected,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,grantedCount:connected?Object.keys(s.grants).length:0,sessionScoped:true};
+  }
+  if(msg.op==='pair'){
+   if(!/^\d{8}$/.test(msg.code||''))throw new Error('Enter your eight-digit pairing code');
+   const r=await api('/pair',{method:'POST',data:{code:msg.code}});
+   await chrome.storage.local.set({auth:{token:r.token}});await setGrants({});await poll();return {ok:true,message:'LUCH connected'};
+  }
+  if(msg.op==='grant-active')return {ok:true,...await grantActive('read')};
+  if(msg.op==='allow-interaction')return {ok:true,...await grantActive('interact')};
   if(msg.op==='revoke-active')return {ok:true,...await revokeActive()};
   if(msg.op==='disconnect')return {ok:true,...await disconnect()};
   throw new Error('UNKNOWN_COMMAND');
  })().then(respond,e=>respond({ok:false,error:String(e.message||e).slice(0,160)}));return true;
 });
-chrome.tabs.onUpdated.addListener(async(id,change)=>{if(change.url){const s=await state();const g=s.grants[id];if(g){if(originOf(change.url)!==g.origin)delete s.grants[id];else g.url=change.url;await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}}}});
-chrome.tabs.onRemoved.addListener(async id=>{const s=await state();if(s.grants[id]){delete s.grants[id];await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}}});
+chrome.tabs.onUpdated.addListener(async(id,change)=>{
+ if(!change.url)return;
+ const s=await state(),g=s.grants[id];if(!g)return;
+ if(originOf(change.url)!==g.origin)delete s.grants[id];else g.url=change.url;
+ await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}
+});
+chrome.tabs.onRemoved.addListener(async id=>{
+ const s=await state();if(s.grants[id]){delete s.grants[id];await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}}
+ if(s.owned.includes(id))await chrome.storage.session.set({ownedTabs:s.owned.filter(x=>x!==id)});
+});
 chrome.alarms.create('luch-poll',{periodInMinutes:0.5});
 chrome.alarms.onAlarm.addListener(a=>{if(a.name==='luch-poll')poll()});
-// An interval may be paused by Chrome's MV3 lifecycle. The alarm wakes the worker.
 setInterval(poll,5000);

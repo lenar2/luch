@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
-  "description": "Connect selected browser tabs to your LUCH Companion. Explicit per-tab consent, 15-minute access and one-click revocation.",
-  "version": "0.4.0",
+  "description": "Give your AI a browser it can understand and work with: read, explore and interact with the tabs you approve.",
+  "version": "0.5.0",
   "minimum_chrome_version": "116",
   "permissions": [
     "activeTab",

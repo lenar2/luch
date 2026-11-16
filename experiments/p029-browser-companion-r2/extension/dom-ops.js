@@ -25,8 +25,12 @@ function luchDomExecutor({op,args={}}){
   allowedElement(el);
   const label=[el.innerText,el.textContent,el.value,el.getAttribute?.('aria-label')].filter(Boolean).join(' ').slice(0,200);
   const type=(el.getAttribute?.('type')||'').toLowerCase();
-  if(el.closest?.('form') && (type==='submit'||el.tagName==='BUTTON' && type!=='button'))throw new Error('FORM_SUBMISSION_NEEDS_USER');
-  if(/\b(delete|remove|erase|purchase|checkout|payment|buy now|confirm order|send money|оплатить|удалить|заказать|купить)\b/i.test(label))throw new Error('HIGH_IMPACT_CLICK_NEEDS_USER');
+  if(type==='submit'||type==='image'||el.getAttribute?.('form')||el.getAttribute?.('formaction')||
+     (el.closest?.('form')&&el.tagName==='BUTTON'&&type!=='button'))
+     throw new Error('FORM_SUBMISSION_NEEDS_USER');
+  // Do not use ASCII \b for Russian labels: Cyrillic letters are not JS \w.
+  const risky=/(delete|remove|erase|purchase|checkout|payment|buy\s+now|confirm|submit|send|transfer|publish|withdraw|subscribe|checkout|order|pay\b|оплат|удал|заказ|купить|платеж|перевести|отправить|подпис|публиков|подтверд|перечисл)/iu;
+  if(risky.test(label.normalize('NFKC').toLocaleLowerCase()))throw new Error('HIGH_IMPACT_CLICK_NEEDS_USER');
   if(el.closest?.('a[download],a[href^="javascript:"],a[href^="data:"]'))throw new Error('UNSAFE_LINK_DENIED');
   return el;
  };

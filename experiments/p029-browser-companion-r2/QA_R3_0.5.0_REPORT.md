@@ -17,7 +17,7 @@ Current publicly installed Chrome version verified separately: 0.4.0. Existing O
 - `node --test tests/*.test.mjs`: **11/11 PASS** (including new safe DOM actions and broker read-to-interact consent upgrade).
 - `node security-qa.mjs`: **21/21 PASS** (includes no arbitrary grant TTL, inactive-session denial, heartbeat resume, foreign origin/token and cross-tab denial).
 - `node --check`: background, popup, DOM operations, broker and adapter syntax PASS.
-- `bash package.sh`: created root-correct MV3 `LUCH-Browser-Companion-v0.5.0.zip`, SHA-256 `3835c603de528147dfb40e97ea085f01a6794308a1281d5482f4a123a5810fa7`. Source zip staged on isolated /dev/shm; not uploaded to public store.
+- `bash package.sh`: created root-correct MV3 `LUCH-Browser-Companion-v0.5.0.zip`, SHA-256 `79bccc768dae9d1c3fcd1c0c2af77aeefcc7e9925680d1b674854d37bafd1db0`. Source zip staged on isolated /dev/shm; not uploaded to public store.
 
 ## Explicit remaining gates
 1. A fully functioning local LUCH Companion broker installer and authenticated client integration to ordinary public LUCH user accounts and `browser_tabs` / `browser_read_text` routes; currently still standalone loopback stage.
@@ -27,3 +27,8 @@ Current publicly installed Chrome version verified separately: 0.4.0. Existing O
 5. Existing Chrome Web Store developer console requires Google login/identity state; Opera 0.4.1 remains in review. Do not claim marketplace upload, approval, production activation or all 54 tools work.
 
 **Release status remains HOLD.** Founder priority is full featured LUCH, not inflated store metrics. The 13 `server_browser_*` tools live in a separate server-browser provider and are not a license to claim them as local Chrome extension functions.
+
+## Follow-up product / abuse review
+- Branding corrected: full original R22.11.4 application wordmark at 128px for store tile; micro-L B at toolbar sizes 16/32/48.
+- Audited click guard: previous ASCII word boundaries failed for Russian labels and omitted English money transfers. Repaired common cases and added repeatable regression tests. Unknown high-impact interactions remain a release gate; do not claim universal prevention.
+- This is a source-level and mock/broker test pass, not actual installed Chrome/Opera E2E, and public install without the separate local broker still cannot work.

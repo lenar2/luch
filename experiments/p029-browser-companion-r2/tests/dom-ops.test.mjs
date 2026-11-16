@@ -17,10 +17,12 @@ function app(){
  const password={...base,tagName:'INPUT',type:'password',value:'hidden',closest:s=>s.includes('password')?password:null};
  const danger={...base,tagName:'BUTTON',innerText:'Delete account',value:'',click:()=>{danger.clicked=true}};
  const submit={...base,tagName:'BUTTON',innerText:'Go',closest:s=>s==='form'?{tagName:'FORM'}:null,click:()=>{submit.clicked=true}};
- const selectors={'#q':input,'#password':password,'#danger':danger,'#submit':submit,'#link':link};
+ const transfer={...base,tagName:'BUTTON',innerText:'Transfer funds',click:()=>{transfer.clicked=true}};
+ const russianPayment={...base,tagName:'BUTTON',innerText:'Оплатить счёт',click:()=>{russianPayment.clicked=true}};
+ const selectors={'#q':input,'#password':password,'#danger':danger,'#submit':submit,'#link':link,'#transfer':transfer,'#ru-pay':russianPayment};
  const ctx=vm.createContext({document,window:{scrollX:0,scrollY:0,scrollBy(){},scrollTo(){},getSelection(){return{toString:()=>''}}},location:{href:'https://example.org/news'},Event:class{constructor(type){this.type=type}},MouseEvent:class{constructor(type){this.type=type}},InputEvent:class{},HTMLTextAreaElement:class{},HTMLInputElement:class{}});
  ctx.self=ctx;vm.runInContext(source,ctx);
- return {run:(op,args)=>ctx.luchDomExecutor({op,args}),input,link,danger,submit};
+ return {run:(op,args)=>ctx.luchDomExecutor({op,args}),input,link,danger,submit,transfer,russianPayment};
 }
 test('DOM operations inspect visible content and bounded forms without password values',()=>{
  const {run}=app();
@@ -32,14 +34,16 @@ test('DOM operations inspect visible content and bounded forms without password 
  assert.ok(!JSON.stringify(run('accessibility_snapshot')).includes('hidden'));
 });
 test('interactive operations update user-approved input and block sensitive changes',()=>{
- const {run,input,link,danger,submit}=app();
+ const {run,input,link,danger,submit,transfer,russianPayment}=app();
  assert.equal(run('fill',{selector:'#q',text:'value'}).ok,true);
  assert.equal(input.value,'value');
  assert.equal(run('click',{selector:'#link'}).ok,true);assert.equal(link.clicked,1);
  assert.equal(run('fill',{selector:'#password',text:'bad'}).error,'SENSITIVE_ELEMENT_DENIED');
  assert.equal(run('click',{selector:'#danger'}).error,'HIGH_IMPACT_CLICK_NEEDS_USER');
  assert.equal(run('click',{selector:'#submit'}).error,'FORM_SUBMISSION_NEEDS_USER');
+ assert.equal(run('click',{selector:'#transfer'}).error,'HIGH_IMPACT_CLICK_NEEDS_USER');
+ assert.equal(run('click',{selector:'#ru-pay'}).error,'HIGH_IMPACT_CLICK_NEEDS_USER');
  assert.equal(danger.clicked,undefined);
- assert.equal(submit.clicked,undefined);
+ assert.equal(submit.clicked,undefined);assert.equal(transfer.clicked,undefined);assert.equal(russianPayment.clicked,undefined);
  assert.equal(run('eval',{code:'alert(1)'}).error,'OPERATION_NOT_SUPPORTED_IN_EXTENSION');
 });

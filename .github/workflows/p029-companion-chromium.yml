@@ -1,0 +1,37 @@
+name: P029 Browser Companion · real Chromium pairing
+
+on:
+  push:
+    branches:
+      - feat/p029-browser-companion-r3-expanded-20261116
+    paths:
+      - 'experiments/p029-browser-companion-r2/**'
+      - '.github/workflows/p029-companion-chromium.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  headed-chromium-pairing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright chromium
+        working-directory: experiments/p029-browser-companion-r2
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify source and broker regressions
+        working-directory: experiments/p029-browser-companion-r2
+        run: |
+          node --test tests/*.test.mjs
+          node security-qa.mjs
+          bash package.sh
+      - name: Verify actual headed Chromium MV3 popup + localhost pairing
+        working-directory: experiments/p029-browser-companion-r2
+        run: xvfb-run -a node --test tests/real-chromium-pairing-e2e.mjs

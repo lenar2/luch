@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
   "description": "Give your AI a browser it can understand and work with: read, explore and interact with the tabs you approve.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "minimum_chrome_version": "116",
   "permissions": [
     "activeTab",

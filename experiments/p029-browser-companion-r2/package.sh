@@ -4,7 +4,11 @@ cd "$(dirname "$0")"
 node --test tests/*.test.mjs >/dev/null
 node security-qa.mjs >/dev/null
 node --check extension/background.js
+node --check extension/dom-ops.js
 node --check extension/popup.js
+node --check broker/server.mjs
+node --check bridge-integration/integrate.mjs
+node --check bridge-integration/browser-companion-routes.mjs
 python3 -m json.tool extension/manifest.json >/dev/null
 mkdir -p dist
 name="LUCH-Browser-Companion-v$(node -p 'require("./extension/manifest.json").version').zip"
@@ -17,7 +21,7 @@ target=Path('dist')/sys.argv[1]
 with zipfile.ZipFile(target) as z:
     manifest=json.loads(z.read('manifest.json'))
     assert manifest['name']=='LUCH Browser Companion'
-    assert manifest['version']=='0.5.0'
+    assert manifest['version']=='0.5.1'
     assert z.testzip() is None
     assert sorted(z.namelist())==sorted(['manifest.json','background.js','dom-ops.js','popup.html','popup.css','popup.js','assets/','assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png'])
 PY

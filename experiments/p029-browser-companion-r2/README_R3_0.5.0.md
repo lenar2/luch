@@ -1,4 +1,4 @@
-# LUCH Browser Companion v0.5.0 — expanded isolated candidate
+# LUCH Browser Companion v0.5.1 — expanded isolated candidate
 
 **Release status:** QA CANDIDATE / NO MARKETPLACE UPDATE YET.
 Current Chrome Web Store listing remains at v0.4.0; Opera v0.4.1 is awaiting moderation.
@@ -20,6 +20,3 @@ The current standalone local broker is only 127.0.0.1:9248 and not integrated wi
 Run node --test tests/*.test.mjs; node security-qa.mjs; node --check extension/background.js; node --check extension/dom-ops.js; node --check extension/popup.js; then ./package.sh. This builds the MV3 ZIP, not an approved store release.
 
 The earlier v0.4.0 E2E report is historical; it does not independently certify this candidate.
-
-### Independent code review note
-The first 0.5.0 click guard had an English-focused label blacklist with nonworking ASCII word boundaries for Cyrillic. The reviewed candidate now blocks common payment, transfer, deletion and publishing labels in EN/RU, with regression fixtures. This still does not constitute a complete high-impact action classifier; unclassified consequence-bearing clicks require further human-in-the-loop safeguards before public release.

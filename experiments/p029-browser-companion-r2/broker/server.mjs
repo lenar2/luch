@@ -24,7 +24,20 @@ export function createBroker({bridgeToken,pairingCode,port=9248,host='127.0.0.1'
  const secretHash=hash(String(bridgeToken));
  const code=pairingCode||String(randomBytes(4).readUInt32BE()%100_000_000).padStart(8,'0');
  if(!/^\d{8}$/.test(code))throw new Error('PAIR_CODE_INVALID');
- let pairHash=hash(code),pairUntil=clock()+5*60_000,failed=0,session=null,sessionLastSeen=0,extensionOrigin=null;
+ let currentPairCode=code;
+let pairHash=hash(code),pairUntil=clock()+5*60_000,failed=0,session=null,sessionLastSeen=0,extensionOrigin=null;
+const setupCsrf=randomBytes(24).toString('hex');
+const setupOrigin='http://127.0.0.1:'+port;
+const pairStatus=()=>({paired:!!session,ready:!session&&pairHash!==null&&clock()<=pairUntil&&failed<6});
+const page=()=>[
+'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LUCH Companion · Connect</title>',
+'<style>body{background:#f6f7f3;color:#163e42;max-width:480px;margin:6vh auto;font:16px system-ui;padding:24px}button{background:#163e42;color:#fff;border:0;border-radius:10px;padding:15px;cursor:pointer}#code{font-size:36px;letter-spacing:.2em;display:block;margin:20px 0}</style></head><body>',
+'<h1>Connect your browser to LUCH</h1><p>Generate a one-time code on this computer and enter it in the LUCH Browser Companion popup.</p>',
+'<button id="generate" '+(session?'disabled':'')+'>Generate pairing code</button><output id="code"></output>',
+'<p>The pairing code expires after five minutes. Browser sharing continues until you revoke it or end the session.</p>',
+'<script>document.getElementById("generate").onclick=async()=>{let el=document.getElementById("code");try{let r=await fetch("/setup/code",{method:"POST",headers:{"Content-Type":"application/json","X-LUCH-Setup-CSRF":'+JSON.stringify(setupCsrf)+'},body:"{}"});let d=await r.json();el.textContent=r.ok&&d.ok?d.code:"Unable to generate code"}catch{el.textContent="Companion offline"}}</script>',
+'</body></html>'
+].join('');
  const grants=new Map(),jobs=new Map(),pending=new Map();
  const grantedTabs=()=>session&&clock()-sessionLastSeen<SESSION_IDLE_MS?[...grants.values()]:[];
  function bridgeAuth(req){const raw=req.headers['x-browser-bridge-token'];return typeof raw==='string'&&equals(secretHash,hash(raw));}
@@ -38,6 +51,16 @@ export function createBroker({bridgeToken,pairingCode,port=9248,host='127.0.0.1'
  const server=http.createServer(async(req,res)=>{
   const origin=extensionReq(req)?req.headers.origin:'';
   const url=new URL(req.url,`http://${host}:${port}`);
+if(req.headers.host!==('127.0.0.1:'+port))return json(res,403,errorCode('INVALID_HOST'));
+if(req.method==='GET'&&url.pathname==='/setup'){
+res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"});res.end(page());return;
+}
+if(req.method==='POST'&&url.pathname==='/setup/code'){
+if(req.headers.origin!==setupOrigin||req.headers['x-luch-setup-csrf']!==setupCsrf||req.headers['content-type']!=='application/json')return json(res,403,errorCode('SETUP_ORIGIN_DENIED'));
+if(session)return json(res,409,errorCode('ALREADY_PAIRED'));
+currentPairCode=String(randomBytes(4).readUInt32BE()%100_000_000).padStart(8,'0');pairHash=hash(currentPairCode);pairUntil=clock()+5*60_000;failed=0;
+return json(res,200,{ok:true,code:currentPairCode,validForSeconds:300});
+}
   if(req.method==='OPTIONS'){
    if(!origin)return json(res,403,errorCode('EXTENSION_ORIGIN_REQUIRED'));
    res.writeHead(204,{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Authorization,Content-Type','Access-Control-Max-Age':'120','Cache-Control':'no-store'});res.end();return;
@@ -125,7 +148,7 @@ export function createBroker({bridgeToken,pairingCode,port=9248,host='127.0.0.1'
    json(res,404,errorCode('NOT_FOUND'),origin);
   }catch(e){json(res,400,errorCode(String(e.message||'REQUEST_INVALID').slice(0,80)),origin)}
  });
- return {server,pairingCode:code,listen:()=>new Promise(r=>server.listen(port,host,r)),close:()=>new Promise(r=>server.close(r)),grantedTabs};
+ return {server,get pairingCode(){return currentPairCode},pairStatus,listen:()=>new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,host,()=>{server.removeListener('error',reject);resolve()})}),close:()=>new Promise(r=>server.close(r)),grantedTabs};
 }
 if(process.argv[1]&&new URL(import.meta.url).pathname===process.argv[1]){
  const tokenFile=process.env.LUCH_BRIDGE_TOKEN_FILE;

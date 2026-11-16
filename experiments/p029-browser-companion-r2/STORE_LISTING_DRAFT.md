@@ -1,4 +1,4 @@
-# LUCH Browser Companion v0.5.0 — Chrome / Opera listing candidate
+# LUCH Browser Companion v0.5.1 — Chrome / Opera listing candidate
 
 **Name:** LUCH Browser Companion
 
@@ -23,7 +23,7 @@ LUCH Browser Companion connects web pages you choose to the LUCH tools available
 Explore the full LUCH platform: https://luch.lenarsalimov.ru/en/ . Browser capabilities outside this extension are provided through separate authorized LUCH routes; they are not automatically available here.
 
 ## Verification and truth boundary
-The 0.5.0 candidate contains 16 read/inspection and 23 interaction/navigation operation identifiers, not 54 independent extension operations. LUCH's broader public API describes 41 local browser and 13 separate server browser tools. Those numbers must not be conflated.
+The 0.5.1 candidate contains 16 read/inspection and 23 interaction/navigation operation identifiers, not 54 independent extension operations. LUCH's broader public API describes 41 local browser and 13 separate server browser tools. Those numbers must not be conflated.
 
 No user cookies, browsing history, debugger or saved passwords APIs are requested. The page URL/title/visible contents from approved tabs may be provided to the locally paired Companion and a user-authorized AI host; do not claim data never leaves the device.
 

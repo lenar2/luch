@@ -7,8 +7,8 @@ const strings={
   caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
   connected:'Connected',disconnected:'Not connected',statusScope:'Local LUCH Companion',
   pairLabel:'Pair with your LUCH Companion',pairButton:'Connect',
-  pairHint:'Enter the one-time code from the LUCH Companion on this computer. The extension needs a compatible local Companion.',
-  help:'How to connect',tabLabel:'Your current tab',grant:'Let LUCH read this tab',
+  pairHint:'Open LUCH Companion on this computer, generate a pairing code and enter it here. You can revoke sharing at any time.',
+  help:'Installation help',tabLabel:'Your current tab',grant:'Let LUCH read this tab',
   interact:'Allow interaction on this tab',revoke:'Stop sharing this tab',disconnect:'Disconnect LUCH',
   expired:'Not shared',read:'LUCH can read this tab',interacting:'LUCH can read and interact with this tab',
   sessionNote:'Sharing stays on until you revoke it, close the tab or browser session, or leave this website.',
@@ -22,8 +22,8 @@ const strings={
   caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Скриншоты и проверка'],
   connected:'Подключено',disconnected:'Не подключено',statusScope:'Локальный LUCH Companion',
   pairLabel:'Подключите LUCH Companion',pairButton:'Подключить',
-  pairHint:'Введите одноразовый код из LUCH Companion на этом компьютере. Для работы расширения нужен совместимый локальный Companion.',
-  help:'Как подключить',tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
+  pairHint:'Откройте LUCH Companion на этом компьютере, получите одноразовый код и введите его здесь. Доступ можно отозвать в любой момент.',
+  help:'Помощь с установкой',tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
   interact:'Разрешить действия в этой вкладке',revoke:'Закрыть доступ к вкладке',disconnect:'Отключить LUCH',
   expired:'Доступ не предоставлен',read:'LUCH может читать эту вкладку',interacting:'LUCH может читать и взаимодействовать с этой вкладкой',
   sessionNote:'Доступ действует до вашего отзыва, закрытия вкладки или браузера либо перехода на другой сайт.',
@@ -43,6 +43,7 @@ function setTexts(){
  for(const [id,key] of Object.entries(map))$(id).textContent=t(key);
  ['read','navigate','interact','capture'].forEach((k,i)=>$('cap-'+k).textContent=t('caps')[i]);
  $('help').href='https://luch.lenarsalimov.ru/'+(lang==='ru'?'ru':'en')+'/connect/';
+ $('local-setup').textContent=lang==='ru'?'Открыть LUCH Companion на компьютере':'Open LUCH Companion on this computer';
  $('learn').href='https://luch.lenarsalimov.ru/'+(lang==='ru'?'ru':'en')+'/browser/';
  $('locale').value=lang;
 }

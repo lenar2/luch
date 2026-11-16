@@ -73,7 +73,7 @@ test('REAL headed Chromium: MV3 registered, original popup opens and pairs to ac
   // In this test the extension receives the command through its real worker.
   // The consent UI button is tested separately; the real shortcut is the
   // browser user gesture granting activeTab for the actual site.
-  const firstGrant=await sw.evaluate(()=>chrome.runtime.sendMessage({op:'grant-active'}));
+  const firstGrant=await popup.evaluate(()=>chrome.runtime.sendMessage({op:'grant-active'}));
   assert.equal(firstGrant.ok,true,JSON.stringify(firstGrant));
   const adapter=makeConsentedTabAdapter({brokerUrl:'http://127.0.0.1:9248',bridgeTokenProvider:()=>bridgeSecret,timeoutMs:14500});
   let approved=await adapter.listAuthorizedTabs();
@@ -83,7 +83,7 @@ test('REAL headed Chromium: MV3 registered, original popup opens and pairs to ac
   const before=await routeCompanionRequest('/v1/type',{browser:'chrome',targetId,selector:'#query',text:'LUCH real Chromium'},adapter);
   assert.equal(before.status,409,JSON.stringify(before));
   assert.equal(before.body.error,'INTERACTION_APPROVAL_REQUIRED');
-  const interaction=await sw.evaluate(()=>chrome.runtime.sendMessage({op:'allow-interaction'}));
+  const interaction=await popup.evaluate(()=>chrome.runtime.sendMessage({op:'allow-interaction'}));
   assert.equal(interaction.ok,true,JSON.stringify(interaction));
   const fill=await routeCompanionRequest('/v1/type',{browser:'chrome',targetId,selector:'#query',text:'LUCH real Chromium'},adapter);
   assert.equal(fill.status,200,JSON.stringify(fill));
@@ -92,7 +92,7 @@ test('REAL headed Chromium: MV3 registered, original popup opens and pairs to ac
   const read=await adapter.readAuthorizedText({targetId});
   assert.equal(read.ok,true);
   assert.match(read.text,/LUCH browser fixture/);
-  const revoked=await sw.evaluate(()=>chrome.runtime.sendMessage({op:'revoke-active'}));
+  const revoked=await popup.evaluate(()=>chrome.runtime.sendMessage({op:'revoke-active'}));
   assert.equal(revoked.ok,true,JSON.stringify(revoked));
   const denied=await routeCompanionRequest('/v1/type',{browser:'chrome',targetId,selector:'#query',text:'must not write'},adapter);
   assert.equal(denied.status,409);

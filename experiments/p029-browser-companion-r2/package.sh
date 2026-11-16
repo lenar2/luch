@@ -13,7 +13,21 @@ python3 -m json.tool extension/manifest.json >/dev/null
 mkdir -p dist
 name="LUCH-Browser-Companion-v$(node -p 'require("./extension/manifest.json").version').zip"
 rm -f "dist/$name"
-(cd extension && zip -q -9 -r "../dist/$name" manifest.json background.js dom-ops.js popup.html popup.css popup.js assets)
+python3 - "$name" <<'PY'
+from pathlib import Path
+from zipfile import ZipFile,ZipInfo,ZIP_DEFLATED,ZIP_STORED
+import sys
+root=Path('extension')
+dst=Path('dist')/sys.argv[1]
+files=['manifest.json','background.js','dom-ops.js','popup.html','popup.css','popup.js']
+files+=['assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png']
+stamp=(2026,11,16,0,0,0)
+with ZipFile(dst,'w') as z:
+ info=ZipInfo('assets/',date_time=stamp);info.create_system=3;info.external_attr=(0o755 << 16)|0x10;info.compress_type=ZIP_STORED;z.writestr(info,b'')
+ for name in sorted(files):
+  info=ZipInfo(name,date_time=stamp);info.create_system=3;info.external_attr=0o644 << 16;info.compress_type=ZIP_DEFLATED
+  z.writestr(info,(root/name).read_bytes(),compress_type=ZIP_DEFLATED,compresslevel=9)
+PY
 python3 - "$name" <<'PY'
 import zipfile,sys,json
 from pathlib import Path

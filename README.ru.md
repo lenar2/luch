@@ -1,5 +1,4 @@
-<p align="center"><img src="website/assets/luch-ray.svg" width="54" alt="LUCH"></p>
-<h1 align="center">LUCH</h1>
+<p align="center"><img src="website/assets/luch-brand-r22.svg" width="300" alt="LUCH — original luminous four-letter logo"></p>
 <p align="center"><strong>Ваши инструменты. Ваш выбор. Ваш ИИ.</strong></p>
 <p align="center">Вы описываете задачу в привычном ИИ-чате.<br>LUCH даёт доступ к разрешённым сайтам, файлам, устройствам и серверам — и помогает проверить, что действительно сделано.</p>
 <p align="center"><a href="#как-luch-работает">Увидеть реальную работу</a> · <a href="#как-начать">Как начать</a> · <a href="https://luch.lenarsalimov.ru/ru/">Открыть сайт</a> · <a href="README.en.md">English</a></p>

@@ -89,7 +89,11 @@ const args=process.argv.slice(2);
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const arg=key=>{const idx=args.indexOf(key);return idx>=0?args[idx+1]:''};
  try{
-  if(args[0]==='--list'){for(const a of displayAccounts())console.log([a.deviceId,a.label,a.agent].join('\t'))}
+  if(args[0]==='--list'){for(const a of displayAccounts()){
+   if(a.agent!=='com.aifactory.browser-bridge-companion')continue;
+   try{await preflight({expectedDeviceId:a.deviceId});console.log([a.deviceId,a.label,a.agent].join('\t'))}
+   catch{/* Do not present stale, wrong-account or unavailable companions in user picker. */}
+  }}
   else if(args[0]==='--check')console.log(JSON.stringify(await preflight({expectedDeviceId:arg('--device-id')})));
   else if(args[0]==='--stage')console.log(JSON.stringify(await stage({expectedDeviceId:arg('--device-id'),outputDir:arg('--output-dir')})));
   else{console.log('Available: --list; --check --device-id ID; --stage --device-id ID --output-dir NEW_PATH');process.exitCode=2}

@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
+import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {stage,preflight,launchAgentXML} from './desktop-setup.mjs';
 import {AccountBindingError} from './account-binding.mjs';
@@ -115,7 +116,7 @@ export async function install({home=os.homedir(),expectedDeviceId,migrateKnownLe
   throw err;
  }
 }
-if(process.argv[1]&&path.resolve(process.argv[1])===new URL(import.meta.url).pathname){
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const args=process.argv.slice(2),pos=args.indexOf('--device-id');
  const selected=pos>=0?args[pos+1]:'';
  try{

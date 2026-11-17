@@ -18,6 +18,7 @@ const imageData=async file=>{
 };
 const requiredCaptures=[
  'popup-before-pair.png',
+ 'popup-before-pair.png',
  'popup-paired.png',
  'popup-read-approved.png',
  'popup-interaction-approved.png',
@@ -37,12 +38,12 @@ const smallSvg=(await read('chrome-small-promo.svg')).replaceAll('href="luch-app
 const marqueeSvg=(await read('chrome-marquee.svg')).replaceAll('href="luch-app-mark.svg"','href="'+appUri+'"');
 
 const browser=await chromium.launch({headless:true});
-async function renderSvg(name,svg,width,height){
+async function renderSvg(name,svg,width,height,transparent=false){
  const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:1});
  const uri='data:image/svg+xml;base64,'+Buffer.from(svg).toString('base64');
  await page.setContent('<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;width:'+width+'px;height:'+height+'px;overflow:hidden"><img src="'+uri+'" style="display:block;width:'+width+'px;height:'+height+'px"></body></html>',{waitUntil:'load'});
  await page.locator('img').evaluate(img=>img.decode());
- await page.screenshot({path:path.join(output,name),fullPage:false});
+ await page.screenshot({path:path.join(output,name),fullPage:false,omitBackground:transparent});
  await page.close();
 }
 async function compose(name,width,height,{heading,caption,popup,page}) {
@@ -57,7 +58,7 @@ async function compose(name,width,height,{heading,caption,popup,page}) {
  '.brand{display:flex;align-items:center;gap:'+(compact?'9px':'14px')+';color:#143c43;font-size:'+(compact?'10px':'15px')+';font-weight:800;letter-spacing:.16em}.brand img{width:'+(compact?'36px':'58px')+';height:'+(compact?'36px':'58px')+';border-radius:8px}'+
  '.eyebrow{margin:'+(compact?'13px':'24px')+' 0 5px;color:#718a83;font-size:'+(compact?'8px':'12px')+';font-weight:800;letter-spacing:.18em}h1{margin:0;font-size:'+(compact?'24px':'46px')+';line-height:1.05;letter-spacing:-.045em;color:#102f34}.caption{margin:'+(compact?'7px':'12px')+' 0 0;color:#5b6b68;font-size:'+(compact?'11px':'18px')+';line-height:1.35}'+
  '.visual{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.8fr);gap:'+(compact?'12px':'28px')+';align-items:center;margin-top:'+(compact?'15px':'28px')+';height:'+(compact?'210px':'455px')+'}'+
- '.page,.popup{min-width:0;max-height:100%;overflow:hidden;border:1px solid #d8dfda;border-radius:'+(compact?'10px':'18px')+';background:#fff;box-shadow:0 12px 34px rgba(16,47,52,.11)}.page img{display:block;width:100%;height:'+(compact?'210px':'455px')+';object-fit:cover;object-position:top center}.popup{display:flex;justify-content:center;padding:'+(compact?'4px':'8px')+';background:#e9eee9}.popup img{display:block;width:100%;max-height:'+(compact?'202px':'438px')+';object-fit:contain;object-position:top center;border-radius:8px}'+
+ '.page,.popup{min-width:0;max-height:100%;overflow:hidden;border:1px solid #d8dfda;border-radius:0;background:#fff;box-shadow:none}.page img{display:block;width:100%;height:'+(compact?'210px':'455px')+';object-fit:cover;object-position:top center}.popup{display:flex;justify-content:center;padding:'+(compact?'4px':'8px')+';background:#e9eee9}.popup img{display:block;width:100%;max-height:'+(compact?'202px':'438px')+';object-fit:contain;object-position:top center;border-radius:8px}'+
  '.footer{margin-top:'+(compact?'9px':'16px')+';color:#71817b;font-size:'+(compact?'8px':'12px')+';letter-spacing:.02em}'+
  '</style></head><body><main class="canvas"><div class="brand"><img src="'+appUri+'"><span>LUCH / BROWSER COMPANION</span></div><p class="eyebrow">YOUR TAB · YOUR PERMISSION</p><h1>'+heading+'</h1><p class="caption">'+caption+'</p><section class="visual"><div class="page"><img src="'+pageUri+'"></div><div class="popup"><img src="'+popupUri+'"></div></section><p class="footer">A local test fixture demonstrates the current candidate UI. Only a tab you approve is shared.</p></main></body></html>';
  const view=await browser.newPage({viewport:{width,height},deviceScaleFactor:1});
@@ -79,7 +80,11 @@ try{
   await compose('chrome-screenshot-'+item.suffix+'-1280x800.png',1280,800,item);
   await compose('opera-preview-'+item.suffix+'-612x408.png',612,408,item);
  }
- for(const size of [128,48,32,16])await renderSvg('icon-ray-candidate-'+size+'.png',iconSvg,size,size);
+ const iconInner=iconSvg.slice(iconSvg.indexOf('>')+1,iconSvg.lastIndexOf('</svg>'));
+ const chromeIconSvg='<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg"><svg x="16" y="16" width="96" height="96" viewBox="0 0 128 128">'+iconInner+'</svg></svg>';
+ await renderSvg('icon-ray-candidate-chrome-128.png',chromeIconSvg,128,128,true);
+ await renderSvg('icon-ray-candidate-opera-128.png',iconSvg,128,128);
+ for(const size of [48,32,16])await renderSvg('icon-ray-candidate-'+size+'.png',iconSvg,size,size);
  const manifest={
   candidate:'0.5.2',
   status:'DRAFT_HOLD',

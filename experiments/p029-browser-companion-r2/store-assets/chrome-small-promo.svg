@@ -4,15 +4,10 @@
  <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(340 70) rotate(140) scale(260 180)"><stop stop-color="#789EA4" stop-opacity=".55"/><stop offset="1" stop-color="#789EA4" stop-opacity="0"/></radialGradient>
 </defs>
 <rect width="440" height="280" fill="url(#bg)"/><rect width="440" height="280" fill="url(#glow)"/>
-<image href="luch-app-mark.svg" x="26" y="25" width="92" height="92"/>
-<text x="134" y="58" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5">BROWSER COMPANION</text>
-<text x="134" y="102" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="31" font-weight="700">Share a tab.</text>
-<text x="134" y="139" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="31" font-weight="700">Keep control.</text>
-<path d="M28 164H412" stroke="#789EA4" stroke-opacity=".45"/>
-<g font-family="Arial, sans-serif" font-size="13" font-weight="600">
- <rect x="28" y="187" width="105" height="38" rx="19" fill="#FFFDF5" fill-opacity=".1" stroke="#D6AD73" stroke-opacity=".8"/><text x="80.5" y="211" text-anchor="middle" fill="#FFFDF5">Read</text>
- <rect x="146" y="187" width="130" height="38" rx="19" fill="#FFFDF5" fill-opacity=".1" stroke="#D6AD73" stroke-opacity=".8"/><text x="211" y="211" text-anchor="middle" fill="#FFFDF5">Navigate</text>
- <rect x="289" y="187" width="123" height="38" rx="19" fill="#FFFDF5" fill-opacity=".1" stroke="#D6AD73" stroke-opacity=".8"/><text x="350.5" y="211" text-anchor="middle" fill="#FFFDF5">Interact</text>
-</g>
-<text x="28" y="257" fill="#D5E1DD" font-family="Arial, sans-serif" font-size="11">Only the tab you approve. Interaction is a separate permission.</text>
+<image href="luch-app-mark.svg" x="30" y="50" width="112" height="112"/>
+<text x="164" y="73" fill="#D6AD73" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2">LUCH / BROWSER COMPANION</text>
+<text x="164" y="119" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="31" font-weight="700">Share a tab.</text>
+<text x="164" y="157" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="31" font-weight="700">Keep control.</text>
+<path d="M30 198H410" stroke="#789EA4" stroke-opacity=".45"/>
+<text x="30" y="239" fill="#E5ECE8" font-family="Arial, sans-serif" font-size="16">Only the page you approve.</text>
 </svg>

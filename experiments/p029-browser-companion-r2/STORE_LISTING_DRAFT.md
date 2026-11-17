@@ -151,15 +151,15 @@ The extension does not request cookies, browsing history, downloads, geolocation
 
 ### Chrome Web Store
 
-- Store icon: 128×128 PNG.
+- Store icon: 128×128 PNG; 96×96 artwork centered with 16px transparent padding.
 - Screenshots: 1280×800 PNG/JPEG, at least one and up to five; use the latest real extension UI and a truthful example.
-- Small promotional tile: 440×280 PNG/JPEG (optional).
+- Small promotional tile: 440×280 PNG/JPEG (required).
 - Marquee promotional tile: 1400×560 PNG/JPEG (optional).
 - Localize the description and screenshots for English and Russian; Chrome's small and marquee promotional tiles are global rather than localized.
 
 ### Opera Add-ons
 
-- Icons: 128×128, 48×48 and 16×16 PNG.
+- Icons: 128×128, 48×48 and 16×16 PNG; keep a consistent simple shape, with a full-bleed icon background.
 - Screenshots: 612×408 recommended; do not exceed 800×600. Use a clean white background and show the actual extension UI and its relation to the page.
 - Do not use Opera marks, names or browser branding in the artwork.
 

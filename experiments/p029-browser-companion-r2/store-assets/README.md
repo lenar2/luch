@@ -12,7 +12,7 @@ This folder contains editable SVG artwork and a deterministic Playwright rendere
 
 - `chrome-small-promo.svg` — 440×280.
 - `chrome-marquee.svg` — 1400×560.
-- `extension-icon-ray-candidate.svg` — 128×128 vector source.
+- `extension-icon-ray-candidate.svg` — 128×128 vector source; Chrome's store export uses 96×96 artwork centered in a 128×128 transparent canvas, while Opera uses a full 128×128 background icon.
 - `luch-app-mark.svg` — approved app-mark source used in the promo artwork.
 
 ## Rendered outputs
@@ -22,9 +22,9 @@ Run `node store-assets/render.mjs` after the headed Chromium E2E has created `di
 The renderer outputs:
 
 - Chrome screenshots: four 1280×800 PNG compositions containing real extension-popup and fixture-page captures.
-- Chrome small promotional tile: 440×280 PNG.
+- Chrome small promotional tile: 440×280 PNG (required by current Chrome Web Store image guidance).
 - Chrome marquee promotional tile: 1400×560 PNG.
-- Candidate icon PNGs: 128, 48, 32 and 16 pixels.
+- Candidate icon PNGs: Chrome 128×128 with 96×96 artwork and 16px transparent padding; Opera 128×128 full-bleed; shared 48×48, 32×32 and 16×16 variants.
 - Opera preview compositions: four 612×408 PNGs.
 
 The Opera images are **preview-only** until the exact build has passed Opera runtime E2E and new screenshots have been captured in Opera. Do not upload Chrome-captured previews as proof of Opera testing.

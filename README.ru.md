@@ -1,8 +1,8 @@
-<p align="center"><img src="website/assets/luch-ray.svg" width="54" alt="LUCH"></p>
+<p align="center"><img src="website/assets/luch-brand-r22.svg" width="128" alt="LUCH · оригинальная айдентика R22, предпросмотр"></p>
 <h1 align="center">LUCH</h1>
-<p align="center"><strong>Ваши инструменты. Ваш выбор. Ваш ИИ.</strong></p>
-<p align="center">Вы описываете задачу в привычном ИИ-чате.<br>LUCH даёт доступ к разрешённым сайтам, файлам, устройствам и серверам — и помогает проверить, что действительно сделано.</p>
-<p align="center"><a href="#как-luch-работает">Увидеть реальную работу</a> · <a href="#как-начать">Как начать</a> · <a href="https://luch.lenarsalimov.ru/ru/">Открыть сайт</a> · <a href="README.en.md">English</a></p>
+<p align="center"><strong>Ваш ИИ может больше, чем отвечать.</strong></p>
+<p align="center">Опишите задачу привычному ИИ.<br>LUCH помогает ему работать с сайтами, файлами, подключёнными компьютерами и серверами, к которым вы открыли доступ. Не только советовать, но и доводить дело до результата.</p>
+<p align="center"><a href="https://luch.lenarsalimov.ru/ru/">О LUCH</a> · <a href="#как-luch-работает">Реальные результаты</a> · <a href="docs/START_HERE.ru.md">Как подключить</a> · <a href="README.en.md">English</a></p>
 
 ## Как LUCH работает
 

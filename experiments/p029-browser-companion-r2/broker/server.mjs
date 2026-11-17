@@ -157,5 +157,5 @@ if(process.argv[1]&&new URL(import.meta.url).pathname===process.argv[1]){
  const broker=createBroker({bridgeToken,port:Number(process.env.LUCH_COMPANION_PORT||9248)});
  await broker.listen();
  console.log('LUCH Browser Companion broker on 127.0.0.1 (private)');
- console.log('Pairing code (valid 5 minutes; show only to the owner): '+broker.pairingCode);
+ if(process.env.LUCH_COMPANION_DEBUG_PAIR_CODE==='1')console.log('DEBUG pairing code: '+broker.pairingCode);
 }

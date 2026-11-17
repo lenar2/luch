@@ -97,3 +97,43 @@
  .ed-entry-card h3{font-size:27px;margin:16px 0 9px}
  .ed-entry-card p{font-size:14px;margin-bottom:22px}
 }
+
+/* P029 HEA: original Figma LUCH wordmark inside the existing home hero.
+   This refines the CURRENT site, not a new landing page. */
+.ed-hero{
+ background:radial-gradient(ellipse at 84% 6%,rgba(129,177,169,.22),transparent 49%),
+            linear-gradient(145deg,#faf9f4 0%,#f2f6f0 100%);
+}
+.ed-hero-grid{gap:6%;padding-top:62px;padding-bottom:60px}
+.ed-kicker{display:flex;align-items:center;gap:15px;color:#467b70;line-height:1.55;letter-spacing:.115em;min-height:68px}
+.ed-kicker::before{
+ content:"";display:block;flex:0 0 68px;width:68px;height:68px;
+ background:url('/assets/luch-brand-r22.svg') center/cover no-repeat;
+ border-radius:15px;box-shadow:0 12px 30px rgba(14,62,66,.20);
+}
+.ed-hero h1{margin-top:17px;margin-bottom:18px;max-width:710px;line-height:1.055}
+.ed-hero-copy>p{line-height:1.63;margin-bottom:29px}
+.ed-actions a{text-decoration:none!important;justify-content:center;box-shadow:none}
+.ed-actions .ed-primary{background:#153f39;border-color:#153f39;box-shadow:0 13px 26px rgba(20,64,55,.13)}
+.ed-actions .ed-primary:hover{background:#205e50}
+.ed-actions .ed-secondary{background:rgba(255,255,251,.58)}
+.ed-hero-proof{
+ border:1px solid #386a5d;
+ background:radial-gradient(circle at 91% 7%,rgba(119,174,165,.2),transparent 45%),
+            linear-gradient(148deg,#174a40,#102e2a);
+ box-shadow:0 25px 60px rgba(25,63,48,.19);
+}
+.ed-hero-proof .ed-measure{color:#dcebc9}
+.ed-hero-proof .ed-proof-link{text-decoration:none!important}
+@media(max-width:760px){
+ .ed-hero-grid{gap:28px;padding-top:38px;padding-bottom:43px}
+ .ed-kicker{min-height:58px;gap:12px}
+ .ed-kicker::before{width:58px;height:58px;flex-basis:58px;border-radius:12px}
+ .ed-hero h1{margin-top:16px;margin-bottom:17px}
+}
+@media(max-width:360px){
+ .ed-kicker{font-size:9px;letter-spacing:.09em}
+ .ed-kicker::before{width:53px;height:53px;flex-basis:53px}
+ .ed-hero h1{font-size:41px}
+}
+@media(prefers-reduced-motion:reduce){.ed-actions a{transition:none;transform:none!important}}

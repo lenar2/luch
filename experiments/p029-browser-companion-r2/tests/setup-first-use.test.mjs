@@ -33,11 +33,17 @@ test('first-use pairing page safely creates a fresh code without terminal or res
   assert.equal(r.status,200);assert.match(result.code,/^\d{8}$/);
   assert.equal(result.validForSeconds,300);
   assert.equal(broker.pairingCode,result.code);
-  const pair=await fetch(base+'/pair',{method:'POST',headers:{origin:'chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','content-type':'application/json'},body:JSON.stringify({code:result.code})});
+  const extensionOrigin='chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  const pair=await fetch(base+'/pair',{method:'POST',headers:{origin:extensionOrigin,'content-type':'application/json'},body:JSON.stringify({code:result.code})});
   assert.equal(pair.status,200);
-  assert.equal((await pair.json()).ok,true);
+  const pairBody=await pair.json();assert.equal(pairBody.ok,true);
+  const authorizedHealth=await fetch(base+'/health',{headers:{origin:extensionOrigin,authorization:'Bearer '+pairBody.token}});
+  assert.equal(authorizedHealth.status,200);assert.equal((await authorizedHealth.json()).paired,true);
+  const invalidHealth=await fetch(base+'/health',{headers:{origin:extensionOrigin,authorization:'Bearer invalid-token-that-is-long-enough'}});
+  assert.equal(invalidHealth.status,403,'health must reject an invalid supplied extension token');
   r=await post(base,csrf);assert.equal(r.status,409,'must not re-pair while already paired');
   r=await fetch(base+'/health');const publicHealth=await r.json();
   assert.equal(publicHealth.pairingCode,undefined,'health never leaks pairing secret');
+  assert.equal(publicHealth.paired,true);
  }finally{await broker.close()}
 });

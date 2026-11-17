@@ -35,7 +35,7 @@ The onboarding previously led with “your AI” and “installation help” wit
 | P0 | Live Bridge activation is not proven; current Mac evidence is an isolated shadow canary | Do not claim production AI routing or general availability |
 | P1 | Opera 0.5.2 has no independent exact-build runtime E2E | Do not claim Opera compatibility is verified |
 | P1 | Old support/privacy material described a 15-minute grant TTL | It contradicted the candidate's session-scoped grant behavior |
-| P1 | The temporary micro-L B plugin mark is not founder-approved | Do not ship it as the final store icon |
+| P1 | The temporary micro-L B plugin mark is not founder-approved | Do not ship it as the final store icon |\n| P1 | Popup status used the one-time extension job queue as a health probe | It could consume a pending AI action and cause a timeout |
 | P1 | Current public screenshots/listings do not yet represent the 0.5.2 product journey | Store submission would set the wrong expectation |
 
 ## R1 changes in this candidate
@@ -49,7 +49,7 @@ The onboarding previously led with “your AI” and “installation help” wit
 7. Reworked the local pairing page in English and Russian, with clearer code lifetime and authorization boundaries.
 8. Added candidate support and privacy documents that match the 0.5.2 code and grant lifecycle.
 9. Replaced the single generic store draft with separate Chrome and Opera copy, EN/RU localizations, permission explanations, asset sizes and explicit release gates.
-10. Extended the real headed Chromium test to capture the actual popup states and fixture page for store-artwork composition.
+10. Extended the real headed Chromium test to capture the actual popup states and fixture page for store-artwork composition.\n11. Fixed a queue-stealing defect: popup status now uses an authenticated, read-only `/health` check rather than consuming `/extension/jobs`; regression tests verify a pending action remains available.
 
 ## Store asset and brand rules
 

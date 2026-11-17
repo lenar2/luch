@@ -91,7 +91,10 @@ return json(res,200,{ok:true,code:currentPairCode,validForSeconds:300});
    res.writeHead(204,{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET,POST,OPTIONS','Access-Control-Allow-Headers':'Authorization,Content-Type','Access-Control-Max-Age':'120','Cache-Control':'no-store'});res.end();return;
   }
   try{
-   if(req.method==='GET'&&url.pathname==='/health')return json(res,200,{ok:true,service:'luch-browser-companion-broker',paired:!!session,authorizedTabs:grantedTabs().length});
+   if(req.method==='GET'&&url.pathname==='/health'){
+    if(req.headers.authorization&&!extensionAuth(req))return json(res,403,errorCode('EXTENSION_NOT_AUTHORIZED'),origin);
+    return json(res,200,{ok:true,service:'luch-browser-companion-broker',paired:!!session,authorizedTabs:grantedTabs().length},origin);
+   }
    if(req.method==='POST'&&url.pathname==='/pair'){
     if(!origin)return json(res,403,errorCode('EXTENSION_ORIGIN_REQUIRED'));
     if(!pairHash||clock()>pairUntil||failed>=6)return json(res,403,errorCode('PAIRING_UNAVAILABLE'),origin);

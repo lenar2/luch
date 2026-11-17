@@ -48,6 +48,9 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
  assert.match(worker,/INTERACTION_APPROVAL_REQUIRED/);
  assert.match(worker,/TAB_ORIGIN_CHANGED/);
  assert.match(worker,/chrome\.storage\.session/);
+ const statusHandler=worker.slice(worker.indexOf("if(msg.op==='status')"),worker.indexOf("if(msg.op==='pair')"));
+ assert.match(statusHandler,/api\('\/health'/);
+ assert.doesNotMatch(statusHandler,/api\('\/extension\/jobs'/);
 });
 
 test('store copy does not conflate extension operations with the platform inventory',()=>{

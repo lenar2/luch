@@ -38,7 +38,7 @@ test('icons are real PNG 16 / 32 / 48 / 128',()=>{
 test('grants through service worker, isolated tab, broker error rollback, revoke and disconnect',async()=>{
  const handlers={},store={local:{},session:{}},badges=new Map();
  const pages=new Map([[11,{id:11,url:'https://example.org/one',title:'One'}],[12,{id:12,url:'https://other.example/two',title:'Other'}]]);
- let active=11,failGrants=false,remoteGrants=[],token='TEST-TOKEN';
+ let active=11,failGrants=false,remoteGrants=[],token='TEST-TOKEN',healthReads=0,jobReads=0;
  const chrome={
   runtime:{id:'abc',onMessage:{addListener:cb=>{handlers.message=cb}}},
   storage:{
@@ -60,7 +60,8 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  };
  async function fetchStub(url,init){
   if(url.endsWith('/pair'))return {ok:true,json:async()=>({ok:true,token})};
-  if(url.endsWith('/extension/jobs'))return {ok:true,json:async()=>({ok:true,jobs:[]})};
+  if(url.endsWith('/health')){healthReads++;assert.equal(init.headers.Authorization,'Bearer '+token);return {ok:true,json:async()=>({ok:true,paired:true,authorizedTabs:remoteGrants.length})}}
+  if(url.endsWith('/extension/jobs')){jobReads++;return {ok:true,json:async()=>({ok:true,jobs:[]})}}
   if(url.endsWith('/extension/grants')){
    if(failGrants)throw Error('BROKER_UNREACHABLE');
    remoteGrants=JSON.parse(init.body).grants;return{ok:true,json:async()=>({ok:true})};
@@ -80,7 +81,10 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
   });
  }
  const pair=await send('pair',{code:'12345678'});assert.equal(pair.ok,true);
+ const jobsBeforeStatus=jobReads;
  assert.equal((await send('status')).connected,true);assert.equal(remoteGrants.length,0);
+ assert.equal(jobReads,jobsBeforeStatus,'status must not consume queued extension jobs');
+ assert.equal(healthReads,1,'status must use the read-only authenticated health endpoint');
  const first=await send('grant-active');assert.equal(first.ok,true);
  assert.equal(remoteGrants.length,1);assert.equal(remoteGrants[0].tabId,11);
  assert.equal(badges.get(11),'ON');

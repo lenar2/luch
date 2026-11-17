@@ -161,7 +161,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   if(msg.op==='status'){
    const s=await state(),t=await activeTab();await prune(s.grants);
    let connected=!!s.auth;
-   if(connected){try{await api('/extension/jobs',{token:s.auth.token})}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants')]);await setGrants({})}}
+   if(connected){try{const health=await api('/health',{token:s.auth.token});connected=!!health.paired;if(!connected)throw new Error('COMPANION_NOT_PAIRED')}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants')]);await setGrants({})}}
    const g=connected&&t&&s.grants[t.id];
    return {ok:true,connected,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,grantedCount:connected?Object.keys(s.grants).length:0,sessionScoped:true};
   }

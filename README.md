@@ -1,8 +1,8 @@
-<p align="center"><img src="website/assets/luch-ray.svg" width="54" alt="LUCH"></p>
+<p align="center"><img src="website/assets/luch-brand-r22.svg" width="128" alt="LUCH · original R22 visual identity preview"></p>
 <h1 align="center">LUCH</h1>
-<p align="center"><strong>Your tools. Your choices. Your AI.</strong></p>
-<p align="center">Describe a task in the AI conversation you already use.<br>LUCH lets your AI reach authorized websites, files, devices and servers — and helps you verify what actually happened.</p>
-<p align="center"><a href="#how-luch-works">See real work</a> · <a href="#getting-started">Get started</a> · <a href="https://luch.lenarsalimov.ru/en/">Explore the site</a> · <a href="README.ru.md">Русский</a></p>
+<p align="center"><strong>Give your AI something real to do.</strong></p>
+<p align="center">Ask in the AI conversation you already use.<br>LUCH brings your AI into the websites, files, connected computers and servers you authorize — so the work doesn't end at advice.</p>
+<p align="center"><a href="https://luch.lenarsalimov.ru/en/">Explore LUCH</a> · <a href="#how-luch-works">See real results</a> · <a href="docs/START_HERE.md">How to connect</a> · <a href="README.ru.md">Русский</a></p>
 
 ## How LUCH works
 

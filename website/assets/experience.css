@@ -27,3 +27,12 @@
 .compat-more{margin:27px 0 0;color:#315b49;font-size:15px}
 .compat-more a{text-underline-offset:5px;font-weight:650}
 @media(max-width:760px){.compat-grid{grid-template-columns:1fr}.compat-grid article{padding:24px}.hero h1{overflow-wrap:anywhere}}
+
+/* P029 HEA brand alignment — existing pages, original R22 Figma micro-L. */
+:root{--accent:#3c8076}
+.logo{gap:11px;letter-spacing:-.045em}
+.logo img{width:36px;height:36px;flex:none;border-radius:9px;box-shadow:0 3px 12px rgba(12,56,59,.14)}
+.logo .dot{display:none}
+.site-header{border-bottom-color:#d2e0d7}
+@media(max-width:760px){.logo img{width:32px;height:32px}}
+@media(max-width:360px){.logo{gap:7px}.logo img{width:28px;height:28px}}

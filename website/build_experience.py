@@ -156,11 +156,14 @@ def home(lang):
     # The homepage is authored as a static HTML source fragment. All published
     # home routes are deterministically regenerated from this same source.
     assert lang in ("ru", "en")
-    title = "LUCH — поручите ИИ настоящее дело" if lang == "ru" else "LUCH — give AI real work"
-    desc = ("LUCH помогает вашему ИИ работать с сайтами, файлами, подключёнными устройствами и серверами."
+    # Preserve the actual current site's bilingual metadata across deterministic builds.
+    title = ("LUCH — ваш ИИ может заняться реальным делом"
+             if lang == "ru" else "LUCH — bring your AI into the work")
+    desc = ("LUCH помогает ИИ работать с сайтами, файлами, компьютерами и серверами, к которым вы разрешили доступ."
             if lang == "ru" else
-            "LUCH helps your AI work with websites, files, connected computers and servers.")
+            "See what your AI can do with the websites, files, computers and servers you authorize through LUCH.")
     h = head(lang, "", title, desc)
+    h = h.replace(f"<title>{escape(title)} — LUCH</title>", f"<title>{escape(title)}</title>")
     h = h.replace("</head>", '<link rel="stylesheet" href="/assets/editorial.css"></head>')
     content = (P / "source" / f"home-{lang}.html").read_text(encoding="utf-8")
     assert '<main class="ed-main"' in content and content.endswith("</main>")

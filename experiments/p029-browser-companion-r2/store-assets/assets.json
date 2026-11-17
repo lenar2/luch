@@ -13,7 +13,7 @@
     "smallPromo": {"file": "chrome-small-promo.svg", "size": [440, 280], "optional": true},
     "marquee": {"file": "chrome-marquee.svg", "size": [1400, 560], "optional": true},
     "screenshots": [
-      {"file": "chrome-screenshot-01-select-tab-1280x800.png", "size": [1280, 800]},
+      {"file": "chrome-screenshot-01-connect-browser-1280x800.png", "size": [1280, 800]},
       {"file": "chrome-screenshot-02-read-first-1280x800.png", "size": [1280, 800]},
       {"file": "chrome-screenshot-03-interaction-1280x800.png", "size": [1280, 800]},
       {"file": "chrome-screenshot-04-revoke-1280x800.png", "size": [1280, 800]}
@@ -22,7 +22,7 @@
   },
   "opera": {
     "screenshotsPreviewOnly": [
-      {"file": "opera-preview-01-select-tab-612x408.png", "size": [612, 408]},
+      {"file": "opera-preview-01-connect-browser-612x408.png", "size": [612, 408]},
       {"file": "opera-preview-02-read-first-612x408.png", "size": [612, 408]},
       {"file": "opera-preview-03-interaction-612x408.png", "size": [612, 408]},
       {"file": "opera-preview-04-revoke-612x408.png", "size": [612, 408]}

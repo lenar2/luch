@@ -17,6 +17,7 @@ const imageData=async file=>{
  return 'data:'+mime+';base64,'+bytes.toString('base64');
 };
 const requiredCaptures=[
+ 'popup-before-pair.png',
  'popup-paired.png',
  'popup-read-approved.png',
  'popup-interaction-approved.png',
@@ -69,7 +70,7 @@ try{
  await renderSvg('chrome-small-promo-440x280.png',smallSvg,440,280);
  await renderSvg('chrome-marquee-1400x560.png',marqueeSvg,1400,560);
  const captures=[
-  {suffix:'01-select-tab',heading:'Choose the tab you want to share',caption:'Pair your browser, then approve the exact page you choose.',popup:'popup-paired.png',page:'fixture-page-before-action.png'},
+  {suffix:'01-connect-browser',heading:'Connect your browser to LUCH',caption:'A supported local Companion and an authorized LUCH account are required.',popup:'popup-before-pair.png',page:'fixture-page-before-action.png'},
   {suffix:'02-read-first',heading:'Start with reading',caption:'Reading access is separate from permission to interact.',popup:'popup-read-approved.png',page:'fixture-page-before-action.png'},
   {suffix:'03-interaction',heading:'Allow interaction separately',caption:'Supported page actions require your additional approval.',popup:'popup-interaction-approved.png',page:'fixture-page-after-action.png'},
   {suffix:'04-revoke',heading:'Revoke access whenever you want',caption:'Close the tab, change website origin or revoke the grant.',popup:'popup-revoked.png',page:'fixture-page-after-action.png'}

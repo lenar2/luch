@@ -29,15 +29,39 @@ let pairHash=hash(code),pairUntil=clock()+5*60_000,failed=0,session=null,session
 const setupCsrf=randomBytes(24).toString('hex');
 const setupOrigin='http://127.0.0.1:'+port;
 const pairStatus=()=>({paired:!!session,ready:!session&&pairHash!==null&&clock()<=pairUntil&&failed<6});
-const page=()=>[
-'<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LUCH Companion · Connect</title>',
-'<style>body{background:#f6f7f3;color:#163e42;max-width:480px;margin:6vh auto;font:16px system-ui;padding:24px}button{background:#163e42;color:#fff;border:0;border-radius:10px;padding:15px;cursor:pointer}#code{font-size:36px;letter-spacing:.2em;display:block;margin:20px 0}</style></head><body>',
-'<h1>Connect your browser to LUCH</h1><p>Generate a one-time code on this computer and enter it in the LUCH Browser Companion popup.</p>',
-'<button id="generate" '+(session?'disabled':'')+'>Generate pairing code</button><output id="code"></output>',
-'<p>The pairing code expires after five minutes. Browser sharing continues until you revoke it or end the session.</p>',
-'<script>document.getElementById("generate").onclick=async()=>{let el=document.getElementById("code");try{let r=await fetch("/setup/code",{method:"POST",headers:{"Content-Type":"application/json","X-LUCH-Setup-CSRF":'+JSON.stringify(setupCsrf)+'},body:"{}"});let d=await r.json();el.textContent=r.ok&&d.ok?d.code:"Unable to generate code"}catch{el.textContent="Companion offline"}}</script>',
-'</body></html>'
-].join('');
+const page=(language='en')=>{
+ const ru=language==='ru';
+ const copy=ru?{
+  title:'Подключите браузер к LUCH',
+  intro:'Создайте одноразовый код на этом компьютере и введите его в расширении LUCH Browser Companion.',
+  generate:'Создать код подключения',
+  waiting:'Код ещё не создан.',
+  note:'Код действует пять минут и подключает только этот браузер к локальному Companion. Он не устанавливает приложение и не авторизует ИИ-клиент.',
+  done:'Код создан. Вернитесь в расширение и введите восемь цифр.',
+  failed:'Не удалось создать код. Обновите страницу и попробуйте снова.',
+  offline:'Companion недоступен.',
+  paired:'Этот Companion уже подключён. Сначала отключите браузер в расширении.'
+ }:{
+  title:'Connect your browser to LUCH',
+  intro:'Generate a one-time code on this computer, then enter it in the LUCH Browser Companion extension.',
+  generate:'Generate pairing code',
+  waiting:'No code has been generated yet.',
+  note:'The code expires after five minutes and pairs this browser with the local Companion only. It does not install the desktop app or authorize an AI host.',
+  done:'Code created. Return to the extension and enter the eight digits.',
+  failed:'Could not generate a code. Refresh this page and try again.',
+  offline:'Companion is unavailable.',
+  paired:'This Companion is already paired. Disconnect the browser in the extension first.'
+ };
+ return [
+  '<!doctype html><html lang="'+language+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>LUCH Companion · Connect</title>',
+  '<style>:root{color-scheme:light;--ink:#102f34;--muted:#5a6a69;--line:#d8dfda;--accent:#d6ad73}*{box-sizing:border-box}body{margin:0;min-height:100vh;padding:28px 18px;background:radial-gradient(ellipse at 50% 0%,#dce9e3 0%,#f7f6f0 58%,#f1eee5 100%);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;display:grid;place-items:center}.card{width:min(100%,520px);padding:30px;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.94);box-shadow:0 18px 60px rgba(16,47,52,.08)}.brand{font-size:17px;font-weight:800;letter-spacing:.12em}.brand span{display:block;margin-top:2px;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:.02em}.eyebrow{margin:28px 0 7px;color:#66817e;font-size:10px;font-weight:800;letter-spacing:.16em}.card h1{margin:0 0 10px;font-size:30px;line-height:1.12;letter-spacing:-.04em}.intro{margin:0;color:var(--muted)}button{margin-top:22px;padding:13px 18px;border:0;border-radius:10px;background:#143c43;color:#fff;font:inherit;font-weight:700;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible{outline:3px solid #d6ad73;outline-offset:3px}output{display:block;min-height:54px;margin-top:20px;color:#143c43;font-size:36px;font-weight:750;letter-spacing:.22em;font-variant-numeric:tabular-nums}#status{min-height:22px;margin:4px 0 0;color:#47615e;font-size:13px}.note{margin-top:24px;padding:13px 15px;border-left:3px solid var(--accent);border-radius:0 9px 9px 0;background:#f6f1e8;color:#596460;font-size:12px}.fine{margin-top:20px;color:#788581;font-size:11px}</style></head><body>',
+  '<main class="card"><div class="brand">LUCH<span>Browser Companion · Local setup</span></div><p class="eyebrow">LUCH / CONNECT</p><h1>'+copy.title+'</h1><p class="intro">'+copy.intro+'</p>',
+  '<button id="generate" type="button" '+(session?'disabled':'')+'>'+copy.generate+'</button><output id="code" aria-label="'+(ru?'Код подключения':'Pairing code')+'"></output><p id="status" role="status" aria-live="polite">'+(session?copy.paired:copy.waiting)+'</p>',
+  '<div class="note">'+copy.note+'</div><p class="fine">'+(ru?'Не вводите здесь пароли от сайтов.':'Never enter website passwords here.')+'</p></main>',
+  '<script>const csrf='+JSON.stringify(setupCsrf)+';const copy='+JSON.stringify(copy)+';const button=document.getElementById("generate");button.addEventListener("click",async()=>{button.disabled=true;const status=document.getElementById("status"),code=document.getElementById("code");status.textContent="";code.textContent="";try{const response=await fetch("/setup/code",{method:"POST",headers:{"Content-Type":"application/json","X-LUCH-Setup-CSRF":csrf},body:"{}"});const data=await response.json();if(!response.ok||!data.ok){status.textContent=data.error==="ALREADY_PAIRED"?copy.paired:copy.failed;button.disabled=data.error==="ALREADY_PAIRED";return}code.textContent=data.code;status.textContent=copy.done}catch{status.textContent=copy.offline;button.disabled=false}});</script>',
+  '</body></html>'
+ ].join('');
+};
  const grants=new Map(),jobs=new Map(),pending=new Map();
  const grantedTabs=()=>session&&clock()-sessionLastSeen<SESSION_IDLE_MS?[...grants.values()]:[];
  function bridgeAuth(req){const raw=req.headers['x-browser-bridge-token'];return typeof raw==='string'&&equals(secretHash,hash(raw));}
@@ -53,7 +77,8 @@ const page=()=>[
   const url=new URL(req.url,`http://${host}:${port}`);
 if(req.headers.host!==('127.0.0.1:'+port))return json(res,403,errorCode('INVALID_HOST'));
 if(req.method==='GET'&&url.pathname==='/setup'){
-res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"});res.end(page());return;
+const language=/^\s*ru(?:[-,;]|$)/i.test(String(req.headers['accept-language']||''))?'ru':'en';
+res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Frame-Options':'DENY','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"});res.end(page(language));return;
 }
 if(req.method==='POST'&&url.pathname==='/setup/code'){
 if(req.headers.origin!==setupOrigin||req.headers['x-luch-setup-csrf']!==setupCsrf||req.headers['content-type']!=='application/json')return json(res,403,errorCode('SETUP_ORIGIN_DENIED'));

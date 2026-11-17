@@ -2,71 +2,168 @@
 const $=id=>document.getElementById(id);
 const strings={
  en:{
-  eyebrow:'YOUR BROWSER · YOUR AI',headline:'Put this page to work.',
-  intro:'Let the AI you already use explore, understand and work with websites you choose.',
+  eyebrow:'LUCH / BROWSER COMPANION',
+  headline:'Share a tab with LUCH.',
+  intro:'Connect a page you choose to your authorized LUCH workflow. You decide what LUCH can read and when it can interact.',
   caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
-  connected:'Connected',disconnected:'Not connected',statusScope:'Local LUCH Companion',
-  pairLabel:'Pair with your LUCH Companion',pairButton:'Connect',
-  pairHint:'Open LUCH Companion on this computer, generate a pairing code and enter it here. You can revoke sharing at any time.',
-  help:'Installation help',tabLabel:'Your current tab',grant:'Let LUCH read this tab',
-  interact:'Allow interaction on this tab',revoke:'Stop sharing this tab',disconnect:'Disconnect LUCH',
-  expired:'Not shared',read:'LUCH can read this tab',interacting:'LUCH can read and interact with this tab',
-  sessionNote:'Sharing stays on until you revoke it, close the tab or browser session, or leave this website.',
-  footer:'Only approved tabs. No access to cookies or saved passwords.',
-  learn:'What LUCH can do',noTab:'Open a website to begin',error:'Connection error',working:'Checking connection…',
-  blocked:'Local LUCH Companion is not reachable. Start it before pairing.'
+  paired:'Browser paired',notPaired:'Browser not paired',statusScope:'LOCAL COMPANION',
+  setupTitle:'Before you connect',
+  setupSteps:[
+   'A supported LUCH setup with the desktop Companion must already be running on this computer.',
+   'Open local setup and generate an eight-digit pairing code.',
+   'Enter the code here. It expires after five minutes.'
+  ],
+  setupBoundary:'Pairing links this browser to the local Companion only. It does not install the desktop app or connect an AI host. Your LUCH account and AI-client authorization must already be active.',
+  pairLabel:'One-time pairing code',pairButton:'Connect browser',
+  pairHint:'Enter the eight digits shown on the local setup page.',
+  localSetup:'Open local setup on this computer',help:'Check account & setup requirements',
+  tabLabel:'Current tab',grant:'Allow reading on this tab',
+  interact:'Allow interaction on this tab',revoke:'Revoke access to this tab',
+  disconnect:'Disconnect browser',expired:'No tab access granted',
+  read:'LUCH can read this tab',interacting:'LUCH can read and interact with this tab',
+  sessionNote:'Access ends when you revoke it, close this tab or the browser session, or navigate to another website origin.',
+  hostNote:'Browser paired with the local Companion. Your AI host must separately have an authorized LUCH connection.',
+  footer:'Only approved tabs are shared. No cookie or browsing-history access. Page content you request may be sent to your authorized AI host.',
+  learn:'How browser access works',noTab:'Open a regular website to begin',
+  statusUnknown:'Could not check browser status',working:'Checking browser…',
+  codeDenied:'That code was not accepted. Generate a fresh code on this computer and try again.',
+  codeExpired:'That code has expired or is unavailable. Generate a new one.',
+  alreadyPaired:'This local Companion is already paired. Disconnect first if you need to pair again.',
+  companionOffline:'The local Companion is not reachable. Confirm that a supported LUCH setup is installed and running.',
+  ordinaryPage:'Open a regular HTTP or HTTPS website before sharing a tab.',
+  interactionRequired:'Approve interaction separately before asking LUCH to click or type.',
+  tabPermissionRequired:'Approve this exact tab before using it.',
+  pairSuccess:'Browser paired with local Companion.',
+  readSuccess:'Read access granted for this tab.',
+  interactSuccess:'Interaction access granted for this tab.',
+  revokeSuccess:'Access revoked for this tab.',
+  disconnectSuccess:'Browser disconnected from LUCH.',
+  error:'Something went wrong.',codePlaceholder:'12345678'
  },
  ru:{
-  eyebrow:'ВАШ БРАУЗЕР · ВАШ ИИ',headline:'Дайте ИИ работать с сайтом.',
-  intro:'Пусть привычный ИИ изучает сайты, находит нужное и выполняет разрешённые действия в вашем браузере.',
-  caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Скриншоты и проверка'],
-  connected:'Подключено',disconnected:'Не подключено',statusScope:'Локальный LUCH Companion',
-  pairLabel:'Подключите LUCH Companion',pairButton:'Подключить',
-  pairHint:'Откройте LUCH Companion на этом компьютере, получите одноразовый код и введите его здесь. Доступ можно отозвать в любой момент.',
-  help:'Помощь с установкой',tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
-  interact:'Разрешить действия в этой вкладке',revoke:'Закрыть доступ к вкладке',disconnect:'Отключить LUCH',
-  expired:'Доступ не предоставлен',read:'LUCH может читать эту вкладку',interacting:'LUCH может читать и взаимодействовать с этой вкладкой',
-  sessionNote:'Доступ действует до вашего отзыва, закрытия вкладки или браузера либо перехода на другой сайт.',
-  footer:'Только разрешённые вкладки. Без доступа к cookie и сохранённым паролям.',
-  learn:'Все возможности LUCH',noTab:'Откройте сайт для начала',error:'Ошибка подключения',working:'Проверка соединения…',
-  blocked:'Локальный LUCH Companion недоступен. Запустите его перед подключением.'
+  eyebrow:'LUCH / BROWSER COMPANION',
+  headline:'Подключите вкладку к LUCH.',
+  intro:'Подключите выбранную страницу к разрешённому рабочему процессу LUCH. Вы решаете, что можно читать и когда разрешать действия.',
+  caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Снимки и проверка'],
+  paired:'Браузер подключён',notPaired:'Браузер не подключён',statusScope:'ЛОКАЛЬНЫЙ COMPANION',
+  setupTitle:'Перед подключением',
+  setupSteps:[
+   'На этом компьютере уже должна работать поддерживаемая конфигурация LUCH с приложением Companion.',
+   'Откройте локальную страницу подключения и создайте восьмизначный код.',
+   'Введите код здесь. Он действует пять минут.'
+  ],
+  setupBoundary:'Сопряжение связывает браузер только с локальным Companion. Оно не устанавливает приложение и не подключает ИИ. Аккаунт LUCH и авторизация ИИ-клиента должны быть настроены заранее.',
+  pairLabel:'Одноразовый код подключения',pairButton:'Подключить браузер',
+  pairHint:'Введите восемь цифр с локальной страницы подключения.',
+  localSetup:'Открыть локальную страницу',help:'Проверить требования к аккаунту и подключению',
+  tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
+  interact:'Разрешить действия в этой вкладке',revoke:'Отозвать доступ к вкладке',
+  disconnect:'Отключить браузер',expired:'Доступ к вкладке не предоставлен',
+  read:'LUCH может читать эту вкладку',interacting:'LUCH может читать и взаимодействовать с вкладкой',
+  sessionNote:'Доступ прекращается после отзыва, закрытия вкладки или сеанса браузера либо перехода на другой сайт.',
+  hostNote:'Браузер подключён к локальному Companion. ИИ-клиент отдельно должен иметь авторизованное подключение LUCH.',
+  footer:'Передаются только разрешённые вкладки. Нет доступа к cookie и истории браузера. Запрошенное содержимое страницы может быть передано авторизованному ИИ-клиенту.',
+  learn:'Как работает доступ к браузеру',noTab:'Откройте обычный сайт',
+  statusUnknown:'Не удалось проверить состояние браузера',working:'Проверка браузера…',
+  codeDenied:'Код не принят. Создайте новый код на этом компьютере и повторите попытку.',
+  codeExpired:'Срок действия кода истёк или код недоступен. Создайте новый.',
+  alreadyPaired:'Этот локальный Companion уже подключён. Сначала отключите его, если нужно выполнить сопряжение заново.',
+  companionOffline:'Локальный Companion недоступен. Проверьте, что поддерживаемая конфигурация LUCH установлена и запущена.',
+  ordinaryPage:'Для доступа откройте обычную страницу HTTP или HTTPS.',
+  interactionRequired:'Отдельно разрешите действия, прежде чем просить LUCH нажимать или вводить текст.',
+  tabPermissionRequired:'Сначала разрешите доступ именно к этой вкладке.',
+  pairSuccess:'Браузер подключён к локальному Companion.',
+  readSuccess:'Чтение этой вкладки разрешено.',
+  interactSuccess:'Взаимодействие с этой вкладкой разрешено.',
+  revokeSuccess:'Доступ к этой вкладке отозван.',
+  disconnectSuccess:'Браузер отключён от LUCH.',
+  error:'Произошла ошибка.',codePlaceholder:'12345678'
  }
 };
-let lang=(localStorage.getItem('luch_locale')||((navigator.language||'en').startsWith('ru')?'ru':'en'));
+let lang=(localStorage.getItem('luch_locale')||((navigator.language||'en').toLowerCase().startsWith('ru')?'ru':'en'));
 if(!strings[lang])lang='en';
 const t=key=>strings[lang][key];
 function setTexts(){
  document.documentElement.lang=lang;
- const map={'pair-label':'pairLabel','pair':'pairButton','pair-hint':'pairHint','help':'help','intro':'intro',
-  'grant':'grant','interact':'interact','revoke':'revoke','disconnect':'disconnect','tab-label':'tabLabel',
-  'footer':'footer','scope':'statusScope','eyebrow':'eyebrow','headline':'headline','session-note':'sessionNote','learn':'learn'};
+ const map={
+  'eyebrow':'eyebrow','headline':'headline','intro':'intro',
+  'setup-title':'setupTitle','setup-boundary':'setupBoundary',
+  'pair-label':'pairLabel','pair':'pairButton','pair-hint':'pairHint',
+  'help':'help','grant':'grant','interact':'interact','revoke':'revoke',
+  'disconnect':'disconnect','tab-label':'tabLabel','footer':'footer',
+  'scope':'statusScope','session-note':'sessionNote','host-note':'hostNote',
+  'learn':'learn'
+ };
  for(const [id,key] of Object.entries(map))$(id).textContent=t(key);
- ['read','navigate','interact','capture'].forEach((k,i)=>$('cap-'+k).textContent=t('caps')[i]);
+ const steps=$('setup-steps');steps.replaceChildren();
+ for(const value of t('setupSteps')){const item=document.createElement('li');item.textContent=value;steps.appendChild(item)}
+ ['read','navigate','interact','capture'].forEach((key,index)=>$('cap-'+key).textContent=t('caps')[index]);
+ $('pairCode').placeholder=t('codePlaceholder');
+ $('pairCode').setAttribute('aria-label',t('pairLabel'));
+ $('local-setup').textContent=t('localSetup');
  $('help').href='https://luch.lenarsalimov.ru/'+(lang==='ru'?'ru':'en')+'/connect/';
- $('local-setup').textContent=lang==='ru'?'Открыть LUCH Companion на компьютере':'Open LUCH Companion on this computer';
  $('learn').href='https://luch.lenarsalimov.ru/'+(lang==='ru'?'ru':'en')+'/browser/';
  $('locale').value=lang;
 }
 function call(message){return chrome.runtime.sendMessage(message).then(r=>{if(!r?.ok)throw new Error(r?.error||t('error'));return r})}
+function friendlyError(value){
+ const raw=String(value||t('error'));
+ const code=raw.toUpperCase();
+ if(code.includes('PAIRING_DENIED'))return t('codeDenied');
+ if(code.includes('PAIRING_UNAVAILABLE'))return t('codeExpired');
+ if(code.includes('ALREADY_PAIRED'))return t('alreadyPaired');
+ if(code.includes('FAILED TO FETCH')||code.includes('NETWORKERROR')||code.includes('ABORTERROR')||code.includes('BROKER_UNREACHABLE'))return t('companionOffline');
+ if(code.includes('OPEN AN ORDINARY WEBPAGE'))return t('ordinaryPage');
+ if(code.includes('INTERACTION_APPROVAL_REQUIRED'))return t('interactionRequired');
+ if(code.includes('USER_TAB_PERMISSION_REQUIRED'))return t('tabPermissionRequired');
+ return raw.slice(0,180);
+}
 async function refresh(){
- try{const r=await call({op:'status'});
+ try{
+  const r=await call({op:'status'});
   $('pairing').hidden=r.connected;$('controls').hidden=!r.connected;
-  $('status').textContent=r.connected?t('connected'):t('disconnected');
+  $('status').textContent=r.connected?t('paired'):t('notPaired');
+  $('scope').textContent=t('statusScope');
   $('dot').classList.toggle('connected',r.connected);
   $('currentTab').textContent=r.tab?.title||t('noTab');
   $('currentUrl').textContent=r.tab?.url||'';
   $('shareStatus').textContent=!r.granted?t('expired'):(r.scope==='interact'?t('interacting'):t('read'));
-  $('grant').hidden=!!r.granted;$('interact').hidden=!r.granted||r.scope==='interact';
+  $('grant').hidden=!!r.granted;$('grant').disabled=!r.tab;
+  $('interact').hidden=!r.granted||r.scope==='interact';
   $('revoke').hidden=!r.granted;
- }catch(e){$('feedback').textContent=String(e.message||t('error')).slice(0,240)}
+  $('pair').disabled=$('pairCode').value.length!==8;
+ }catch(e){
+  $('pairing').hidden=false;$('controls').hidden=true;
+  $('status').textContent=t('statusUnknown');$('scope').textContent=t('statusScope');
+  $('dot').classList.remove('connected');
+  $('feedback').textContent=friendlyError(e.message);
+ }
 }
-function act(id,make){$(id).addEventListener('click',async()=>{
- const button=$(id);button.disabled=true;
- try{$('feedback').textContent='';const r=await call(make());$('feedback').textContent=r.message||'';await refresh()}
- catch(e){$('feedback').textContent=String(e.message||e).slice(0,240);await refresh()}
- finally{button.disabled=false}
-})}
-$('locale').addEventListener('change',ev=>{lang=ev.target.value;localStorage.setItem('luch_locale',lang);setTexts();refresh()});
+function act(id,make){
+ $(id).addEventListener('click',async()=>{
+  const button=$(id);button.disabled=true;
+  try{
+   $('feedback').textContent='';
+   await call(make());
+   const success={pair:'pairSuccess',grant:'readSuccess',interact:'interactSuccess',revoke:'revokeSuccess',disconnect:'disconnectSuccess'};
+   $('feedback').textContent=t(success[id]);
+   if(id==='pair')$('pairCode').value='';
+   await refresh();
+  }catch(e){$('feedback').textContent=friendlyError(e.message);await refresh()}
+  finally{button.disabled=id==='pair'&&$('pairCode').value.length!==8}
+ });
+}
+$('locale').addEventListener('change',event=>{
+ lang=event.target.value;localStorage.setItem('luch_locale',lang);setTexts();refresh();
+});
+$('pairCode').addEventListener('input',()=>{
+ const clean=$('pairCode').value.replace(/[^0-9]/g,'').slice(0,8);
+ if($('pairCode').value!==clean)$('pairCode').value=clean;
+ $('pair').disabled=clean.length!==8;
+});
+$('pairCode').addEventListener('keydown',event=>{
+ if(event.key==='Enter'&&!$('pair').disabled)$('pair').click();
+});
 act('pair',()=>({op:'pair',code:$('pairCode').value.trim()}));
 act('grant',()=>({op:'grant-active'}));
 act('interact',()=>({op:'allow-interaction'}));

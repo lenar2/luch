@@ -13,10 +13,17 @@ test('first-use pairing page safely creates a fresh code without terminal or res
   const html=await r.text();
   assert.equal(r.status,200);
   assert.match(html,/Generate pairing code/);
+  assert.match(html,/does not install the desktop app or authorize an AI host/);
+  assert.match(html,/The code expires after five minutes/);
+  const ruResponse=await fetch(base+'/setup',{headers:{'accept-language':'ru-RU,ru;q=0.9'}});
+  const ruHtml=await ruResponse.text();
+  assert.equal(ruResponse.status,200);
+  assert.match(ruHtml,/Создать код подключения/);
+  assert.match(ruHtml,/пять минут/);
   assert.equal(html.includes('12345678'),false,'Initial secret must not be embedded in the HTML');
   assert.equal(r.headers.get('x-frame-options'),'DENY');
   assert.match(r.headers.get('content-security-policy')||'',/frame-ancestors 'none'/);
-  const csrf=html.match(/X-LUCH-Setup-CSRF":"([a-f0-9]{48})"/)?.[1];
+  const csrf=html.match(/const csrf="([a-f0-9]{48})"/)?.[1];
   assert.ok(csrf,'CSRF included only in local same-origin document');
   const post=(origin,csrfValue)=>fetch(base+'/setup/code',{method:'POST',headers:{'content-type':'application/json',origin,'x-luch-setup-csrf':csrfValue},body:'{}'});
   r=await post('https://attacker.example',csrf);

@@ -1,0 +1,22 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="night" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(48 34) rotate(58) scale(116)">
+      <stop stop-color="#426F7E"/>
+      <stop offset=".48" stop-color="#153A47"/>
+      <stop offset="1" stop-color="#061B26"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="24" y1="20" x2="104" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF5"/>
+      <stop offset=".58" stop-color="#FCE9D2"/>
+      <stop offset="1" stop-color="#D6AD73"/>
+    </linearGradient>
+    <filter id="soft-glow" x="2" y="2" width="124" height="124" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="26" fill="url(#night)"/>
+  <path d="M64 14C69.2 42.1 85.9 58.8 114 64C85.9 69.2 69.2 85.9 64 114C58.8 85.9 42.1 69.2 14 64C42.1 58.8 58.8 42.1 64 14Z" fill="#FCE9D2" opacity=".38" filter="url(#soft-glow)"/>
+  <path d="M64 14C69.2 42.1 85.9 58.8 114 64C85.9 69.2 69.2 85.9 64 114C58.8 85.9 42.1 69.2 14 64C42.1 58.8 58.8 42.1 64 14Z" fill="url(#beam)"/>
+  <path d="M64 39C67.5 53.5 74.5 60.5 89 64C74.5 67.5 67.5 74.5 64 89C60.5 74.5 53.5 67.5 39 64C53.5 60.5 60.5 53.5 64 39Z" fill="#0B2930"/>
+  <circle cx="64" cy="64" r="6.5" fill="#FFFDF5"/>
+</svg>

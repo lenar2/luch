@@ -289,7 +289,8 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   if(msg.op==='pair'){
    if(!/^\d{8}$/.test(msg.code||''))throw new Error('Enter your eight-digit pairing code');
    const manifest=chrome.runtime.getManifest();
-   const browser=/OPR\//.test(navigator.userAgent)?'opera':'chrome';
+   const ua=typeof navigator!=='undefined'?String(navigator.userAgent||''):'';
+   const browser=/OPR\//.test(ua)?'opera':'chrome';
    const r=await api('/pair',{method:'POST',data:{
     code:msg.code,deviceName:`LUCH Browser Companion · ${browser}`,browser,
     extensionVersion:String(manifest.version||'unknown')

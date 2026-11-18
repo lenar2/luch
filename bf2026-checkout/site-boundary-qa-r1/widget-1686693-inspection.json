@@ -1,0 +1,43 @@
+{
+  "schema": "bf2026.getcourse.widget.public-readonly-inspection.r1",
+  "observed_at": "2026-11-18T20:54:51.789Z",
+  "widget_id": 1686693,
+  "embed_script": {
+    "url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693",
+    "http_status": 200,
+    "content_type": "text/javascript; charset=utf-8",
+    "bytes": 2893,
+    "sha256": "d326a3f9a04e2061694e6f6ec155668fa0a7366eaafce73915c7018e19ba7775",
+    "forwards_parent_query": true
+  },
+  "iframe": {
+    "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693",
+    "http_status": 200,
+    "content_type": "text/html; charset=UTF-8",
+    "bytes": 25918,
+    "form_id": "ltForm5597520",
+    "block_data_id": "2263265127",
+    "hidden_setted_offer_id_count": 1,
+    "hidden_setted_offer_id_has_value_attribute": false,
+    "form_position_input_count": 0,
+    "other_offer_selector_count": 0,
+    "global_offer_terms_checkbox_enabled": true,
+    "mailing_checkbox_enabled": true,
+    "mailing_checkbox_checked_by_default": true,
+    "mailing_checkbox_required": false,
+    "action_path": "/pl/lite/block-public/process"
+  },
+  "modal_injection": {
+    "asset_found": true,
+    "explicit_offer_position_supported": true,
+    "external_value_object_fill": true
+  },
+  "modal_js_sha256": "21b95db3cdde8bee0c8ec643fd6e684f1b8b5379267e3fa0969716efaacc9169",
+  "safety": {
+    "form_submitted": false,
+    "customer_data_entered": false,
+    "order_created": false,
+    "payment_attempted": false,
+    "ui_or_lock_touched": false
+  }
+}

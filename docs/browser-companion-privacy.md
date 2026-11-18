@@ -1,71 +1,45 @@
 # LUCH Browser Companion — privacy disclosure
 
-**Candidate version:** 0.5.2  
-**Disclosure revision:** 17 November 2026  
-**Status:** Draft for the 0.5.2 release candidate; update the live store policy only after release approval.
+**Candidate version:** 0.7.0  
+**Disclosure revision:** 18 November 2026  
+**Status:** Engineering pilot only; **RELEASE HOLD**. No store publication or general customer onboarding has been approved.
 
-## Summary
+## What it does
 
-LUCH Browser Companion connects a browser tab that you explicitly approve to a compatible LUCH Companion running locally on the same computer. The extension does not continuously read all tabs. It does not work as a standalone AI assistant and cannot create a LUCH account or authorize an AI host.
+LUCH Browser Companion connects browser tabs explicitly approved by the user to tools in an existing supported AI chat, such as ChatGPT. It does not create a new AI chat or require a personal OpenAI API key. ChatGPT must separately authorize the remote MCP connection; installing the extension alone does not grant tools to every chat or plan.
 
-A supported local setup and an already-authorized LUCH AI connection are required. The general public self-service Companion installer is not yet available.
+## Processing and permissions
 
-## Data processed
+After an explicit user action, the extension can share the approved tab's origin, URL, title, a random permission-grant identifier, bounded visible text or a requested screenshot. Interactions such as typing and clicking require a **separate per-tab approval**. Precise cursor control requires an additional opt-in; Chrome warns about the required debugger permission at installation.
 
-When you explicitly approve a tab, the extension may process:
+Optional all-tabs overview requires the separate Chrome `tabs` permission **and** a user switch allowing the AI host to receive metadata. Shared metadata excludes URL query strings and fragments; content of other tabs remains inaccessible until the individual tab is approved.
 
-- The selected tab's URL and page title.
-- The browser tab identifier and a random grant identifier.
-- The selected tab's visible page text when requested by an authorized LUCH action (bounded to 65,536 characters per text response).
-- A screenshot of the active approved tab when explicitly requested.
+The extension does not request Chrome permissions for browsing history, cookies, downloads, OS files, clipboard or all-site host access. It uses the minimum requested permissions `activeTab`, `scripting`, `storage`, `alarms`, `debugger` and the specified cloud-host URL. `tabs` is optional.
 
-The extension stores its pairing token in Chrome-managed local extension storage. Approved-tab grants are held in session storage and are scoped to the selected tab and its current website origin.
+## Cloud transport and storage
 
-## Where data goes
+This 0.7.0 pilot calls the encrypted HTTPS endpoint `https://api.lenarsalimov.ru/luch/browser`, fronting the LUCH Supabase Edge Function. This **replaces** the 0.6.0 localhost `http://127.0.0.1:9248` broker as the extension's required route.
 
-The extension communicates with the local Companion over loopback at `http://127.0.0.1:9248`. The extension does not itself send approved page contents directly to a public LUCH web endpoint.
+Supabase Auth handles the user's OAuth login to the remote MCP service. The ChatGPT OAuth access token remains in the AI host; the browser receives a separate random 256-bit device token only after the user enters an authorized one-time pairing code. The browser stores that device token in Chrome-managed local extension storage; the cloud stores only its SHA-256 hash. Browser-tab grants are held in Chrome session storage and copied into an account/device-scoped cloud table for validation.
 
-When you ask an authorized LUCH AI host to inspect or act on the approved page, the requested page content or action result may be passed through the connected LUCH service to that AI host. The AI host's privacy terms and retention settings then apply. Do not approve pages containing material you do not want to share with the AI host.
+An explicitly requested page read or screenshot is sent through the LUCH cloud relay to the authorized AI client. This means **page content does leave the computer when an authorized AI read operation is performed**. The AI host's terms and retention settings apply separately.
 
-The extension does not write page text to a persistent extension database. The local Companion, connected LUCH services, browser and AI host may have their own operational logs or retention controls.
+## Retention and owner controls
 
-## User controls and retention
+- Pairing codes expire after **10 minutes**, are single-use and have server-side rate limits.
+- A browser job becomes ineligible for execution after 90 seconds; a completed job's result payload is cleared after the waiting MCP call ends.
+- Job metadata/arguments and some security audit records may remain in the server database after processing. **A final automated purge/retention policy is still being engineered**, so do not treat this pilot as meeting a finalized data-minimization or store-privacy standard.
+- User actions can grant read, interaction, and precise cursor privileges separately for an approved tab; the grant can be revoked from the extension at any time.
+- Tab grants end when the tab closes, the browser session ends, or the website origin changes.
+- Disconnecting revokes the device credential and clears the extension's local grants. Other paired devices can be revoked from the authenticated MCP tool.
+- The cloud account tables do not grant OAuth clients direct database access to token hashes or page/job payloads. Server operations validate account, paired device, target grant and scope.
 
-- You approve reading for each tab.
-- You must separately approve interaction on that tab.
-- You can revoke the current tab's grant at any time.
-- You can disconnect the browser to clear pairing and all tab grants.
-- A grant ends when revoked, when its tab closes, when the browser session ends, or when the tab navigates to another website origin.
-- The eight-digit pairing code is single-use and expires after five minutes. This is the code lifetime, not the tab-grant lifetime.
+## Safeguards and limitations
 
-## Permissions
+Some sensitive form inputs (for example password and file fields) and high-impact page actions are blocked. This is not a guarantee that all sensitive content on approved pages is safe to share or act upon. Users should avoid approving private or payment-related pages for unreviewed AI operations.
 
-The extension requests only:
-
-- `activeTab` — temporary access to the tab after a user action.
-- `scripting` — run the extension's bundled, bounded page-reading and interaction functions in an approved tab.
-- `storage` — retain pairing state and session-scoped grants.
-- `alarms` — check the local Companion for authorized work while the browser session is active.
-- Host access to `http://127.0.0.1:9248/*` — communicate with the local Companion only.
-
-The extension does not request cookies, browsing history, downloads, geolocation, clipboard, webRequest or all-sites access. The tabs permission is OPTIONAL and Chrome asks for it only when the user requests an all-tab overview. The debugger permission CANNOT be optional under Chrome manifest rules: Chrome warns about it at extension installation. Despite the manifest permission, LUCH pointer commands remain disabled until the user separately authorizes interaction and precision input on a particular tab. Debugger attachment is short-lived and is released after each pointer action. The extension does not inject remotely supplied executable code.
-
-## Sensitive content and safeguards
-
-A page may contain personal or sensitive information. You are responsible for selecting the tab and deciding whether to grant access. Password and file inputs are protected; form submissions and some high-impact controls are refused. These safeguards do not replace reviewing the page and the requested action.
-
-## Sale and advertising
-
-LUCH does not sell browser page content or use it for advertising or unrelated profiling. The extension does not include advertising.
+LUCH does not sell browser page contents or use them for advertising. The extension contains no advertising. The current candidate has not passed a user-authorized positive ChatGPT-to-real-tab end-to-end test or final independent security review.
 
 ## Contact
 
-For privacy questions or requests, use [LUCH GitHub Issues](https://github.com/lenar2/luch/issues). Do not post tokens, pairing codes, passwords, private page contents or other sensitive information in a public issue.
-
-## Optional open-tab overview and precise pointer
-
-Users can inspect their open tabs after explicitly granting the optional Chrome tabs permission. The list includes titles, active/window flags, and URLs with search parameters and fragments removed. LUCH cannot send that list to an AI host until the user separately enables overview sharing. This grants access to tab METADATA only, not contents. Sharing is session-scoped and can be turned off at any time.
-
-The precise on-page pointer requires debugger permission declared at installation, plus a separate in-app opt-in after the user has granted interaction on the current tab. It supports pointer movement, clicking, double-clicking, wheel scroll, and limited dragging within the approved webpage viewport. Chrome may show a prominent debugger warning. It is not an OS-level mouse and does not grant unrestricted computer control. A browser permission or per-tab grant can be withdrawn at any time.
-
-An existing AI host must support a separate authorized LUCH tool connection. The extension has no bundled ChatGPT/Claude chat and does not demand a personal OpenAI or Anthropic API key to use its browser controls. Installing the extension alone does not enable third-party tool access in every AI client, including free-plan clients.
+For privacy questions, use [LUCH GitHub Issues](https://github.com/lenar2/luch/issues), without posting tokens, one-time codes, private page contents or other sensitive information.

@@ -396,8 +396,9 @@ async function extensionHandler(req:Request) {
     return json({ok:true,enabled:body?.enabled===true,count:tabs.length});
   }
   if(path.endsWith("/extension/jobs")) {
-    await admin.from("p029_browser_jobs").update({status:"pending",claimed_at:null,lease_until:null})
-      .eq("device_id",device.id).eq("user_id",device.user_id).eq("status","claimed").lt("lease_until",nowIso());
+    // Never auto-requeue claimed browser actions. An acknowledgement can be lost
+    // after the browser has already clicked/typed; replay would double-execute.
+    // Let the original job time out instead and require an explicit new request.
     const out:any[]=[];
     for(let i=0;i<3;i++){
       const {data:pending,error}=await admin.from("p029_browser_jobs").select("id,op,target_id,args,tool_name")
@@ -410,7 +411,12 @@ async function extensionHandler(req:Request) {
       }).eq("id",job.id).eq("device_id",device.id).eq("user_id",device.user_id).eq("status","pending")
         .select("id,op,target_id,args,tool_name").maybeSingle();
       if(claimError||!claimed) continue;
-      out.push(claimed);
+      // Database columns are snake_case, but the MV3 worker intentionally
+      // accepts camelCase targetId. Without this mapping every grant fails.
+      out.push({
+        id:claimed.id, op:claimed.op, targetId:claimed.target_id,
+        args:claimed.args, toolName:claimed.tool_name,
+      });
     }
     return json({ok:true,jobs:out});
   }
@@ -425,7 +431,8 @@ async function extensionHandler(req:Request) {
       error:result?.ok===false?String(result?.error||"BROWSER_ACTION_FAILED").slice(0,200):null,
       completed_at:nowIso()
     }).eq("id",jobId).eq("device_id",device.id).eq("user_id",device.user_id)
-      .in("status",["claimed"]).select("id").maybeSingle();
+      .eq("status","claimed").gt("expires_at",nowIso())
+      .gt("lease_until",nowIso()).select("id").maybeSingle();
     if(error||!data) return json({ok:false,error:"JOB_NOT_FOUND_OR_NOT_CLAIMED"},404);
     return json({ok:true});
   }

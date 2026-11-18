@@ -11,7 +11,7 @@ test('precise on-page pointer uses a genuine Chrome debugger input command only 
  const code=fs.readFileSync(path.join(folder,'background.js'),'utf8');
  const messages={},storage={local:{},session:{}},debuggerCalls=[];
  const activeTab={id:42,title:'User approved',url:'https://example.org/allowed',active:true,windowId:1};
- let jobs=[],results=[],grants=[];
+ let jobs=[],results=[],grants=[],switchOriginOnAttach=false;
  const chrome={
   runtime:{id:'self-test',onMessage:{addListener:cb=>messages.receive=cb}},
   storage:{
@@ -34,7 +34,7 @@ test('precise on-page pointer uses a genuine Chrome debugger input command only 
    return [{result:true}];
   }},
   debugger:{
-   attach:async(source,protocol)=>{assert.equal(source.tabId,42);assert.equal(protocol,'1.3');debuggerCalls.push('attach')},
+   attach:async(source,protocol)=>{assert.equal(source.tabId,42);assert.equal(protocol,'1.3');debuggerCalls.push('attach');if(switchOriginOnAttach)activeTab.url='https://other.example/navigated'},
    sendCommand:async(source,method,args)=>{
     assert.equal(source.tabId,42);assert.equal(method,'Input.dispatchMouseEvent');
     debuggerCalls.push(args.type);
@@ -69,12 +69,23 @@ test('precise on-page pointer uses a genuine Chrome debugger input command only 
  assert.equal(results.length,1,JSON.stringify(results));
  assert.equal(results[0].result.ok,true,JSON.stringify(results[0]));
  assert.deepEqual(debuggerCalls,['attach','mouseMoved','mousePressed','mouseReleased','detach']);
+ // Navigation between permission probe and debugger attach must never fire a click.
+ switchOriginOnAttach=true;
+ const eventsBefore=debuggerCalls.filter(x=>x==='mousePressed').length;
+ jobs.push({id:'origin-race',targetId:'ext:42:'+grants[0].grantId,op:'pointer_click',args:{x:65,y:90}});
+ messages.alarm({name:'luch-poll'});
+ for(let i=0;i<15&&results.length<2;i++)await new Promise(r=>setTimeout(r,20));
+ assert.equal(results.length,2);
+ assert.equal(results[1].result.error,'TAB_ORIGIN_CHANGED');
+ assert.equal(debuggerCalls.filter(x=>x==='mousePressed').length,eventsBefore,'no click after origin change');
+ assert.equal(debuggerCalls.at(-1),'detach');
+ activeTab.url='https://example.org/allowed';switchOriginOnAttach=false;
  const stop=await send('precise-cursor',{enabled:false});assert.equal(stop.ok,true);
  const before=debuggerCalls.length;
  jobs.push({id:'second',targetId:'ext:42:'+grants[0].grantId,op:'pointer_click',args:{x:65,y:90}});
  messages.alarm({name:'luch-poll'});
- for(let i=0;i<15&&results.length<2;i++)await new Promise(r=>setTimeout(r,20));
- assert.equal(results.length,2);
- assert.equal(results[1].result.error,'PRECISE_CURSOR_APPROVAL_REQUIRED');
+ for(let i=0;i<15&&results.length<3;i++)await new Promise(r=>setTimeout(r,20));
+ assert.equal(results.length,3);
+ assert.equal(results[2].result.error,'PRECISE_CURSOR_APPROVAL_REQUIRED');
  assert.equal(debuggerCalls.length,before);
 });

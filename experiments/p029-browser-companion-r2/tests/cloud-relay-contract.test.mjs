@@ -49,3 +49,17 @@ test('pairing instructions match the 10-minute code expiry',()=>{
  assert.match(edge,/Date\.now\(\)\+600_000/);
  assert.doesNotMatch(popup,/локального Companion|локальную страницу подключения|five minutes/i);
 });
+
+test('public code pairing is rate-limited by an atomic service-role RPC',()=>{
+ assert.match(edge,/async function permitPairAttempt\(req:Request\)/);
+ assert.match(edge,/admin\.rpc\("p029_pair_attempt_allowed"/);
+ assert.match(edge,/\["global:pair",240,600\]/);
+ assert.match(edge,/\[ipKey,18,600\]/);
+ assert.match(edge,/if\(!await permitPairAttempt\(req\)\)/);
+ assert.match(edge,/\{\s*"Retry-After":"600"\s*\}/);
+});
+test('OAuth users cannot fetch hashes or page results through PostgREST',()=>{
+ const sql=fs.readFileSync(path.join(root,'supabase/migrations/20261118073000_p029_remove_direct_data_api_reads.sql'),'utf8');
+ for(const name of ['devices','pairings','grants','tab_overviews','jobs','audit_events'])
+  assert.match(sql,new RegExp('revoke select on public\\.p029_browser_'+name+' from authenticated'));
+});

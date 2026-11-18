@@ -29,3 +29,11 @@ No mandatory second chat and no personal OpenAI/Anthropic API key.
 - The local Mac installer is preview-only and has not been activated on the live user system.
 - Required debugger permission in the main extension may weaken the installation experience. A separate precision edition is an alternative for product review.
 - Do NOT publish 0.6.0 until independent security, permissions, native browser E2E and customer onboarding review.
+
+## R11 incremental engineering update (18 November 2026)
+
+See [host compatibility, verified links and first-use blockers](HOST_CONNECTION_MATRIX_R11.md). The official Claude remote MCP path includes Free (one custom connector), while ChatGPT full browser-write tooling through custom MCP is plan/workspace-limited. **No real host→LUCH cloud→extension user E2E has been completed.** Do not confuse the local consented Bridge action route with a remote MCP host connection.
+
+Security hardening in the draft branch now rechecks precise-pointer consent and origin at dispatch time, including intermediate drag points; the new tab-overview button can activate an open tab but does not automatically authorize access to its page. Both changes require exact-head CI and independent headed-browser QA before any release decision.
+
+Use the permanent [PR #12 engineering record](https://github.com/lenar2/luch/pull/12) rather than temporary GitHub Actions artifact download links; snapshots expire and may show 404. No draft binary is a supported customer download.

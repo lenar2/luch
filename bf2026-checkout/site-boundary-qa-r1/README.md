@@ -29,3 +29,29 @@ native-mapping-live-overlay.json applies only the newer Lot5 native readback in 
 - ready_for_native_binding is only a mapping/planning property. It is not a verified checkout route and cannot make /start live.
 - The 3,333 vs 3,000 RUB audio discrepancy is reported as a blocker, never resolved in code.
 
+
+## Exhaustive live quote boundary (265 HTTPS requests)
+
+For the complete valid set space, run the optional rate-limited live pass:
+
+    BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
+    BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs
+
+It submits exactly 265 read-only POST quote requests to the live R109 site, one per second (below the server's 90/minute IP limit), and compares each real response with both the adapter and the R109 vector digest. It never calls /start, creates provider orders, or submits buyer data. The resulting live-boundary evidence file is an observation of the site quote boundary only, not a GetCourse/payment proof.
+
+
+## Exhaustive live quote boundary (265 HTTPS requests)
+
+For the complete valid set space, run the four rate-limited chunks below, then aggregate:
+
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 0 80
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 80 160
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 160 240
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 240 265
+    node bf2026-checkout/site-boundary-qa-r1/aggregate-live-265.cjs
+
+Each chunk sends actual read-only HTTPS POST quote requests to live R109, one per second (below the server's 90/minute IP limit), and compares each response with both the adapter and R109 vector digest. It never calls /start, creates provider orders, or submits buyer data. The final live-boundary evidence file is quote-boundary evidence only, not GetCourse/payment proof.
+
+
+The 265 expected selections are self-contained in live-265-inputs.json; no generated QA vector file outside this PR is required.

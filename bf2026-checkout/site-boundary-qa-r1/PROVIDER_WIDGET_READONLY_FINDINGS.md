@@ -58,3 +58,15 @@ Production readiness was checked once in this dispatch: `sales_ready=false`, `pr
 ## Dispatch A evidence-intake hardening
 
 The new `native-provider-evidence.cjs` contract rejects a pair of separate forms, a radio-only one-offer form, wrong form/action IDs, missing/modified artifacts, unknown or TEST_ONLY trust keys, stale captures, wrong line IDs/totals and invalid paid grant mapping. A TEST_ONLY signed fixture passes structural contract checks but never sets `provider_verified=true`; it cannot unlock native capability. See `NATIVE_PROVIDER_EVIDENCE_ACCEPTANCE.md`. This is not new GetCourse evidence: the actual two widgets remain separate and no live two-line order has been supplied.
+
+
+## Provider-supported single-Offer fallback (Dispatch B 06:30)
+
+Native widget 1686745 shows two selectable Offers but sums to 12990 and its order handler retains only one Offer. This is NOT a 11690 sale route. Official GetCourse docs support a single Offer with multiple existing Products, native Cart for a combined order, and staged Import API multiple_offers=1; the Import API documentation explicitly says not to use imports for operational object management.
+
+The isolated fallback files are `provider-supported-fallback.cjs`, `fallback-site-bridge.cjs`, `provider-supported-fallback.test.cjs`, `fallback-site-bridge.test.cjs`, `fallback-decision-evidence.json`, and `FALLBACK_SITE_ENGINEER_HANDOFF.md`. They calculate exact 6290 + 5400 = 11690 from server R109, hold all checkout starts at HTTP 503, and test one-payment/two-grant/no-duplicate constraints. They never create native orders or payment URLs.
+
+Refer to `FALLBACK_SITE_ENGINEER_HANDOFF.md` for source links, exact native composition requirements, proven limitations and acceptance command. Do not merge into production.
+
+
+Combined focused regression: **57/57 PASS** (43 existing + 14 new fallback tests). No exhaustive 265-vector rerun. Node syntax and production export guard PASS.

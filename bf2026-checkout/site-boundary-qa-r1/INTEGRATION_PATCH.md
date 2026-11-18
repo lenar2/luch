@@ -44,3 +44,11 @@ The PostgreSQL adapter is source-level code with query-recorder unit tests. The 
 `native-provider-evidence.cjs` now requires a signed evidence bundle with pinned Ed25519 trust key, artifact hashes, a single native POST form/action ID, both Offer IDs simultaneously selectable in that form, and a native order readback reconciled to that action/widget. It validates exact two-line 12,990 RUB subtotal, 10%/1,300 RUB discount and 11,690 RUB amount due. Paid readback validation binds both 365-day AFTER_PAY grants to the same provider order and paid event, with receipt/tax, offer consent and duplicate guard. `assertNativeMultiOfferCapability` now fails closed unless this evidence is signed by a trusted SITE_ENGINEER_ATTESTED key.
 
 The evidence tests use an ephemeral TEST_ONLY key and synthetic fixture artifacts solely to test the contract parser; they assert `provider_verified=false` and prove the fixture cannot reach the store/provider. Provider timeout and duplicate tests exercise the idempotency state machine with test doubles; they do not prove GetCourse accepted a real order. The exact acceptance command and evidence packaging rules are in `NATIVE_PROVIDER_EVIDENCE_ACCEPTANCE.md`.
+
+
+## Safe native bundle fallback (Dispatch B)
+
+GetCourse official documentation supports one Offer with multiple Products, but native bundle Offer ID, product allocations, true unpaid/paid order and rights are still unverified. New isolated `provider-supported-fallback.cjs` and `fallback-site-bridge.cjs` implement server-only 11690 quote allocation (6290 + 5400) and explicit HTTP 503 / no payment link decision gates. The staged Import API fallback is dry-run only, because vendor warns it is for import, not operational checkout. Full exact site engineer acceptance steps and official source links: `FALLBACK_SITE_ENGINEER_HANDOFF.md`. No changes to production site, approved design, GC UI, registry or user data.
+
+
+Combined focused regression: **57/57 PASS** (43 existing + 14 new fallback tests). No exhaustive 265-vector rerun. Node syntax and production export guard PASS.

@@ -1,0 +1,61 @@
+{
+  "schema": "bf2026.getcourse.native-order.expected.v1",
+  "status": "ACCEPTANCE_CONTRACT_ONLY_NO_REAL_ORDER_OBSERVED",
+  "provider": "GetCourse",
+  "selection_key": "set:rejection_program|union",
+  "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107",
+  "catalog_sha256": "c20dd54301ab2bdfe4c2944abda0a7b51ec821f885465bbf17c7eb71b2277135",
+  "quote_sha256": "9489fedcb65b9181707e23176ca315b1e2f9a84b3ce36662ab389b11a5afa021",
+  "currency": "RUB",
+  "line_count": 2,
+  "subtotal_rub": 12990,
+  "discount_percent": 10,
+  "savings_rub": 1300,
+  "total_rub": 11690,
+  "rounding": "NEAREST_10_RUB_ON_FINAL_ORDER_TOTAL",
+  "lines": [
+    {
+      "key": "rejection_program",
+      "site_lot": 5,
+      "offer_id": 8933492,
+      "product_id": 4557988,
+      "training_id": 936022301,
+      "unit_price_rub": 6990,
+      "access_start": "AFTER_CONFIRMED_PAYMENT",
+      "access_duration_days": 365,
+      "native_status_last_evidenced": "ACTIVE_PUBLIC",
+      "native_status_evidence_ref": "ai-factory-evidence#4073/comment/6988661595"
+    },
+    {
+      "key": "union",
+      "site_lot": 7,
+      "offer_id": 8919715,
+      "product_id": 4550895,
+      "training_id": 933861292,
+      "unit_price_rub": 6000,
+      "access_start": "AFTER_CONFIRMED_PAYMENT",
+      "access_duration_days": 365,
+      "native_status_last_evidenced": "INACTIVE_QA_ONLY",
+      "native_status_evidence_ref": "ai-factory-evidence#4073/comment/6988302858"
+    }
+  ],
+  "existing_widget": {
+    "id": 1686693,
+    "scope": "LOT5_SINGLE_OFFER_ONLY",
+    "eligible_for_this_two_line_contract": false,
+    "evidence_ref": "ai-factory-evidence#4073/comment/6988661595"
+  },
+  "required_provider_evidence": [
+    "native_multi_offer_form_readback",
+    "public_buyer_form_or_wrapper_readback",
+    "native_order_readback_with_two_distinct_lines",
+    "confirmed_paid_event_readback",
+    "both_365_day_after_payment_grant_readbacks",
+    "fiscal_receipt_readback_for_11690_RUB",
+    "tax_treatment_review",
+    "mandatory_offer_consent_readback",
+    "duplicate_submission_negative_test",
+    "owner_approved_controlled_test_reference"
+  ]
+}
+

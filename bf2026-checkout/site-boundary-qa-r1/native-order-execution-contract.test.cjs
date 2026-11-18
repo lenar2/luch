@@ -59,7 +59,7 @@ test('no provider multi-offer capability exists: fail closed before idempotency 
  const store={reserve:async()=>{storeCalls++;return {status:'NEW'}},markSubmitting:async()=>{storeCalls++},commit:async()=>{storeCalls++},markOutcomeUnknown:async()=>{storeCalls++}};
  const provider={name:'GetCourse',createNativeOrder:async()=>{providerCalls++;throw new Error('must not call')}};
  await assert.rejects(()=>submitSignedSelection({adapter,token:token(),secret,now:2000000100,capability:null,idempotencyStore:store,provider}),
-  {code:'NATIVE_MULTI_OFFER_MECHANISM_UNVERIFIED'});
+  {code:'NATIVE_PROVIDER_EVIDENCE_BUNDLE_REQUIRED'});
  assert.equal(storeCalls,0);
  assert.equal(providerCalls,0);
 });
@@ -72,7 +72,7 @@ test('capability cannot be inferred from two single-offer widget URLs',()=>{
   native_public_form_url:'https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693',
   native_form_action_url:'https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127',
   native_form_get_ref:'widget-get',native_unpaid_order_readback_ref:'order-get',native_order_id:'fake'};
- assert.throws(()=>assertNativeMultiOfferCapability(null,plan),{code:'NATIVE_MULTI_OFFER_MECHANISM_UNVERIFIED'});
+ assert.throws(()=>assertNativeMultiOfferCapability(null,plan),{code:'NATIVE_PROVIDER_EVIDENCE_BUNDLE_REQUIRED'});
  // The evidence we actually have must never be silently upgraded into this capability.
  const observed=assessNativeWidgetPair(evidence);
  assert.equal(observed.one_native_form_with_both_offers,false);
@@ -99,11 +99,11 @@ test('exact grant plan is AFTER_PAY for the matching product/training pair only'
 test('unpaid order validator rejects missing and synthetic order evidence; no fake positive fixture',()=>{
  const p=adapter.plan(input);
  assert.throws(()=>validateNativeUnpaidOrderReadback(null,p),{code:'NATIVE_UNPAID_ORDER_READBACK_REQUIRED'});
- assert.throws(()=>validateNativeUnpaidOrderReadback({provenance:{source:'UNIT_TEST',synthetic:true}},p),{code:'NATIVE_ORDER_PROVENANCE_REQUIRED'});
+ assert.throws(()=>validateNativeUnpaidOrderReadback({provenance:{source:'UNIT_TEST',synthetic:true}},p),{code:'LIVE_PROVIDER_EVIDENCE_REQUIRED'});
 });
 test('paid grants require both exact trainings tied to the same provider order and paid event',()=>{
  assert.throws(()=>validatePaidGrantReadback(null),{code:'PAID_NATIVE_ORDER_REQUIRED'});
- assert.throws(()=>validatePaidGrantReadback({status:'PAID',paid_total_rub:11690,provider_order_id:'123',grants:[]}),{code:'EXACT_TWO_PAID_GRANTS_REQUIRED'});
+ assert.throws(()=>validatePaidGrantReadback({status:'PAID',paid_total_rub:11690,provider_order_id:'123',grants:[]}),{code:'LIVE_PROVIDER_EVIDENCE_REQUIRED'});
 });
 
 test('PostgreSQL idempotency adapter uses transactional unique reservation and conditional state writes',async()=>{
@@ -128,7 +128,7 @@ test('PostgreSQL ambiguous-submit path records unknown and only reconciles from 
  await store.reserve({checkoutIdempotencyKey:'e'.repeat(32),selectionSha256:'f'.repeat(64),ownerToken:'1'.repeat(32)});
  await store.markSubmitting({checkoutIdempotencyKey:'e'.repeat(32),ownerToken:'1'.repeat(32)});
  await store.markOutcomeUnknown({checkoutIdempotencyKey:'e'.repeat(32),ownerToken:'1'.repeat(32),errorCode:'TIMEOUT'});
- await store.reconcileCreated({checkoutIdempotencyKey:'e'.repeat(32),providerOrderId:'GC-456',orderReadbackSha256:'2'.repeat(64),evidenceRef:'independent-native-readback'});
+ await store.reconcileCreated({checkoutIdempotencyKey:'e'.repeat(32),selectionSha256:'f'.repeat(64),providerOrderId:'GC-456',orderReadbackSha256:'2'.repeat(64),evidenceRef:'independent-native-readback'});
  assert.ok(calls.some(x=>x.includes("state='PROVIDER_OUTCOME_UNKNOWN'")));
  assert.ok(calls.some(x=>x.includes("state='ORDER_CREATED'")&&x.includes("state='PROVIDER_OUTCOME_UNKNOWN'")));
 });

@@ -2,6 +2,8 @@
 const crypto=require('node:crypto');
 const contract=require('./native-order-execution-contract.json');
 const EXPECTED=contract.required_native_order;
+const {verifyProviderEvidenceBundle,assertLiveProviderEvidence,buildNativeMultiOfferCapability}=require('./native-provider-evidence.cjs');
+
 function fail(code){const e=new Error(code);e.code=code;throw e}
 function canonical(x){
  if(Array.isArray(x))return '['+x.map(canonical).join(',')+']';
@@ -77,29 +79,21 @@ function assessNativeWidgetPair(evidence){
   native_two_line_order_verified:false,
   classification:'TWO_DISTINCT_NATIVE_SINGLE_OFFER_FORMS_NOT_ONE_MULTI_OFFER_FORM'};
 }
-function assertNativeMultiOfferCapability(capability,plan){
+function assertNativeMultiOfferCapability(capability,plan,{trustedKeys,nowMs=Date.now()}={}){
  assertExpectedPlan(plan);
- if(!capability||capability.provider!=='GetCourse'||capability.mode!=='ONE_NATIVE_ORDER_MULTI_OFFER'||
-   capability.selection_field!=='formParams[offer_id][]'||
-   capability.selection_encoding!=='MULTIPLE_VALUES_IN_ONE_NATIVE_FORM'||
-   capability.provider_selection_binding_verified!==true||
-   capability.native_unpaid_two_line_order_verified!==true||
-   capability.independent_reviewed!==true)fail('NATIVE_MULTI_OFFER_MECHANISM_UNVERIFIED');
- const expectedIds=EXPECTED.lines.map(x=>x.offer_id).sort((a,b)=>a-b);
- const ids=x=>Array.isArray(x)?x.map(Number).sort((a,b)=>a-b):[];
- if(!same(ids(capability.form_offer_ids),expectedIds)||!same(ids(capability.native_order_offer_ids),expectedIds))
+ if(!capability?.evidence_bundle||!capability?.evidence_artifacts||!trustedKeys)
+  fail('NATIVE_PROVIDER_EVIDENCE_BUNDLE_REQUIRED');
+ const evidence=verifyProviderEvidenceBundle({
+  bundle:capability.evidence_bundle,artifacts:capability.evidence_artifacts,trustedKeys,nowMs
+ });
+ assertLiveProviderEvidence(evidence);
+ if(evidence.order.status!=='UNPAID')fail('NATIVE_UNPAID_TWO_LINE_ORDER_REQUIRED');
+ if(capability.independent_reviewed!==true)fail('NATIVE_MULTI_OFFER_INDEPENDENT_REVIEW_REQUIRED');
+ const derived=buildNativeMultiOfferCapability(evidence);
+ if(!same(derived.form_offer_ids,EXPECTED.lines.map(x=>x.offer_id).sort((a,b)=>a-b))||
+    !same(derived.native_order_offer_ids,EXPECTED.lines.map(x=>x.offer_id).sort((a,b)=>a-b)))
   fail('NATIVE_MULTI_OFFER_IDS_NOT_PROVEN');
- if(typeof capability.native_public_form_url!=='string'||typeof capability.native_form_get_ref!=='string'||
-   typeof capability.native_unpaid_order_readback_ref!=='string'||typeof capability.native_order_id!=='string')
-  fail('NATIVE_MULTI_OFFER_EVIDENCE_MISSING');
- const form=new URL(capability.native_public_form_url);
- const action=new URL(capability.native_form_action_url||'');
- if(form.protocol!=='https:'||form.hostname!=='study.shkola-dnv.com'||
-   !/^\/pl\/lite\/widget\/widget$/.test(form.pathname)||
-   action.protocol!=='https:'||action.hostname!=='study.shkola-dnv.com'||
-   action.pathname!=='/pl/lite/block-public/process'||!action.searchParams.has('id'))
-  fail('NATIVE_MULTI_OFFER_URL_INVALID');
- return true;
+ return {...derived,independent_reviewed:true};
 }
 function classifyExistingReservation(row,selectionSha256,nowMs=Date.now()){
  if(!row)return 'NEW';
@@ -112,41 +106,50 @@ function classifyExistingReservation(row,selectionSha256,nowMs=Date.now()){
  }
  return 'OUTCOME_UNKNOWN';
 }
-function validateNativeUnpaidOrderReadback(order,plan){
+function validateNativeUnpaidOrderReadback(order,plan,evidence){
  assertExpectedPlan(plan);
  if(!order||typeof order!=='object')fail('NATIVE_UNPAID_ORDER_READBACK_REQUIRED');
- if(order.provenance?.source!=='GETCOURSE_NATIVE_ORDER_DETAIL'||
-    order.provenance?.synthetic===true||order.provenance?.test_fixture===true)
-  fail('NATIVE_ORDER_PROVENANCE_REQUIRED');
- if(typeof order.provider_order_id!=='string'||!order.provider_order_id.trim())fail('NATIVE_PROVIDER_ORDER_ID_REQUIRED');
+ assertLiveProviderEvidence(evidence);
+ if(evidence.order.status!=='UNPAID'||evidence.order.provider_order_id!==order.provider_order_id||
+    !same(evidence.order,order))fail('NATIVE_ORDER_READBACK_EVIDENCE_MISMATCH');
  if(order.status!=='UNPAID'||order.currency!=='RUB'||order.subtotal_rub!==EXPECTED.subtotal_rub||
-    order.discount_percent!==EXPECTED.discount_percent||order.amount_due_rub!==EXPECTED.amount_due_rub)
-  fail('NATIVE_UNPAID_ORDER_TOTAL_OR_STATUS_MISMATCH');
+    order.discount_percent!==EXPECTED.discount_percent||order.discount_rub!==EXPECTED.discount_rub||
+    order.amount_due_rub!==EXPECTED.amount_due_rub)fail('NATIVE_UNPAID_ORDER_TOTAL_OR_STATUS_MISMATCH');
  if(!Array.isArray(order.lines)||order.lines.length!==2)fail('EXACT_TWO_NATIVE_LINES_REQUIRED');
  const lines=[...order.lines].sort((a,b)=>a.offer_id-b.offer_id);
  const expected=[...EXPECTED.lines].sort((a,b)=>a.offer_id-b.offer_id);
  for(let i=0;i<2;i++)for(const k of ['offer_id','product_id','training_id','base_price_rub','quantity'])
-  if(lines[i]?.[k]!== (k==='quantity'?1:expected[i][k]))fail('NATIVE_UNPAID_LINE_MISMATCH_'+i+'_'+k);
+  if(lines[i]?.[k]!==expected[i][k])fail('NATIVE_UNPAID_LINE_MISMATCH_'+i+'_'+k);
  if(Array.isArray(order.grants)&&order.grants.length)fail('GRANTS_BEFORE_CONFIRMED_PAYMENT');
- const refs=order.provenance?.evidence_refs;
- if(!refs||['native_form_get','native_order_detail','native_order_lines'].some(k=>typeof refs[k]!=='string'||refs[k].length<5))
-  fail('NATIVE_UNPAID_EVIDENCE_REFS_MISSING');
  return {valid:true,provider_order_id:order.provider_order_id,status:'UNPAID',
-  amount_due_rub:EXPECTED.amount_due_rub,line_count:2,provider_order_status:'VALIDATED_NATIVE_READBACK_NOT_CREATED_BY_VALIDATOR'};
+  amount_due_rub:EXPECTED.amount_due_rub,line_count:2,evidence_class:evidence.evidence_class,
+  provider_order_status:'VALIDATED_SITE_ENGINEER_ATTESTED_NATIVE_READBACK'};
 }
 function buildGrantPlan(plan){
  assertExpectedPlan(plan);
  return EXPECTED.lines.map(l=>({offer_id:l.offer_id,product_id:l.product_id,training_id:l.training_id,
   trigger:'CONFIRMED_PAID_EVENT_ONLY',start:'AFTER_PAY',duration_days:365}));
 }
-function validatePaidGrantReadback(order){
+function validatePaidGrantReadback(order,evidence){
  if(!order||order.status!=='PAID'||order.paid_total_rub!==EXPECTED.paid_total_rub||
    typeof order.provider_order_id!=='string'||!order.provider_order_id)fail('PAID_NATIVE_ORDER_REQUIRED');
+ assertLiveProviderEvidence(evidence);
+ if(evidence.order.status!=='PAID'||evidence.order.provider_order_id!==order.provider_order_id||
+    !same(evidence.order,order))fail('PAID_NATIVE_ORDER_EVIDENCE_MISMATCH');
+ if(order.currency!=='RUB'||order.subtotal_rub!==EXPECTED.subtotal_rub||
+    order.discount_percent!==EXPECTED.discount_percent||order.discount_rub!==EXPECTED.discount_rub)
+  fail('PAID_NATIVE_ORDER_TOTAL_MISMATCH');
+ if(!Array.isArray(order.lines)||order.lines.length!==2)fail('EXACT_TWO_PAID_LINES_REQUIRED');
+ const lines=[...order.lines].sort((a,b)=>a.offer_id-b.offer_id);
+ const expectedLines=[...EXPECTED.lines].sort((a,b)=>a.offer_id-b.offer_id);
+ for(let i=0;i<2;i++)for(const k of ['offer_id','product_id','training_id','base_price_rub','quantity'])
+  if(lines[i]?.[k]!==expectedLines[i][k])fail('PAID_NATIVE_LINE_MISMATCH_'+i+'_'+k);
  if(!Array.isArray(order.grants)||order.grants.length!==2)fail('EXACT_TWO_PAID_GRANTS_REQUIRED');
  const grants=[...order.grants].sort((a,b)=>a.training_id-b.training_id);
  const expected=[...EXPECTED.lines].sort((a,b)=>a.training_id-b.training_id);
  const paidEvent=grants[0]?.paid_event_id;
- if(!paidEvent||grants.some(g=>g.paid_event_id!==paidEvent))fail('GRANTS_NOT_BOUND_TO_SAME_PAID_EVENT');
+ if(!paidEvent||grants.some(g=>g.paid_event_id!==paidEvent)||order.payment_event_id!==paidEvent)
+  fail('GRANTS_NOT_BOUND_TO_SAME_PAID_EVENT');
  for(let i=0;i<2;i++){
   const g=grants[i],e=expected[i];
   if(g.provider_order_id!==order.provider_order_id||g.training_id!==e.training_id||
@@ -155,8 +158,11 @@ function validatePaidGrantReadback(order){
  }
  if(!order.receipt?.receipt_id||order.receipt?.tax_readback!==true)fail('FISCAL_RECEIPT_OR_TAX_MISSING');
  if(order.consent?.offer_terms_accepted!==true)fail('OFFER_TERMS_CONSENT_MISSING');
+ if(order.duplicate_guard?.verified!==true||order.duplicate_guard?.negative_test_passed!==true)
+  fail('DUPLICATE_GUARD_NOT_PROVEN');
  return {valid:true,provider_order_id:order.provider_order_id,paid_event_id:paidEvent,
-  paid_total_rub:EXPECTED.paid_total_rub,grant_count:2,provider_order_status:'VALIDATED_NATIVE_READBACK_NOT_CREATED_BY_VALIDATOR'};
+  paid_total_rub:EXPECTED.paid_total_rub,grant_count:2,evidence_class:evidence.evidence_class,
+  provider_order_status:'VALIDATED_SITE_ENGINEER_ATTESTED_PAID_READBACK'};
 }
 async function withTransaction(pool,fn){
  const client=await pool.connect();
@@ -197,16 +203,51 @@ function createPostgresIdempotencyStore(pool){
    const r=await pool.query("UPDATE bf2026_native_checkout_idempotency SET state='PROVIDER_OUTCOME_UNKNOWN',last_error_code=$3,updated_at=now() WHERE scope='BF2026' AND checkout_idempotency_key=$1 AND state='PROVIDER_SUBMITTING' AND lease_owner=$2",[checkoutIdempotencyKey,ownerToken,String(errorCode||'UNKNOWN').slice(0,120)]);
    if(r.rowCount!==1)fail('IDEMPOTENCY_UNKNOWN_MARK_FAILED');
   },
-  async reconcileCreated({checkoutIdempotencyKey,providerOrderId,orderReadbackSha256,evidenceRef}){
-   if(!evidenceRef)fail('RECONCILIATION_EVIDENCE_REQUIRED');
-   const r=await pool.query("UPDATE bf2026_native_checkout_idempotency SET state='ORDER_CREATED',provider_order_id=$2,order_readback_sha256=$3,evidence_ref=$4,updated_at=now() WHERE scope='BF2026' AND checkout_idempotency_key=$1 AND state='PROVIDER_OUTCOME_UNKNOWN'",[checkoutIdempotencyKey,providerOrderId,orderReadbackSha256,evidenceRef]);
+  async reconcileCreated({checkoutIdempotencyKey,selectionSha256,providerOrderId,orderReadbackSha256,evidenceRef}){
+   if(!evidenceRef||!isHex(selectionSha256,64)||!isHex(orderReadbackSha256,64)||typeof providerOrderId!=='string'||!providerOrderId.trim())fail('RECONCILIATION_EVIDENCE_REQUIRED');
+   const r=await pool.query("UPDATE bf2026_native_checkout_idempotency SET state='ORDER_CREATED',provider_order_id=$3,order_readback_sha256=$4,evidence_ref=$5,updated_at=now() WHERE scope='BF2026' AND checkout_idempotency_key=$1 AND selection_sha256=$2 AND state='PROVIDER_OUTCOME_UNKNOWN'",[checkoutIdempotencyKey,selectionSha256,providerOrderId,orderReadbackSha256,evidenceRef]);
    if(r.rowCount!==1)fail('IDEMPOTENCY_RECONCILIATION_FAILED');
   }
  };
 }
-async function submitSignedSelection({adapter,token,secret,now,capability,idempotencyStore,provider}){
+// Internal execution primitive. Production caller must pass the independently verified capability gate first.
+async function executeProviderSubmissionAfterReservation({payload,capability,idempotencyStore,provider,ownerToken,
+ evidenceTrustStore,nowMs=Date.now()}){
+ await idempotencyStore.markSubmitting({checkoutIdempotencyKey:payload.checkout_idempotency_key,ownerToken});
+ try{
+  const providerResult=await provider.createNativeOrder({
+   nativePublicFormUrl:capability.native_public_form_url,
+   nativeFormActionUrl:capability.native_form_action_url,
+   offerIds:EXPECTED.lines.map(l=>l.offer_id),
+   selectionField:'formParams[offer_id][]',
+   amountDueRub:EXPECTED.amount_due_rub,
+   checkoutIdempotencyKey:payload.checkout_idempotency_key
+  });
+  const evidence=verifyProviderEvidenceBundle({
+   bundle:providerResult?.evidence_bundle,artifacts:providerResult?.evidence_artifacts,
+   trustedKeys:evidenceTrustStore,nowMs
+  });
+  assertLiveProviderEvidence(evidence);
+  const order=evidence.order;
+  const valid=validateNativeUnpaidOrderReadback(order,payload.plan,evidence);
+  await idempotencyStore.commit({
+   checkoutIdempotencyKey:payload.checkout_idempotency_key,ownerToken,
+   providerOrderId:order.provider_order_id,orderReadbackSha256:sha256(evidence.artifact_sha256),
+   evidenceRef:evidence.artifact_refs.order_json
+  });
+  return {status:'NATIVE_UNPAID_ORDER_CREATED',provider_order_id:valid.provider_order_id,
+   amount_due_rub:valid.amount_due_rub,evidence_class:evidence.evidence_class};
+ }catch(e){
+  await idempotencyStore.markOutcomeUnknown({
+   checkoutIdempotencyKey:payload.checkout_idempotency_key,ownerToken,errorCode:e.code||e.message
+  }).catch(()=>{});
+  fail('PROVIDER_OUTCOME_UNKNOWN');
+ }
+}
+async function submitSignedSelection({adapter,token,secret,now,capability,idempotencyStore,provider,
+ evidenceTrustStore,nowMs=Date.now()}){
  const payload=verifySignedSelection({adapter,token,secret,now});
- assertNativeMultiOfferCapability(capability,payload.plan); // deliberately before store/provider access
+ const validatedCapability=assertNativeMultiOfferCapability(capability,payload.plan,{trustedKeys:evidenceTrustStore,nowMs});
  if(!idempotencyStore||!['reserve','markSubmitting','commit','markOutcomeUnknown'].every(k=>typeof idempotencyStore[k]==='function'))
   fail('DURABLE_IDEMPOTENCY_STORE_REQUIRED');
  if(!provider||provider.name!=='GetCourse'||typeof provider.createNativeOrder!=='function')
@@ -219,22 +260,29 @@ async function submitSignedSelection({adapter,token,secret,now,capability,idempo
  if(reservation.status==='OUTCOME_UNKNOWN')fail('PROVIDER_OUTCOME_RECONCILIATION_REQUIRED');
  if(reservation.status==='IN_PROGRESS')fail('IDEMPOTENT_SUBMISSION_IN_PROGRESS');
  if(reservation.status!=='NEW')fail('IDEMPOTENCY_RESERVATION_REJECTED');
- await idempotencyStore.markSubmitting({checkoutIdempotencyKey:payload.checkout_idempotency_key,ownerToken});
- try{
-  const order=await provider.createNativeOrder({nativePublicFormUrl:capability.native_public_form_url,
-   nativeFormActionUrl:capability.native_form_action_url,offerIds:EXPECTED.lines.map(l=>l.offer_id),
-   selectionField:'formParams[offer_id][]',amountDueRub:EXPECTED.amount_due_rub,
-   checkoutIdempotencyKey:payload.checkout_idempotency_key});
-  const valid=validateNativeUnpaidOrderReadback(order,payload.plan);
-  await idempotencyStore.commit({checkoutIdempotencyKey:payload.checkout_idempotency_key,ownerToken,
-   providerOrderId:order.provider_order_id,orderReadbackSha256:sha256(order),
-   evidenceRef:order.provenance.evidence_refs.native_order_detail});
-  return {status:'NATIVE_UNPAID_ORDER_CREATED',provider_order_id:valid.provider_order_id,amount_due_rub:valid.amount_due_rub};
- }catch(e){
-  await idempotencyStore.markOutcomeUnknown({checkoutIdempotencyKey:payload.checkout_idempotency_key,ownerToken,errorCode:e.code||e.message}).catch(()=>{});
-  fail('PROVIDER_OUTCOME_UNKNOWN');
- }
+ return executeProviderSubmissionAfterReservation({
+  payload,capability:validatedCapability,idempotencyStore,provider,ownerToken,evidenceTrustStore,nowMs
+ });
+}
+async function reconcileUnknownProviderOutcome({adapter,token,secret,now,idempotencyStore,
+ evidenceBundle,evidenceArtifacts,evidenceTrustStore,nowMs=Date.now()}){
+ const payload=verifySignedSelection({adapter,token,secret,now});
+ const evidence=verifyProviderEvidenceBundle({
+  bundle:evidenceBundle,artifacts:evidenceArtifacts,trustedKeys:evidenceTrustStore,nowMs
+ });
+ assertLiveProviderEvidence(evidence);
+ const valid=validateNativeUnpaidOrderReadback(evidence.order,payload.plan,evidence);
+ if(typeof idempotencyStore?.reconcileCreated!=='function')fail('IDEMPOTENCY_RECONCILIATION_STORE_REQUIRED');
+ await idempotencyStore.reconcileCreated({
+  checkoutIdempotencyKey:payload.checkout_idempotency_key,selectionSha256:sha256(payload.plan),
+  providerOrderId:valid.provider_order_id,orderReadbackSha256:sha256(evidence.artifact_sha256),
+  evidenceRef:evidence.artifact_refs.order_json
+ });
+ return {status:'RECONCILED_EXISTING_NATIVE_ORDER',provider_order_id:valid.provider_order_id,
+  amount_due_rub:valid.amount_due_rub,evidence_class:evidence.evidence_class};
 }
 module.exports={sealSignedSelection,verifySignedSelection,assessNativeWidgetPair,assertNativeMultiOfferCapability,
  classifyExistingReservation,validateNativeUnpaidOrderReadback,buildGrantPlan,validatePaidGrantReadback,
- createPostgresIdempotencyStore,submitSignedSelection,canonical,sha256};
+ createPostgresIdempotencyStore,submitSignedSelection,reconcileUnknownProviderOutcome,canonical,sha256,
+ ...(process.env.NODE_ENV==='test'?{executeProviderSubmissionAfterReservation}: {})};
+

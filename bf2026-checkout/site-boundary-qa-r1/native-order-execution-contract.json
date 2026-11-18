@@ -122,7 +122,14 @@
     "provider_timeout_after_submit": "PROVIDER_OUTCOME_UNKNOWN; block automatic retry until native order lookup reconciliation",
     "provider_order_id": "Unique when present",
     "replay_policy": "ORDER_CREATED returns existing provider_order_id; no provider call",
-    "ambiguity_policy": "PROVIDER_SUBMITTING and PROVIDER_OUTCOME_UNKNOWN never auto-retry"
+    "ambiguity_policy": "PROVIDER_SUBMITTING and PROVIDER_OUTCOME_UNKNOWN never auto-retry",
+    "reconcile_requirements": [
+      "same checkout idempotency key",
+      "same selection_sha256",
+      "provider_order_id",
+      "SHA-256 of native order readback",
+      "immutable signed evidence reference"
+    ]
   },
   "provider_gate": {
     "required_mode": "ONE_NATIVE_ORDER_MULTI_OFFER",
@@ -150,5 +157,62 @@
     "native_order_created": false,
     "payment_attempted": false,
     "mailing_attempted": false
+  },
+  "provider_evidence_intake": {
+    "schema": "bf2026.getcourse.provider-evidence.v1",
+    "artifact_requirements": [
+      "one native public form HTML",
+      "one native order detail JSON",
+      "SHA-256 for both artifacts",
+      "immutable artifact references"
+    ],
+    "attestation": {
+      "algorithm": "Ed25519",
+      "capture_types": {
+        "live": "LIVE_PROVIDER_CAPTURE",
+        "test": "TEST_FIXTURE"
+      },
+      "live_key_trust_level": "SITE_ENGINEER_ATTESTED",
+      "live_key_usage": "BF2026_GETCOURSE_PROVIDER_EVIDENCE",
+      "test_key_trust_level": "TEST_ONLY"
+    },
+    "native_form": {
+      "exactly_one_form": true,
+      "method": "POST",
+      "action_host": "study.shkola-dnv.com",
+      "action_path": "/pl/lite/block-public/process",
+      "stable_action_id_required": true,
+      "selection_field": "formParams[offer_id][]",
+      "accepted_selection_encodings": [
+        "MULTI_VALUE_CHECKBOX",
+        "MULTI_VALUE_SELECT"
+      ],
+      "both_exact_offer_ids_selected_simultaneously": true,
+      "radio_controls_rejected": true
+    },
+    "unpaid_order": {
+      "source": "GETCOURSE_NATIVE_ORDER_DETAIL",
+      "status": "UNPAID",
+      "currency": "RUB",
+      "exact_line_count": 2,
+      "subtotal_rub": 12990,
+      "discount_percent": 10,
+      "discount_rub": 1300,
+      "amount_due_rub": 11690,
+      "source_form_action_and_widget_must_match": true,
+      "grants_must_be_empty": true
+    },
+    "paid_order": {
+      "status": "PAID",
+      "paid_total_rub": 11690,
+      "exact_grant_count": 2,
+      "grant_days": 365,
+      "grant_start": "AFTER_PAY",
+      "same_provider_order_and_paid_event": true,
+      "receipt_tax_offer_consent_and_duplicate_guard_required": true
+    },
+    "fixture_policy": "TEST_ONLY evidence may pass structural contract validation but always returns provider_verified=false and cannot unlock capability or reconciliation.",
+    "current_live_key_configured": false,
+    "current_live_native_multi_offer_evidence": false
   }
 }

@@ -52,4 +52,9 @@ Production readiness was checked once in this dispatch: `sales_ready=false`, `pr
 - No production route, registry, design, or deployment change.
 - Signed selection is an internal authorization envelope, not a GetCourse order and not a provider API.
 - PostgreSQL adapter tests use a query-recorder test double; this is not proof of a live DB migration or persistence.
-- Focused deterministic suite: 23/23 PASS.
+- Focused deterministic suite after Dispatch A evidence-intake hardening: 43/43 PASS.
+
+
+## Dispatch A evidence-intake hardening
+
+The new `native-provider-evidence.cjs` contract rejects a pair of separate forms, a radio-only one-offer form, wrong form/action IDs, missing/modified artifacts, unknown or TEST_ONLY trust keys, stale captures, wrong line IDs/totals and invalid paid grant mapping. A TEST_ONLY signed fixture passes structural contract checks but never sets `provider_verified=true`; it cannot unlock native capability. See `NATIVE_PROVIDER_EVIDENCE_ACCEPTANCE.md`. This is not new GetCourse evidence: the actual two widgets remain separate and no live two-line order has been supplied.

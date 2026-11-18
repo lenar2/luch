@@ -42,7 +42,7 @@ The signed selection binds R109's server-recomputed `set:rejection_program|union
       bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs \
       bf2026-checkout/site-boundary-qa-r1/native-order-execution-contract.test.cjs
 
-Captured deterministic suite: **23/23 PASS**. The live 265 quote test suite was not rerun. Widget tests consume the sanitized pair snapshot; `inspect-native-widget-pair.cjs` is a public-GET-only refresh utility and never submits a form.
+Captured deterministic suite: **43/43 PASS**. The live 265 quote test suite was not rerun. Widget tests consume the sanitized pair snapshot; `inspect-native-widget-pair.cjs` is a public-GET-only refresh utility and never submits a form.
 
 ## Current blockers
 
@@ -54,3 +54,8 @@ Captured deterministic suite: **23/23 PASS**. The live 265 quote test suite was 
 ## Boundaries
 
 No GetCourse UI/lock, form submit, buyer data, order, payment, email, production registry, route, design or deployment was touched. Do not merge to production or enable sales from this contract alone.
+
+
+## Native provider evidence intake (Dispatch A)
+
+See `NATIVE_PROVIDER_EVIDENCE_ACCEPTANCE.md` for the signed evidence-bundle schema and exact acceptance command. `native-provider-evidence.cjs` verifies the Ed25519 attestation, raw artifact SHA-256, one-form/two-offer control semantics, stable form action ID, two-line order reconciliation, exact 11,690 RUB amount and paid grant mapping. TEST_ONLY fixtures are structurally validated but have `provider_verified=false` and cannot unlock the capability gate. No trusted production key or live multi-offer evidence is currently configured.

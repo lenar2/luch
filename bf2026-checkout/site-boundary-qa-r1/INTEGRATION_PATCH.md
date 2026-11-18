@@ -37,3 +37,10 @@ The PostgreSQL adapter is source-level code with query-recorder unit tests. The 
 - Production readiness checked once this dispatch: sales_ready=false, provider_offer_ready=false, verified_sale_routes=0.
 - Existing PR #17 only; no duplicate PR or issue comments. Integrate into the site engineer's isolated branch only after ACK. Do not overwrite their work.
 - No GetCourse UI, lock, form, order, payment, email, production registry, design or deployment was touched.
+
+
+## Evidence intake hardening added in Dispatch A
+
+`native-provider-evidence.cjs` now requires a signed evidence bundle with pinned Ed25519 trust key, artifact hashes, a single native POST form/action ID, both Offer IDs simultaneously selectable in that form, and a native order readback reconciled to that action/widget. It validates exact two-line 12,990 RUB subtotal, 10%/1,300 RUB discount and 11,690 RUB amount due. Paid readback validation binds both 365-day AFTER_PAY grants to the same provider order and paid event, with receipt/tax, offer consent and duplicate guard. `assertNativeMultiOfferCapability` now fails closed unless this evidence is signed by a trusted SITE_ENGINEER_ATTESTED key.
+
+The evidence tests use an ephemeral TEST_ONLY key and synthetic fixture artifacts solely to test the contract parser; they assert `provider_verified=false` and prove the fixture cannot reach the store/provider. Provider timeout and duplicate tests exercise the idempotency state machine with test doubles; they do not prove GetCourse accepted a real order. The exact acceptance command and evidence packaging rules are in `NATIVE_PROVIDER_EVIDENCE_ACCEPTANCE.md`.

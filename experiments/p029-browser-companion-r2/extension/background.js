@@ -288,7 +288,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   }
   if(msg.op==='pair'){
    if(!/^\d{8}$/.test(msg.code||''))throw new Error('Enter your eight-digit pairing code');
-   const manifest=chrome.runtime.getManifest();
+   const manifest=chrome.runtime.getManifest?.()||{};
    const ua=typeof navigator!=='undefined'?String(navigator.userAgent||''):'';
    const browser=/OPR\//.test(ua)?'opera':'chrome';
    const r=await api('/pair',{method:'POST',data:{

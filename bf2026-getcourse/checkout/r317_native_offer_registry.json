@@ -1,0 +1,121 @@
+{
+  "schema": "bf2026.getcourse.native_offer_registry.r317.v1",
+  "project": "BF2026 GetCourse",
+  "generated_on": "2026-11-18",
+  "authority": "R3.17 factual browser readback + public WF-R108 source audit",
+  "state": "PRELAUNCH_HOLD",
+  "sales_enabled": false,
+  "checkout_enabled": false,
+  "order_creation_enabled": false,
+  "payment_enabled": false,
+  "email_delivery_enabled": false,
+  "native_purchases_tested": false,
+  "last_verified_office": "LUCH paired Chrome session; subsequent Mac DEVICE_OFFLINE",
+  "site": {
+    "origin": "https://wf.tati-lar.ru/",
+    "release": "WF-R108",
+    "canonical_r107_contract": "BF2026_LOT10_CUSTOM_SET_R107",
+    "contract_sha256": "c20dd54301ab2bdfe4c2944abda0a7b51ec821f885465bbf17c7eb71b2277135",
+    "cart_js_sha256": "2a07c751806c86d5dfee6b6d784e015d57c11144c2d519979edf1be7d5e242ab",
+    "current_quote_only": true,
+    "checkout_cta": "DISABLED"
+  },
+  "offers": {
+    "rejection_program": {
+      "site_key": "rejection_program",
+      "site_lot": 5,
+      "price_rub": 6990,
+      "offer_id": "8933492",
+      "product_ids": [
+        "4557988"
+      ],
+      "training_ids": [
+        "936022301"
+      ],
+      "offer_status": "INACTIVE_PERSISTED_AFTER_RELOAD",
+      "future_sale_start": "2030-01-01",
+      "visibility_mode": "not_show",
+      "hide_unavailable": true,
+      "buyer_creation_message": "OFF",
+      "admin_creation_message": "OFF",
+      "receipt_vat": "none",
+      "receipt_tax_review": "PENDING_OWNER",
+      "access_start": "after_pay",
+      "access_days": 365,
+      "access_days_persisted": "UNKNOWN_SAVE_TIMED_OUT",
+      "qa_segment_users_before_save": 1,
+      "qa_rule_persisted": "UNKNOWN_AFTER_SAVE",
+      "outsider_denial_verified": false,
+      "paid_purchase_verified": false,
+      "actual_lesson_access_verified": false,
+      "buyer_audio_stream_verified": false,
+      "public_url": null,
+      "ready_for_checkout": false
+    },
+    "union": {
+      "site_key": "union",
+      "site_lot": 7,
+      "price_rub": 6000,
+      "offer_id": "8919715",
+      "product_ids": [
+        "4550895"
+      ],
+      "training_ids": [
+        "933861292"
+      ],
+      "offer_status": "INACTIVE_PERSISTED_AFTER_RELOAD",
+      "visibility_mode": "not_show",
+      "hide_unavailable": true,
+      "access_start": "after_pay",
+      "access_days": 365,
+      "access_days_persisted": true,
+      "qa_segment_users_observed": 1,
+      "outsider_denial_verified": false,
+      "buyer_access_verified": false,
+      "public_url": null,
+      "ready_for_checkout": false
+    }
+  },
+  "known_products_without_current_verified_sellable_offer": {
+    "dnv": [
+      "4550894"
+    ],
+    "trainer": [
+      "4550897"
+    ],
+    "source_1": [
+      "4550893",
+      "4550889"
+    ],
+    "source_1_plus_2": [
+      "4550893",
+      "4550889",
+      "4550891"
+    ],
+    "audio_individual": [],
+    "stories": [],
+    "zoom": []
+  },
+  "must_not_export_native_offer_id_to_live_site": true,
+  "gates_required_before_any_checkout": [
+    "reconfirm_inactive_offer_and_future_date",
+    "reconfirm_native_product_term_365_after_confirmed_pay",
+    "reconfirm_persisted_private_exact_qa_rule",
+    "test_eligible_and_ineligible_order_eligibility_separately",
+    "verify_paid_payment_purchase_actual_training_access",
+    "verify_outsider_denial_and_no_extra_entitlements",
+    "verify_5_of_5_buyer_audio_playback",
+    "verify_refund_cancel_idempotent_behavior",
+    "verify_transactional_email_sender_consent_suppression",
+    "verify_order_to_thank_you_mapping",
+    "explicit_owner_authorization_to_activate_real_sales"
+  ],
+  "last_blocker": {
+    "type": "NETWORK_AND_DEVICE",
+    "mac_dns": "UNREACHABLE",
+    "mac_getcourse": "ERR_CONNECTION_TIMED_OUT",
+    "mac_luch": "DEVICE_OFFLINE",
+    "luch_server_getcourse_public_http": "200_WITH_VERIFIED_DOH_IP",
+    "any_native_offer_change_after_last_browser_read": "NO_RELIABLE_EVIDENCE"
+  }
+}

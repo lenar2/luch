@@ -47,3 +47,29 @@ It proves a read-only adapter-to-site quote boundary using actual HTTPS response
 4. Site engineer wires the exact provider selection transfer and durable idempotency in their own isolated branch.
 5. Independent QA and owner release precede any production registry change.
 
+
+## Optional exhaustive live R109 quote parity
+
+The 265-vector live pass is a separate, read-only command:
+
+    BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
+    BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs
+
+It makes 265 actual HTTPS quote calls at one per second, checks each result against the exact R109 compute() and vector digest, and records live-265-boundary-evidence.json. It never calls /start and never creates or simulates a native order.
+
+
+## Optional exhaustive live R109 quote parity
+
+The 265-vector live pass is a four-part read-only run (80 + 80 + 80 + 25 requests, one request per second to stay below the R109 90/minute limit):
+
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 0 80
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 80 160
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 160 240
+    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 240 265
+    node bf2026-checkout/site-boundary-qa-r1/aggregate-live-265.cjs
+
+This records live-265-boundary-evidence.json after validating there are no missing or duplicate vectors. It never calls /start and never creates or simulates a native order.
+
+
+The exact 265 input selections and expected R109 quote totals are self-contained in live-265-inputs.json, so the site engineer does not need the large locally generated QA vector artifact from the worker scratch directory.

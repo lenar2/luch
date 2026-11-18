@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
   "description": "Connect your existing AI to browser tabs you explicitly approve. Optional tab overview and precision cursor controls require separate consent.",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "minimum_chrome_version": "116",
   "permissions": [
     "activeTab",
@@ -12,7 +12,7 @@
     "debugger"
   ],
   "host_permissions": [
-    "http://127.0.0.1:9248/*"
+    "https://api.lenarsalimov.ru/luch/browser/*"
   ],
   "background": {
     "service_worker": "background.js"

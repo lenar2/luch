@@ -34,3 +34,10 @@ Tests import R109 trusted \`compute\` directly from the existing **read-only** p
 
 **Approval/design invariants:** original live \`wf.tati-lar.ru\` hero «до −80%», art, prices, and R109 code unchanged by this PR. Never claim commercial PASS from synthetic tests.
 
+
+## Independent native order reconciliation extension
+
+\`reconcile-native-order.cjs\` exports \`requireNativeMatch(plan, nativeEvidence)\` for structural verification of an **independently obtained** native GetCourse order: PAID event, quoted total, component Offer/Product/Training lines, exact 365-day-after-pay grants, fiscal receipt and legal-tax review, consent, and duplicate guard. It returns **STRUCTURAL_MATCH_ONLY_EXTERNAL_NATIVE_ATTESTATION_STILL_REQUIRED**, never production PASS. Provide native order, paid event, grant, receipt, consent, duplicate guard readback references; synthetic/untrusted inputs cannot count as independent external attestation. No PII needed.
+
+Run \`reconcile-native-order.test.cjs\` beside \`adapter.test.cjs\`. It exercises all 265 combinations under clearly synthetic provider evidence, plus negative wrong-total/order/grant/receipt/consent/unpaid tests. A real provider test is blocked until an authorized GetCourse engineer supplies actual native provider readbacks and a verified form contract.
+

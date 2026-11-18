@@ -5,7 +5,7 @@ CASE_COMMIT="https://github.com/lenar2/luch/commit/06daa8d6b89a3dfd65e74628b8958
 CASE_RELEASE="https://github.com/lenar2/luch/blob/main/docs/REAL_WORK.md"
 CASE_AUDIT="https://github.com/lenar2/ai-factory-evidence/issues/4009#issuecomment-6705944671"
 HOSTS=[
- ("ChatGPT","https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/"),
+ ("ChatGPT","https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md"),
  ("Claude","https://github.com/lenar2/luch-claude-plugin/"),
  ("Grok","https://github.com/lenar2/luch"),
  ("Cursor","https://github.com/lenar2/luch-cursor/"),
@@ -173,7 +173,7 @@ def connect(lang,head,header,footer,cta):
  body+='</div></section>'
  body+=f'<section class="host-select" id="host-choices"><div class="wrap"><div class="proof-heading"><span>LUCH / AI</span><h2>{d["chooseHeader"]}</h2><p>{d["hostsInfo"]}</p></div><div class="host-grid">'
  for i,((name,url),(nm,status,detail,act)) in enumerate(zip(HOSTS,d["host"]),1):
-  url=f"/{lang}/status/" if name=="Grok" else url
+  url=f"/{lang}/status/" if name=="Grok" else (("https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md" if lang=="ru" else "https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md") if name=="ChatGPT" else url)
   body+=f'<article class="host-card"><span>0{i} / {escape(name)}</span><h3>{nm}</h3><p class="host-status">{status}</p><p>{detail}</p><a href="{url}">{act} ↗</a></article>'
  body+='</div></div></section>'
  body+=f'<section class="first-task"><div class="wrap first-task-inner"><div>{eyebrow(d["first"])}<h2>{d["firstTask"]}</h2></div><p>{d["notes"]}</p></div></section>'
@@ -182,7 +182,7 @@ def clients(lang,head,header,footer,cta):
  d=WORDS[lang];body=intro(lang,"clients")
  body+=f'<section class="client-ledger"><div class="wrap"><div class="proof-heading"><span>01 / {len(HOSTS):02d}</span><h2>{d["chooseHeader"]}</h2></div><div class="client-rows">'
  for i,((name,url),(nm,status,detail,act)) in enumerate(zip(HOSTS,d["host"]),1):
-  url=f"/{lang}/status/" if name=="Grok" else url
+  url=f"/{lang}/status/" if name=="Grok" else (("https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md" if lang=="ru" else "https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md") if name=="ChatGPT" else url)
   body+=f'<article class="client-row"><span>0{i}</span><h3>{name}</h3><div><strong>{nm}</strong><p>{detail}</p><small>{status}</small></div><a href="{url}">{act} ↗</a></article>'
  body+='</div></div></section>'
  body+=f'<section class="client-differences"><div class="wrap"><h2>{d["different"]}</h2><div class="client-diff-grid">'

@@ -52,8 +52,19 @@ async function publishTabOverview(auth){
 const numeric=(value,name,min=0,max=10000)=>{
  const n=Number(value);if(!Number.isFinite(n)||n<min||n>max)throw new Error(name+'_OUT_OF_RANGE');return n
 };
-async function pointerAction(tab,op,args){
+async function pointerAction(tab,op,args,grantId){
  if(!await chrome.permissions.contains({permissions:['debugger']}))throw new Error('PRECISE_CURSOR_PERMISSION_REQUIRED');
+ // The queued job was granted at poll time. Re-check live tab origin and
+ // the exact user consent immediately before each native Input event.
+ const expectedOrigin=originOf(tab.url);
+ const ensureLiveApproval=async()=>{
+  const liveTab=await chrome.tabs.get(tab.id);
+  if(originOf(liveTab.url)!==expectedOrigin)throw new Error('TAB_ORIGIN_CHANGED');
+  const live=await state(),grant=live.grants[tab.id];
+  if(!live.auth||!grant||grant.grantId!==grantId||grant.origin!==expectedOrigin||
+     grant.scope!=='interact'||grant.preciseCursor!==true)
+   throw new Error('PRECISE_CURSOR_APPROVAL_REVOKED');
+ };
  const root={tabId:tab.id};
  const bounds=await chrome.scripting.executeScript({target:{tabId:tab.id},func:()=>({width:window.innerWidth,height:window.innerHeight})});
  const view=bounds?.[0]?.result;
@@ -65,14 +76,28 @@ async function pointerAction(tab,op,args){
   if(r?.[0]?.result?.ok!==true)throw new Error(r?.[0]?.result?.error||'UNSAFE_POINTER_TARGET');
  };
  if(['pointer_click','pointer_double_click','pointer_drag'].includes(op)){
-  await probe(x,y);if(to)await probe(to.x,to.y);
+  await probe(x,y);
+  if(to){
+   // A drag crosses intermediate elements, not only its endpoints.
+   for(let k=1;k<=6;k++)await probe(x+(to.x-x)*k/6,y+(to.y-y)*k/6);
+  }
  }
- const dev=root;let attached=false;
- const move=(x,y,buttons=0)=>chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseMoved',x,y,buttons});
- const press=(x,y,clickCount=1)=>chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',buttons:1,clickCount});
- const release=(x,y,clickCount=1)=>chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',buttons:0,clickCount});
+ const dev=root;let attached=false,pressed=false;
+ const move=async(x,y,buttons=0)=>{await ensureLiveApproval();return chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseMoved',x,y,buttons})};
+ const press=async(x,y,clickCount=1)=>{
+  await ensureLiveApproval();
+  await chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',buttons:1,clickCount});
+  pressed=true;
+ };
+ const release=async(x,y,clickCount=1)=>{
+  await ensureLiveApproval();
+  await chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',buttons:0,clickCount});
+  pressed=false;
+ };
  try{
+  await ensureLiveApproval();
   await chrome.debugger.attach(dev,'1.3');attached=true;
+  await ensureLiveApproval();
   if(op==='pointer_move')await move(x,y);
   if(op==='pointer_click'||op==='pointer_double_click'){
    await move(x,y);
@@ -86,10 +111,22 @@ async function pointerAction(tab,op,args){
   if(op==='pointer_wheel'){
    const deltaX=numeric(args.deltaX??0,'WHEEL_X',-2000,2000);
    const deltaY=numeric(args.deltaY??0,'WHEEL_Y',-2000,2000);
+   await ensureLiveApproval();
    await chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseWheel',x,y,deltaX,deltaY});
   }
   return {ok:true,data:{operation:op,pageCoordinates:{x,y},...(to?{destination:to}:{})},source:'USER_APPROVED_PRECISE_CURSOR'};
- }finally{if(attached)try{await chrome.debugger.detach(dev)}catch{}}
+ }finally{
+  if(attached){
+   // Release a held button only if we are still on the same origin; never
+   // send a synthetic click-up to a newly navigated page.
+   if(pressed)try{
+    const live=await chrome.tabs.get(tab.id);
+    if(originOf(live.url)===expectedOrigin)
+     await chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',buttons:0,clickCount:1});
+   }catch{}
+   try{await chrome.debugger.detach(dev)}catch{}
+  }
+ }
 }
 
 const makeNonce=()=>Array.from(crypto.getRandomValues(new Uint8Array(12)),v=>v.toString(16).padStart(2,'0')).join('');
@@ -182,7 +219,7 @@ async function performJob(job,grants,owned){
   }
   if(POINTER.has(op)){
    if(!g.preciseCursor)return {ok:false,error:'PRECISE_CURSOR_APPROVAL_REQUIRED'};
-   return await pointerAction(t,op,args);
+   return await pointerAction(t,op,args,g.grantId);
   }
   if(op==='list_open_tabs'){
    if(!(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing)

@@ -13,26 +13,24 @@ test('popup makes browser pairing and AI-host authorization distinct',()=>{
  const js=read('extension/popup.js');
  assert.match(html,/id="setup-boundary"/);
  assert.match(html,/id="setup-steps"/);
- assert.match(js,/Pairing links this browser to the local Companion only/);
- assert.match(js,/does not install the desktop app or connect an AI host/);
- assert.match(js,/Браузер подключён к локальному Companion/);
- assert.match(js,/ИИ-клиент отдельно должен иметь авторизованное подключение LUCH/);
+ assert.match(js,/Pairing links this browser directly to your LUCH account/);
+ assert.match(js,/your existing ChatGPT/i);
+ assert.match(js,/напрямую связывает этот браузер с вашим аккаунтом LUCH/);
+ assert.match(js,/ChatGPT.*остаётся вашим существующим хостом/);
  assert.match(js,/Browser paired/);
  assert.doesNotMatch(js,/Put this page to work/);
 });
 
-test('first-run pairing explains supported prerequisites and five-minute code lifetime',()=>{
+test('first-run pairing explains cloud MCP and ten-minute one-time code',()=>{
  const js=read('extension/popup.js');
- const broker=read('broker/server.mjs');
- assert.match(js,/supported LUCH setup/);
- assert.match(js,/eight-digit pairing code/);
- assert.match(js,/expires after five minutes/);
- assert.match(broker,/Создать код подключения/);
- assert.match(broker,/Generate pairing code/);
- assert.match(broker,/does not install the desktop app or authorize an AI host/);
- assert.match(broker,/пять минут/);
- assert.doesNotMatch(js,/15 minutes|15-minute|15 минут/i);
- assert.doesNotMatch(broker,/15 minutes|15-minute|15 минут/i);
+ const edge=read('supabase/functions/p029-browser-companion/index.ts');
+ assert.match(js,/browser_companion_pairing_create/);
+ assert.match(js,/eight-digit code/);
+ assert.match(js,/ten minutes/);
+ assert.match(js,/десять минут/);
+ assert.match(edge,/Date\.now\(\)\+600_000/);
+ assert.match(js,/LUCH cloud is not reachable/);
+ assert.doesNotMatch(js,/localhost|local setup on this computer|five minutes/i);
 });
 
 test('tab permissions remain separate, session-scoped and fail closed',()=>{
@@ -40,7 +38,7 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
  const js=read('extension/popup.js');
  const worker=read('extension/background.js');
  assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage','debugger'].sort());
- assert.deepEqual(manifest.host_permissions,['http://127.0.0.1:9248/*']);
+ assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
  for(const forbidden of ['cookies','history','webRequest','<all_urls>'])assert.ok(!JSON.stringify(manifest).includes(forbidden));
  assert.deepEqual(manifest.optional_permissions,['tabs']);
  assert.match(js,/Allow reading on this tab/);
@@ -62,5 +60,5 @@ test('store copy does not conflate extension operations with the platform invent
  assert.match(listing,/Opera runtime E2E is still required/);
  assert.match(listing,/not approved as the final plugin mark/);
  const privacy=read('../../docs/browser-companion-privacy.md');
- assert.match(privacy,/http:\/\/127\.0\.0\.1:9248/);
+ assert.match(privacy,/https:\/\/api\.lenarsalimov\.ru\/luch\/browser/);
 });

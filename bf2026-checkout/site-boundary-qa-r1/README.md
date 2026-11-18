@@ -6,13 +6,13 @@ This branch adds a read-only live boundary test, not a GetCourse integration or 
 
     BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
     BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
-    node --test site-boundary-qa/site-boundary.test.cjs
+    node --test bf2026-checkout/site-boundary-qa-r1/site-boundary.test.cjs
 
 To create the sanitized evidence snapshot from real HTTPS requests:
 
     BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
     BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
-    node site-boundary-qa/run-live-boundary.cjs
+    node bf2026-checkout/site-boundary-qa-r1/run-live-boundary.cjs
 
 The harness sends actual POST requests to /api/checkout/quote and /api/checkout/start, plus GET /api/checkout/status, on https://wf.tati-lar.ru. It compares each live site quote to the exact deployed R109 compute() and then builds the adapter plan. It also verifies that client price injection and an invalid three-audio selection are rejected.
 

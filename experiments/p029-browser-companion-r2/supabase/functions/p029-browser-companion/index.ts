@@ -439,9 +439,26 @@ async function extensionHandler(req:Request) {
   return json({ok:false,error:"NOT_FOUND"},404);
 }
 
+async function permitPairAttempt(req:Request) {
+  // The reverse proxy is Cloudflare-fronted; do not trust arbitrary X-Forwarded-For.
+  // An unknown IP is deliberately mapped to one shared bucket (fail closed).
+  const clientIp=String(req.headers.get("cf-connecting-ip")||"shared").slice(0,80);
+  const ipKey="ip:"+await sha256Hex(SERVICE_KEY+":p029-pair:"+clientIp);
+  const limits:[string,number,number][]=[
+    ["global:pair",240,600],
+    [ipKey,18,600],
+  ];
+  for(const [p_key,p_limit,p_window_seconds] of limits) {
+    const {data,error}=await admin.rpc("p029_pair_attempt_allowed",{p_key,p_limit,p_window_seconds});
+    if(error||data!==true) return false;
+  }
+  return true;
+}
 async function pairHandler(req:Request) {
   if(req.method==="OPTIONS") return new Response(null,{status:204,headers:corsHeaders});
   if(req.method!=="POST") return json({ok:false,error:"METHOD_NOT_ALLOWED"},405);
+  if(!await permitPairAttempt(req))
+    return json({ok:false,error:"PAIRING_RATE_LIMIT"},429,{"Retry-After":"600"});
   const body=await req.json().catch(()=>null);
   const code=String(body?.code||"");
   if(!/^\d{8}$/.test(code)) return json({ok:false,error:"INVALID_PAIRING_CODE"},400);

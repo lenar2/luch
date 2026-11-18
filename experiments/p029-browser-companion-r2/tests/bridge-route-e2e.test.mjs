@@ -1,14 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+import {createServer as createPortProbe} from 'node:net';
+
+async function availableLocalPort(){
+ const probe=createPortProbe();
+ return new Promise((resolve,reject)=>{
+  probe.once('error',reject);
+  probe.listen(0,'127.0.0.1',()=>{
+   const port=probe.address().port;
+   probe.close(err=>err?reject(err):resolve(port));
+  });
+ });
+}
 import {createBroker} from '../broker/server.mjs';
 import {makeConsentedTabAdapter} from '../bridge-adapter/consented-tab-adapter.mjs';
 import {routeCompanionRequest,EXTENSION_ACTIONS} from '../bridge-integration/browser-companion-routes.mjs';
 
 test('real browser bridge route converts authorized tab AI click to a delivered extension job',async()=>{
  const bridgeToken=crypto.randomBytes(32).toString('hex');
- const broker=createBroker({bridgeToken,pairingCode:'52978641',port:19492});
- const base='http://127.0.0.1:19492';
+ const port=await availableLocalPort();
+ const broker=createBroker({bridgeToken,pairingCode:'52978641',port});
+ const base='http://127.0.0.1:'+port;
  const origin='chrome-extension://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
  const adapter=makeConsentedTabAdapter({brokerUrl:base,bridgeTokenProvider:()=>bridgeToken,timeoutMs:14500});
  const ext=async(path,method='GET',body,token)=>{

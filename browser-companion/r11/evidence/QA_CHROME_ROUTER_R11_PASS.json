@@ -1,0 +1,45 @@
+{
+  "status": "PASS_LUCH_BRIDGE_ROUTER_INTEGRATION",
+  "browser": "156.0.8078.47",
+  "tests": [
+    {
+      "name": "real_mv3_worker",
+      "chrome": "156.0.8078.47",
+      "extensionId": "fclcnffcahhimnaedboahokgghfldofg"
+    },
+    {
+      "name": "popup_pair_via_real_button"
+    },
+    {
+      "name": "ungranted_user_tab_is_inaccessible"
+    },
+    {
+      "name": "real_browser_action_grants_active_tab",
+      "popupInteractive": false
+    },
+    {
+      "name": "only_approved_tab_listed"
+    },
+    {
+      "name": "ungranted_tab_not_listed"
+    },
+    {
+      "name": "ungranted_tab_read_denied"
+    },
+    {
+      "name": "authorized_dom_read_through_broker",
+      "characters": 46
+    },
+    {
+      "name": "revoke_blocks_future_reads"
+    },
+    {
+      "name": "origin_change_auto_revoke"
+    }
+  ],
+  "limitations": [
+    "QA-only Chrome extension shortcut grants activeTab; browser-owned popup button was exercised separately in R1 Chrome QA",
+    "No production LUCH route switched",
+    "No signed-in user Chrome tested"
+  ]
+}

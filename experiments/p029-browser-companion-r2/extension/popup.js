@@ -120,7 +120,7 @@ function setTexts(){
  $('pairCode').placeholder=t('codePlaceholder');
  $('pairCode').setAttribute('aria-label',t('pairLabel'));
  $('local-setup').textContent=t('localSetup');
- $('local-setup').href=(locale==='ru'?'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md':'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md');
+ $('local-setup').href=(lang==='ru'?'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md':'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md');
  $('help').href='https://luch.lenarsalimov.ru/'+(lang==='ru'?'ru':'en')+'/connect/';
  $('learn').href='https://luch.lenarsalimov.ru/'+(lang==='ru'?'ru':'en')+'/browser/';
  $('locale').value=lang;

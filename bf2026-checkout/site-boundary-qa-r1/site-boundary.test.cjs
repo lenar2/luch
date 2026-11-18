@@ -21,15 +21,21 @@ test('LIVE Lot5 site quote matches adapter using fresh native readback overlay; 
  assert.equal(s.code,'GETCOURSE_OFFER_NOT_READY');
  assert.equal(s.returned_checkout_url,null);
 });
-test('LIVE Lot5 + Union site quote matches adapter exactly at 11690; Union mapping blocks route', {timeout:30000}, async()=>{
+test('LIVE Lot5 + Union has complete native line mapping at 11690; public multi-offer route remains blocked', {timeout:30000}, async()=>{
  const input={kind:'set',items:['rejection_program','union']};
  const q=await b.quote(input);
  assert.equal(q.site_quote.subtotal_rub,12990);
  assert.equal(q.site_quote.discount_percent,10);
  assert.equal(q.site_quote.total_rub,11690);
  assert.equal(q.adapter.selection_key,'set:rejection_program|union');
- assert.equal(q.adapter.ready_for_native_binding,false);
- assert.ok(q.adapter.blockers.some(x=>x.line_key==='union'));
+ assert.equal(q.adapter.ready_for_native_binding,true);
+ assert.deepEqual(q.adapter.blockers,[]);
+ const plan=b.adapter.plan(input);
+ assert.equal(plan.ready_for_native_binding,true);
+ assert.deepEqual(plan.lines.map(x=>({key:x.line_key,offer_ids:x.offer_ids,product_ids:x.product_ids,training_ids:x.training_ids,access_days:x.grant.duration_days})),[
+  {key:'rejection_program',offer_ids:[8933492],product_ids:[4557988],training_ids:[936022301],access_days:365},
+  {key:'union',offer_ids:[8919715],product_ids:[4550895],training_ids:[933861292],access_days:365}
+ ]);
  assert.equal(q.site_availability.ready,false);
  const s=await b.start(input);
  assert.equal(s.http_status,503);

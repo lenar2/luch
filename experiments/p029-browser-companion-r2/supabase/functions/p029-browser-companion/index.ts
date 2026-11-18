@@ -83,14 +83,14 @@ function schemaFor(op:string) {
   const add=(name:keyof typeof field, required=false)=>{ shape[name]=required?field[name]:field[name].optional(); };
   switch(op) {
     case "read_text": case "get_element": case "focus": case "hover": case "scroll_into_view":
-    case "query_elements": case "fill": case "insert_text": case "type_text":
-    case "select_option": case "check_element": case "click": case "double_click": case "click_accessible":
+    case "query_elements": case "select_option": case "check_element": case "click": case "double_click": case "click_accessible":
       add("selector", true); break;
+    case "fill": case "insert_text": case "type_text":
+      add("selector", true); add("text", true); break;
     case "find_text": add("text", true); break;
     case "hit_test": case "click_at": add("x", true); add("y", true); break;
     case "scroll": add("dx"); add("dy"); break;
     case "scroll_to": add("x"); add("y"); break;
-    case "fill": case "insert_text": case "type_text": add("text", true); break;
     case "select_option": add("value", true); break;
     case "check_element": add("checked", true); break;
     case "navigate": add("url", true); break;

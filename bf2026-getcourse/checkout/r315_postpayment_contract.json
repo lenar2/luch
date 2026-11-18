@@ -1,0 +1,167 @@
+{
+  "id": "BF2026_GETCOURSE_POSTPAY_R315_DRAFT",
+  "status": "SALES_HOLD_NOT_CONNECTED",
+  "source": "GetCourse R3.14 successor 2026-11-18; owner-approved website R10.7",
+  "hard_gates": {
+    "checkout_enabled": false,
+    "customer_email_enabled": false,
+    "payment_collection_enabled": false,
+    "grant_execution_enabled": false,
+    "upsell_execution_enabled": false,
+    "thank_you_publication_enabled": false
+  },
+  "known_native": {
+    "account_host": "study.shkola-dnv.com",
+    "lot5": {
+      "name": "Исцеление отвержения",
+      "price_rub": 6990,
+      "training_id": "936022301",
+      "product_id": "4557988",
+      "paid_offer_id": null,
+      "access_after_confirmed_payment_days": 365,
+      "lesson_ids": [
+        "350880800",
+        "350880840",
+        "350880851",
+        "350880855",
+        "350880862"
+      ],
+      "verified_persisted_media_count": 5,
+      "buyer_stream_verified": false
+    },
+    "thank_you_drafts": {
+      "audio": {
+        "page_id": "4834089",
+        "published": false,
+        "link_target": "/teach/control"
+      },
+      "program": {
+        "page_id": "4834095",
+        "published": false,
+        "link_target": "/teach/control"
+      }
+    },
+    "email_templates": {
+      "program": "23731340",
+      "other": "23703690",
+      "triggers_verified": false,
+      "consent_verified": false,
+      "valid_sender_verified": false
+    },
+    "qa_offer": {
+      "id": "8919715",
+      "status": "inactive",
+      "private_segment_user_count_observed": 1,
+      "negative_outsider_checkout_proven": false
+    }
+  },
+  "state_machine": [
+    {
+      "state": "ORDER_CREATED",
+      "requires": [
+        "unique_idempotency_key",
+        "validated_server_quote",
+        "approved_offer_id"
+      ],
+      "buyer_access": false,
+      "email": false
+    },
+    {
+      "state": "PAYMENT_UNCONFIRMED",
+      "requires": [
+        "order_id"
+      ],
+      "buyer_access": false,
+      "email": false
+    },
+    {
+      "state": "PAYMENT_CONFIRMED",
+      "requires": [
+        "GetCourse_payment_paid",
+        "matching_order_id"
+      ],
+      "buyer_access": "NOT_INFERRED",
+      "email": false
+    },
+    {
+      "state": "PURCHASE_VERIFIED",
+      "requires": [
+        "matching_purchase_objects",
+        "correct_product_id",
+        "active_purchase"
+      ],
+      "buyer_access": "NOT_INFERRED",
+      "email": false
+    },
+    {
+      "state": "ACCESS_VERIFIED",
+      "requires": [
+        "training_936022301_access_after_pay",
+        "365_day_end_time",
+        "no_unpaid_entitlements"
+      ],
+      "buyer_access": true,
+      "email": "ELIGIBLE_ONLY_AFTER_SEPARATE_PERMISSION"
+    },
+    {
+      "state": "REFUND_OR_CANCELLATION",
+      "requires": [
+        "actual_order_and_payment_status",
+        "purchase_and_access_readback"
+      ],
+      "buyer_access": "RECHECK",
+      "email": false
+    }
+  ],
+  "dedupe_requirements": [
+    "owner_generated_order_intent_id",
+    "GetCourse_order_id",
+    "provider_payment_event_id",
+    "replay_safe_paid_event_transition",
+    "do_not_double_grant_or_double_email"
+  ],
+  "thank_you_rules": {
+    "unpaid": "DO_NOT_REDIRECT_TO_PAID_SUCCESS",
+    "paid_without_access": "SHOW_PENDING_VERIFICATION_NOT_SUCCESS",
+    "paid_access_verified": "SHOW_ONLY_APPLICABLE_UNPUBLISHED_DRAFT_AFTER_APPROVAL",
+    "services": "MANUAL_COORDINATION_NO_TRAINING_GRANT"
+  },
+  "emails": {
+    "confirmation": "OFF_UNTIL_TRIGGER_AND_SENDER_QA",
+    "reminder": "OFF_CONSENT_REQUIRED",
+    "refund": "OFF_UNTIL_VERIFIED_REFUND",
+    "upsell": "OFF_ELIGIBILITY_AND_OWNER_APPROVAL_REQUIRED"
+  },
+  "upsell_candidates": [
+    {
+      "from": "source_module_1",
+      "to": "source_module_2",
+      "offer_id": null,
+      "price_rub": null,
+      "rule": "existing paid I + not already owning II; grant only II; current owner approval required"
+    },
+    {
+      "from": "one_audio",
+      "to": "lot5_program",
+      "offer_id": null,
+      "price_rub": null,
+      "rule": "must avoid duplicated grants; no automatic credit or upgrade price approved"
+    },
+    {
+      "from": "lot5_program",
+      "to": "other_program",
+      "offer_id": null,
+      "price_rub": null,
+      "rule": "only after user opts in; eligibility and current catalog price verified"
+    }
+  ],
+  "release_requirements": [
+    "private_native_offer_saved_with_segment_only_and_inactive",
+    "independent_outsider_denial",
+    "365_day_paid_grant_positive_and_negative_test",
+    "replays_refunds_existing_student_QA",
+    "sender_consent_unsubscribe_QA",
+    "thank_you_redirect_mapping",
+    "owner_explicit_launch_approval"
+  ]
+}

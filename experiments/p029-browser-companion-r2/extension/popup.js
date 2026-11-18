@@ -39,7 +39,7 @@ const strings={
   revokeSuccess:'Access revoked for this tab.',
   disconnectSuccess:'Browser disconnected from LUCH.',
   tabsHeading:'Open tabs overview',tabsExplain:'Optional: Chrome will ask permission to read the titles and addresses of all open tabs. Their contents remain private until you separately approve a tab.',
-  listTabs:'Show my open tabs',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
+  listTabs:'Show my open tabs',tabSwitch:'Switch to tab',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
   unshareTabs:'Stop sharing the tab overview',tabsShared:'Tab titles and addresses are shared with your authorized LUCH AI. Page contents are not.',
   tabsPrivate:'Only you can see this list until you choose to share it with LUCH.',
   cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome warns about debugger access when installing this extension. Pointer input remains OFF until you separately approve interaction and enable it for this tab. It is not your computer’s physical mouse.',
@@ -86,7 +86,7 @@ const strings={
   revokeSuccess:'Доступ к этой вкладке отозван.',
   disconnectSuccess:'Браузер отключён от LUCH.',
   tabsHeading:'Все открытые вкладки',tabsExplain:'Необязательно. Chrome отдельно запросит разрешение видеть названия и адреса всех вкладок. Содержимое страниц останется закрытым, пока вы не разрешите доступ к конкретной вкладке.',
-  listTabs:'Показать мои вкладки',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
+  listTabs:'Показать мои вкладки',tabSwitch:'Перейти к вкладке',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
   unshareTabs:'Перестать передавать обзор вкладок',tabsShared:'Названия и адреса вкладок доступны авторизованному ИИ через LUCH. Содержимое страниц не передаётся.',
   tabsPrivate:'Пока это список только для вас. ИИ не получит его без отдельного разрешения.',
   cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Chrome предупреждает о доступе отладчика при установке расширения. Действия курсора выключены, пока вы отдельно не разрешите их для выбранной вкладки. Это не физическая мышь компьютера.',
@@ -197,8 +197,16 @@ act('disconnect',()=>({op:'disconnect'}));
 const showTabList=tabs=>{
  const list=$('tab-list');list.replaceChildren();
  for(const tab of tabs){
-  const li=document.createElement('li'),heading=document.createElement('strong'),url=document.createElement('small');
-  heading.textContent=tab.title||tab.url;url.textContent=tab.url;li.append(heading,url);list.append(li);
+  const li=document.createElement('li'),heading=document.createElement('strong'),
+   url=document.createElement('small'),switcher=document.createElement('button');
+  heading.textContent=tab.title||tab.url;url.textContent=tab.url;
+  switcher.type='button';switcher.className='tab-switch';switcher.textContent=t('tabSwitch');
+  switcher.addEventListener('click',async()=>{
+   switcher.disabled=true;
+   try{await call({op:'activate-open-tab',tabId:tab.id});$('feedback').textContent=t('tabPermissionRequired');await refresh()}
+   catch(e){$('feedback').textContent=friendlyError(e.message);switcher.disabled=false}
+  });
+  li.append(heading,url,switcher);list.append(li);
  }
  $('tab-list-wrap').hidden=false;
  $('tabs-sharing-state').textContent=t('tabsPrivate');

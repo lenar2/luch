@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/bf2026/native-order-lot5-union.v1.schema.json",
+  "title": "BF2026 GetCourse Lot5 + Union native order evidence",
+  "description": "Normalized independent provider readback. This schema validates shape only; evidence references still require human source verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema","evidence_source","native_form","order","payment","lines","grants","receipt","consent","duplicate_guard","evidence_refs"],
+  "properties": {
+    "schema": {"const":"bf2026.getcourse.native-order.readback.v1"},
+    "evidence_source": {"const":"INDEPENDENT_NATIVE_GETCOURSE_READBACK"},
+    "native_form": {
+      "type":"object","additionalProperties":false,
+      "required":["widget_id","selection_key","offer_ids","expected_total_rub","selection_transfer_verified","public_form_url","form_readback_ref"],
+      "properties":{
+        "widget_id":{"type":"integer","minimum":1},
+        "selection_key":{"const":"set:rejection_program|union"},
+        "offer_ids":{"type":"array","items":{"type":"integer"},"minItems":2,"maxItems":2},
+        "expected_total_rub":{"const":11690},
+        "selection_transfer_verified":{"const":true},
+        "public_form_url":{"type":"string","format":"uri","pattern":"^https://"},
+        "form_readback_ref":{"type":"string","minLength":8}
+      }
+    },
+    "order":{
+      "type":"object","additionalProperties":false,
+      "required":["order_id","status","selection_key","currency","subtotal_rub","discount_percent","savings_rub","total_rub","pricing_version","catalog_sha256","quote_sha256","order_readback_ref"],
+      "properties":{
+        "order_id":{"type":["string","integer"]},
+        "status":{"const":"PAID"},
+        "selection_key":{"const":"set:rejection_program|union"},
+        "currency":{"const":"RUB"},
+        "subtotal_rub":{"const":12990},
+        "discount_percent":{"const":10},
+        "savings_rub":{"const":1300},
+        "total_rub":{"const":11690},
+        "pricing_version":{"const":"BF2026_LOT10_CUSTOM_SET_R107"},
+        "catalog_sha256":{"const":"c20dd54301ab2bdfe4c2944abda0a7b51ec821f885465bbf17c7eb71b2277135"},
+        "quote_sha256":{"const":"9489fedcb65b9181707e23176ca315b1e2f9a84b3ce36662ab389b11a5afa021"},
+        "order_readback_ref":{"type":"string","minLength":8}
+      }
+    },
+    "payment":{
+      "type":"object","additionalProperties":false,
+      "required":["status","paid_event_id","paid_amount_rub","currency","paid_at_epoch_s","payment_readback_ref"],
+      "properties":{
+        "status":{"const":"SUCCEEDED"},
+        "paid_event_id":{"type":"string","minLength":8},
+        "paid_amount_rub":{"const":11690},
+        "currency":{"const":"RUB"},
+        "paid_at_epoch_s":{"type":"integer","minimum":1},
+        "payment_readback_ref":{"type":"string","minLength":8}
+      }
+    },
+    "lines":{
+      "type":"array","minItems":2,"maxItems":2,
+      "items":{
+        "type":"object","additionalProperties":false,
+        "required":["key","offer_id","product_id","training_id","unit_price_rub","line_readback_ref"],
+        "properties":{
+          "key":{"enum":["rejection_program","union"]},
+          "offer_id":{"type":"integer"},
+          "product_id":{"type":"integer"},
+          "training_id":{"type":"integer"},
+          "unit_price_rub":{"type":"integer"},
+          "line_readback_ref":{"type":"string","minLength":8}
+        }
+      }
+    },
+    "grants":{
+      "type":"array","minItems":2,"maxItems":2,
+      "items":{
+        "type":"object","additionalProperties":false,
+        "required":["key","training_id","status","access_start_type","access_finish_type","access_days","confirmed_paid_event_id","grant_readback_ref"],
+        "properties":{
+          "key":{"enum":["rejection_program","union"]},
+          "training_id":{"type":"integer"},
+          "status":{"const":"ACTIVE"},
+          "access_start_type":{"const":"AFTER_PAY"},
+          "access_finish_type":{"const":"AFTER_DAYS"},
+          "access_days":{"const":365},
+          "confirmed_paid_event_id":{"type":"string","minLength":8},
+          "grant_readback_ref":{"type":"string","minLength":8}
+        }
+      }
+    },
+    "receipt":{
+      "type":"object","additionalProperties":false,
+      "required":["status","amount_rub","currency","fiscal_receipt_ref","tax_review_ref"],
+      "properties":{
+        "status":{"const":"ISSUED"},
+        "amount_rub":{"const":11690},
+        "currency":{"const":"RUB"},
+        "fiscal_receipt_ref":{"type":"string","minLength":8},
+        "tax_review_ref":{"type":"string","minLength":8}
+      }
+    },
+    "consent":{
+      "type":"object","additionalProperties":false,
+      "required":["mandatory_offer_terms_accepted","consent_readback_ref"],
+      "properties":{
+        "mandatory_offer_terms_accepted":{"const":true},
+        "consent_readback_ref":{"type":"string","minLength":8}
+      }
+    },
+    "duplicate_guard":{
+      "type":"object","additionalProperties":false,
+      "required":["enabled","repeat_submit_result","negative_test_ref"],
+      "properties":{
+        "enabled":{"const":true},
+        "repeat_submit_result":{"const":"NO_SECOND_ORDER"},
+        "negative_test_ref":{"type":"string","minLength":8}
+      }
+    },
+    "evidence_refs":{
+      "type":"object","additionalProperties":false,
+      "required":["form","order","payment","receipt","tax","consent","duplicate_guard","owner_controlled_test"],
+      "properties":{
+        "form":{"type":"string","minLength":8},
+        "order":{"type":"string","minLength":8},
+        "payment":{"type":"string","minLength":8},
+        "receipt":{"type":"string","minLength":8},
+        "tax":{"type":"string","minLength":8},
+        "consent":{"type":"string","minLength":8},
+        "duplicate_guard":{"type":"string","minLength":8},
+        "owner_controlled_test":{"type":"string","minLength":8}
+      }
+    }
+  }
+}
+

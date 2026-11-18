@@ -73,3 +73,8 @@ This records live-265-boundary-evidence.json after validating there are no missi
 
 
 The exact 265 input selections and expected R109 quote totals are self-contained in live-265-inputs.json, so the site engineer does not need the large locally generated QA vector artifact from the worker scratch directory.
+
+## Additional read-only Widget 1686693 inspection
+
+PROVIDER_WIDGET_READONLY_FINDINGS.md records the public embed script and iframe structure. The embed forwards the parent query string, but the returned form has one empty external-value offer_id hidden field and no form-position-input controls. The inspected JavaScript only shows offer_id being injected through an explicit modal position.offer_id object. This is not proof of dynamic URL-based offer selection. A separate native multi-offer form/selection mechanism remains required. The iframe also exposes a mailing checkbox enabled and checked by default with required=false; obtain owner/legal consent review before launch. No form submission occurred.
+

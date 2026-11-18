@@ -76,3 +76,20 @@ test('approved-only tab discovery is isolated to owner and device, without all-t
  assert.match(handler,/onlyApprovedTabs:true/);
  assert.doesNotMatch(handler,/p029_browser_tab_overviews|ALL_TABS_USER_APPROVAL_REQUIRED|chrome\.permissions/);
 });
+
+test('one-time pairing is an atomic, role-restricted transaction (no eq-null race)',()=>{
+ const sql=fs.readFileSync(path.join(root,'supabase/migrations/20261118090000_p029_atomic_pairing_claim.sql'),'utf8');
+ assert.match(sql,/create or replace function public\.p029_claim_pairing\(/);
+ assert.match(sql,/for update;/);
+ assert.match(sql,/used_at is null/);
+ assert.match(sql,/expires_at > clock_timestamp\(\)/);
+ assert.match(sql,/insert into public\.p029_browser_devices/);
+ assert.match(sql,/update public\.p029_browser_pairings/);
+ assert.match(sql,/revoke all on function public\.p029_claim_pairing/);
+ assert.match(sql,/from public, anon, authenticated/);
+ assert.match(sql,/to service_role/);
+ assert.match(edge,/admin\.rpc\("p029_claim_pairing"/);
+ assert.match(edge,/PAIRING_CODE_INVALID_OR_EXPIRED/);
+ assert.doesNotMatch(edge,/\.eq\("used_at",null\)/);
+ assert.doesNotMatch(edge,/PAIRING_RACE_RETRY/);
+});

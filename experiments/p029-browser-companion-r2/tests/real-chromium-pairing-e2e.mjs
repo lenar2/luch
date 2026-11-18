@@ -19,7 +19,7 @@ test('REAL headed Chromium: MV3 onboarding, local pairing, scoped permissions, a
  const tmp=await mkdtemp(path.join(tmpdir(),'luch-e2e-'));
  const bridgeSecret=crypto.randomBytes(32).toString('hex');
  const broker=createBroker({bridgeToken:bridgeSecret,pairingCode:'51061022',port:9248});
-  const fixture=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end(`<!doctype html><html><head><meta charset="utf-8"><title>LUCH QA page</title><style>body{margin:0;padding:72px;background:#f7f6f0;color:#102f34;font:16px/1.5 Arial,sans-serif}.card{max-width:680px;margin:0 auto;padding:42px;border:1px solid #d7deda;border-radius:18px;background:#fff}.eyebrow{color:#718a83;font-size:11px;font-weight:700;letter-spacing:.16em}.card h1{margin:10px 0;font-size:38px}.card p{color:#5b6b68}.card label{display:block;margin:24px 0 7px;font-weight:700}.card input{width:100%;padding:13px;border:1px solid #d7deda;border-radius:9px;font:inherit}.card button{margin-top:12px;padding:12px 18px;border:0;border-radius:9px;background:#143c43;color:#fff;font:inherit;font-weight:700}</style></head><body><main class="card"><span class="eyebrow">LOCAL QA PAGE</span><h1>LUCH browser fixture</h1><p>This example page is used to verify tab approval, reading and a permitted text-entry action.</p><label for="query">Search this page</label><input id="query" aria-label="Search"><button id="check" type="button">Check</button></main></body></html>`)});
+  const fixture=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end(`<!doctype html><html><head><meta charset="utf-8"><title>LUCH QA page</title><style>body{margin:0;padding:72px;background:#f7f6f0;color:#102f34;font:16px/1.5 Arial,sans-serif}.card{max-width:680px;margin:0 auto;padding:42px;border:1px solid #d7deda;border-radius:18px;background:#fff}.eyebrow{color:#718a83;font-size:11px;font-weight:700;letter-spacing:.16em}.card h1{margin:10px 0;font-size:38px}.card p{color:#5b6b68}.card label{display:block;margin:24px 0 7px;font-weight:700}.card input{width:100%;padding:13px;border:1px solid #d7deda;border-radius:9px;font:inherit}.card button{margin-top:12px;padding:12px 18px;border:0;border-radius:9px;background:#143c43;color:#fff;font:inherit;font-weight:700}</style></head><body><main class="card"><span class="eyebrow">LOCAL QA PAGE</span><h1>LUCH browser fixture</h1><p>This example page is used to verify tab approval, reading and a permitted text-entry action.</p><label for="query">Search this page</label><input id="query" aria-label="Search"><button id="check" type="button" onclick="document.querySelector(\</body></html>`)});
  let context=null;
  try{
   await broker.listen();
@@ -107,6 +107,20 @@ test('REAL headed Chromium: MV3 onboarding, local pairing, scoped permissions, a
   const read=await adapter.readAuthorizedText({targetId});
   assert.equal(read.ok,true);
   assert.match(read.text,/LUCH browser fixture/);
+  if(process.env.LUCH_TEST_PRECISE_POINTER==='1'){
+    const enabled=await popup.evaluate(()=>chrome.runtime.sendMessage({op:'precise-cursor',enabled:true}));
+    assert.equal(enabled.ok,true,JSON.stringify(enabled));
+    await fixturePage.bringToFront();
+    const box=await fixturePage.locator('#check').boundingBox();
+    assert.ok(box);
+    const clicked=await routeCompanionRequest('/v1/companion/action',
+      {browser:'chrome',targetId,op:'pointer_click',args:{x:Math.round(box.x+box.width/2),y:Math.round(box.y+box.height/2)}},adapter);
+    assert.equal(clicked.status,200,JSON.stringify(clicked));
+    assert.equal((await fixturePage.locator('#click-result').textContent()).trim(),'LUCH pointer clicked');
+    const disabled=await popup.evaluate(()=>chrome.runtime.sendMessage({op:'precise-cursor',enabled:false}));
+    assert.equal(disabled.ok,true,JSON.stringify(disabled));
+    console.log('REAL_CHROME_DEBUGGER_POINTER_CLICK_PASS');
+  }
   const revoked=await popup.evaluate(()=>chrome.runtime.sendMessage({op:'revoke-active'}));
   assert.equal(revoked.ok,true,JSON.stringify(revoked));
   await popup.reload();

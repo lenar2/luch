@@ -39,6 +39,12 @@ jobs:
       - name: Verify actual headed Chromium MV3 onboarding + localhost pairing
         working-directory: experiments/p029-browser-companion-r2
         run: xvfb-run -a node --test tests/real-chromium-pairing-e2e.mjs
+      - name: Probe actual Chrome debugger pointer click (experimental; NOT release PASS)
+        continue-on-error: true
+        working-directory: experiments/p029-browser-companion-r2
+        env:
+          LUCH_TEST_PRECISE_POINTER: '1'
+        run: xvfb-run -a node --test tests/real-chromium-pairing-e2e.mjs
       - name: Render store artwork from real Chromium UI captures
         working-directory: experiments/p029-browser-companion-r2
         run: node store-assets/render.mjs

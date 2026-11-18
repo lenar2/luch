@@ -3,7 +3,7 @@
 // interactive access. Both last until the user revokes, tab is closed, browser
 // session ends, or the tab changes origin. No arbitrary 15-minute cutoff.
 importScripts('dom-ops.js');
-const BASE='http://127.0.0.1:9248';
+const BASE='https://api.lenarsalimov.ru/luch/browser';
 const READ_OPS=Object.freeze([
  'read_text','inspect_page','get_links','get_headings','get_forms','get_tables',
  'get_selection','query_elements','find_text','accessibility_snapshot',
@@ -288,7 +288,12 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   }
   if(msg.op==='pair'){
    if(!/^\d{8}$/.test(msg.code||''))throw new Error('Enter your eight-digit pairing code');
-   const r=await api('/pair',{method:'POST',data:{code:msg.code}});
+   const manifest=chrome.runtime.getManifest();
+   const browser=/OPR\//.test(navigator.userAgent)?'opera':'chrome';
+   const r=await api('/pair',{method:'POST',data:{
+    code:msg.code,deviceName:`LUCH Browser Companion · ${browser}`,browser,
+    extensionVersion:String(manifest.version||'unknown')
+   }});
    await chrome.storage.local.set({auth:{token:r.token}});await chrome.storage.session.remove('tabOverviewSharing');await setGrants({});await poll();return {ok:true,message:'LUCH connected'};
   }
   if(msg.op==='list-open-tabs'){

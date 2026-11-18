@@ -1,0 +1,18 @@
+{
+  "schema": "bf2026.native.mapping.overlay.r1",
+  "purpose": "Apply the freshest independently documented native Lot5 status without rewriting the PR15 historical mapping snapshot.",
+  "source_ref": "ai-factory-evidence#4073/comment/6988661595",
+  "entries": {
+    "rejection_program": {
+      "offer_ids": [8933492],
+      "product_ids": [4557988],
+      "training_ids": [936022301],
+      "release_status": "ACTIVE_VERIFIED",
+      "access_days": 365,
+      "native_price_rub": 6990,
+      "native_readback_ref": "4073:6988661595",
+      "grant_readback_ref": "4073:6988661595"
+    }
+  }
+}
+

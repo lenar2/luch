@@ -1,25 +1,43 @@
 {
-  "schema": "bf2026.native-order-boundary-contract.r1",
+  "schema": "bf2026.native-order-boundary-contract.r2",
   "classification": "REQUIREMENTS_ONLY_NOT_NATIVE_ORDER_EVIDENCE",
   "native_readback_sources": {
-    "lot5": "ai-factory-evidence#4073/comment/6988661595",
-    "union": "ai-factory-evidence#4073/comment/6991630755"
+    "lot5": "ai-factory-evidence#4073/comment/6993420543",
+    "union": "ai-factory-evidence#4073/comment/6993420543"
   },
-  "public_widget": {
-    "widget_id": 1686693,
-    "native_handler_scope": "LOT5_ONLY",
-    "public_embed_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693",
-    "public_iframe_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693",
-    "form_method": "POST",
-    "stable_form_action": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127",
-    "dynamic_action_query_parameters": ["gcSession", "gcVisitor", "gcVisit", "gcSessionHash"],
-    "offer_id_field": "formParams[setted_offer_id]",
-    "current_offer_id_value": null,
-    "current_offer_id_selection_transfer": "UNPROVEN",
-    "multi_offer_position_controls": 0,
-    "submit_button_caption": "Оформить заказ",
-    "marketing_consent_checked_by_default": true,
-    "marketing_consent_required": false
+  "public_widgets": [
+    {
+      "widget_id": 1686693,
+      "offer_id": 8933492,
+      "product_id": 4557988,
+      "training_id": 936022301,
+      "price_rub": 6990,
+      "form_method": "POST",
+      "stable_form_action": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127",
+      "selection_field": "formParams[offer_id][]",
+      "control_type": "radio",
+      "controls_in_form": 1
+    },
+    {
+      "widget_id": 1686738,
+      "offer_id": 8919715,
+      "product_id": 4550895,
+      "training_id": 933861292,
+      "price_rub": 6000,
+      "form_method": "POST",
+      "stable_form_action": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263282483",
+      "selection_field": "formParams[offer_id][]",
+      "control_type": "radio",
+      "controls_in_form": 1
+    }
+  ],
+  "native_mechanism": {
+    "observed": "TWO_DISTINCT_NATIVE_SINGLE_OFFER_FORMS",
+    "one_native_form_with_both_offers_observed": false,
+    "multi_offer_selection_transfer_verified": false,
+    "native_paid_two_line_order": "NOT_OBSERVED",
+    "marketing_consent_checked_by_default": false,
+    "marketing_consent_optional": true
   },
   "required_native_order": {
     "provider": "GetCourse",
@@ -68,12 +86,10 @@
   "current_evidence": {
     "offer_8933492": "ACTIVE_VERIFIED",
     "offer_8919715": "ACTIVE_VERIFIED",
-    "public_widget_offer_id_prefilled": false,
-    "public_widget_multi_offer_selection": false,
+    "two_native_single_offer_forms": "OBSERVED",
+    "native_multi_offer_form": "NOT_OBSERVED",
     "native_paid_two_line_order": "NOT_OBSERVED",
-    "r109_start_for_lot5": "503_GETCOURSE_OFFER_NOT_READY",
-    "r109_start_for_lot5_union": "503_GETCOURSE_OFFER_NOT_READY",
+    "r109_start": "503_GETCOURSE_OFFER_NOT_READY",
     "verified_sale_routes": 0
   }
 }
-

@@ -2,7 +2,7 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const contract=require('./native-order-boundary-contract.json');
-const evidence=require('./widget-1686693-inspection.json');
+const evidence=require('./native-widget-pair-readonly-evidence.json');
 const {assessPublicWidget,validateNativeOrderReadback}=require('./native-order-boundary-contract.cjs');
 test('native contract uses exact two real Offer/Product/Training mappings and R109 total',()=>{
  const lines=contract.required_native_order.lines;
@@ -16,11 +16,14 @@ test('native contract uses exact two real Offer/Product/Training mappings and R1
  assert.equal(contract.required_native_order.paid_total_rub,11690);
  assert.equal(contract.classification,'REQUIREMENTS_ONLY_NOT_NATIVE_ORDER_EVIDENCE');
 });
-test('fresh live Widget 1686693 is not a proven two-line selection-transfer form',()=>{
+test('latest public widget pair is not a proven single two-line native form',()=>{
  const result=assessPublicWidget(evidence);
- assert.equal(evidence.iframe.hidden_fields.setted_offer_id.value,null);
- assert.equal(result.offer_id_selection_transfer_proven,false);
- assert.equal(result.multi_offer_control_count,0);
+ assert.equal(result.native_form_count,2);
+ assert.equal(result.native_offer_radio_count,2);
+ assert.deepEqual(result.observed_offer_ids,[8919715,8933492]);
+ assert.equal(result.each_form_has_one_checked_radio,true);
+ assert.equal(result.distinct_form_action_ids,true);
+ assert.equal(result.one_native_form_with_both_offers,false);
  assert.equal(result.multi_offer_selection_proven,false);
  assert.equal(result.ready_for_two_line_native_order,false);
  assert.equal(contract.current_evidence.native_paid_two_line_order,'NOT_OBSERVED');

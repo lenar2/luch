@@ -1,61 +1,39 @@
-# BF2026 R109 site-boundary QA patch — isolated integration handoff
+# BF2026 R109 native multi-offer execution patch — isolated integration handoff
 
-## Scope
-Backend-only, read-only QA patch based on PR #16. Includes live quote boundary, post-save native Widget 1686693 inspection, fresh Lot5 + Union mapping overlay, and a fail-closed two-line native order contract. No production, design, GetCourse UI or order/payment path changes.
+## Why this patch stops short of a provider POST
 
-## Branch ancestry
-- PR #16 base commit: c7b3e5c860760f604a54df55a4ca157261f9d7dd
-- Branch: bf2026-r109-site-boundary-qa-r1-20261119
-- Integrate only into the site engineer's isolated checkout branch already containing PR #15 and PR #16.
+Latest public evidence (#4073 comment 6993420543) shows two separate GetCourse widgets: 1686693 has one checked radio `formParams[offer_id][]=8933492` and form action ID 2263265127; 1686738 has one checked radio `formParams[offer_id][]=8919715` and form action ID 2263282483. Both are independent POST forms. `[]` in the field name does not prove a single native form can carry multiple values; observed controls are radio, one per form. There is no native multi-offer form or actual unpaid two-line order readback.
 
-## Minimal merge and tests
-    git fetch origin bf2026-r109-site-boundary-qa-r1-20261119
-    git merge --no-ff FETCH_HEAD
+Do not concatenate the two values or submit both widgets independently and call it one order. This branch deliberately contains no GetCourse POST driver.
 
-Then run:
-    BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
-    BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
-    node --test bf2026-checkout/site-boundary-qa-r1/site-boundary.test.cjs \
-      bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs \
-      bf2026-checkout/site-boundary-qa-r1/native-order-boundary-contract.test.cjs
+## Files
 
-Current captured suite: 10/10 PASS. Refresh public widget snapshot with node bf2026-checkout/site-boundary-qa-r1/inspect-widget-1686693.cjs.
+- `native-widget-pair-readonly-evidence.json`: sanitized public form facts; visitor session values omitted.
+- `inspect-native-widget-pair.cjs`: public GET-only refresh helper.
+- `native-order-execution-contract.json/.cjs`: exact signed selection, provider capability gate, unpaid native order readback contract and paid grant validator.
+- `native-order-idempotency.sql`: PostgreSQL durable idempotency migration (review only; not deployed).
+- `native-order-execution-contract.test.cjs`: deterministic regression tests, including proof the current capability gate fails before store/provider calls.
 
-## Current verified native mapping (QA overlay only)
-- Lot5 Offer 8933492 → Product 4557988 → Training 936022301, 6990 RUB, active/all buyers, 365d after pay; #4073 comment 6988661595.
-- Union Offer 8919715 → Product 4550895 → Training 933861292, 6000 RUB, active/all buyers, 365d after pay; #4073 comment 6991630755.
+## Backend execution sequence after native capability is actually proven
 
-The adapter's two-line plan is complete with exact IDs and 365d grants. This does not prove the public form can transfer both lines.
+1. Server recomputes the exact R109 quote; client prices/Offer IDs are never trusted.
+2. Server seals the selection with HMAC-SHA256 and a stable 32-hex checkout idempotency key (separate from nonce).
+3. Require one public native GetCourse form whose saved/reopened GET shows both exact Offer IDs and a supported multi-value selection control.
+4. Require a real native unpaid order readback with exactly two lines: 8933492/4557988/936022301 at 6990 and 8919715/4550895/933861292 at 6000; subtotal 12990, final amount 11690.
+5. Reserve the stable key in the PostgreSQL ledger before provider submit. Unique key + selection digest prevents duplicate checkout. Mark PROVIDER_SUBMITTING before network I/O.
+6. If provider response is ambiguous, mark PROVIDER_OUTCOME_UNKNOWN and do not retry. Reconcile by independent native order lookup. If already ORDER_CREATED, replay the same provider order ID.
+7. Only after confirmed payment grant Training 936022301 and 933861292 for 365 days AFTER_PAY, both bound to the same provider order and paid event. Verify receipt/tax, offer consent and duplicate-submit negative test.
+8. Independent QA and owner release before any production route/registry change.
 
-## Fresh public form result
-- Embed URL: https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693 (HTTP 200).
-- Iframe URL: https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693 (HTTP 200).
-- Button caption Оформить заказ is persisted.
-- Stable form action: POST https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127. Actual per-visitor action adds gcSession, gcVisitor, gcVisit and gcSessionHash; values are redacted and non-reusable.
-- Hidden formParams[setted_offer_id] has no value attribute; no form-position-input or other Offer selector controls. Embed query forwarding is not proof of query-to-Offer binding.
-- Native handler readback still binds this widget to Lot5 Offer 8933492 only.
-- Marketing consent is enabled and checked by default, while isMailingCheckboxRequired=false. UI worker should make it unchecked by default; required offer-terms consent remains separate.
+## Important distinction
 
-## Current live R109 start result
-GET /api/checkout/status before/after: sales_ready=false, verified_sale_routes=0.
-POST /api/checkout/start: Lot5 → 503 GETCOURSE_OFFER_NOT_READY, no URL; Lot5 + Union → 503 GETCOURSE_OFFER_NOT_READY, no URL.
-The source handler only resolves a verified native form URL and returns it; when no route exists it exits 503. It does not create an order. No form was submitted and no provider order/payment was created.
+The signed token is an internal authorization envelope, not a GetCourse order. The coordinator has an injected provider port but no concrete GetCourse driver. The native capability gate currently fails with `NATIVE_MULTI_OFFER_MECHANISM_UNVERIFIED`, before the idempotency store or provider is called.
 
-## Two-line native order contract
-See native-order-boundary-contract.json and .cjs. It requires one actual paid native provider order with exactly:
-- 8933492 / 4557988 / 936022301 / 6990 RUB;
-- 8919715 / 4550895 / 933861292 / 6000 RUB;
-- subtotal 12990, 10% discount, paid total 11690 RUB;
-- both 365d after-pay grants tied to the same paid event;
-- fiscal receipt/tax, required offer-terms consent, duplicate guard and native evidence references.
+The PostgreSQL adapter is source-level code with query-recorder unit tests. The migration is not deployed and no live database was connected. Do not claim durable production idempotency until the site engineer integrates and tests it against the actual DB.
 
-The validator refuses missing, synthetic, test-fixture or unattested order evidence. It contains no positive synthetic order and is not a payment certification.
+## Current status / ownership
 
-## Release gates
-1. UI worker supplies a native public multi-offer selection mechanism that demonstrably carries both Offer IDs into two actual provider order lines. Do not invent URL parameters or reuse the Lot5-only widget as a two-line cart.
-2. UI worker provides exact public buyer URL and saved/reopened form readback. Marketing opt-in must be unchecked by default.
-3. Site engineer integrates selection transfer and durable idempotency on their isolated branch.
-4. Independent native paid-order/grants/receipt/consent/duplicate QA and owner release.
-5. Only then consider a production registry change. Do not merge this QA branch to production or enable rollout from quote/mapping parity alone.
-
-Post-save live start result is preserved in post-save-start-boundary-evidence.json (observed 2026-11-18T21:42:41.913Z): Lot5 and Lot5 + Union both return 503 GETCOURSE_OFFER_NOT_READY, with zero routes before/after and no order created.
+- Latest #4112 contains no site-engineer ACK; latest owner/UI handoff does not count as acceptance.
+- Production readiness checked once this dispatch: sales_ready=false, provider_offer_ready=false, verified_sale_routes=0.
+- Existing PR #17 only; no duplicate PR or issue comments. Integrate into the site engineer's isolated branch only after ACK. Do not overwrite their work.
+- No GetCourse UI, lock, form, order, payment, email, production registry, design or deployment was touched.

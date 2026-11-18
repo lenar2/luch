@@ -483,24 +483,25 @@ async function pairHandler(req:Request) {
   const body=await req.json().catch(()=>null);
   const code=String(body?.code||"");
   if(!/^\d{8}$/.test(code)) return json({ok:false,error:"INVALID_PAIRING_CODE"},400);
+  // Claim code and create device in a single database transaction. This
+  // prevents the old eq(NULL) bug and guarantees one device per one-time code.
+  // The code itself is never stored or logged; only its SHA-256 hash is sent
+  // to this service-role-only RPC.
   const hash=await sha256Hex(code);
-  const {data:pair,error}=await admin.from("p029_browser_pairings").select("id,user_id,device_name,expires_at,used_at")
-    .eq("code_hash",hash).maybeSingle();
-  if(error||!pair||pair.used_at||new Date(pair.expires_at).getTime()<Date.now()) return json({ok:false,error:"PAIRING_CODE_INVALID_OR_EXPIRED"},403);
   const token=randomToken(),tokenHash=await sha256Hex(token);
-  const deviceName=String(body?.deviceName||pair.device_name||"LUCH Browser Companion").slice(0,80);
+  const deviceName=String(body?.deviceName||"").slice(0,80);
   const browser=String(body?.browser||"unknown").slice(0,40);
   const extensionVersion=String(body?.extensionVersion||"unknown").slice(0,40);
-  const {data:device,error:deviceError}=await admin.from("p029_browser_devices").insert({
-    user_id:pair.user_id,device_name:deviceName,token_hash:tokenHash,browser,extension_version:extensionVersion,metadata:{pairedVia:"p029_pairing_code"}
-  }).select("id,device_name").single();
-  if(deviceError||!device) return json({ok:false,error:"DEVICE_CREATE_FAILED"},500);
-  const {data:used,error:useError}=await admin.from("p029_browser_pairings").update({used_at:nowIso()}).eq("id",pair.id).eq("used_at",null).select("id").maybeSingle();
-  if(useError||!used) {
-    await admin.from("p029_browser_devices").delete().eq("id",device.id);
-    return json({ok:false,error:"PAIRING_RACE_RETRY"},409);
-  }
-  return json({ok:true,token,deviceId:device.id,deviceName:device.device_name});
+  const {data:claimed,error:claimError}=await admin.rpc("p029_claim_pairing",{
+    p_code_hash:hash,
+    p_token_hash:tokenHash,
+    p_device_name:deviceName,
+    p_browser:browser,
+    p_extension_version:extensionVersion,
+  });
+  if(claimError) return json({ok:false,error:"PAIRING_REDEEM_FAILED"},500);
+  if(!claimed?.deviceId) return json({ok:false,error:"PAIRING_CODE_INVALID_OR_EXPIRED"},403);
+  return json({ok:true,token,deviceId:claimed.deviceId,deviceName:claimed.deviceName});
 }
 
 Deno.serve(async (req)=>{

@@ -28,7 +28,7 @@ function createBoundary(){
      headers:{accept:'application/json','content-type':'application/json',origin:SITE_ORIGIN},
      body:JSON.stringify(body)
    };
-   const response=await fetch(SITE_ORIGIN+route,{...options,redirect:'manual',signal:AbortSignal.timeout(12000)});
+   const response=await fetch(SITE_ORIGIN+route,{...options,redirect:'manual',signal:AbortSignal.timeout(20000)});
    const raw=await response.text();
    let json;try{json=JSON.parse(raw)}catch{throw new Error('NON_JSON_SITE_RESPONSE_'+response.status+':'+raw.slice(0,180))}
    return {http_status:response.status,body:json};

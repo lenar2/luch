@@ -41,3 +41,9 @@ Tests import R109 trusted \`compute\` directly from the existing **read-only** p
 
 Run \`reconcile-native-order.test.cjs\` beside \`adapter.test.cjs\`. It exercises all 265 combinations under clearly synthetic provider evidence, plus negative wrong-total/order/grant/receipt/consent/unpaid tests. A real provider test is blocked until an authorized GetCourse engineer supplies actual native provider readbacks and a verified form contract.
 
+
+
+## Native checkout acceptance fixtures
+
+See `PROVIDER_NATIVE_ACCEPTANCE.md` for exact native QA vectors and official GetCourse support boundaries. Run `export-265-vectors.cjs` with `BF_R109_SERVER` to regenerate all 265 machine-readable pricing/provenance vectors. Snapshot is `qa-265-vectors.json` and is NOT provider/payment certification.
+

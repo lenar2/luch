@@ -60,3 +60,11 @@ The 265 expected selections are self-contained in live-265-inputs.json; no gener
 
 See PROVIDER_WIDGET_READONLY_FINDINGS.md. Public embed and iframe GETs both return HTTP 200. The embed forwards the parent query string, but the inspected form has one hidden external-value offer_id field with no value and no form-position-input controls. The inspected JavaScript populates that external field through an explicit modal position.offer_id object; it does not establish a URL-query selection contract. Mailing checkbox is enabled and prechecked in the returned iframe variables; review consent separately. No form was submitted.
 
+
+The provider widget transport inspection is also repeatable without submitting the form:
+
+    node --test bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs
+    node bf2026-checkout/site-boundary-qa-r1/inspect-widget-1686693.cjs
+
+It reads the public embed script and iframe HTML, emits sanitized structure only, and never stores visitor cookies or submits the form.
+

@@ -1,88 +1,61 @@
-# BF2026 R109 site-boundary QA patch — integration handoff
+# BF2026 R109 site-boundary QA patch — isolated integration handoff
 
 ## Scope
-
-This is a backend-only, read-only QA patch on top of PR #16. It does not modify R109, offer-registry.json, the public site design, GetCourse, or any production order/payment path.
+Backend-only, read-only QA patch based on PR #16. Includes live quote boundary, post-save native Widget 1686693 inspection, fresh Lot5 + Union mapping overlay, and a fail-closed two-line native order contract. No production, design, GetCourse UI or order/payment path changes.
 
 ## Branch ancestry
-
 - PR #16 base commit: c7b3e5c860760f604a54df55a4ca157261f9d7dd
-- QA branch: bf2026-r109-site-boundary-qa-r1-20261119
-- QA files: bf2026-checkout/site-boundary-qa-r1/
-- Site engineer should integrate this branch only into an isolated checkout integration branch that already contains PR #15 and PR #16 code.
+- Branch: bf2026-r109-site-boundary-qa-r1-20261119
+- Integrate only into the site engineer's isolated checkout branch already containing PR #15 and PR #16.
 
-## Minimal merge step for site engineer
-
-After reviewing the branch, from the site engineer's isolated integration branch (not production):
-
+## Minimal merge and tests
     git fetch origin bf2026-r109-site-boundary-qa-r1-20261119
     git merge --no-ff FETCH_HEAD
 
-Then execute the exact live boundary suite from the R109 host with read-only access:
-
+Then run:
     BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
     BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
-    node --test bf2026-checkout/site-boundary-qa-r1/site-boundary.test.cjs
+    node --test bf2026-checkout/site-boundary-qa-r1/site-boundary.test.cjs \
+      bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs \
+      bf2026-checkout/site-boundary-qa-r1/native-order-boundary-contract.test.cjs
 
-This patch is test harness + evidence only. Do not merge to production. Do not copy the Lot5 mapping overlay into production registry. Do not enable rollout or create checkout_forms entries based on quote parity.
+Current captured suite: 10/10 PASS. Refresh public widget snapshot with node bf2026-checkout/site-boundary-qa-r1/inspect-widget-1686693.cjs.
 
-## Observed live boundary result
+## Current verified native mapping (QA overlay only)
+- Lot5 Offer 8933492 → Product 4557988 → Training 936022301, 6990 RUB, active/all buyers, 365d after pay; #4073 comment 6988661595.
+- Union Offer 8919715 → Product 4550895 → Training 933861292, 6000 RUB, active/all buyers, 365d after pay; #4073 comment 6991630755.
 
-- Live R109 quote endpoint matched adapter output for Lot5, Lot5 + Union, two audios and Source II.
-- Lot5 + Union exact quote: subtotal 12,990 ₽, 10%, final 11,690 ₽.
-- Live R109 audio price: 3,333 ₽ each; this does not resolve the older 3,000 ₽ owner-price conflict.
-- Lot5 native mapping can be planned from fresh readback #4073 comment 6988661595, but R109 /start still returns 503 because the production registry has no verified route.
-- Union remains blocked by last evidenced INACTIVE_QA_ONLY status (#4073 comment 6988302858).
-- Client price override and three-audio invalid selection are rejected by live R109 with 422.
+The adapter's two-line plan is complete with exact IDs and 365d grants. This does not prove the public form can transfer both lines.
 
-## What this patch proves / does not prove
+## Fresh public form result
+- Embed URL: https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693 (HTTP 200).
+- Iframe URL: https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693 (HTTP 200).
+- Button caption Оформить заказ is persisted.
+- Stable form action: POST https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127. Actual per-visitor action adds gcSession, gcVisitor, gcVisit and gcSessionHash; values are redacted and non-reusable.
+- Hidden formParams[setted_offer_id] has no value attribute; no form-position-input or other Offer selector controls. Embed query forwarding is not proof of query-to-Offer binding.
+- Native handler readback still binds this widget to Lot5 Offer 8933492 only.
+- Marketing consent is enabled and checked by default, while isMailingCheckboxRequired=false. UI worker should make it unchecked by default; required offer-terms consent remains separate.
 
-It proves a read-only adapter-to-site quote boundary using actual HTTPS responses from wf.tati-lar.ru and the exact R109 compute() source. It does not prove GetCourse provider selection transfer, a native order, payment, fiscal receipt, or paid entitlement. No provider order is synthesized or claimed.
+## Current live R109 start result
+GET /api/checkout/status before/after: sales_ready=false, verified_sale_routes=0.
+POST /api/checkout/start: Lot5 → 503 GETCOURSE_OFFER_NOT_READY, no URL; Lot5 + Union → 503 GETCOURSE_OFFER_NOT_READY, no URL.
+The source handler only resolves a verified native form URL and returns it; when no route exists it exits 503. It does not create an order. No form was submitted and no provider order/payment was created.
 
-## Remaining release gates
+## Two-line native order contract
+See native-order-boundary-contract.json and .cjs. It requires one actual paid native provider order with exactly:
+- 8933492 / 4557988 / 936022301 / 6990 RUB;
+- 8919715 / 4550895 / 933861292 / 6000 RUB;
+- subtotal 12990, 10% discount, paid total 11690 RUB;
+- both 365d after-pay grants tied to the same paid event;
+- fiscal receipt/tax, required offer-terms consent, duplicate guard and native evidence references.
 
-1. Authorized UI worker supplies current Union public Offer + multi-offer form readback.
-2. Native provider order proves exact two lines and 11,690 ₽.
-3. Both 365-day-after-pay grants, payment event, receipt/tax, mandatory consent and duplicate guard are independently read back.
-4. Site engineer wires the exact provider selection transfer and durable idempotency in their own isolated branch.
-5. Independent QA and owner release precede any production registry change.
+The validator refuses missing, synthetic, test-fixture or unattested order evidence. It contains no positive synthetic order and is not a payment certification.
 
+## Release gates
+1. UI worker supplies a native public multi-offer selection mechanism that demonstrably carries both Offer IDs into two actual provider order lines. Do not invent URL parameters or reuse the Lot5-only widget as a two-line cart.
+2. UI worker provides exact public buyer URL and saved/reopened form readback. Marketing opt-in must be unchecked by default.
+3. Site engineer integrates selection transfer and durable idempotency on their isolated branch.
+4. Independent native paid-order/grants/receipt/consent/duplicate QA and owner release.
+5. Only then consider a production registry change. Do not merge this QA branch to production or enable rollout from quote/mapping parity alone.
 
-## Optional exhaustive live R109 quote parity
-
-The 265-vector live pass is a separate, read-only command:
-
-    BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
-    BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
-    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs
-
-It makes 265 actual HTTPS quote calls at one per second, checks each result against the exact R109 compute() and vector digest, and records live-265-boundary-evidence.json. It never calls /start and never creates or simulates a native order.
-
-
-## Optional exhaustive live R109 quote parity
-
-The 265-vector live pass is a four-part read-only run (80 + 80 + 80 + 25 requests, one request per second to stay below the R109 90/minute limit):
-
-    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 0 80
-    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 80 160
-    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 160 240
-    node bf2026-checkout/site-boundary-qa-r1/run-live-265-boundary.cjs 240 265
-    node bf2026-checkout/site-boundary-qa-r1/aggregate-live-265.cjs
-
-This records live-265-boundary-evidence.json after validating there are no missing or duplicate vectors. It never calls /start and never creates or simulates a native order.
-
-
-The exact 265 input selections and expected R109 quote totals are self-contained in live-265-inputs.json, so the site engineer does not need the large locally generated QA vector artifact from the worker scratch directory.
-
-## Additional read-only Widget 1686693 inspection
-
-PROVIDER_WIDGET_READONLY_FINDINGS.md records the public embed script and iframe structure. The embed forwards the parent query string, but the returned form has one empty external-value offer_id hidden field and no form-position-input controls. The inspected JavaScript only shows offer_id being injected through an explicit modal position.offer_id object. This is not proof of dynamic URL-based offer selection. A separate native multi-offer form/selection mechanism remains required. The iframe also exposes a mailing checkbox enabled and checked by default with required=false; obtain owner/legal consent review before launch. No form submission occurred.
-
-
-The widget inspection can be repeated read-only with:
-
-    node --test bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs
-    node bf2026-checkout/site-boundary-qa-r1/inspect-widget-1686693.cjs
-
-It confirms public embed/iframe shape and selection-transfer limitations; it does not submit the form.
-
+Post-save live start result is preserved in post-save-start-boundary-evidence.json (observed 2026-11-18T21:42:41.913Z): Lot5 and Lot5 + Union both return 503 GETCOURSE_OFFER_NOT_READY, with zero routes before/after and no order created.

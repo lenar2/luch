@@ -299,6 +299,27 @@ function userMcpServer(userId:string) {
     await admin.from("p029_browser_jobs").update({status:"cancelled",error:"DEVICE_REVOKED",completed_at:nowIso()}).eq("device_id",deviceId).eq("user_id",userId).in("status",["pending","claimed"]);
     return {content:[{type:"text",text:JSON.stringify({ok:true,deviceId})}]};
   });
+  server.registerTool("browser_list_approved_tabs",{
+    title:"List my approved browser tabs",
+    description:"List only tabs already explicitly approved in the LUCH Browser Companion extension, including targetId for subsequent reads. No all-tabs permission is requested or needed. Other open tabs remain private.",
+    inputSchema:z.object({deviceId:z.string().uuid().optional()}),
+    annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false},
+  },async({deviceId})=>{
+    const device=await chooseDevice(userId,deviceId,true);
+    const {data,error}=await admin.from("p029_browser_grants")
+      .select("tab_id,grant_id,origin,url_redacted,title,scope,precise_cursor,updated_at")
+      .eq("user_id",userId).eq("device_id",device.id).order("updated_at",{ascending:false}).limit(80);
+    if(error) throw new Error("APPROVED_TABS_LOOKUP_FAILED");
+    const tabs=(data||[]).filter((g:any)=>g.origin&&["read","interact"].includes(g.scope))
+      .map((g:any)=>({
+        targetId:`ext:${g.tab_id}:${g.grant_id}`,
+        title:String(g.title||"").slice(0,180),
+        url:redactedUrl(g.url_redacted),
+        scope:g.scope,
+        preciseCursor:g.precise_cursor===true,
+      }));
+    return {content:[{type:"text",text:JSON.stringify({deviceId:device.id,tabs,onlyApprovedTabs:true})}]};
+  });
   server.registerTool("browser_list_open_tabs",{
     title:"List open browser tabs",
     description:"List open HTTP(S) tabs from the user's explicitly enabled tab overview. This returns metadata only, not page contents. The extension must have the separate 'share all tabs' permission enabled.",

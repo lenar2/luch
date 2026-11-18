@@ -78,3 +78,11 @@ The exact 265 input selections and expected R109 quote totals are self-contained
 
 PROVIDER_WIDGET_READONLY_FINDINGS.md records the public embed script and iframe structure. The embed forwards the parent query string, but the returned form has one empty external-value offer_id hidden field and no form-position-input controls. The inspected JavaScript only shows offer_id being injected through an explicit modal position.offer_id object. This is not proof of dynamic URL-based offer selection. A separate native multi-offer form/selection mechanism remains required. The iframe also exposes a mailing checkbox enabled and checked by default with required=false; obtain owner/legal consent review before launch. No form submission occurred.
 
+
+The widget inspection can be repeated read-only with:
+
+    node --test bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs
+    node bf2026-checkout/site-boundary-qa-r1/inspect-widget-1686693.cjs
+
+It confirms public embed/iframe shape and selection-transfer limitations; it does not submit the form.
+

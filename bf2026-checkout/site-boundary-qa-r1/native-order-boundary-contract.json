@@ -1,0 +1,79 @@
+{
+  "schema": "bf2026.native-order-boundary-contract.r1",
+  "classification": "REQUIREMENTS_ONLY_NOT_NATIVE_ORDER_EVIDENCE",
+  "native_readback_sources": {
+    "lot5": "ai-factory-evidence#4073/comment/6988661595",
+    "union": "ai-factory-evidence#4073/comment/6991630755"
+  },
+  "public_widget": {
+    "widget_id": 1686693,
+    "native_handler_scope": "LOT5_ONLY",
+    "public_embed_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693",
+    "public_iframe_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693",
+    "form_method": "POST",
+    "stable_form_action": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127",
+    "dynamic_action_query_parameters": ["gcSession", "gcVisitor", "gcVisit", "gcSessionHash"],
+    "offer_id_field": "formParams[setted_offer_id]",
+    "current_offer_id_value": null,
+    "current_offer_id_selection_transfer": "UNPROVEN",
+    "multi_offer_position_controls": 0,
+    "submit_button_caption": "Оформить заказ",
+    "marketing_consent_checked_by_default": true,
+    "marketing_consent_required": false
+  },
+  "required_native_order": {
+    "provider": "GetCourse",
+    "status": "PAID",
+    "currency": "RUB",
+    "line_count": 2,
+    "lines": [
+      {
+        "selection_key": "rejection_program",
+        "offer_id": 8933492,
+        "product_id": 4557988,
+        "training_id": 936022301,
+        "base_price_rub": 6990,
+        "access_days": 365,
+        "grant_start": "AFTER_PAY"
+      },
+      {
+        "selection_key": "union",
+        "offer_id": 8919715,
+        "product_id": 4550895,
+        "training_id": 933861292,
+        "base_price_rub": 6000,
+        "access_days": 365,
+        "grant_start": "AFTER_PAY"
+      }
+    ],
+    "subtotal_rub": 12990,
+    "discount_percent": 10,
+    "discount_rub": 1300,
+    "paid_total_rub": 11690,
+    "rounding": "nearest_10_rub_final_total",
+    "both_grants_must_reference_same_paid_event": true,
+    "required_proofs": [
+      "actual_native_provider_order_id",
+      "actual_two_order_lines_with_exact_offer_product_training_ids",
+      "paid_event_and_11690_rub_capture",
+      "both_365d_after_pay_grants_bound_to_same_paid_event",
+      "fiscal_receipt_and_tax_readback",
+      "required_offer_terms_consent_readback",
+      "duplicate_submit_guard_negative_test",
+      "native_ui_readback_evidence_refs"
+    ],
+    "marketing_consent_must_be_optional_and_unchecked_by_default": true,
+    "synthetic_order_fixtures_are_not_provider_proof": true
+  },
+  "current_evidence": {
+    "offer_8933492": "ACTIVE_VERIFIED",
+    "offer_8919715": "ACTIVE_VERIFIED",
+    "public_widget_offer_id_prefilled": false,
+    "public_widget_multi_offer_selection": false,
+    "native_paid_two_line_order": "NOT_OBSERVED",
+    "r109_start_for_lot5": "503_GETCOURSE_OFFER_NOT_READY",
+    "r109_start_for_lot5_union": "503_GETCOURSE_OFFER_NOT_READY",
+    "verified_sale_routes": 0
+  }
+}
+

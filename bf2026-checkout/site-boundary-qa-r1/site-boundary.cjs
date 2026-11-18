@@ -1,7 +1,7 @@
 'use strict';
 const fs=require('node:fs');
 const path=require('node:path');
-const {createAdapter,canonical}=require('../adapter.cjs');
+const {createAdapter,canonical}=require('../dynamic-adapter-r1/adapter.cjs');
 const SITE_ORIGIN='https://wf.tati-lar.ru';
 function requiredPath(env,fallback){
  const p=process.env[env]||fallback;
@@ -11,7 +11,7 @@ function requiredPath(env,fallback){
 function createBoundary(){
  const serverPath=requiredPath('BF_R109_SERVER','/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js');
  const pricingPath=requiredPath('BF_R109_PRICING','/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json');
- const mappingPath=requiredPath('BF_NATIVE_MAPPING',path.resolve(__dirname,'../native-mapping-observed.json'));
+ const mappingPath=requiredPath('BF_NATIVE_MAPPING',path.resolve(__dirname,'../dynamic-adapter-r1/native-mapping-observed.json'));
  const overlayPath=path.resolve(__dirname,'native-mapping-live-overlay.json');
  const {compute}=require(serverPath);
  const pricingBytes=fs.readFileSync(pricingPath);

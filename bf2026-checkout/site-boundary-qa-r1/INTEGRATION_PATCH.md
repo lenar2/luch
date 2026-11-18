@@ -46,3 +46,4 @@ It proves a read-only adapter-to-site quote boundary using actual HTTPS response
 3. Both 365-day-after-pay grants, payment event, receipt/tax, mandatory consent and duplicate guard are independently read back.
 4. Site engineer wires the exact provider selection transfer and durable idempotency in their own isolated branch.
 5. Independent QA and owner release precede any production registry change.
+

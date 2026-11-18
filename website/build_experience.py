@@ -8,7 +8,7 @@ P=Path(__file__).resolve().parent
 BRAND="https://luch.lenarsalimov.ru"
 GITHUB="https://github.com/lenar2/luch"
 LINKS={
-"chatgpt":"https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt",
+"chatgpt":"https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md",
 "claude":"https://github.com/lenar2/luch-claude-plugin",
 "cursor":"https://github.com/lenar2/luch-cursor",
 "gemini":"https://github.com/lenar2/luch-gemini",

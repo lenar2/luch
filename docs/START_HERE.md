@@ -26,7 +26,7 @@ LUCH extends the AI you already use. Setup varies by client. The important disti
 **Check your account eligibility first.** Independent fresh-user enrollment and complete OAuth have not yet been verified as working for every visitor. There is no claimed universal install button.
 
 - [Status and limitations](https://luch.lenarsalimov.ru/en/status/).
-- [ChatGPT integration](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/).
+- [ChatGPT integration](https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md).
 - Separate host paths: [Claude](https://github.com/lenar2/luch-claude-plugin), [Cursor](https://github.com/lenar2/luch-cursor), [Gemini CLI](https://github.com/lenar2/luch-gemini).
 - [Support](https://luch.lenarsalimov.ru/support/) if your access is unclear.
 

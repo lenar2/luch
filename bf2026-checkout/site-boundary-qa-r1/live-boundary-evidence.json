@@ -1,6 +1,6 @@
 {
   "schema": "bf2026.live-site-adapter-boundary-evidence.r1",
-  "observed_at": "2026-11-18T20:36:05.620Z",
+  "observed_at": "2026-11-18T20:37:56.192Z",
   "source": {
     "site": "https://wf.tati-lar.ru",
     "quote_endpoint": "https://wf.tati-lar.ru/api/checkout/quote",

@@ -1,0 +1,135 @@
+{
+  "id": "BF2026_LOT10_CUSTOM_SET_R107",
+  "status": "OWNER_RESTORED_LOT5_6990_20261118_FRONTEND_ONLY_HOLD",
+  "currency": "RUB",
+  "price_basis": "CURRENT_WHITE_FRIDAY_OFFER_PRICE_NOT_PRE-SALE_COMPARISON_PRICE",
+  "minimum_items": 2,
+  "maximum_items": 5,
+  "tiers_percent": {
+    "2": 10,
+    "3": 15,
+    "4": 25,
+    "5": 35
+  },
+  "rounding": "nearest_10_rub_final_total",
+  "source": "OWNER_EXPLICIT_PRICE_REVERT_TO_6990_20261118",
+  "products": [
+    {
+      "key": "rejection",
+      "label": "Аудиотерапия «Исцеление раны отвержения»",
+      "site_lot": 1,
+      "base_price_rub": 3333,
+      "getcourse_id": null
+    },
+    {
+      "key": "devaluation",
+      "label": "Аудиотерапия «Исцеление раны обесценивания»",
+      "site_lot": 2,
+      "base_price_rub": 3333,
+      "getcourse_id": null
+    },
+    {
+      "key": "self",
+      "label": "Аудиотерапия «Исцеление страха быть собой»",
+      "site_lot": 3,
+      "base_price_rub": 3333,
+      "getcourse_id": null
+    },
+    {
+      "key": "guilt",
+      "label": "Аудиотерапия «Исцеление чувства вины»",
+      "site_lot": 4,
+      "base_price_rub": 3333,
+      "getcourse_id": null
+    },
+    {
+      "key": "rejection_program",
+      "label": "Программа «Исцеление отвержения»",
+      "site_lot": 5,
+      "base_price_rub": 6990,
+      "getcourse_id": null,
+      "includes_keys": [
+        "rejection",
+        "devaluation",
+        "self",
+        "guilt"
+      ],
+      "access_days": 365
+    },
+    {
+      "key": "dnv",
+      "label": "Школа для девушек на выданье (ДНВ)",
+      "site_lot": 6,
+      "base_price_rub": 7200,
+      "getcourse_id": null
+    },
+    {
+      "key": "union",
+      "label": "Курс «Союз нового времени»",
+      "site_lot": 7,
+      "base_price_rub": 6000,
+      "getcourse_id": null
+    },
+    {
+      "key": "trainer",
+      "label": "Программа «Тренер по отношениям»",
+      "site_lot": 8,
+      "base_price_rub": 28000,
+      "getcourse_id": null
+    },
+    {
+      "key": "source",
+      "label": "Программа «Источник»",
+      "site_lot": 9,
+      "base_price_rub": 6000,
+      "getcourse_id": null,
+      "variants": [
+        {
+          "key": "1",
+          "label": "Один модуль — Пробуждение сознания",
+          "base_price_rub": 6000,
+          "getcourse_id": null
+        },
+        {
+          "key": "2",
+          "label": "Два модуля — сознание и тело",
+          "base_price_rub": 10000,
+          "getcourse_id": null
+        }
+      ]
+    }
+  ],
+  "excluded_from_bundle": [
+    "stories_integration_lot_11"
+  ],
+  "checkout_enabled": false,
+  "server_validation_required": true,
+  "stacking_policy": "NO_OTHER_COUPONS_UNTIL_OWNER_APPROVES",
+  "owner_approved_audio_combo_price_rub": {
+    "2": 6000
+  },
+  "mutual_exclusion": [
+    {
+      "bundle_key": "rejection_program",
+      "incompatible_keys": [
+        "rejection",
+        "devaluation",
+        "self",
+        "guilt"
+      ],
+      "reason": "program_includes_all_four_audio"
+    }
+  ],
+  "default_access_days": 365,
+  "max_individual_audio_items": 2,
+  "on_third_audio_choice": "REPLACE_SELECTED_AUDIO_WITH_REJECTION_PROGRAM",
+  "upgrade_program_key": "rejection_program",
+  "forbidden_individual_audio_counts": [
+    3,
+    4
+  ],
+  "legacy_audio_combo_prices_rub_non_sellable": {
+    "3": 8500,
+    "4": 10000
+  }
+}

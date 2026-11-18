@@ -63,3 +63,5 @@ footer{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;display
 #tab-list li{font-size:11px;line-height:1.35;margin:7px 0;overflow-wrap:anywhere}
 #tab-list small{display:block;color:var(--muted);font-size:10px}
 #tab-list-wrap[hidden],.advanced-browser button[hidden]{display:none}
+
+#tab-list .tab-switch{width:auto;margin:5px 0 2px;padding:5px 9px;min-height:28px;border:1px solid var(--line);background:#edf1ed;color:var(--brand);font-size:10px}

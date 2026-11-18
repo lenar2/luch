@@ -295,6 +295,18 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
    const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');
    return {ok:true,tabs:await tabOverview(),shared:(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true};
   }
+  if(msg.op==='activate-open-tab'){
+   const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');
+   if(!Number.isSafeInteger(msg.tabId)||msg.tabId<0)throw new Error('INVALID_TAB_ID');
+   // Selection is a direct user click; it grants no content-reading rights.
+   const listed=(await tabOverview()).find(t=>t.id===msg.tabId);
+   if(!listed)throw new Error('TAB_NOT_IN_APPROVED_OVERVIEW');
+   const current=await chrome.tabs.get(listed.id);
+   if(cleanTabUrl(current.url)!==listed.url)throw new Error('TAB_CHANGED_RETRY');
+   await chrome.tabs.update(listed.id,{active:true});
+   await chrome.windows.update(current.windowId,{focused:true});
+   return {ok:true,activated:true,requiresApproval:true};
+  }
   if(msg.op==='share-tab-overview'){
    const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');
    const enable=msg.enabled===true;

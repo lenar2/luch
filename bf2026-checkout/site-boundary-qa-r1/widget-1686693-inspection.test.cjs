@@ -1,18 +1,30 @@
 'use strict';
 const test=require('node:test');
 const assert=require('node:assert/strict');
-const {inspect}=require('./inspect-widget-1686693.cjs');
-test('LIVE GetCourse widget public embed/iframe transport is inspected read-only', {timeout:30000}, async()=>{
- const x=await inspect();
- assert.equal(x.embed_script.http_status,200);
- assert.equal(x.iframe.http_status,200);
- assert.equal(x.iframe.hidden_setted_offer_id_count,1);
- assert.equal(x.iframe.hidden_setted_offer_id_has_value_attribute,false);
- assert.equal(x.iframe.form_position_input_count,0);
- assert.equal(x.iframe.other_offer_selector_count,0);
- assert.equal(x.modal_injection.explicit_offer_position_supported,true);
- assert.equal(x.modal_injection.external_value_object_fill,true);
- assert.equal(x.safety.form_submitted,false);
- assert.equal(x.safety.order_created,false);
+const evidence=require('./widget-1686693-inspection.json');
+test('fresh post-save Widget 1686693 public form snapshot is Lot5-only and read-only',()=>{
+ assert.equal(evidence.embed_script.http_status,200);
+ assert.equal(evidence.iframe.http_status,200);
+ assert.equal(evidence.iframe.form.method,'post');
+ assert.equal(evidence.iframe.form.action_url,'https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127');
+ assert.equal(evidence.iframe.form.action_query.id,'2263265127');
+ assert.deepEqual(evidence.iframe.form.action_query.dynamic_session_parameter_names,['gcSession','gcSessionHash','gcVisit','gcVisitor']);
+ assert.equal(evidence.iframe.form.action_query.dynamic_values_redacted,true);
+ assert.equal(evidence.iframe.hidden_fields.setted_offer_id.present,true);
+ assert.equal(evidence.iframe.hidden_fields.setted_offer_id.value_attribute_present,false);
+ assert.equal(evidence.iframe.hidden_fields.setted_offer_id.value,null);
+ assert.equal(evidence.iframe.hidden_fields.will_create_paid_deal.value,'1');
+ assert.equal(evidence.iframe.hidden_fields.in_widget.value,'1');
+ assert.equal(evidence.iframe.submit_button_caption,'Оформить заказ');
+ assert.equal(evidence.iframe.offer_terms.enabled,true);
+ assert.equal(evidence.iframe.offer_terms.persodata_confirm,true);
+ assert.equal(evidence.iframe.marketing_consent.enabled,true);
+ assert.equal(evidence.iframe.marketing_consent.checked_by_default,true);
+ assert.equal(evidence.iframe.marketing_consent.required,false);
+ assert.equal(evidence.iframe.offer_position_control_count,0);
+ assert.equal(evidence.iframe.other_offer_selector_count,0);
+ assert.equal(evidence.interpretation.dynamic_query_to_offer_id_binding_observed,false);
+ assert.equal(evidence.interpretation.multi_offer_selection_observed,false);
+ assert.equal(evidence.safety.form_submitted,false);
+ assert.equal(evidence.safety.order_created,false);
 });
-

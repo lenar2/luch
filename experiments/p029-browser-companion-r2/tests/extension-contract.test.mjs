@@ -39,7 +39,8 @@ test('icons are real PNG 16 / 32 / 48 / 128',()=>{
 });
 test('grants through service worker, isolated tab, broker error rollback, revoke and disconnect',async()=>{
  const handlers={},store={local:{},session:{}},badges=new Map();
- const pages=new Map([[11,{id:11,url:'https://example.org/one',title:'One'}],[12,{id:12,url:'https://other.example/two',title:'Other'}]]);
+ const pages=new Map([[11,{id:11,windowId:1,url:'https://example.org/one',title:'One'}],[12,{id:12,windowId:2,url:'https://other.example/two',title:'Other'}]]);
+ const selected=[];
  let active=11,failGrants=false,remoteGrants=[],token='TEST-TOKEN',healthReads=0,jobReads=0;
  const chrome={
   runtime:{id:'abc',onMessage:{addListener:cb=>{handlers.message=cb}}},
@@ -50,10 +51,12 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
   tabs:{
    query:async q=>q?.active?[pages.get(active)]:[...pages.values()],
    get:async id=>{if(!pages.has(id))throw Error('not found');return pages.get(id)},
+   update:async(id,props)=>{selected.push({id,props});active=id;return pages.get(id)},
    onUpdated:{addListener:cb=>handlers.updated=cb},
    onRemoved:{addListener:cb=>handlers.removed=cb}
   },
   permissions:{contains:async({permissions})=>permissions.every(p=>p==='tabs'),onRemoved:{addListener:cb=>handlers.permRemoved=cb}},
+  windows:{update:async(id,props)=>{selected.push({windowId:id,props})}},
   action:{
    setBadgeText:async({tabId,text})=>badges.set(tabId,text),
    setBadgeBackgroundColor:async()=>{}
@@ -90,6 +93,13 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  assert.ok(overview.tabs[0].url.startsWith('https://example.org/one'));
  assert.equal((await send('share-tab-overview',{enabled:true})).sharing,true);
  assert.equal((await send('share-tab-overview',{enabled:false})).sharing,false);
+ assert.equal((await send('activate-open-tab',{tabId:12})).activated,true);
+ assert.equal(selected[0].id,12);
+ assert.equal(selected[0].props.active,true);
+ assert.equal(selected[1].windowId,2);
+ assert.equal(Object.keys(store.session.grants||{}).length,0,'switching tabs must not grant page contents');
+ assert.equal((await send('activate-open-tab',{tabId:999})).ok,false);
+ active=11;
  const jobsBeforeStatus=jobReads;
  assert.equal((await send('status')).connected,true);assert.equal(remoteGrants.length,0);
  assert.equal(jobReads,jobsBeforeStatus,'status must not consume queued extension jobs');

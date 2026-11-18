@@ -1,6 +1,6 @@
 {
   "schema": "luch.browser-companion.store-assets.v1",
-  "candidate": "0.5.2",
+  "candidate": "0.6.0",
   "status": "DRAFT_HOLD",
   "brand": {
     "approvedAppMark": "luch-app-mark.svg",

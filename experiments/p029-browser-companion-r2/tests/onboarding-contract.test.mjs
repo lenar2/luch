@@ -39,9 +39,10 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
  const manifest=JSON.parse(read('extension/manifest.json'));
  const js=read('extension/popup.js');
  const worker=read('extension/background.js');
- assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
+ assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage','debugger'].sort());
  assert.deepEqual(manifest.host_permissions,['http://127.0.0.1:9248/*']);
- for(const forbidden of ['cookies','history','debugger','webRequest','<all_urls>'])assert.ok(!JSON.stringify(manifest).includes(forbidden));
+ for(const forbidden of ['cookies','history','webRequest','<all_urls>'])assert.ok(!JSON.stringify(manifest).includes(forbidden));
+ assert.deepEqual(manifest.optional_permissions,['tabs']);
  assert.match(js,/Allow reading on this tab/);
  assert.match(js,/Allow interaction on this tab/);
  assert.match(js,/Revoke access to this tab/);
@@ -55,7 +56,7 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
 
 test('store copy does not conflate extension operations with the platform inventory',()=>{
  const listing=read('STORE_LISTING_DRAFT.md');
- assert.match(listing,/16 read\/inspection and 23 interaction\/navigation/);
+ assert.match(listing,/17 read\/inspection and 28 interaction\/navigation/);
  assert.match(listing,/not all functions of this extension/);
  assert.match(listing,/general public self-service setup is not yet available/i);
  assert.match(listing,/Opera runtime E2E is still required/);

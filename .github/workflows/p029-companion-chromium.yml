@@ -45,7 +45,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: luch-browser-companion-store-artwork-0.5.2-candidate
+          name: luch-browser-companion-store-artwork-0.6.0-candidate
           path: experiments/p029-browser-companion-r2/dist/store-assets/
           if-no-files-found: error
           retention-days: 30

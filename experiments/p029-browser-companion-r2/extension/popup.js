@@ -13,7 +13,7 @@ const strings={
    'Open local setup and generate an eight-digit pairing code.',
    'Enter the code here. It expires after five minutes.'
   ],
-  setupBoundary:'Pairing links this browser to the local Companion only. It does not install the desktop app or connect an AI host. Your LUCH account and AI-client authorization must already be active.',
+  setupBoundary:'Pairing links this browser to the local Companion only. It does not install the desktop app or connect an AI host. Your LUCH account and the AI client’s supported LUCH connection must already be active. No extra chat or AI API key is built into this extension.',
   pairLabel:'One-time pairing code',pairButton:'Connect browser',
   pairHint:'Enter the eight digits shown on the local setup page.',
   localSetup:'Open local setup on this computer',help:'Check account & setup requirements',
@@ -38,6 +38,14 @@ const strings={
   interactSuccess:'Interaction access granted for this tab.',
   revokeSuccess:'Access revoked for this tab.',
   disconnectSuccess:'Browser disconnected from LUCH.',
+  tabsHeading:'Open tabs overview',tabsExplain:'Optional: Chrome will ask permission to read the titles and addresses of all open tabs. Their contents remain private until you separately approve a tab.',
+  listTabs:'Show my open tabs',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
+  unshareTabs:'Stop sharing the tab overview',tabsShared:'Tab titles and addresses are shared with your authorized LUCH AI. Page contents are not.',
+  tabsPrivate:'Only you can see this list until you choose to share it with LUCH.',
+  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome warns about debugger access when installing this extension. Pointer input remains OFF until you separately approve interaction and enable it for this tab. It is not your computer’s physical mouse.',
+  enableCursor:'Enable precise pointer for this tab',disableCursor:'Disable precise pointer',
+  cursorNotReady:'Approve interactions on this tab first.',
+  permissionDenied:'Chrome permission was not granted.',
   error:'Something went wrong.',codePlaceholder:'12345678'
  },
  ru:{
@@ -52,7 +60,7 @@ const strings={
    'Откройте локальную страницу подключения и создайте восьмизначный код.',
    'Введите код здесь. Он действует пять минут.'
   ],
-  setupBoundary:'Сопряжение связывает браузер только с локальным Companion. Оно не устанавливает приложение и не подключает ИИ. Аккаунт LUCH и авторизация ИИ-клиента должны быть настроены заранее.',
+  setupBoundary:'Сопряжение связывает браузер только с локальным Companion. Оно не устанавливает приложение и не подключает ИИ. Аккаунт LUCH и поддерживаемое подключение LUCH в вашем ИИ должны быть настроены заранее. В расширении нет отдельного чата или обязательного API-ключа.',
   pairLabel:'Одноразовый код подключения',pairButton:'Подключить браузер',
   pairHint:'Введите восемь цифр с локальной страницы подключения.',
   localSetup:'Открыть локальную страницу',help:'Проверить требования к аккаунту и подключению',
@@ -77,6 +85,14 @@ const strings={
   interactSuccess:'Взаимодействие с этой вкладкой разрешено.',
   revokeSuccess:'Доступ к этой вкладке отозван.',
   disconnectSuccess:'Браузер отключён от LUCH.',
+  tabsHeading:'Все открытые вкладки',tabsExplain:'Необязательно. Chrome отдельно запросит разрешение видеть названия и адреса всех вкладок. Содержимое страниц останется закрытым, пока вы не разрешите доступ к конкретной вкладке.',
+  listTabs:'Показать мои вкладки',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
+  unshareTabs:'Перестать передавать обзор вкладок',tabsShared:'Названия и адреса вкладок доступны авторизованному ИИ через LUCH. Содержимое страниц не передаётся.',
+  tabsPrivate:'Пока это список только для вас. ИИ не получит его без отдельного разрешения.',
+  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Chrome предупреждает о доступе отладчика при установке расширения. Действия курсора выключены, пока вы отдельно не разрешите их для выбранной вкладки. Это не физическая мышь компьютера.',
+  enableCursor:'Включить точный курсор на этой вкладке',disableCursor:'Выключить точный курсор',
+  cursorNotReady:'Сначала разрешите действия на этой вкладке.',
+  permissionDenied:'Разрешение Chrome не предоставлено.',
   error:'Произошла ошибка.',codePlaceholder:'12345678'
  }
 };
@@ -92,7 +108,10 @@ function setTexts(){
   'help':'help','grant':'grant','interact':'interact','revoke':'revoke',
   'disconnect':'disconnect','tab-label':'tabLabel','footer':'footer',
   'scope':'statusScope','session-note':'sessionNote','host-note':'hostNote',
-  'learn':'learn'
+  'learn':'learn',
+  'tabs-heading':'tabsHeading','tabs-explain':'tabsExplain','list-tabs':'listTabs',
+  'share-tabs':'shareTabs','unshare-tabs':'unshareTabs','cursor-heading':'cursorHeading',
+  'cursor-explain':'cursorExplain','enable-cursor':'enableCursor','disable-cursor':'disableCursor'
  };
  for(const [id,key] of Object.entries(map))$(id).textContent=t(key);
  const steps=$('setup-steps');steps.replaceChildren();
@@ -132,6 +151,12 @@ async function refresh(){
   $('interact').hidden=!r.granted||r.scope==='interact';
   $('revoke').hidden=!r.granted;
   $('pair').disabled=$('pairCode').value.length!==8;
+  $('enable-cursor').hidden=!!r.preciseCursor;
+  $('enable-cursor').disabled=!(r.granted&&r.scope==='interact');
+  $('disable-cursor').hidden=!r.preciseCursor;
+  $('share-tabs').hidden=!!r.tabOverviewSharing;
+  $('unshare-tabs').hidden=!r.tabOverviewSharing;
+  $('tabs-sharing-state').textContent=r.tabOverviewSharing?t('tabsShared'):t('tabsPrivate');
  }catch(e){
   $('pairing').hidden=false;$('controls').hidden=true;
   $('status').textContent=t('statusUnknown');$('scope').textContent=t('statusScope');
@@ -169,5 +194,41 @@ act('grant',()=>({op:'grant-active'}));
 act('interact',()=>({op:'allow-interaction'}));
 act('revoke',()=>({op:'revoke-active'}));
 act('disconnect',()=>({op:'disconnect'}));
+const showTabList=tabs=>{
+ const list=$('tab-list');list.replaceChildren();
+ for(const tab of tabs){
+  const li=document.createElement('li'),heading=document.createElement('strong'),url=document.createElement('small');
+  heading.textContent=tab.title||tab.url;url.textContent=tab.url;li.append(heading,url);list.append(li);
+ }
+ $('tab-list-wrap').hidden=false;
+ $('tabs-sharing-state').textContent=t('tabsPrivate');
+};
+$('list-tabs').addEventListener('click',async()=>{
+ try{
+  const granted=await chrome.permissions.request({permissions:['tabs']});
+  if(!granted)throw new Error(t('permissionDenied'));
+  const result=await call({op:'list-open-tabs'});
+  showTabList(result.tabs);
+  await refresh();
+ }catch(e){$('feedback').textContent=friendlyError(e.message)}
+});
+$('share-tabs').addEventListener('click',async()=>{
+ try{await call({op:'share-tab-overview',enabled:true});await refresh()}
+ catch(e){$('feedback').textContent=friendlyError(e.message)}
+});
+$('unshare-tabs').addEventListener('click',async()=>{
+ try{await call({op:'share-tab-overview',enabled:false});await refresh()}
+ catch(e){$('feedback').textContent=friendlyError(e.message)}
+});
+$('enable-cursor').addEventListener('click',async()=>{
+ try{
+  await call({op:'precise-cursor',enabled:true});await refresh();
+ }catch(e){$('feedback').textContent=friendlyError(e.message)}
+});
+$('disable-cursor').addEventListener('click',async()=>{
+ try{await call({op:'precise-cursor',enabled:false});await refresh()}
+ catch(e){$('feedback').textContent=friendlyError(e.message)}
+});
+
 setTexts();$('status').textContent=t('working');refresh();
 setInterval(refresh,10000);

@@ -48,7 +48,7 @@ The extension requests only:
 - `alarms` — check the local Companion for authorized work while the browser session is active.
 - Host access to `http://127.0.0.1:9248/*` — communicate with the local Companion only.
 
-The extension does not request cookies, browsing history, downloads, geolocation, clipboard, debugger, webRequest or all-sites access. It does not inject remotely supplied executable code.
+The extension does not request cookies, browsing history, downloads, geolocation, clipboard, webRequest or all-sites access. The tabs permission is OPTIONAL and Chrome asks for it only when the user requests an all-tab overview. The debugger permission CANNOT be optional under Chrome manifest rules: Chrome warns about it at extension installation. Despite the manifest permission, LUCH pointer commands remain disabled until the user separately authorizes interaction and precision input on a particular tab. Debugger attachment is short-lived and is released after each pointer action. The extension does not inject remotely supplied executable code.
 
 ## Sensitive content and safeguards
 
@@ -61,3 +61,11 @@ LUCH does not sell browser page content or use it for advertising or unrelated p
 ## Contact
 
 For privacy questions or requests, use [LUCH GitHub Issues](https://github.com/lenar2/luch/issues). Do not post tokens, pairing codes, passwords, private page contents or other sensitive information in a public issue.
+
+## Optional open-tab overview and precise pointer
+
+Users can inspect their open tabs after explicitly granting the optional Chrome tabs permission. The list includes titles, active/window flags, and URLs with search parameters and fragments removed. LUCH cannot send that list to an AI host until the user separately enables overview sharing. This grants access to tab METADATA only, not contents. Sharing is session-scoped and can be turned off at any time.
+
+The precise on-page pointer requires debugger permission declared at installation, plus a separate in-app opt-in after the user has granted interaction on the current tab. It supports pointer movement, clicking, double-clicking, wheel scroll, and limited dragging within the approved webpage viewport. Chrome may show a prominent debugger warning. It is not an OS-level mouse and does not grant unrestricted computer control. A browser permission or per-tab grant can be withdrawn at any time.
+
+An existing AI host must support a separate authorized LUCH tool connection. The extension has no bundled ChatGPT/Claude chat and does not demand a personal OpenAI or Anthropic API key to use its browser controls. Installing the extension alone does not enable third-party tool access in every AI client, including free-plan clients.

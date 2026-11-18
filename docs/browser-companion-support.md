@@ -1,6 +1,6 @@
 # LUCH Browser Companion — setup & support
 
-**Status: 0.5.2 release candidate / early access. This is not a general public self-service release.**
+**Status: 0.6.0 release candidate / early access. This is not a general public self-service release.**
 
 The extension shares only the browser tab that you explicitly approve. It needs a compatible LUCH Companion already installed and running on the same computer, plus an LUCH account and AI-client connection that are already authorized. The extension alone does not install the desktop Companion, create an account, or connect an AI host.
 
@@ -45,7 +45,7 @@ For an approved tab, the extension may process its URL, title, tab/grant identif
 
 The extension sends approved-tab data to the local Companion over loopback at `127.0.0.1:9248`. When you ask an authorized AI host to use that content, the requested result may be sent to that AI host. Do not approve a page whose contents you do not want to share with that host.
 
-The extension does not request cookie, browsing-history, saved-password, download, geolocation, clipboard, debugger or broad all-sites permissions. It uses the local browser storage for pairing state and session storage for tab grants. The local Companion and AI host have their own processing and retention controls.
+The extension does not request cookie, browsing-history, saved-password, download, geolocation, clipboard or broad all-sites permissions by default. All-tab metadata requires an optional tabs permission; the required Chrome debugger permission triggers a security warning at installation, while enabling precision pointer within LUCH remains a separate per-tab opt-in. It uses the local browser storage for pairing state and session storage for tab grants. The local Companion and AI host have their own processing and retention controls.
 
 See the [Browser Companion privacy disclosure](browser-companion-privacy.md).
 
@@ -80,3 +80,10 @@ Check that the local Companion is running and that the pairing page at `http://1
 Report issues at [LUCH GitHub Issues](https://github.com/lenar2/luch/issues). Include the browser and extension version, operating system and a description of the failure. Never include pairing codes, tokens, cookies, passwords, private page contents or personal data.
 
 **Release note:** Chrome's public listing remains on v0.4.0. Candidate 0.5.2 is not published. Opera's previously submitted 0.4.1 and the 0.5.2 candidate are separate states; Opera 0.5.2 has not passed its own runtime gate.
+
+## All open tabs and precise pointer (optional)
+
+1. To see tab titles and URLs, choose Show my open tabs and approve the optional Chrome tabs permission. This initially displays the list only inside the extension.
+2. To let an already-authorized LUCH AI inspect that overview, explicitly choose Share tab titles and addresses. URL parameters and fragments are removed; the contents of each page still require a separate per-tab grant. Stop sharing at any time.
+3. For a true browser-protocol cursor, first approve reading AND interaction for one tab. Then choose Enable precise pointer. Chrome already displayed its debugger warning during extension installation. This enables viewport move, click, double-click, wheel and bounded drag through the browser input protocol, not the operating-system mouse. Turn it off when finished.
+4. A Chrome permission prompt is not LUCH authentication. Your AI host must independently support LUCH tools. Installing only a Chrome extension cannot automatically add tools to every paid or free ChatGPT/Claude session. There is no second AI chat or user-supplied API key in this extension.

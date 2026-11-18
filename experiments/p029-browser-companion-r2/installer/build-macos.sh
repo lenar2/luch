@@ -27,6 +27,6 @@ iconutil -c icns "$ICONSET" -o "$RES/LUCH.icns"
 
 codesign --force --sign - "$APP"
 codesign --verify --deep --strict "$APP"
-ditto -c -k --keepParent "$APP" "$OUT/LUCH-Browser-Companion-Setup-0.5.2-preview.zip"
-shasum -a 256 "$OUT/LUCH-Browser-Companion-Setup-0.5.2-preview.zip"
+ditto -c -k --keepParent "$APP" "$OUT/LUCH-Browser-Companion-Setup-0.6.0-preview.zip"
+shasum -a 256 "$OUT/LUCH-Browser-Companion-Setup-0.6.0-preview.zip"
 echo "UNNOTARIZED_PREVIEW_ONLY=$APP"

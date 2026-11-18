@@ -54,3 +54,12 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .danger{width:100%;background:transparent;color:#884b48;border-color:#dcc0b8}
 #feedback{min-height:10px;margin:8px 0;color:#93543b;font-size:11px;overflow-wrap:anywhere}
 footer{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;display:grid;gap:7px}
+
+.advanced-browser{margin:13px 0;padding:13px 12px;background:#fff;border:1px solid var(--line);border-radius:11px}
+.advanced-browser h2{margin:5px 0 3px;font-size:13px}
+.advanced-browser h2:not(:first-child){margin-top:17px}
+.advanced-browser button{width:100%;text-align:center;margin:5px 0}
+#tab-list{list-style:decimal;padding:0 0 0 23px;max-height:154px;overflow:auto;margin:7px 0}
+#tab-list li{font-size:11px;line-height:1.35;margin:7px 0;overflow-wrap:anywhere}
+#tab-list small{display:block;color:var(--muted);font-size:10px}
+#tab-list-wrap[hidden],.advanced-browser button[hidden]{display:none}

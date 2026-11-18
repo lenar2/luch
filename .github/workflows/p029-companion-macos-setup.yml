@@ -38,7 +38,7 @@ jobs:
           bash installer/build-macos.sh
           codesign --verify --verbose=2 "dist/desktop-mac-preview/LUCH Browser Companion Setup.app"
           /usr/libexec/PlistBuddy -c 'Print :CFBundleIconFile' "dist/desktop-mac-preview/LUCH Browser Companion Setup.app/Contents/Info.plist"
-          unzip -tq "dist/desktop-mac-preview/LUCH-Browser-Companion-Setup-0.5.2-preview.zip"
+          unzip -tq "dist/desktop-mac-preview/LUCH-Browser-Companion-Setup-0.6.0-preview.zip"
           echo "PREVIEW_ONLY: ad-hoc signature, NOT Apple Developer notarized"
       - name: Execute bundled app helper from actual spaced .app path (no live install)
         working-directory: experiments/p029-browser-companion-r2
@@ -61,6 +61,6 @@ jobs:
         if: success()
         with:
           name: luch-browser-companion-macos-unnotarized-preview
-          path: experiments/p029-browser-companion-r2/dist/desktop-mac-preview/LUCH-Browser-Companion-Setup-0.5.2-preview.zip
+          path: experiments/p029-browser-companion-r2/dist/desktop-mac-preview/LUCH-Browser-Companion-Setup-0.6.0-preview.zip
           if-no-files-found: error
           retention-days: 14

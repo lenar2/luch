@@ -2,10 +2,10 @@ import http from 'node:http';
 import {randomBytes,createHash,timingSafeEqual} from 'node:crypto';
 import {readFileSync,existsSync} from 'node:fs';
 
-const MAX_BODY=700_000, MAX_GRANTS=20, SESSION_IDLE_MS=120_000;
+const MAX_BODY=700_000, MAX_GRANTS=20, MAX_OVERVIEW_TABS=80, SESSION_IDLE_MS=120_000;
 // The heartbeat is an internal live-connection check, not a user permission expiry.
-const READ_OPS=new Set(['read_text','inspect_page','get_links','get_headings','get_forms','get_tables','get_selection','query_elements','find_text','accessibility_snapshot','hit_test','get_element','scroll_position','screenshot','tab_info','window_info']);
-const INTERACT_OPS=new Set(['focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text','type_text','select_option','check_element','click','click_at','double_click','click_accessible','navigate','reload','back','forward','activate_tab','close_tab','new_tab','new_window','window_set']);
+const READ_OPS=new Set(['read_text','inspect_page','get_links','get_headings','get_forms','get_tables','get_selection','query_elements','find_text','accessibility_snapshot','hit_test','get_element','scroll_position','screenshot','tab_info','window_info','list_open_tabs']);
+const INTERACT_OPS=new Set(['focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text','type_text','select_option','check_element','click','click_at','double_click','click_accessible','navigate','reload','back','forward','activate_tab','close_tab','new_tab','new_window','window_set','pointer_move','pointer_click','pointer_double_click','pointer_drag','pointer_wheel']);
 const hash=s=>createHash('sha256').update(String(s)).digest();
 const equals=(a,b)=>a.length===b.length&&timingSafeEqual(a,b);
 const json=(res,status,body,origin='')=>{
@@ -63,6 +63,7 @@ const page=(language='en')=>{
  ].join('');
 };
  const grants=new Map(),jobs=new Map(),pending=new Map();
+ let sharedOverview=null;
  const grantedTabs=()=>session&&clock()-sessionLastSeen<SESSION_IDLE_MS?[...grants.values()]:[];
  function bridgeAuth(req){const raw=req.headers['x-browser-bridge-token'];return typeof raw==='string'&&equals(secretHash,hash(raw));}
  function extensionAuth(req){const raw=req.headers.authorization||'';const token=/^Bearer ([A-Za-z0-9_-]{24,})$/.exec(raw);
@@ -103,12 +104,12 @@ return json(res,200,{ok:true,code:currentPairCode,validForSeconds:300});
     pairHash=null;extensionOrigin=origin;
     // Generate the token outside the hash to avoid persisting it.
     const token=randomBytes(32).toString('base64url');session=hash(token);sessionLastSeen=clock();
-    grants.clear();return json(res,200,{ok:true,token},origin);
+    grants.clear();sharedOverview=null;return json(res,200,{ok:true,token},origin);
    }
    if(url.pathname.startsWith('/extension/')){
     if(!extensionAuth(req))return json(res,403,errorCode('EXTENSION_NOT_AUTHORIZED'),origin);
     if(req.method==='POST'&&url.pathname==='/extension/disconnect'){
-      grants.clear();for(const [jobId] of jobs){jobs.delete(jobId);settle(jobId,errorCode('OWNER_DISCONNECTED'))}
+      grants.clear();sharedOverview=null;for(const [jobId] of jobs){jobs.delete(jobId);settle(jobId,errorCode('OWNER_DISCONNECTED'))}
       session=null;sessionLastSeen=0;extensionOrigin=null;
       return json(res,200,{ok:true,disconnected:true},origin);
     }
@@ -118,11 +119,31 @@ return json(res,200,{ok:true,code:currentPairCode,validForSeconds:300});
      for(const g of body.grants){
       if(!Number.isSafeInteger(g.tabId)||g.tabId<0||!/^[a-f0-9]{24}$/.test(g.grantId||''))return json(res,400,errorCode('INVALID_GRANT'),origin);
       const url=cleanUrl(g.url);if(!url||!['read','interact'].includes(g.scope||'read'))return json(res,400,errorCode('INVALID_GRANT'),origin);
-      next.set(`ext:${g.tabId}:${g.grantId}`,{targetId:`ext:${g.tabId}:${g.grantId}`,url,title:String(g.title||'').slice(0,180),tabId:g.tabId,grantId:g.grantId,scope:g.scope||'read'});
+      next.set(`ext:${g.tabId}:${g.grantId}`,{targetId:`ext:${g.tabId}:${g.grantId}`,url,title:String(g.title||'').slice(0,180),tabId:g.tabId,grantId:g.grantId,scope:g.scope||'read',preciseCursor:g.preciseCursor===true});
      }
      grants.clear();for(const [k,v] of next)grants.set(k,v);
      for(const [jobId,job] of jobs){if(!grants.has(job.targetId)){jobs.delete(jobId);settle(jobId,errorCode('GRANT_REVOKED'))}}
      return json(res,200,{ok:true,count:grantedTabs().length},origin);
+    }
+    if(req.method==='POST'&&url.pathname==='/extension/tab-overview'){
+     const body=await readJSON(req);
+     if(typeof body.enabled!=='boolean'||!Array.isArray(body.tabs)||body.tabs.length>MAX_OVERVIEW_TABS)
+      return json(res,400,errorCode('INVALID_TAB_OVERVIEW'),origin);
+     if(!body.enabled){sharedOverview=null;return json(res,200,{ok:true,shared:false},origin)}
+     const list=[];
+     for(const tab of body.tabs){
+      if(!Number.isSafeInteger(tab.id)||tab.id<0||typeof tab.url!=='string'||typeof tab.title!=='string')
+       return json(res,400,errorCode('INVALID_TAB_OVERVIEW_ENTRY'),origin);
+      const parsed=cleanUrl(tab.url);
+      if(!parsed)return json(res,400,errorCode('INVALID_TAB_OVERVIEW_URL'),origin);
+      const u=new URL(parsed);
+      // URLs are deliberately stripped of secrets in query strings and fragments.
+      u.search='';u.hash='';
+      list.push({id:tab.id,title:tab.title.slice(0,180),url:u.href.slice(0,2048),
+       windowId:Number.isSafeInteger(tab.windowId)?tab.windowId:0,active:tab.active===true});
+     }
+     sharedOverview={tabs:list,updatedAt:clock()};
+     return json(res,200,{ok:true,shared:true,count:list.length},origin);
     }
     if(req.method==='GET'&&url.pathname==='/extension/jobs'){
      const out=[...jobs.values()].filter(j=>!j.delivered).slice(0,3);for(const j of out)j.delivered=true;return json(res,200,{ok:true,jobs:out},origin);
@@ -146,6 +167,12 @@ return json(res,200,{ok:true,code:currentPairCode,validForSeconds:300});
    if(url.pathname.startsWith('/v1/')){
     if(!bridgeAuth(req))return json(res,403,errorCode('BRIDGE_AUTH_REQUIRED'));
     if(req.method==='GET'&&url.pathname==='/v1/tabs')return json(res,200,{ok:true,browser:'chrome',profileScope:'USER_CONSENTED_TABS_ONLY',nativeSessionAttached:!!session,tabs:grantedTabs().map(g=>({id:g.targetId,title:g.title,url:g.url,type:'page',attached:true,readOnly:g.scope!=='interact',scope:g.scope,transport:'luch_browser_companion',profileKind:'USER_CONSENTED_TAB',sessionScoped:true}))});
+    if(req.method==='GET'&&url.pathname==='/v1/open-tabs'){
+     if(!session||clock()-sessionLastSeen>=SESSION_IDLE_MS||!sharedOverview||clock()-sharedOverview.updatedAt>SESSION_IDLE_MS)
+      return json(res,403,errorCode('ALL_TABS_USER_APPROVAL_REQUIRED'));
+     return json(res,200,{ok:true,browser:'chrome',profileScope:'USER_APPROVED_TAB_METADATA_ONLY',
+      pageContentsShared:false,tabs:sharedOverview.tabs,updatedAt:sharedOverview.updatedAt});
+    }
     if(req.method==='GET'&&url.pathname==='/v1/capabilities')
       return json(res,200,{ok:true,profileScope:'USER_CONSENTED_TABS_ONLY',read:[...READ_OPS],interact:[...INTERACT_OPS],sessionScoped:true});
     if(req.method==='POST'&&(url.pathname==='/v1/text'||url.pathname==='/v1/action')){
@@ -157,7 +184,10 @@ return json(res,200,{ok:true,code:currentPairCode,validForSeconds:300});
      if(legacyText&&body.selector!==undefined&&body.selector!=='body')return json(res,400,errorCode('SELECTOR_NOT_AVAILABLE'));
      const grant=grants.get(targetId);
      if(!grant||!grantedTabs().some(g=>g.targetId===targetId))return json(res,403,errorCode('USER_TAB_PERMISSION_REQUIRED'));
+     if(op==='list_open_tabs'&&(!sharedOverview||clock()-sharedOverview.updatedAt>SESSION_IDLE_MS))
+      return json(res,403,errorCode('ALL_TABS_USER_APPROVAL_REQUIRED'));
      if(INTERACT_OPS.has(op)&&grant.scope!=='interact')return json(res,403,errorCode('INTERACTION_APPROVAL_REQUIRED'));
+     if(op.startsWith('pointer_')&&grant.preciseCursor!==true)return json(res,403,errorCode('PRECISE_CURSOR_APPROVAL_REQUIRED'));
      const args=legacyText?{}:body.args;
      if(args!==undefined&&(typeof args!=='object'||args===null||Array.isArray(args)))return json(res,400,errorCode('INVALID_ACTION_ARGS'));
      if(JSON.stringify(args||{}).length>30000)return json(res,400,errorCode('ACTION_ARGS_TOO_LARGE'));

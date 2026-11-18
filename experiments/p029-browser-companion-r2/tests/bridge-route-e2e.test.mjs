@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import {createBroker} from '../broker/server.mjs';
 import {makeConsentedTabAdapter} from '../bridge-adapter/consented-tab-adapter.mjs';
-import {routeCompanionRequest} from '../bridge-integration/browser-companion-routes.mjs';
+import {routeCompanionRequest,EXTENSION_ACTIONS} from '../bridge-integration/browser-companion-routes.mjs';
 
 test('real browser bridge route converts authorized tab AI click to a delivered extension job',async()=>{
  const bridgeToken=crypto.randomBytes(32).toString('hex');
@@ -41,4 +41,29 @@ test('real browser bridge route converts authorized tab AI click to a delivered 
   const revoked=await routeCompanionRequest('/v1/click',{browser:'chrome',targetId,selector:'#safe'},adapter);
   assert.equal(revoked.status,409);
  }finally{await broker.close()}
+});
+
+test('generic consented-tab API exposes the 45 operations implemented in the candidate, not arbitrary evaluation',async()=>{
+ const targetId='ext:19:abcdef012345abcdef012345';
+ const seen=[];
+ const adapter={runAuthorizedAction:async request=>{
+  seen.push(request);
+  return {data:{operation:request.op}};
+ }};
+ assert.equal(EXTENSION_ACTIONS.read.length,17);
+ assert.equal(EXTENSION_ACTIONS.interact.length,28);
+ for(const op of [...EXTENSION_ACTIONS.read,...EXTENSION_ACTIONS.interact]){
+  const r=await routeCompanionRequest('/v1/companion/action',{browser:'chrome',targetId,op,args:{}},adapter);
+  assert.equal(r.status,200,op);
+  assert.equal(r.body.result.operation,op);
+ }
+ assert.equal(seen.length,45);
+ for(const op of ['evaluate','eval','execute_javascript','read_cookies','run_shell','native_mouse_without_permission']){
+  const r=await routeCompanionRequest('/v1/companion/action',{browser:'chrome',targetId,op,args:{}},adapter);
+  assert.equal(r.status,409,op);
+ }
+ const invalid=await routeCompanionRequest('/v1/companion/action',{browser:'chrome',targetId,op:'pointer_click',args:[]},adapter);
+ assert.equal(invalid.status,400);
+ const wrong=await routeCompanionRequest('/v1/companion/action',{browser:'opera',targetId,op:'read_text',args:{}},adapter);
+ assert.equal(wrong.status,409);
 });

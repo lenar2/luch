@@ -57,10 +57,11 @@ test('browser extension cannot trigger prohibited remote code or permissions',as
  const man=JSON.parse(readFileSync(new URL('manifest.json',path),'utf8'));
  const worker=readFileSync(new URL('background.js',path),'utf8');
  const broker=readFileSync(new URL('../broker/server.mjs',import.meta.url),'utf8');
- assert.equal(man.version,'0.5.2');
+ assert.equal(man.version,'0.6.0');
  assert.ok(!worker.includes('const TTL_MS'));
  assert.ok(!broker.includes('TTL=15*60_000'));
- for(const key of ['debugger','cookies','history','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(key));
+ for(const key of ['cookies','history','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(key));
+ assert.deepEqual(man.optional_permissions,['tabs']);
  assert.ok(worker.includes("importScripts('dom-ops.js')"));
  assert.ok(worker.includes("scope==='interact'"));
  assert.ok(broker.includes('INTERACTION_APPROVAL_REQUIRED'));

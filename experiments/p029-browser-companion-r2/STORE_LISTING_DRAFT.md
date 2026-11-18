@@ -1,7 +1,7 @@
 # LUCH Browser Companion — Chrome Web Store & Opera Add-ons listing pack
 
-**Candidate:** 0.5.2  
-**Status:** listing copy prepared; **not approved for submission**. The public Chrome listing remains 0.4.0. Opera's earlier 0.4.1 submission is a separate moderation state. The 0.5.2 Opera build has not completed its own runtime test.
+**Candidate:** 0.6.0
+**Status:** listing copy prepared; **not approved for submission**. The public Chrome listing remains 0.4.0. Opera's earlier 0.4.1 submission is a separate moderation state. The 0.6.0 Opera build has not completed its own runtime test.
 
 ## Release truth — do not remove these qualifications
 
@@ -9,7 +9,7 @@ LUCH Browser Companion shares only a tab the user explicitly approves. It requir
 
 The extension alone does not install the desktop Companion, create a LUCH account or connect an AI host. A general public self-service installer and fresh-user OAuth/onboarding are not available yet. The currently verified local setup is limited to supported, already-authorized macOS configurations. Windows onboarding is unverified; Opera runtime E2E is still required.
 
-Do not claim that the extension provides all 54 LUCH browser tools. The candidate extension has 16 read/inspection and 23 interaction/navigation operation identifiers. LUCH's broader browser inventory contains separate local-browser and server-browser providers; these are not all functions of this extension.
+Do not claim that the extension provides all 54 LUCH browser tools. The candidate extension has 17 read/inspection and 28 interaction/navigation operation identifiers. LUCH's broader browser inventory contains separate local-browser and server-browser providers; these are not all functions of this extension.
 
 ## Chrome Web Store
 
@@ -145,7 +145,7 @@ LUCH Browser Companion добавляет небольшое окно расши
 | `alarms` | Poll the local Companion for authorized work while the browser session is active |
 | `http://127.0.0.1:9248/*` | Communicate with the local Companion only |
 
-The extension does not request cookies, browsing history, downloads, geolocation, clipboard, debugger, webRequest or all-sites access. Requested approved-page content may be sent onward to the AI host the user has authorized.
+The extension does not request cookies, browsing history, downloads, geolocation, clipboard, webRequest or all-sites access. Optional tabs permission can show all tab titles and sanitized URLs, shared with the AI only after a second explicit choice. Required debugger permission can move and click a pointer within a separately authorized tab; Chrome displays a prominent security warning during extension installation, and the user must still approve the pointer inside LUCH. The extension does not control the computer mouse. Requested approved-page content may be sent onward to the AI host the user has authorized.
 
 ## Graphic asset checklist
 
@@ -180,3 +180,12 @@ Do not submit either store until all are true:
 5. Opera exact-build E2E passes and its screenshots are captured from Opera.
 6. Privacy disclosure and permission justifications match the final implementation.
 7. The store package, icon, screenshots, listing copy and privacy links all reference the same final version.
+
+
+## Candidate 0.6.0 browser expansion — opt-in, not default access
+
+- 45 named operations total: 17 reading/inspection (including the separately approved tab overview) plus 28 interaction/navigation (including five precision cursor actions).
+- All-open-tab titles and addresses are shown only after Chrome asks for the optional tabs permission. Before they are sent to an already-authorized AI host, the person must explicitly enable tab-overview sharing. URLs are stripped of query parameters and fragments. Individual pages remain private without per-tab consent.
+- Precision cursor uses Chrome's required debugger permission, which produces a high-visibility warning at extension installation. It can move, click, double-click, wheel-scroll and perform bounded drag *inside* the approved tab's viewport. It is not a physical mouse or full-device access.
+- The extension is a browser-control layer, NOT a second chat client and NOT an AI API billing service. Connecting third-party tools into a free or paid ChatGPT/Claude account depends on that host's supported connectors and plan. Do not promise automatic availability in every AI session.
+- The optional cursor is still a candidate until real headed-browser testing and independent security review pass on the final package; do not submit this variant to Chrome/Opera yet.

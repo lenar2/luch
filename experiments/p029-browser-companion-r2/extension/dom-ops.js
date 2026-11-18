@@ -23,15 +23,20 @@ function luchDomExecutor({op,args={}}){
  };
  const actionGuard=el=>{
   allowedElement(el);
-  const label=[el.innerText,el.textContent,el.value,el.getAttribute?.('aria-label')].filter(Boolean).join(' ').slice(0,200);
-  const type=(el.getAttribute?.('type')||'').toLowerCase();
-  if(type==='submit'||type==='image'||el.getAttribute?.('form')||el.getAttribute?.('formaction')||
-     (el.closest?.('form')&&el.tagName==='BUTTON'&&type!=='button'))
+  // Inspect the actionable ancestor too: a cursor may hit a <span> inside a
+  // payment/submit button, not the button node itself.
+  const action=el.closest?.('button,a,input,select,[role="button"],[role="link"]')||el;
+  allowedElement(action);
+  const label=[action.innerText,action.textContent,action.value,action.getAttribute?.('aria-label'),
+   el.innerText,el.textContent].filter(Boolean).join(' ').slice(0,220);
+  const type=(action.getAttribute?.('type')||'').toLowerCase();
+  if(type==='submit'||type==='image'||action.getAttribute?.('form')||action.getAttribute?.('formaction')||
+     (action.closest?.('form')&&action.tagName==='BUTTON'&&type!=='button'))
      throw new Error('FORM_SUBMISSION_NEEDS_USER');
   // Do not use ASCII \b for Russian labels: Cyrillic letters are not JS \w.
   const risky=/(delete|remove|erase|purchase|checkout|payment|buy\s+now|confirm|submit|send|transfer|publish|withdraw|subscribe|checkout|order|pay\b|оплат|удал|заказ|купить|платеж|перевести|отправить|подпис|публиков|подтверд|перечисл)/iu;
   if(risky.test(label.normalize('NFKC').toLocaleLowerCase()))throw new Error('HIGH_IMPACT_CLICK_NEEDS_USER');
-  if(el.closest?.('a[download],a[href^="javascript:"],a[href^="data:"]'))throw new Error('UNSAFE_LINK_DENIED');
+  if(action.closest?.('a[download],a[href^="javascript:"],a[href^="data:"]'))throw new Error('UNSAFE_LINK_DENIED');
   return el;
  };
  const result=(data)=>({ok:true,source:'USER_CONSENTED_TAB',url:url(),data});
@@ -67,6 +72,13 @@ function luchDomExecutor({op,args={}}){
  }
  if(op==='accessibility_snapshot'){
   return result(Array.from(document.querySelectorAll('h1,h2,h3,h4,h5,h6,a,button,input,textarea,select,[role]')).slice(0,200).filter(e=>e.type!=='password').map(describe).filter(Boolean));
+ }
+ if(op==='verify_pointer_target'){
+  const x=Number(args.x),y=Number(args.y);
+  if(!Number.isFinite(x)||!Number.isFinite(y)||x<0||y<0||x>=window.innerWidth||y>=window.innerHeight)throw new Error('POINTER_OUTSIDE_VIEWPORT');
+  const el=document.elementFromPoint(x,y);
+  actionGuard(el);
+  return result({safe:true,element:describe(el)});
  }
  if(op==='hit_test'){
   const x=Number(args.x),y=Number(args.y);if(!Number.isFinite(x)||!Number.isFinite(y))throw new Error('COORDINATES_REQUIRED');

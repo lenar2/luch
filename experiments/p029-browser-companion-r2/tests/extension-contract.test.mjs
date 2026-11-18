@@ -14,16 +14,18 @@ const html=fs.readFileSync(path.join(ext,'popup.html'),'utf8');
 const popup=fs.readFileSync(path.join(ext,'popup.js'),'utf8');
 
 test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
- assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.5.2');
+ assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.6.0');
  assert.equal(man.manifest_version,3);
  assert.ok(!JSON.stringify({manifest:man,html}).includes('QA'));
  assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"')&&html.includes('id="interact"'));
  assert.ok(popup.includes('luch_locale'));
 });
 test('minimized scoped permissions, fixed local broker, no remotely supplied scripts',()=>{
- assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
+ assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage','debugger'].sort());
  assert.deepEqual(man.host_permissions,['http://127.0.0.1:9248/*']);
- for(const flag of ['debugger','cookies','history','webRequest','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(flag));
+ for(const flag of ['cookies','history','webRequest','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(flag));
+ assert.deepEqual(man.optional_permissions,['tabs']);
+ assert.ok(man.permissions.includes('debugger')&&!man.permissions.includes('tabs'));
  assert.ok(code.includes('const READ_OPS'));assert.ok(code.includes('const INTERACT_OPS'));
  assert.ok(code.includes("TAB_ORIGIN_CHANGED"));
  assert.ok(!code.includes('TTL_MS'));assert.ok(!code.includes('expiresAt'));
@@ -51,6 +53,7 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
    onUpdated:{addListener:cb=>handlers.updated=cb},
    onRemoved:{addListener:cb=>handlers.removed=cb}
   },
+  permissions:{contains:async({permissions})=>permissions.every(p=>p==='tabs'),onRemoved:{addListener:cb=>handlers.permRemoved=cb}},
   action:{
    setBadgeText:async({tabId,text})=>badges.set(tabId,text),
    setBadgeBackgroundColor:async()=>{}
@@ -61,6 +64,7 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  async function fetchStub(url,init){
   if(url.endsWith('/pair'))return {ok:true,json:async()=>({ok:true,token})};
   if(url.endsWith('/health')){healthReads++;assert.equal(init.headers.Authorization,'Bearer '+token);return {ok:true,json:async()=>({ok:true,paired:true,authorizedTabs:remoteGrants.length})}}
+  if(url.endsWith('/extension/tab-overview'))return{ok:true,json:async()=>({ok:true,shared:false})};
   if(url.endsWith('/extension/jobs')){jobReads++;return {ok:true,json:async()=>({ok:true,jobs:[]})}}
   if(url.endsWith('/extension/grants')){
    if(failGrants)throw Error('BROKER_UNREACHABLE');
@@ -81,6 +85,11 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
   });
  }
  const pair=await send('pair',{code:'12345678'});assert.equal(pair.ok,true);
+ const overview=await send('list-open-tabs');
+ assert.equal(overview.ok,true);assert.equal(overview.tabs.length,2);
+ assert.ok(overview.tabs[0].url.startsWith('https://example.org/one'));
+ assert.equal((await send('share-tab-overview',{enabled:true})).sharing,true);
+ assert.equal((await send('share-tab-overview',{enabled:false})).sharing,false);
  const jobsBeforeStatus=jobReads;
  assert.equal((await send('status')).connected,true);assert.equal(remoteGrants.length,0);
  assert.equal(jobReads,jobsBeforeStatus,'status must not consume queued extension jobs');

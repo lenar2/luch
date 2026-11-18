@@ -11,7 +11,7 @@ import {verifiedLegacySource,stopKnownUnpairedLegacy,restartKnownLegacy} from '.
 const MARKER='.luch-browser-companion-enabled';
 const BROKER_LABEL='com.luch.browser-companion-managed';
 const BRIDGE_LABEL='com.aifactory.browser-bridge';
-const RELEASE='0.5.2';
+const RELEASE='0.6.0';
 function fail(code){throw new AccountBindingError(code)}
 function digest(data){return crypto.createHash('sha256').update(data).digest('hex')}
 function proc(command,args,timeout=15000){return execFileSync(command,args,{timeout,stdio:['ignore','pipe','pipe'],encoding:'utf8'})}

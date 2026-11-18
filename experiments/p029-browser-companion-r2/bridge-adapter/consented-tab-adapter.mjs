@@ -69,8 +69,8 @@ export function makeConsentedTabAdapter({brokerUrl=DEFAULT_BASE,bridgeTokenFile,
   const result=await request('/v1/text',{method:'POST',body:{targetId,selector:'body'}});
   return {ok:true,text:String(result.text||'').slice(0,65536),source:'USER_CONSENTED_TAB',targetId};
  }
- const READ=new Set(['read_text','inspect_page','get_links','get_headings','get_forms','get_tables','get_selection','query_elements','find_text','accessibility_snapshot','hit_test','get_element','scroll_position','screenshot','tab_info','window_info']);
- const INTERACT=new Set(['focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text','type_text','select_option','check_element','click','click_at','double_click','click_accessible','navigate','reload','back','forward','activate_tab','close_tab','new_tab','new_window','window_set']);
+ const READ=new Set(['read_text','inspect_page','get_links','get_headings','get_forms','get_tables','get_selection','query_elements','find_text','accessibility_snapshot','hit_test','get_element','scroll_position','screenshot','tab_info','window_info','list_open_tabs']);
+ const INTERACT=new Set(['focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text','type_text','select_option','check_element','click','click_at','double_click','click_accessible','navigate','reload','back','forward','activate_tab','close_tab','new_tab','new_window','window_set','pointer_move','pointer_click','pointer_double_click','pointer_drag','pointer_wheel']);
  async function runAuthorizedAction({targetId,op,args={}}={}){
   if(typeof targetId!=='string'||!TARGET.test(targetId))throw new BrowserCompanionError('WRONG_PROFILE');
   if(!READ.has(op)&&!INTERACT.has(op))throw new BrowserCompanionError('ACTION_NOT_ALLOWED');
@@ -82,10 +82,18 @@ export function makeConsentedTabAdapter({brokerUrl=DEFAULT_BASE,bridgeTokenFile,
   const result=await request('/v1/action',{method:'POST',body:{targetId,op,args}});
   return {ok:true,source:'USER_CONSENTED_TAB',targetId,op,data:result.data,text:result.text};
  }
+ async function listSharedOpenTabs(){
+  const data=await request('/v1/open-tabs');
+  if(data.profileScope!=='USER_APPROVED_TAB_METADATA_ONLY'||!Array.isArray(data.tabs)||data.pageContentsShared!==false)
+   throw new BrowserCompanionError('WRONG_PROFILE');
+  return {ok:true,browser:'chrome',profileScope:data.profileScope,pageContentsShared:false,
+   tabs:data.tabs.map(t=>({title:String(t.title||'').slice(0,180),url:String(t.url||'').slice(0,2048),
+    id:t.id,active:!!t.active,windowId:t.windowId}))};
+ }
  async function supportedOperations(){
   const result=await request('/v1/capabilities');
   return {read:result.read||[],interact:result.interact||[],sessionScoped:!!result.sessionScoped};
  }
- return Object.freeze({listAuthorizedTabs,readAuthorizedText,runAuthorizedAction,supportedOperations});
+ return Object.freeze({listAuthorizedTabs,listSharedOpenTabs,readAuthorizedText,runAuthorizedAction,supportedOperations});
 
 }

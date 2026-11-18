@@ -35,7 +35,9 @@ target=Path('dist')/sys.argv[1]
 with zipfile.ZipFile(target) as z:
     manifest=json.loads(z.read('manifest.json'))
     assert manifest['name']=='LUCH Browser Companion'
-    assert manifest['version']=='0.5.2'
+    assert manifest['version']=='0.6.0'
+    assert 'debugger' in manifest['permissions']
+    assert manifest.get('optional_permissions')==['tabs']
     assert z.testzip() is None
     assert sorted(z.namelist())==sorted(['manifest.json','background.js','dom-ops.js','popup.html','popup.css','popup.js','assets/','assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png'])
 PY

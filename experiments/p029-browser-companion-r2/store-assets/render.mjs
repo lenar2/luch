@@ -86,7 +86,7 @@ try{
  await renderSvg('icon-ray-candidate-opera-128.png',iconSvg,128,128);
  for(const size of [48,32,16])await renderSvg('icon-ray-candidate-'+size+'.png',iconSvg,size,size);
  const manifest={
-  candidate:'0.5.2',
+  candidate:'0.6.0',
   status:'DRAFT_HOLD',
   generatedAt:'CI runtime',
   sourceCaptures:requiredCaptures,

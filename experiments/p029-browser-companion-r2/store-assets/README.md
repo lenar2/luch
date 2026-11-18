@@ -1,4 +1,4 @@
-# Browser Companion store artwork — candidate 0.5.2
+# Browser Companion store artwork — candidate 0.6.0
 
 This folder contains editable SVG artwork and a deterministic Playwright renderer. The renderer creates PNG previews from the exact current extension UI captures produced by the headed Chromium E2E test.
 

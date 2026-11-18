@@ -7,7 +7,7 @@ const BASE='http://127.0.0.1:9248';
 const READ_OPS=Object.freeze([
  'read_text','inspect_page','get_links','get_headings','get_forms','get_tables',
  'get_selection','query_elements','find_text','accessibility_snapshot',
- 'hit_test','get_element','scroll_position','screenshot','tab_info','window_info'
+ 'hit_test','get_element','scroll_position','screenshot','tab_info','window_info','list_open_tabs'
 ]);
 const INTERACT_OPS=Object.freeze([
  'focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text',
@@ -15,14 +15,83 @@ const INTERACT_OPS=Object.freeze([
  'click_accessible','navigate','reload','back','forward','activate_tab',
  'close_tab','new_tab','new_window','window_set'
 ]);
-const READ=new Set(READ_OPS), INTERACT=new Set(INTERACT_OPS);
-const PAGE_READ=new Set(READ_OPS.filter(x=>!['screenshot','tab_info','window_info'].includes(x)));
+const POINTER_OPS=Object.freeze(['pointer_move','pointer_click','pointer_double_click','pointer_drag','pointer_wheel']);
+const POINTER=new Set(POINTER_OPS);
+const READ=new Set(READ_OPS), INTERACT=new Set([...INTERACT_OPS,...POINTER_OPS]);
+const PAGE_READ=new Set(READ_OPS.filter(x=>!['screenshot','tab_info','window_info','list_open_tabs'].includes(x)));
 const PAGE_WRITE=new Set(INTERACT_OPS.filter(x=>!['navigate','reload','back','forward','activate_tab','close_tab','new_tab','new_window','window_set'].includes(x)));
 let working=false;
 const now=()=>Date.now();
 const originOf=url=>{try{const u=new URL(url);return u.protocol==='http:'||u.protocol==='https:'?u.origin:null}catch{return null}};
 const cleanUrl=url=>{try{const u=new URL(url);if(!['https:','http:'].includes(u.protocol)||u.username||u.password)throw Error();return u.href}catch{throw new Error('INVALID_WEB_URL')}};
 const safeTitle=s=>String(s||'').slice(0,180);
+const tabSummary=t=>{
+ const url=cleanTabUrl(t.url);
+ if(!url||!Number.isSafeInteger(t.id))return null;
+ return {id:t.id,title:safeTitle(t.title),url,windowId:Number(t.windowId)||0,active:!!t.active};
+};
+const cleanTabUrl=value=>{
+ try{const u=new URL(value);
+  if(!['http:','https:'].includes(u.protocol)||u.username||u.password)return null;
+  u.hash='';u.search='';
+  return u.href.slice(0,2048);
+ }catch{return null}
+};
+const tabOverview=async()=>{
+ if(!await chrome.permissions.contains({permissions:['tabs']}))throw new Error('ALL_TABS_PERMISSION_REQUIRED');
+ const all=await chrome.tabs.query({});
+ return all.map(tabSummary).filter(Boolean).slice(0,80);
+};
+async function publishTabOverview(auth){
+ const session=(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true;
+ if(!auth?.token)return;
+ let tabs=[];
+ if(session){try{tabs=await tabOverview()}catch{await chrome.storage.session.remove('tabOverviewSharing')}}
+ await api('/extension/tab-overview',{method:'POST',token:auth.token,data:{enabled:session&&tabs.length>=0&&await chrome.permissions.contains({permissions:['tabs']}),tabs}});
+}
+const numeric=(value,name,min=0,max=10000)=>{
+ const n=Number(value);if(!Number.isFinite(n)||n<min||n>max)throw new Error(name+'_OUT_OF_RANGE');return n
+};
+async function pointerAction(tab,op,args){
+ if(!await chrome.permissions.contains({permissions:['debugger']}))throw new Error('PRECISE_CURSOR_PERMISSION_REQUIRED');
+ const root={tabId:tab.id};
+ const bounds=await chrome.scripting.executeScript({target:{tabId:tab.id},func:()=>({width:window.innerWidth,height:window.innerHeight})});
+ const view=bounds?.[0]?.result;
+ if(!view||!view.width||!view.height)throw new Error('POINTER_VIEWPORT_NOT_AVAILABLE');
+ const x=numeric(args.x,'X',0,view.width),y=numeric(args.y,'Y',0,view.height);
+ const to=op==='pointer_drag'?{x:numeric(args.toX,'DESTINATION_X',0,view.width),y:numeric(args.toY,'DESTINATION_Y',0,view.height)}:null;
+ const probe=async(x,y)=>{
+  const r=await chrome.scripting.executeScript({target:{tabId:tab.id},func:self.luchDomExecutor,args:[{op:'verify_pointer_target',args:{x,y}}]});
+  if(r?.[0]?.result?.ok!==true)throw new Error(r?.[0]?.result?.error||'UNSAFE_POINTER_TARGET');
+ };
+ if(['pointer_click','pointer_double_click','pointer_drag'].includes(op)){
+  await probe(x,y);if(to)await probe(to.x,to.y);
+ }
+ const dev=root;let attached=false;
+ const move=(x,y,buttons=0)=>chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseMoved',x,y,buttons});
+ const press=(x,y,clickCount=1)=>chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',buttons:1,clickCount});
+ const release=(x,y,clickCount=1)=>chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',buttons:0,clickCount});
+ try{
+  await chrome.debugger.attach(dev,'1.3');attached=true;
+  if(op==='pointer_move')await move(x,y);
+  if(op==='pointer_click'||op==='pointer_double_click'){
+   await move(x,y);
+   for(let k=1;k<=(op==='pointer_double_click'?2:1);k++){await press(x,y,k);await release(x,y,k)}
+  }
+  if(op==='pointer_drag'){
+   await move(x,y);await press(x,y);
+   for(let k=1;k<=6;k++)await move(x+(to.x-x)*k/6,y+(to.y-y)*k/6,1);
+   await release(to.x,to.y);
+  }
+  if(op==='pointer_wheel'){
+   const deltaX=numeric(args.deltaX??0,'WHEEL_X',-2000,2000);
+   const deltaY=numeric(args.deltaY??0,'WHEEL_Y',-2000,2000);
+   await chrome.debugger.sendCommand(dev,'Input.dispatchMouseEvent',{type:'mouseWheel',x,y,deltaX,deltaY});
+  }
+  return {ok:true,data:{operation:op,pageCoordinates:{x,y},...(to?{destination:to}:{})},source:'USER_APPROVED_PRECISE_CURSOR'};
+ }finally{if(attached)try{await chrome.debugger.detach(dev)}catch{}}
+}
+
 const makeNonce=()=>Array.from(crypto.getRandomValues(new Uint8Array(12)),v=>v.toString(16).padStart(2,'0')).join('');
 async function state(){
  const [auth,record,owned]=await Promise.all([
@@ -61,7 +130,7 @@ async function prune(grants){
 }
 async function publishGrants(auth,grants){
  if(!auth?.token)return;
- const list=Object.values(grants).map(g=>({tabId:g.tabId,grantId:g.grantId,url:g.url,title:g.title,scope:g.scope}));
+ const list=Object.values(grants).map(g=>({tabId:g.tabId,grantId:g.grantId,url:g.url,title:g.title,scope:g.scope,preciseCursor:g.preciseCursor===true}));
  await api('/extension/grants',{method:'POST',token:auth.token,data:{grants:list}});
 }
 async function grantActive(scope='read'){
@@ -73,7 +142,7 @@ async function grantActive(scope='read'){
  const existing=s.grants[t.id];
  if(scope==='interact'&&!existing)throw new Error('APPROVE_READ_FIRST');
  const g=existing?{...existing,scope}:{
-  tabId:t.id,grantId:makeNonce(),url:t.url,origin:originOf(t.url),title:safeTitle(t.title),scope
+  tabId:t.id,grantId:makeNonce(),url:t.url,origin:originOf(t.url),title:safeTitle(t.title),scope,preciseCursor:false
  };
  if(existing&&existing.origin!==originOf(t.url))throw new Error('ORIGIN_CHANGED_REAPPROVAL_REQUIRED');
  const previous=existing;
@@ -90,7 +159,7 @@ async function revokeActive(){
 }
 async function disconnect(){
  const s=await state();try{if(s.auth)await api('/extension/disconnect',{method:'POST',token:s.auth.token})}catch{}
- await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('ownedTabs')]);
+ await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('ownedTabs'),chrome.storage.session.remove('tabOverviewSharing')]);
  await setGrants({});
  return {message:'Browser disconnected from LUCH'};
 }
@@ -110,6 +179,15 @@ async function performJob(job,grants,owned){
    if(!result||!result.ok)return {ok:false,error:result?.error||'NO_SCRIPT_RESULT'};
    if(originOf(result.url)!==g.origin)return {ok:false,error:'TAB_CONTENT_MISMATCH'};
    return {ok:true,data:result.data,title:safeTitle(t.title),source:'USER_CONSENTED_TAB',...(op==='read_text'?{text:String(result.data?.text||'').slice(0,65536)}:{})};
+  }
+  if(POINTER.has(op)){
+   if(!g.preciseCursor)return {ok:false,error:'PRECISE_CURSOR_APPROVAL_REQUIRED'};
+   return await pointerAction(t,op,args);
+  }
+  if(op==='list_open_tabs'){
+   if(!(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing)
+    return {ok:false,error:'ALL_TABS_USER_APPROVAL_REQUIRED'};
+   return {ok:true,data:{tabs:await tabOverview(),pageContentsShared:false,scope:'USER_APPROVED_TAB_METADATA_ONLY'}};
   }
   if(op==='tab_info')return {ok:true,data:{title:safeTitle(t.title),url:t.url,active:!!t.active,scope:g.scope}};
   if(op==='window_info'){const w=await chrome.windows.get(t.windowId);return {ok:true,data:{width:w.width,height:w.height,left:w.left,top:w.top,state:w.state}}}
@@ -147,6 +225,7 @@ async function poll(){
   const grants=await prune(s.grants);
   // Also heartbeat grants; browser close/restart ends them, no arbitrary TTL.
   await publishGrants(s.auth,grants);
+  await publishTabOverview(s.auth);
   const tasks=await api('/extension/jobs',{token:s.auth.token});
   for(const job of (tasks.jobs||[]).slice(0,3)){
    let result;try{result=await performJob(job,grants,s.owned)}catch(e){result={ok:false,error:String(e.message||e).slice(0,100)}}
@@ -161,14 +240,41 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   if(msg.op==='status'){
    const s=await state(),t=await activeTab();await prune(s.grants);
    let connected=!!s.auth;
-   if(connected){try{const health=await api('/health',{token:s.auth.token});connected=!!health.paired;if(!connected)throw new Error('COMPANION_NOT_PAIRED')}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants')]);await setGrants({})}}
+   if(connected){try{const health=await api('/health',{token:s.auth.token});connected=!!health.paired;if(!connected)throw new Error('COMPANION_NOT_PAIRED')}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('tabOverviewSharing')]);await setGrants({})}}
    const g=connected&&t&&s.grants[t.id];
-   return {ok:true,connected,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,grantedCount:connected?Object.keys(s.grants).length:0,sessionScoped:true};
+   const hasTabs=await chrome.permissions.contains({permissions:['tabs']});
+   const hasDebugger=await chrome.permissions.contains({permissions:['debugger']});
+   const sharing=connected&&(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true&&hasTabs;
+   return {ok:true,connected,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,
+    preciseCursor:!!g?.preciseCursor&&hasDebugger,tabOverviewPermission:hasTabs,tabOverviewSharing:sharing,
+    grantedCount:connected?Object.keys(s.grants).length:0,sessionScoped:true};
   }
   if(msg.op==='pair'){
    if(!/^\d{8}$/.test(msg.code||''))throw new Error('Enter your eight-digit pairing code');
    const r=await api('/pair',{method:'POST',data:{code:msg.code}});
-   await chrome.storage.local.set({auth:{token:r.token}});await setGrants({});await poll();return {ok:true,message:'LUCH connected'};
+   await chrome.storage.local.set({auth:{token:r.token}});await chrome.storage.session.remove('tabOverviewSharing');await setGrants({});await poll();return {ok:true,message:'LUCH connected'};
+  }
+  if(msg.op==='list-open-tabs'){
+   const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');
+   return {ok:true,tabs:await tabOverview(),shared:(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true};
+  }
+  if(msg.op==='share-tab-overview'){
+   const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');
+   const enable=msg.enabled===true;
+   if(enable)await tabOverview();
+   await chrome.storage.session.set({tabOverviewSharing:enable});
+   await publishTabOverview(s.auth);
+   return {ok:true,sharing:enable};
+  }
+  if(msg.op==='precise-cursor'){
+   const s=await state(),t=await activeTab();
+   if(!s.auth||!t||!s.grants[t.id]||s.grants[t.id].scope!=='interact')throw new Error('INTERACTION_APPROVAL_REQUIRED');
+   if(msg.enabled===true&&!await chrome.permissions.contains({permissions:['debugger']}))throw new Error('PRECISE_CURSOR_PERMISSION_REQUIRED');
+   const old=s.grants[t.id];
+   s.grants[t.id]={...old,preciseCursor:msg.enabled===true};
+   try{await publishGrants(s.auth,s.grants);await setGrants(s.grants)}
+   catch(e){s.grants[t.id]=old;await setGrants(s.grants);throw e}
+   return {ok:true,enabled:msg.enabled===true};
   }
   if(msg.op==='grant-active')return {ok:true,...await grantActive('read')};
   if(msg.op==='allow-interaction')return {ok:true,...await grantActive('interact')};
@@ -190,3 +296,15 @@ chrome.tabs.onRemoved.addListener(async id=>{
 chrome.alarms.create('luch-poll',{periodInMinutes:0.5});
 chrome.alarms.onAlarm.addListener(a=>{if(a.name==='luch-poll')poll()});
 setInterval(poll,5000);
+
+chrome.permissions.onRemoved.addListener(async permissions=>{
+ if(permissions.permissions?.includes('tabs')){
+  await chrome.storage.session.remove('tabOverviewSharing');
+  const s=await state();try{await publishTabOverview(s.auth)}catch{}
+ }
+ if(permissions.permissions?.includes('debugger')){
+  const s=await state();let changed=false;
+  for(const g of Object.values(s.grants))if(g.preciseCursor){g.preciseCursor=false;changed=true}
+  if(changed){await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}}
+ }
+});

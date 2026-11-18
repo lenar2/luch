@@ -21,7 +21,21 @@ const MAPPING={
  '/v1/window/set':b=>['window_set',{left:b.left,top:b.top,width:b.width,height:b.height}],
  '/v1/insert-text':b=>['insert_text',{selector:b.selector,text:b.text}],
 };
-const SAFE=new Set(Object.keys(MAPPING));
+const GENERIC_ACTION='/v1/companion/action';
+const EXT_READ=new Set([
+ 'read_text','inspect_page','get_links','get_headings','get_forms','get_tables',
+ 'get_selection','query_elements','find_text','accessibility_snapshot','hit_test',
+ 'get_element','scroll_position','screenshot','tab_info','window_info','list_open_tabs'
+]);
+const EXT_INTERACT=new Set([
+ 'focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text',
+ 'type_text','select_option','check_element','click','click_at','double_click',
+ 'click_accessible','navigate','reload','back','forward','activate_tab',
+ 'close_tab','new_tab','new_window','window_set',
+ 'pointer_move','pointer_click','pointer_double_click','pointer_drag','pointer_wheel'
+]);
+export const EXTENSION_ACTIONS=Object.freeze({read:[...EXT_READ],interact:[...EXT_INTERACT]});
+const SAFE=new Set([...Object.keys(MAPPING),GENERIC_ACTION]);
 export function companionRouteEligible(path,body){
  return body?.browser==='chrome'&&typeof body?.targetId==='string'&&body.targetId.startsWith('ext:');
 }
@@ -29,7 +43,14 @@ export async function routeCompanionRequest(path,body,adapter){
  if(!companionRouteEligible(path,body))return {status:409,body:{ok:false,error:'COMPANION_ROUTE_SCOPE_INVALID'}};
  if(!EXACT.test(body.targetId))return {status:409,body:{ok:false,error:'INVALID_COMPANION_TARGET'}};
  if(!SAFE.has(path))return {status:409,body:{ok:false,error:'OPERATION_UNAVAILABLE_ON_CONSENTED_TAB'}};
- const [op,args]=MAPPING[path](body);
+ let op,args;
+ if(path===GENERIC_ACTION){
+  op=body.op;args=body.args===undefined?{}:body.args;
+  if(typeof op!=='string'||(!EXT_READ.has(op)&&!EXT_INTERACT.has(op)))
+   return {status:409,body:{ok:false,error:'OPERATION_UNAVAILABLE_ON_CONSENTED_TAB'}};
+  if(!args||typeof args!=='object'||Array.isArray(args))
+   return {status:400,body:{ok:false,error:'INVALID_ACTION_ARGS'}};
+ }else [op,args]=MAPPING[path](body);
  // Explicit opt-in for any interaction; the adapter rechecks grant scope on the broker.
  try{
   const result=await adapter.runAuthorizedAction({targetId:body.targetId,op,args});

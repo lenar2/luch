@@ -26,7 +26,7 @@ LUCH работает в том ИИ, которым вы уже пользуе�
 **Сначала проверьте, открыт ли доступ для вашего аккаунта.** На момент публикации самостоятельная регистрация нового пользователя и полный OAuth-проход не подтверждены как работающие для всех. Поэтому я не предлагаю несуществующую универсальную кнопку установки.
 
 - [Статус и ограничения](https://luch.lenarsalimov.ru/ru/status/) — что подтверждено, а что ещё нет.
-- [Интеграция ChatGPT](https://github.com/lenar2/luch-claude-plugin/tree/main/integrations/chatgpt/) — исходники и требования.
+- [Интеграция ChatGPT](https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md) — исходники и требования.
 - [Claude](https://github.com/lenar2/luch-claude-plugin), [Cursor](https://github.com/lenar2/luch-cursor), [Gemini CLI](https://github.com/lenar2/luch-gemini) — отдельные клиентские пути.
 - [Поддержка](https://luch.lenarsalimov.ru/support/) — если неясно, доступен ли LUCH вашему аккаунту.
 

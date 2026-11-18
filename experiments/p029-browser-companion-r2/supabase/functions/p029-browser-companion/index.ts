@@ -100,7 +100,7 @@ function schemaFor(op:string) {
     case "pointer_drag": add("x", true); add("y", true); add("toX", true); add("toY", true); break;
     case "pointer_wheel": add("x", true); add("y", true); add("deltaX"); add("deltaY"); break;
   }
-  return z.object(shape as any).strict();
+  return shape as any;
 }
 
 const corsHeaders = {
@@ -329,7 +329,7 @@ function userMcpServer(userId:string) {
       const grant=await validateTarget(userId,device,op,args);
       const result=await enqueueAndWait(userId,device,toolName,op,args,grant);
       await audit(userId,device.id,toolName,op,grant?.origin||null,"completed").catch(()=>{});
-      return toolResult(result);
+      return toolResult(result) as any;
     });
   }
   return server;

@@ -250,8 +250,7 @@ function toolResult(result:any) {
   return {content:[{type:"text",text:typeof data==="string"?data:JSON.stringify(data).slice(0,100000)}]};
 }
 
-async function userMcpServer(supabase:any) {
-  const userId=await getUserId(supabase);
+function userMcpServer(userId:string) {
   const server=new McpServer({name:"LUCH Browser Companion",version:"0.7.0"});
   server.registerTool("browser_companion_status",{
     title:"Browser Companion status",
@@ -315,7 +314,7 @@ async function userMcpServer(supabase:any) {
     return {content:[{type:"text",text:JSON.stringify({device:{id:device.id,name:device.device_name,browser:device.browser},updatedAt:data.updated_at,tabs})}]};
   });
 
-  const browserToolOps=[...ALL_OPS];
+  const browserToolOps=[...ALL_OPS].filter((x)=>x!=="list_open_tabs");
   for(const op of browserToolOps) {
     const toolName=`browser_${op}`;
     const description=`${title(op)} in the user's explicitly approved LUCH Browser Companion tab. Read operations require tab read approval; interaction operations require separate interaction approval; precise pointer operations additionally require precise-cursor approval. Target IDs are obtained from browser_list_open_tabs or the extension's approved tab state.`;
@@ -342,7 +341,8 @@ const mcpFetch = pipeline(
     withSupabase({auth:"user"}),
   ],
   async (_req,{supabase}) => {
-    const handler=createMcpHandler(()=>userMcpServer(supabase));
+    const userId=await getUserId(supabase);
+    const handler=createMcpHandler(()=>userMcpServer(userId));
     return handler.fetch(_req);
   },
 );
@@ -396,6 +396,8 @@ async function extensionHandler(req:Request) {
     return json({ok:true,enabled:body?.enabled===true,count:tabs.length});
   }
   if(path.endsWith("/extension/jobs")) {
+    await admin.from("p029_browser_jobs").update({status:"pending",claimed_at:null,lease_until:null})
+      .eq("device_id",device.id).eq("user_id",device.user_id).eq("status","claimed").lt("lease_until",nowIso());
     const out:any[]=[];
     for(let i=0;i<3;i++){
       const {data:pending,error}=await admin.from("p029_browser_jobs").select("id,op,target_id,args,tool_name")

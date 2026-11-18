@@ -1,6 +1,6 @@
 # P029 · R11 · Existing AI host compatibility and first-use truth (2026-11-18)
 
-**State: engineering candidate / RELEASE HOLD. This is a compatibility register, NOT a claim that LUCH is available to every host.**
+**State: remote MCP candidate deployed / RELEASE HOLD. This is a compatibility register; authenticated positive E2E is still required before release.**
 
 ## Product contract
 
@@ -10,8 +10,8 @@ The user stays in an existing ChatGPT, Claude, or another compatible AI. LUCH Br
 
 | AI host | Official external-tool path | Plan / operating caveat | LUCH cloud-host E2E |
 | --- | --- | --- | --- |
-| Claude web / Claude Desktop | Custom **remote MCP** connector via Customize → Connectors; OAuth strongly preferred | Claude's current support article includes Free (one custom connector), Pro, Max, Ultra, Team, Enterprise. Remote MCP is reached from Anthropic's cloud on public HTTPS port 443. Team/Enterprise owner setup may be required. | **NOT TESTED** |
-| ChatGPT web | Custom MCP in Plugins or custom app where enabled, using remote HTTPS MCP endpoint, OAuth/host approvals | Official current full write/modify MCP support: Business and Enterprise/Edu, with workspace permissions. Pro has read/fetch restrictions; do not imply 45 actions work there. Other individual plans are **not verified** for full control. Web only for this custom MCP setup. | **NOT TESTED** |
+| Claude web / Claude Desktop | Custom **remote MCP** connector via Customize → Connectors; OAuth strongly preferred | Claude's current support article includes Free (one custom connector), Pro, Max, Ultra, Team, Enterprise. Remote MCP is reached from Anthropic's cloud on public HTTPS port 443. Team/Enterprise owner setup may be required. | **Endpoint deployed; real account E2E NOT TESTED** |
+| ChatGPT web | Custom MCP in Plugins / custom app where enabled, using remote HTTPS MCP endpoint, OAuth/host approvals | Official current full write/modify MCP support: Business and Enterprise/Edu. Pro can connect with read/fetch permissions only; do not imply full browser control on Plus/Pro. | **Endpoint deployed; real eligible account E2E NOT TESTED** |
 | ChatGPT Work/Desktop browser control | OpenAI's separate official browser extension and its own Computer Use permissions | This is OpenAI's browser integration, **not LUCH**. Do not treat it as evidence that a LUCH extension is automatically available to ChatGPT. | **NOT APPLICABLE** |
 | Other tools (Cursor, Claude Code, etc.) | Must independently validate their supported MCP transport, local/remote access and account permissions | Never claim feature parity or universal subscription access without a real per-host test. | **NOT TESTED** |
 
@@ -20,18 +20,26 @@ Official current source URLs:
 - ChatGPT: https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt
 - ChatGPT's separate browser integration: https://learn.chatgpt.com/docs/chrome-extension
 
-## The missing actual connection (release-blocking)
+## What is now implemented (R11)
 
-Current 0.6.0 Chrome MV3 extension → localhost `127.0.0.1:9248` broker → consented Bridge route exists **as an engineering candidate**. It is not a public cloud MCP endpoint. ChatGPT and Claude cloud connectors **cannot** reach a localhost address on a user's computer.
+The public remote MCP layer is now deployed at:
 
-For an ordinary new user to succeed, the following *must be implemented and verified*, without inventing a personal AI API key:
+`https://api.lenarsalimov.ru/luch/browser/mcp`
 
-1. Public `https://…/mcp` Streamable HTTP endpoint on TCP 443 with standards-compliant discovery/tool calls.
-2. OAuth user login and per-user tenant/device identity, secure token lifecycle and explicit client grants. Never grant a cloud host the local broker's Bridge secret.
-3. Authenticated account-bound relay from cloud MCP to the **same** user's paired LUCH Companion; no unrelated tenant, browser, or fallback profile.
-4. Local extension's explicit per-tab read, interaction, and pointer grants; tab metadata opt-in is separate. Revalidate these at execution time.
-5. A test from a **real existing Claude Free** session and an eligible **real ChatGPT** session: enumerate permitted tabs, select/approve a real tab, execute a real click, reject denied/revoked action. Record request IDs and sanitized evidence.
-6. Clean-account install, Opera runtime evidence, independent security & UX review. No silent production migration.
+The protected-resource metadata endpoint is live, the MCP endpoint returns the correct OAuth 401 challenge, and the extension relay routes are live on TCP 443.
+
+The extension no longer depends on `127.0.0.1:9248`. It pairs directly to the cloud relay with a separate one-time code and random device token.
+
+See [REMOTE_MCP_R11.md](REMOTE_MCP_R11.md) for the exact architecture and evidence.
+
+## Remaining release blockers
+
+1. Real authenticated user creates a pairing code through the MCP tool.
+2. Real Chrome/Opera extension consumes the code and establishes the account/device binding.
+3. Existing Claude conversation invokes a real read and interaction against the user's explicitly approved tab.
+4. Eligible ChatGPT Business/Enterprise/Edu conversation invokes the same flow.
+5. Second-user/device negative tests prove no cross-tenant, cross-device or cross-tab access.
+6. Clean-install Chrome and Opera onboarding, final store package and independent security review.
 
 ## What was actually changed in R11
 

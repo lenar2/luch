@@ -14,18 +14,19 @@ const html=fs.readFileSync(path.join(ext,'popup.html'),'utf8');
 const popup=fs.readFileSync(path.join(ext,'popup.js'),'utf8');
 
 test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
- assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.6.0');
+ assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.7.0');
  assert.equal(man.manifest_version,3);
  assert.ok(!JSON.stringify({manifest:man,html}).includes('QA'));
  assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"')&&html.includes('id="interact"'));
  assert.ok(popup.includes('luch_locale'));
 });
-test('minimized scoped permissions, fixed local broker, no remotely supplied scripts',()=>{
+test('minimized scoped permissions, cloud relay only, no remotely supplied scripts',()=>{
  assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage','debugger'].sort());
- assert.deepEqual(man.host_permissions,['http://127.0.0.1:9248/*']);
+ assert.deepEqual(man.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
  for(const flag of ['cookies','history','webRequest','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(flag));
  assert.deepEqual(man.optional_permissions,['tabs']);
  assert.ok(man.permissions.includes('debugger')&&!man.permissions.includes('tabs'));
+ assert.ok(code.includes("const BASE='https://api.lenarsalimov.ru/luch/browser'"));
  assert.ok(code.includes('const READ_OPS'));assert.ok(code.includes('const INTERACT_OPS'));
  assert.ok(code.includes("TAB_ORIGIN_CHANGED"));
  assert.ok(!code.includes('TTL_MS'));assert.ok(!code.includes('expiresAt'));

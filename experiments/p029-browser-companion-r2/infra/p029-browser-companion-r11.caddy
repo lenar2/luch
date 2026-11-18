@@ -1,0 +1,23 @@
+# Include inside the api.lenarsalimov.ru site block.
+# Active production file: /home/lenar/zagonx_bot_v2/zagonx_bot_v2/Caddyfile
+#
+# Supabase Edge Function remains the source of application auth; Caddy only
+# provides the stable LUCH public hostname and TCP/443 ingress.
+
+handle /.well-known/oauth-protected-resource/luch/browser/mcp {
+    rewrite * /functions/v1/p029-browser-companion/mcp/oauth-protected-resource
+    reverse_proxy https://axeudbiyabdqtdvjjhns.supabase.co {
+        header_up Host axeudbiyabdqtdvjjhns.supabase.co
+        lb_try_duration 4s
+        lb_try_interval 200ms
+    }
+}
+
+handle_path /luch/browser/* {
+    rewrite * /functions/v1/p029-browser-companion{uri}
+    reverse_proxy https://axeudbiyabdqtdvjjhns.supabase.co {
+        header_up Host axeudbiyabdqtdvjjhns.supabase.co
+        lb_try_duration 4s
+        lb_try_interval 200ms
+    }
+}

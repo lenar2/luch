@@ -63,3 +63,16 @@ test('OAuth users cannot fetch hashes or page results through PostgREST',()=>{
  for(const name of ['devices','pairings','grants','tab_overviews','jobs','audit_events'])
   assert.match(sql,new RegExp('revoke select on public\\.p029_browser_'+name+' from authenticated'));
 });
+
+test('approved-only tab discovery is isolated to owner and device, without all-tabs consent',()=>{
+ const start=edge.indexOf('server.registerTool("browser_list_approved_tabs"');
+ const end=edge.indexOf('server.registerTool("browser_list_open_tabs"',start);
+ assert.ok(start>0&&end>start,'approved tab tool registered before optional all-tabs tool');
+ const handler=edge.slice(start,end);
+ assert.match(handler,/chooseDevice\(userId,deviceId,true\)/);
+ assert.match(handler,/from\("p029_browser_grants"\)/);
+ assert.match(handler,/\.eq\("user_id",userId\)\.eq\("device_id",device\.id\)/);
+ assert.match(handler,/redactedUrl\(g\.url_redacted\)/);
+ assert.match(handler,/onlyApprovedTabs:true/);
+ assert.doesNotMatch(handler,/p029_browser_tab_overviews|ALL_TABS_USER_APPROVAL_REQUIRED|chrome\.permissions/);
+});

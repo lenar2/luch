@@ -247,7 +247,7 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
   "const route=verifySignedRevisionManifest(JSON.parse(process.env.R127_ENVELOPE),{publicKey:key});",
   "const reg=createVersionedManifestRegistry({pool,publicKey:key,routeRevisionManifest:route,scope:'BF2026_R130_TEST',allowTestScope:true});",
   "reg.current().then(async m=>{console.log(JSON.stringify({version:m?.version,hash:m?.manifest_sha256,entries:m?.site_entry_count}));await pool.end()}).catch(async e=>{console.error(e.code||e.message);await pool.end();process.exitCode=1});"
- ].join('\\n');
+ ].join('\n');
  const child=spawnSync(process.execPath,['-e',childCode],{
   encoding:'utf8',timeout:15000,env:{...process.env,
    R130_POOL:STAGE+'/stage-pool-module.cjs',

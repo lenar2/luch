@@ -43,16 +43,18 @@ async function run(){
    document.querySelector('#lot-10-set #submit'),null,{timeout:12000});
   const checkboxes=frame.locator('.choice input[type="checkbox"]');
   assert.equal(await checkboxes.count(),9);
+  await frame.locator('#audio-choice-group summary').click();
   for(const scenario of CASES){
    // Explicitly reset the current selections between independent cases.
    for(let i=0;i<9;i++)if(await checkboxes.nth(i).isChecked())
-    await checkboxes.nth(i).uncheck();
+    await frame.locator('.choice').nth(i).click();
    for(const key of scenario.items){
     const index=KEYS.indexOf(key);assert.ok(index>=0);
-    await checkboxes.nth(index).check();
+    await frame.locator('.choice').nth(index).click();
+    assert.equal(await checkboxes.nth(index).isChecked(),true);
    }
    if(scenario.sourceVariant){
-    await frame.locator('input[name="set-source-variant"][value="'+scenario.sourceVariant+'"]').check();
+    await frame.locator('label.source-tariff').nth(Number(scenario.sourceVariant)-1).click();
    }
    const q=await frame.evaluate(()=>window.BF2026SetQuote.getSnapshot());
    assert.equal(q.count,scenario.expected);

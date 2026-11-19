@@ -101,7 +101,7 @@ Then in an **isolated stage only**, after confirming the R123/R124/R126 prerequi
     python3 bf2026-checkout/site-boundary-qa-r1/patch-r127-stage-consent.py \
       /srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js
 
-Keep all three R127 paths unset until the owner supplies (1) a genuine Ed25519-signed revision manifest, (2) its owner-private public key, and (3) a private callback secret. The example manifest is intentionally approved=false, has no hashes, and must be read back from native GetCourse Offer/terms before offline signing. No signing private key is to be stored on the server. The callback route must remain disabled without its private secret. No production deployment, native GetCourse UI edit, order, payment, email, or grant is part of this handoff.
+Keep all three R127 paths unset until the owner supplies (1) a genuine Ed25519-signed revision manifest, (2) its owner-private public key, and (3) a private callback secret. The example is only an unsigned envelope template (null key_id/signature; native_readback_verified=false; revision/evidence hashes null). It must be populated from native GetCourse Offer/terms readback and signed offline; unsigned owner-approved JSON is rejected. No signing private key is to be stored on the server. The callback route must remain disabled without its private secret. No production deployment, native GetCourse UI edit, order, payment, email, or grant is part of this handoff.
 
 ## Release status
 

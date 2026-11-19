@@ -60,10 +60,10 @@
    const card=ROUTES[line.lot],part=line.lot===9?card.variants?.[String(line.variant||'1')]:card;
    if(!part||!part.key||line.display_price_rub!==part.price)return null;
    const button=document.querySelector('#lot-'+line.lot+' button.buy-lot');
-   const offerField=line.lot===9&&String(line.variant||'1')==='2'?'r125Offer2':'r125Offer';
-   const widgetField=line.lot===9&&String(line.variant||'1')==='2'?'r125Widget2':'r125Widget';
-   if(button?.dataset[offerField]!==String(part.offer)||
-     button.dataset[widgetField]!==String(part.widget))return null;
+   const second=line.lot===9&&String(line.variant||'1')==='2';
+   const pinnedOffer=second?button?.getAttribute('data-r125-offer-2'):button?.dataset.r125Offer;
+   const pinnedWidget=second?button?.getAttribute('data-r125-widget-2'):button?.dataset.r125Widget;
+   if(pinnedOffer!==String(part.offer)||pinnedWidget!==String(part.widget))return null;
    return {lot:line.lot,route:part.key,price:part.price,offer:part.offer,widget:part.widget,
     pairs:part.pairs,selection:{kind:'single',lot:line.lot,...(line.lot===9?{variant:String(line.variant||'1')}:{})}};
   }

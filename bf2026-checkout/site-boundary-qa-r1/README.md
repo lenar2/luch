@@ -91,3 +91,8 @@ New read-only native iframe check: `native-fixed-widget-preflight.cjs` and `nati
 ## R112 trusted native order integration (19 Nov 2026)
 
 New isolated module `native-order-site-integration.cjs` prepares the exact server-signed Lot5 + Союз payload (12,990 ₽ subtotal, 1,300 ₽ order-level discount, 11,690 ₽ due), binds both existing Offer/Product/Training lines and 365-day AFTER_PAY grants, and adds Postgres payload/idempotency/paid-event persistence. A separate pinned Ed25519 independent reviewer must attest the real GetCourse native form + unpaid order and legal-consent/duplicate negative tests. Provider driver remains an injected interface: no undocumented GetCourse API is fabricated. Paid evidence verifies the same order/event, two native grants and receipt/tax; it performs zero external grant writes. See `R112_SITE_ORDER_INTEGRATION.md`. Focused tests 73/73 PASS; no exhaustive 265-vector re-audit; no production write or provider order.
+
+
+## R112 isolated R2 site HTTP integration
+
+QA-only site HTTP bridge: `native-order-site-qa-http.cjs`, `patch-r112-qa-order-server.py`, `native-order-site-qa-http.test.cjs`. Six real loopback HTTP tests against an isolated copy of live R112 server PASS. No provider call or production write. See `R112_SITE_HTTP_INTEGRATION.md`.

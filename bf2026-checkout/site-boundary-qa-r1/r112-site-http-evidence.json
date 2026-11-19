@@ -1,0 +1,32 @@
+{
+  "schema": "bf2026.r112.isolated-site-http-integration.r1",
+  "site_source": "actual copy of /srv/factory-scratch/bf2026-checkout-r2-20261119/server.js with current manifest/catalog/registry",
+  "network": "127.0.0.1 ephemeral-port QA only",
+  "qa_endpoints": [
+    "prepare",
+    "verify",
+    "start"
+  ],
+  "subtotal_rub": 12990,
+  "discount_rub": 1300,
+  "total_rub": 11690,
+  "test_count": 6,
+  "test_passed": 6,
+  "test_failed": 0,
+  "public_start_http_status": 503,
+  "real_getcourse_order_created": false,
+  "production_site_write": false,
+  "production_registry_write": false,
+  "production_server_sha_unchanged": true,
+  "full_focused_qa": {
+    "passed": 79,
+    "failed": 0,
+    "exhaustive_265_quote_reaudit": false
+  },
+  "production_https_start": {
+    "http": 503,
+    "code": "GETCOURSE_OFFER_NOT_READY",
+    "price_rub": 11690,
+    "checkout_url": null
+  }
+}

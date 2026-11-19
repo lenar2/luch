@@ -96,3 +96,8 @@ New isolated module `native-order-site-integration.cjs` prepares the exact serve
 ## R112 isolated R2 site HTTP integration
 
 QA-only site HTTP bridge: `native-order-site-qa-http.cjs`, `patch-r112-qa-order-server.py`, `native-order-site-qa-http.test.cjs`. Six real loopback HTTP tests against an isolated copy of live R112 server PASS. No provider call or production write. See `R112_SITE_HTTP_INTEGRATION.md`.
+
+
+## Live private QA native-order bridge deployed 2026-11-19
+
+The owner-authorized deployment `deploy-r112-native-qa-live.py` activated the private signed-order QA HTTP bridge in the existing R2 checkout container. Seven **live** HTTP smoke checks PASS (private prepare/verify/start, unauthenticated 404, public quote 11690, checkout HOLD and status). The first activation was automatically rolled back after a function-name error; runtime import preflight was added, and the second activation succeeded with normal service health. No GetCourse order API/real payment is connected: the existing native widget still totals 12990. See `R112_LIVE_QA_DEPLOYMENT.md` and `r112-live-qa-deployment-evidence.json`.

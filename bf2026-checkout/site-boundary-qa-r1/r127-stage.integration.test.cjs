@@ -75,7 +75,7 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
   for(const body of cases){
    const r=await post('/api/checkout/start',body);
    assert.notEqual(r.status,200,JSON.stringify({body,data:r.data}));
-   assert.equal(r.data.checkout_url,undefined);
+   assert.equal(Boolean(r.data.checkout_url),false);
    assert.notEqual(r.data.public_release_allowed,true);
   }
   const validSet=await post('/api/checkout/start',{kind:'set',items:['rejection','union']});

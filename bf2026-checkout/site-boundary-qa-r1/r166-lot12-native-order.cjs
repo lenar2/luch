@@ -38,8 +38,18 @@ function saveRec(p,v){
  fs.renameSync(tmp,p);
 }
 function providerCode(json){
- const str=String(json?.error_code??json?.error??json?.result?.error_code??json?.result?.error_message??'UNKNOWN');
- return /^[0-9]{3}$/.test(str)?'GETCOURSE_'+str:'GETCOURSE_DECLINED';
+ // GetCourse puts actionable errors in result.error_message. The former code
+ // preferred a boolean result.error, hiding the real rejection as DECLINED.
+ const id=json?.result?.error_code??json?.error_code;
+ if(Number.isInteger(Number(id))&&/^[0-9]{3,4}$/.test(String(id)))
+  return 'GETCOURSE_'+String(id);
+ const raw=json?.result?.error_message??json?.error_message??
+  (typeof json?.error==='string'?json.error:null);
+ if(typeof raw==='string'&&raw.trim()){
+  const safe=raw.trim().replace(/\s+/g,' ').replace(/\S+@\S+/g,'[email]').slice(0,180);
+  return 'GETCOURSE: '+safe;
+ }
+ return 'GETCOURSE_DECLINED';
 }
 function providerLink(json){
  const raw=json?.result?.payment_link??null;
@@ -66,6 +76,9 @@ function createOrderProvider({fetchImpl=globalThis.fetch,keyProvider=()=>secureR
   const dealNumber=generateDealNumber();
   const state={state:'created',deal_number:dealNumber,plan_sha256:plan.plan_sha256,
     total_rub:plan.desired_order_total_rub,positions_done:0,
+    // R180 durable native repricing contract: unique offers + allocated integer RUB.
+    expected_lines:plan.lines.map(x=>({offer_id:x.offer_id,price_rub:x.discounted_line_price_rub})),
+    buyer_email_sha256:crypto.createHash('sha256').update(who.email).digest('hex'),
     started_at:new Date().toISOString(),nonce_sha256:crypto.createHash('sha256').update(nonce).digest('hex')};
   // Persistent exclusive reservation: do not create a second native Deal if duplicate request races.
   fs.writeFileSync(recordPath,JSON.stringify(state),{mode:0o600,flag:'wx'});
@@ -76,10 +89,10 @@ function createOrderProvider({fetchImpl=globalThis.fetch,keyProvider=()=>secureR
   for(let i=0;i<plan.lines.length;i++){
    const line=plan.lines[i];
    const payload={
-    user:{email:who.email,phone:who.phone,first_name:who.first_name,last_name:who.last_name},
+    user:{email:who.email,phone:who.phone,first_name:who.first_name,...(who.last_name?{last_name:who.last_name}:{})},
     system:{refresh_if_exists:0,multiple_offers:i===0?0:1,return_payment_link:i===plan.lines.length-1?1:0,return_deal_number:1},
     deal:{deal_number:dealNumber,offer_id:line.offer_id,quantity:1,
-     deal_cost:line.discounted_line_price_rub,deal_status:'new',deal_is_paid:0,deal_currency:'RUB',
+     deal_cost:String(line.discounted_line_price_rub),deal_status:'new',deal_is_paid:0,deal_currency:'RUB',
      addfields:{'BF2026 Consent Nonce':nonce,'BF2026 Offer Revision SHA256':plan.plan_sha256}}
    };
    state.state='provider_request_inflight';state.step=i;saveRec(recordPath,state);
@@ -110,7 +123,9 @@ function createOrderProvider({fetchImpl=globalThis.fetch,keyProvider=()=>secureR
   // Empirical native QA #72005/#72006: Import API ACK did not preserve per-line
   // discounts after multiple_offers append. Do not expose an overcharging link.
   state.state='created_requires_price_readback';
-  state.provider_link_existed=!!lastLink;state.checkout_url=null;
+  state.provider_link_existed=!!lastLink;
+  // Trusted GetCourse URL is server-private until independent native price readback.
+  state.provider_checkout_url=lastLink||null;state.checkout_url=null;
   saveRec(recordPath,state);
   return {ok:true,order_submitted:true,checkout_url:null,deal_number:dealNumber,
    quoted_total_rub:plan.desired_order_total_rub,

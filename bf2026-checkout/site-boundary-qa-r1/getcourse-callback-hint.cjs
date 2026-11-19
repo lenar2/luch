@@ -61,7 +61,7 @@ function createStore(pool){
   const old=await pool.query('SELECT provider_order_id,order_number,offer_id,status_hint,raw_sha256 FROM bf2026_getcourse_callback_hints WHERE event_id=$1',[event.event_id]);
   const r=old.rows?.[0];
   if(!r||r.provider_order_id!==event.provider_order_id||r.order_number!==event.order_number||
-   r.offer_id!==event.offer_id||r.status_hint!==event.status_hint||r.raw_sha256!==event.raw_sha256)
+   Number(r.offer_id)!==event.offer_id||r.status_hint!==event.status_hint||r.raw_sha256!==event.raw_sha256)
    fail('GETCOURSE_CALLBACK_REPLAY_CONFLICT');
   return {status:'DUPLICATE_HINT_ONLY',duplicate:true};
  }};

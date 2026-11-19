@@ -50,10 +50,30 @@ function createSetOrderWorker({pool,quoteFn,transport,
     "INSERT INTO bf2026_r130_set_order_intents ("+
     "intent_key,request_sha256,buyer_sha256,nonce_sha256,offer_revision_sha256,"+
     "plan_sha256,pricing_version,deal_number,count_items,total_rub,state) VALUES("+
-    "$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'PREPARED') RETURNING *",
+    "$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'PREPARED') ON CONFLICT DO NOTHING RETURNING *",
     [idempotencyKey,inputHash,emailHash,nonceHash,offerRevisionSha256,
      plan.plan_sha256,plan.pricing_version,dealNumber,
      plan.items_count,plan.desired_order_total_rub]);
+   if(!inserted.rows.length){
+    // A concurrent request can win the same idempotency key (or a different
+    // key with the SAME one-use consent nonce) between SELECT and INSERT.
+    // ON CONFLICT waits for the winning transaction, then this locked read
+    // returns the durable winner without creating another provider order.
+    const winner=await client.query(
+     'SELECT * FROM bf2026_r130_set_order_intents WHERE intent_key=$1 FOR UPDATE',
+     [idempotencyKey]);
+    if(winner.rows.length){
+     if(winner.rows[0].request_sha256!==inputHash)
+      fail('R130_IDEMPOTENCY_KEY_BODY_CHANGED');
+     await client.query('COMMIT');
+     return {plan,status:safe(winner.rows[0]),intent_key:idempotencyKey,duplicate:true};
+    }
+    const nonceOwner=await client.query(
+     'SELECT intent_key FROM bf2026_r130_set_order_intents WHERE nonce_sha256=$1',
+     [nonceHash]);
+    if(nonceOwner.rows.length)fail('R131_ONE_TIME_CONSENT_NONCE_REUSED');
+    fail('R131_ORDER_NUMBER_COLLISION_OR_UNKNOWN_UNIQUE_CONFLICT');
+   }
    for(let i=0;i<plan.lines.length;i++){
     await client.query('INSERT INTO bf2026_r130_set_order_steps '+
      '(intent_key,step_index,offer_id,line_amount_rub) VALUES($1,$2,$3,$4)',

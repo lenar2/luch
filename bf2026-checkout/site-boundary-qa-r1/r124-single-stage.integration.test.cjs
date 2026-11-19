@@ -9,9 +9,10 @@ const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
 const fs=require('node:fs');
 const {EXPECTED}=require('./r123-single-widget-adapter.cjs');
-const enabled=process.env.BF2026_STAGE_ONLY==='1'&&process.env.BF2026_R124_STAGE_PORT==='18769'&&
+const stagePort=String(process.env.BF2026_R124_STAGE_PORT||'');
+const enabled=process.env.BF2026_STAGE_ONLY==='1'&&['18769','18770'].includes(stagePort)&&
  !!process.env.BF2026_STAGE_PG_POOL_MODULE;
-const base='http://127.0.0.1:18769';
+const base='http://127.0.0.1:'+stagePort;
 const qaKeyPath='/srv/factory-scratch/bf2026-r118-relay-stage-20261119/private-widget-qa.secret';
 const newKey=()=>crypto.randomBytes(16).toString('hex');
 const consent=()=>({oferta_custom_field_id:22204810,oferta_checkbox_checked:true,marketing_checkbox_checked:false});

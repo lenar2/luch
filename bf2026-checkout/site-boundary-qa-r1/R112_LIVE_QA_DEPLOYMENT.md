@@ -32,3 +32,8 @@ Alternative promotion path: official GetCourse documentation says its promotion 
 - The private handler returns no payment link. The public checkout route is unmodified and remains blocked.
 - Original server.js backup is saved at the explicit path in machine evidence. If a later rollback is required, deploy only under `site-register.lock`, replace the current source with that backup after reconciling any newer site-engineer edits, then restart the checkout container.
 - Do not blindly use the backup after unrelated site changes; it would overwrite more recent work.
+
+
+## Second upgrade (live GetCourse)
+
+See R112_LIVE_GETCOURSE_DRIVER.md. Direct private QA GET of native Widget 1686745 is active; 85/85 focused regression PASS. No actual purchase released.

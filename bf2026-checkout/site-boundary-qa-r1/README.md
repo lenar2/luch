@@ -101,3 +101,8 @@ QA-only site HTTP bridge: `native-order-site-qa-http.cjs`, `patch-r112-qa-order-
 ## Live private QA native-order bridge deployed 2026-11-19
 
 The owner-authorized deployment `deploy-r112-native-qa-live.py` activated the private signed-order QA HTTP bridge in the existing R2 checkout container. Seven **live** HTTP smoke checks PASS (private prepare/verify/start, unauthenticated 404, public quote 11690, checkout HOLD and status). The first activation was automatically rolled back after a function-name error; runtime import preflight was added, and the second activation succeeded with normal service health. No GetCourse order API/real payment is connected: the existing native widget still totals 12990. See `R112_LIVE_QA_DEPLOYMENT.md` and `r112-live-qa-deployment-evidence.json`.
+
+
+## Live GetCourse native form QA readback (2026-11-19)
+
+Production checkout container now makes a real GET-only call to GetCourse Widget1686745 through the private QA `POST /api/checkout/_qa/native-order/provider-check`. TLS/host/action/form/Offer checks passed: action2263283894, Offers8919715/6000 +8933492/6990, native base12990, approved11690. The public hidden `formParams[willCreatePaidDeal]` is currently 0, so handler behavior is not established. `checkout_ready=false`, public sale HOLD. Code `native-getcourse-widget-driver.cjs`, authenticated router, upgrade/rollback script and full evidence in `R112_LIVE_GETCOURSE_DRIVER.md`. Focused QA regression 85/85 PASS; no native order/payment/grant created.

@@ -8,6 +8,7 @@ const crypto=require('node:crypto');
 const path=require('node:path');
 const {createAdapter}=require('../dynamic-adapter-r1/adapter.cjs');
 const {prepareTrustedOrderPayload,verifyTrustedOrderPayload}=require('./native-order-site-integration.cjs');
+const {readNativePublicWidget}=require('./native-getcourse-widget-driver.cjs');
 
 const PREFIX='/api/checkout/_qa/native-order/';
 function fail(code){const e=new Error(code);e.code=code;throw e}
@@ -56,6 +57,28 @@ function createSiteQARouter({quoteFn,manifest,qaAuthorize,hmacKeyHex,productionG
   try{
    const input=await readJson(req);
    const action=routePath.slice(PREFIX.length);
+   if(action==='provider-check'){
+    strictInput(input,['kind','items']);
+    const plan=adapter.plan({kind:input.kind,items:input.items});
+    if(plan.selection_key!=='set:rejection_program|union'||plan.quote.total_rub!==11690||
+       plan.ready_for_native_binding!==true)fail('UNVERIFIED_NATIVE_PAIR_SELECTION');
+    const native=await readNativePublicWidget();
+    respond(res,200,{ok:true,provider:native.provider,
+     method:native.provider_order_method,
+     native_widget_id:native.source_widget_id,
+     action_id:native.form_action_id,
+     native_preview_url:native.qa_preview_url,
+     native_offer_positions:native.offer_positions,
+     native_base_total_rub:native.native_base_total_rub,
+    will_create_paid_deal_field_value:native.will_create_paid_deal_field_value,
+     approved_total_rub:plan.quote.total_rub,
+     native_order_verified:native.native_unpaid_order_readback_verified,
+     checkout_ready:false,checkout_url:null,
+     code:native.status,
+     public_html_sha256:native.html_sha256,
+     safety:native.safe_transport});
+    return true;
+   }
    if(action==='prepare'){
     strictInput(input,['kind','items','checkout_idempotency_key']);
     const {checkout_idempotency_key:key,kind,items}=input;
@@ -85,7 +108,7 @@ function createSiteQARouter({quoteFn,manifest,qaAuthorize,hmacKeyHex,productionG
    }
    respond(res,404,{ok:false,code:'NOT_FOUND'});return true;
   }catch(e){
-   respond(res,['CONTENT_TYPE_REQUIRED'].includes(e.code)?415:422,
+   respond(res,['CONTENT_TYPE_REQUIRED'].includes(e.code)?415:String(e.code||'').startsWith('LIVE_GETCOURSE_')?503:422,
     {ok:false,code:e.code||'INVALID_NATIVE_ORDER_REQUEST',checkout_url:null,route_enabled:false});
    return true;
   }

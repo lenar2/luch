@@ -65,7 +65,7 @@ async function run(){
     'Сервер подтвердил:'),null,{timeout:10000});
    assert.equal(requests.length,old+1);
    const actual=JSON.parse(requests.at(-1));
-   assert.deepEqual(actual.items,scenario.items);
+   assert.deepEqual(actual.items,scenario.items.slice().sort((a,b)=>KEYS.indexOf(a)-KEYS.indexOf(b)));
    if(scenario.sourceVariant)assert.equal(actual.source_variant,scenario.sourceVariant);
    const response=await page.evaluate(async body=>{
     const r=await fetch('/api/checkout/set/plan',{method:'POST',

@@ -17,7 +17,13 @@ new=(
 "if(!p||!require('node:path').isAbsolute(p))return null;"
 "const x=require(p);return typeof x.getPool==='function'?x.getPool():x.pool;"
 "})();\n"+
-"const "+tag+"=require("+repr(str(module))+").createQARouter({qaAuthorized,pool:BF2026_R121_STAGE_POOL});"
+"const BF2026_R122_EXPORT_READER=(()=>{"
+"const key=process.env.BF2026_GETCOURSE_API_KEY;"
+"if(typeof key!=='string'||key.length<20)return null;"
+"const x=require("+repr(str(module.parent / 'getcourse-export-readback.cjs'))+");"
+"return x.createGetCourseExportReader({apiKeyProvider:()=>key,budget:x.createPostgresBudget(BF2026_R121_STAGE_POOL)});"
+"})();\\n"+
+"const "+tag+"=require("+repr(str(module))+").createQARouter({qaAuthorized,pool:BF2026_R121_STAGE_POOL,exportReader:BF2026_R122_EXPORT_READER});"
 )
 updated,n=re.subn(pattern,lambda _:new,s)
 if n!=1:sys.exit("R121_ROUTE_PATCH_MISMATCH")

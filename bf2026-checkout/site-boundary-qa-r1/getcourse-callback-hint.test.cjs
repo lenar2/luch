@@ -36,7 +36,9 @@ test('R122 callback rejects bad secret, wrong account, wrong deal, offer, price,
 test('R122 callback exact replay deduplicates by raw body digest',async()=>{
  const secret=crypto.randomBytes(32),input=fixture(secret),rows=new Map();
  const store={async accept(e){if(rows.has(e.event_id))return {status:'DUPLICATE_HINT_ONLY',duplicate:true};rows.set(e.event_id,e);return {status:'ACCEPTED_HINT_ONLY',duplicate:false}}};
- const a=await ingest({...input,store}),b=await ingest({...input,store});
+ const a=await ingest({...input,store});
+ const reordered=JSON.parse(input.rawBody);const variant=Buffer.from(JSON.stringify(Object.fromEntries(Object.entries(reordered).reverse())));
+ const b=await ingest({...input,rawBody:variant,store});
  assert.equal(a.status,'ACCEPTED_HINT_ONLY');assert.equal(a.payment_verified,false);
  assert.equal(b.status,'DUPLICATE_HINT_ONLY');assert.equal(b.duplicate,true);
  assert.equal(rows.size,1);

@@ -57,9 +57,11 @@ function createOrderProvider({fetchImpl=globalThis.fetch,keyProvider=()=>secureR
   const signature=crypto.createHash('sha256').update(who.email+'\n'+plan.plan_sha256).digest('hex');
   const recordPath=path.join(ledgerDir,signature+'.json');
   let rec=readRec(recordPath);
-  if(rec&&rec.state==='complete'&&rec.checkout_url&&rec.total_rub===plan.desired_order_total_rub)
-    return {ok:true,deal_number:rec.deal_number,order_total_rub:rec.total_rub,
-      checkout_url:rec.checkout_url,provider_verified:true,public_release_allowed:true,replayed:true};
+  if(rec&&['complete','created_requires_price_readback'].includes(rec.state)&&rec.total_rub===plan.desired_order_total_rub)
+    return {ok:true,order_submitted:true,deal_number:rec.deal_number,
+      quoted_total_rub:rec.total_rub,checkout_url:null,public_release_allowed:false,
+      native_total_readback_verified:false,replayed:true,
+      message:'Заказ создан, но скидка в GetCourse не подтверждена. Оплата недоступна до корректировки суммы.'};
   if(rec)throw fail('ORDER_ALREADY_SUBMITTED_CHECK_GETCOURSE',409);
   const dealNumber=generateDealNumber();
   const state={state:'created',deal_number:dealNumber,plan_sha256:plan.plan_sha256,
@@ -105,13 +107,15 @@ function createOrderProvider({fetchImpl=globalThis.fetch,keyProvider=()=>secureR
    state.state='position_imported';state.deal_id=lastId;saveRec(recordPath,state);
    if(i===plan.lines.length-1)lastLink=providerLink(json);
   }
-  state.state=lastLink?'complete':'created_without_payment_link';
-  state.checkout_url=lastLink;saveRec(recordPath,state);
-  if(!lastLink)return {ok:true,order_submitted:true,checkout_url:null,deal_number:dealNumber,
-   order_total_rub:plan.desired_order_total_rub,message:'Заказ создан в GetCourse. Ссылка оплаты не вернулась; заказ можно найти по номеру.'};
-  return {ok:true,checkout_url:lastLink,deal_number:dealNumber,
-   order_total_rub:plan.desired_order_total_rub,provider_verified:true,public_release_allowed:true,
-   payment_verified:false};
+  // Empirical native QA #72005/#72006: Import API ACK did not preserve per-line
+  // discounts after multiple_offers append. Do not expose an overcharging link.
+  state.state='created_requires_price_readback';
+  state.provider_link_existed=!!lastLink;state.checkout_url=null;
+  saveRec(recordPath,state);
+  return {ok:true,order_submitted:true,checkout_url:null,deal_number:dealNumber,
+   quoted_total_rub:plan.desired_order_total_rub,
+   native_total_readback_verified:false,public_release_allowed:false,
+   message:'Заказ создан в GetCourse. Сумма и скидка требуют сверки перед оплатой.'};
  };
 }
 function createLot12OrderRouter({createOrder=createOrderProvider(),origin='https://wf.tati-lar.ru'}={}){

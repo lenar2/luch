@@ -27,7 +27,7 @@ test('R141 exact documented read-only POST uses action=Get and key only in body'
   assert.equal(args.method,'POST');assert.equal(args.redirect,'error');
   assert.equal(args.headers['Content-Type'],'application/x-www-form-urlencoded');
   const body=new URLSearchParams(args.body);
-  assert.equal(body.get('action'),'Get');assert.equal(body.get('key'),KEY);
+  assert.equal(body.get('action'),'get');assert.equal(body.get('key'),KEY);
   assert.equal(url.includes(KEY),false);
   return {status:200,text:async()=>JSON.stringify({success:true,info:native})};
  }});

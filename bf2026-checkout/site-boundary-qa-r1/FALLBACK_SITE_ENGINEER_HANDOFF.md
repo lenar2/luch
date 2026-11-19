@@ -58,3 +58,18 @@ bf2026-checkout/site-boundary-qa-r1/fallback-site-bridge.test.cjs
 ```
 
 These are isolated tests, not provider-native checkout certification. **Production sales_ready=false, verified_sale_routes=0; do not enable sale.**
+
+
+## LIVE public fixed-widget preflight — 19.11.2026 07:55 Altai
+
+New read-only native iframe check: `native-fixed-widget-preflight.cjs` and `native-fixed-widget-preflight.test.cjs`. Tests **6/6 PASS**; current live readback **4 of 5 fixed widgets structurally PASS**, **1 HOLD**. This does **not** establish public paid E2E or increase production sale routes.
+
+- 1686693 → Offer 8933492, 6990: exactly one native form/Offer, explicit oferta and optional unchecked mailing; structural PASS.
+- 1686738 → Offer 8919715, 6000: same, structural PASS.
+- 1686740 → Offer 8934207, 7200: same, structural PASS.
+- 1686741 → Offer 8934262, 6000: same, structural PASS.
+- **1686753 → expected audio Offer 8934925, 3333: FAIL**. Public HTML currently contains **TWO separate native forms**: first Offer 8934925 at 3333 but **without explicit oferta**; second copied Union Offer 8919715 at 6000 with oferta. This is a real wrong-item and consent failure, not just a test fixture.
+
+**UI worker action:** in existing Widget 1686753 remove the copied second Union native FORM (do not delete Offer 8919715), add the explicit required oferta inside the first intended audio form; keep only selected Offer 8934925 at 3333, optional unchecked marketing. Save+full reopen; rerun the exact read-only preflight. Never publish 1686753 before passing structural check and native unpaid/paid receipts/access QA. Existing products/offers must be reused.
+
+**Site engineer action:** enforce the exact one-form/one-Offer check before adding any fixed widget to site. Example: `node bf2026-checkout/site-boundary-qa-r1/native-fixed-widget-preflight.cjs`. The machine-readable report is `native-fixed-widget-preflight-evidence.json` (observed 2026-11-19T00:55:44.941Z). The correct sale status for all these widgets is still HOLD without real payment/receipt/grant E2E.

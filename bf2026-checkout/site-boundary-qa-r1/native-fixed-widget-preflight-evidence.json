@@ -1,0 +1,205 @@
+{
+  "schema": "bf2026.native.fixed-widget.public-preflight.r1",
+  "observed_at": "2026-11-19T00:55:44.941Z",
+  "scoped_check": "ONLY_5_KNOWN_FIXED_WIDGETS_NOT_265_COMBINATIONS",
+  "reports": [
+    {
+      "widget_id": 1686693,
+      "title": "Исцеление отвержения",
+      "expected_offer_id": 8933492,
+      "expected_price_rub": 6990,
+      "form_count": 1,
+      "forms": [
+        {
+          "index": 0,
+          "offers": [
+            {
+              "offer_id": 8933492,
+              "price_rub": 6990,
+              "type": "radio",
+              "checked": true
+            }
+          ],
+          "has_explicit_offer_terms": true,
+          "action_id": "2263265127"
+        }
+      ],
+      "marketing": {
+        "enabled": true,
+        "checked": false,
+        "required": false
+      },
+      "public_structure_pass": true,
+      "issues": [],
+      "public_sale_ready": false,
+      "public_sale_blocker": "REAL_UNPAID_PAID_RECEIPT_AND_ACCESS_E2E_NOT_VERIFIED",
+      "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693",
+      "http_status": 200,
+      "response_sha256": "1f9961ce79618a3f09f7c5ab05a8ba3713aacc5046b9832972633ed7bc454bce"
+    },
+    {
+      "widget_id": 1686738,
+      "title": "Союз нового времени",
+      "expected_offer_id": 8919715,
+      "expected_price_rub": 6000,
+      "form_count": 1,
+      "forms": [
+        {
+          "index": 0,
+          "offers": [
+            {
+              "offer_id": 8919715,
+              "price_rub": 6000,
+              "type": "radio",
+              "checked": true
+            }
+          ],
+          "has_explicit_offer_terms": true,
+          "action_id": "2263282483"
+        }
+      ],
+      "marketing": {
+        "enabled": true,
+        "checked": false,
+        "required": false
+      },
+      "public_structure_pass": true,
+      "issues": [],
+      "public_sale_ready": false,
+      "public_sale_blocker": "REAL_UNPAID_PAID_RECEIPT_AND_ACCESS_E2E_NOT_VERIFIED",
+      "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686738",
+      "http_status": 200,
+      "response_sha256": "e9b507cd87bad463a364f159fcd253a31b1b3372b13eaa3dc3774535efe02231"
+    },
+    {
+      "widget_id": 1686740,
+      "title": "Школа девушек на выданье",
+      "expected_offer_id": 8934207,
+      "expected_price_rub": 7200,
+      "form_count": 1,
+      "forms": [
+        {
+          "index": 0,
+          "offers": [
+            {
+              "offer_id": 8934207,
+              "price_rub": 7200,
+              "type": "radio",
+              "checked": true
+            }
+          ],
+          "has_explicit_offer_terms": true,
+          "action_id": "2263283233"
+        }
+      ],
+      "marketing": {
+        "enabled": true,
+        "checked": false,
+        "required": false
+      },
+      "public_structure_pass": true,
+      "issues": [],
+      "public_sale_ready": false,
+      "public_sale_blocker": "REAL_UNPAID_PAID_RECEIPT_AND_ACCESS_E2E_NOT_VERIFIED",
+      "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686740",
+      "http_status": 200,
+      "response_sha256": "cf1b323a02a42105ff1fab52a0946f0d30f31b7381738caf824cf9bff81a0c99"
+    },
+    {
+      "widget_id": 1686741,
+      "title": "Источник I",
+      "expected_offer_id": 8934262,
+      "expected_price_rub": 6000,
+      "form_count": 1,
+      "forms": [
+        {
+          "index": 0,
+          "offers": [
+            {
+              "offer_id": 8934262,
+              "price_rub": 6000,
+              "type": "radio",
+              "checked": true
+            }
+          ],
+          "has_explicit_offer_terms": true,
+          "action_id": "2263283328"
+        }
+      ],
+      "marketing": {
+        "enabled": true,
+        "checked": false,
+        "required": false
+      },
+      "public_structure_pass": true,
+      "issues": [],
+      "public_sale_ready": false,
+      "public_sale_blocker": "REAL_UNPAID_PAID_RECEIPT_AND_ACCESS_E2E_NOT_VERIFIED",
+      "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686741",
+      "http_status": 200,
+      "response_sha256": "7f489ccd3d8c0c1cf9d14be582475fd2e9b2f0c9fd6d390d8d35b8fe07f98734"
+    },
+    {
+      "widget_id": 1686753,
+      "title": "Аудиотерапия «Исцеление раны обесценивания»",
+      "expected_offer_id": 8934925,
+      "expected_price_rub": 3333,
+      "form_count": 2,
+      "forms": [
+        {
+          "index": 0,
+          "offers": [
+            {
+              "offer_id": 8934925,
+              "price_rub": 3333,
+              "type": "radio",
+              "checked": true
+            }
+          ],
+          "has_explicit_offer_terms": false,
+          "action_id": "2263284969"
+        },
+        {
+          "index": 1,
+          "offers": [
+            {
+              "offer_id": 8919715,
+              "price_rub": 6000,
+              "type": "radio",
+              "checked": true
+            }
+          ],
+          "has_explicit_offer_terms": true,
+          "action_id": "2263285134"
+        }
+      ],
+      "marketing": {
+        "enabled": true,
+        "checked": false,
+        "required": false
+      },
+      "public_structure_pass": false,
+      "issues": [
+        "FORM_COUNT_NOT_ONE"
+      ],
+      "public_sale_ready": false,
+      "public_sale_blocker": "REAL_UNPAID_PAID_RECEIPT_AND_ACCESS_E2E_NOT_VERIFIED",
+      "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686753",
+      "http_status": 200,
+      "response_sha256": "479b0d2541873796123ac5d4545b11d4b6ab59531a0bcd72a7f704d47bf659f5"
+    }
+  ],
+  "structure_pass_count": 4,
+  "structure_fail_count": 1,
+  "verified_sale_routes": 0,
+  "customer_sale_ready": false,
+  "safety": {
+    "public_get_only": true,
+    "forms_submitted": false,
+    "orders_created": false,
+    "payments_attempted": false,
+    "getcourse_ui_or_lock_touched": false,
+    "production_changed": false,
+    "buyer_data_stored": false
+  }
+}

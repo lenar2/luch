@@ -16,6 +16,22 @@ const enabled=process.env.BF2026_STAGE_ONLY==='1'&&
 test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/duplicate callback and restart readback',
  {skip:!enabled},async t=>{
  const {pool}=require(STAGE+'/stage-pool-module.cjs');
+ const nonces=[];
+ let server=null;
+ const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+ t.after(async()=>{
+  if(server)await new Promise(resolve=>server.close(resolve));
+  if(nonces.length){
+   const hashes=nonces.map(n=>sha(n));
+   await pool.query('DELETE FROM bf2026_r127_consent_challenges WHERE nonce_sha256=ANY($1::char(64)[])',[hashes]);
+  }
+  await pool.query('DELETE FROM bf2026_r130_manifest_head WHERE registry_scope=$1',[TEST_SCOPE]);
+  await pool.query('DELETE FROM bf2026_r130_manifest_history WHERE registry_scope=$1',[TEST_SCOPE]);
+  const residue=await pool.query(
+   'SELECT count(*)::int n FROM bf2026_r127_consent_challenges WHERE r130_registry_scope=$1',[TEST_SCOPE]);
+  assert.equal(residue.rows[0].n,0);
+  await pool.end();
+ });
  const sql=fs.readFileSync(require('node:path').join(__dirname,'r130-versioned-manifest.sql'),'utf8');
  await pool.query(sql);
  const site=require(STAGE+'/server.js');
@@ -34,7 +50,6 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
  }=require('./r130-versioned-manifest.cjs');
  const nowRef={value:Date.now()},clock=()=>nowRef.value;
  const pair=crypto.generateKeyPairSync('ed25519');
- const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
  const readbackAt=new Date(nowRef.value-2000).toISOString();
  const r127Offers={};
  for(const key of ROUTE_SET){
@@ -134,21 +149,7 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
  });
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const base='http://127.0.0.1:'+server.address().port;
- const nonces=[];
- let server=null;
- t.after(async()=>{
-  if(server)await new Promise(resolve=>server.close(resolve));
-  if(nonces.length){
-   const hashes=nonces.map(n=>sha(n));
-   await pool.query('DELETE FROM bf2026_r127_consent_challenges WHERE nonce_sha256=ANY($1::char(64)[])',[hashes]);
-  }
-  await pool.query('DELETE FROM bf2026_r130_manifest_head WHERE registry_scope=$1',[TEST_SCOPE]);
-  await pool.query('DELETE FROM bf2026_r130_manifest_history WHERE registry_scope=$1',[TEST_SCOPE]);
-  const residue=await pool.query(
-   'SELECT count(*)::int n FROM bf2026_r127_consent_challenges WHERE r130_registry_scope=$1',[TEST_SCOPE]);
-  assert.equal(residue.rows[0].n,0);
-  await pool.end();
- });
+
  async function post(path,body,{cookie,origin='https://wf.tati-lar.ru',authorization}={}){
   const headers={};if(origin)headers.origin=origin;
   if(body!==undefined)headers['content-type']='application/json';

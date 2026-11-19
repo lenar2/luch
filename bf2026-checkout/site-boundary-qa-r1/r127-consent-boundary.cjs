@@ -9,7 +9,8 @@
 const crypto=require('node:crypto');
 const fs=require('node:fs');
 const path=require('node:path');
-const {EXPECTED,ROUTE_KEYS}=require('./r123-single-widget-adapter.cjs');
+const {EXPECTED}=require('./r123-single-widget-adapter.cjs');
+const ROUTE_KEYS=Object.freeze(Object.keys(EXPECTED));
 const {DEFAULTS}=require('./getcourse-export-readback.cjs');
 const COOKIE='__Host-bf2026_consent_session';
 const SESSION_TTL_SECONDS=1200;

@@ -26,7 +26,7 @@ if s.count(old)!=1:sys.exit('R130_R127_REVISION_LOAD_ANCHOR_MISSING')
 s=s.replace(old,"revisionManifest:BF2026_R127_REVISION_MANIFEST,",1)
 old=" nativeConsentVerifier:null});"
 if s.count(old)!=1:sys.exit('R130_R127_BOUNDARY_OPTIONS_ANCHOR_MISSING')
-s=s.replace(old," nativeConsentVerifier:null,callbackGuard:BF2026_R130_VERSIONED_REGISTRY.assertCallback});\n"+
+s=s.replace(old," nativeConsentVerifier:require("+q('r130-native-consent-observer.cjs')+").loadConfiguredNativeConsentVerifier(process.env),callbackGuard:BF2026_R130_VERSIONED_REGISTRY.assertCallback});\n"+
  "const BF2026_R130_BOUNDARY=require("+q('r130-versioned-manifest.cjs')+").createManifestBoundBoundary({\n"+
  " boundary:BF2026_R127_CONSENT_BOUNDARY,registry:BF2026_R130_VERSIONED_REGISTRY});",1)
 s=s.replace("boundary:BF2026_R127_CONSENT_BOUNDARY,qaAuthorized","boundary:BF2026_R130_BOUNDARY,qaAuthorized")

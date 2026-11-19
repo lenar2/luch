@@ -342,17 +342,18 @@ function send(res,status,data){
   'referrer-policy':'no-referrer'});
  res.end(JSON.stringify(data));
 }
-function createManifestGate({registry,fieldGate,qaAuthorized}={}){
+function createManifestGate({registry,fieldGate,qaConsentHttp,qaAuthorized}={}){
  if(!registry||typeof registry.current!=='function'||
   typeof registry.status!=='function'||typeof fieldGate!=='function'||
-  typeof qaAuthorized!=='function')fail('R130_HTTP_GATE_DEPENDENCIES_REQUIRED');
+  typeof qaConsentHttp!=='function'||typeof qaAuthorized!=='function')fail('R130_HTTP_GATE_DEPENDENCIES_REQUIRED');
  return async function manifestGate(req,res,path){
   if(path===QA_PREFIX+'status'){
    if(req.method!=='GET'||!qaAuthorized(req))return send(res,404,{ok:false,code:'NOT_FOUND'});
    const status=await registry.status();
    return send(res,status.postgres_ready?200:503,{ok:true,...status});
   }
-  if(path===CALLBACK||(path===CONSENT+'challenge'&&req.method==='POST')){
+  const qaConsent=path.startsWith('/api/checkout/_qa/consent-boundary/');
+  if(qaConsent||path===CALLBACK||(path===CONSENT+'challenge'&&req.method==='POST')){
    const active=await registry.current();
    if(!active)return send(res,503,{ok:false,
     code:'R130_VERSIONED_MANIFEST_NOT_ACTIVE',
@@ -360,6 +361,7 @@ function createManifestGate({registry,fieldGate,qaAuthorized}={}){
     manifest_version:null,provider_consent_verified:false,
     provider_signature_verified:false,public_release_allowed:false});
   }
+  if(qaConsent)return qaConsentHttp(req,res,path);
   return fieldGate(req,res,path);
  };
 }

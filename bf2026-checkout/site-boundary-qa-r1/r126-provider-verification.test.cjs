@@ -104,7 +104,9 @@ test('R126 Ed25519 challenge replay/tamper protection (LOCAL PROTOCOL UNIT, NOT 
   data:{approved_read_only_observer:true,server_authenticated:true,
    source_account_host:SUBJECT.account_host}
  };
- const envelope={key_id:'BF2026_LOCAL_PROTOCOL_TEST_KEY',
+ const keyId='BF2026_'+crypto.createHash('sha256')
+  .update(publicKey.export({type:'spki',format:'der'})).digest('hex').slice(0,32).toUpperCase();
+ const envelope={key_id:keyId,
   payload,signature:crypto.sign(null,Buffer.from(JSON.stringify(payload)),privateKey).toString('base64url')};
  assert.equal(validateSignedEnvelope({envelope,action:'origin',nonce,key:publicKey}),payload);
  assert.throws(()=>validateSignedEnvelope({envelope,action:'origin',nonce:'wrong-nonce',key:publicKey}));

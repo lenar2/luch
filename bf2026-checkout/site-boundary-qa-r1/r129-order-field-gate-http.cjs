@@ -16,11 +16,11 @@ function send(res,status,value){
   'referrer-policy':'no-referrer'});
  res.end(JSON.stringify(value));
 }
-function createFieldGate({registry,consentBridge,providerHttp,qaAuthorized}={}){
+function createFieldGate({registry,consentBridge,providerHttp,qaAuthorized,consentBoundary}={}){
  if(!registry||typeof registry.ready!=='function'||
   typeof registry.status!=='function'||
   typeof consentBridge!=='function'||typeof providerHttp!=='function'||
-  typeof qaAuthorized!=='function')
+  typeof qaAuthorized!=='function'||typeof consentBoundary?.status!=='function')
   throw Error('R129_FIELD_GATE_DEPENDENCIES_REQUIRED');
  return async function fieldGate(req,res,path){
   if(path===CALLBACK){
@@ -45,13 +45,14 @@ function createFieldGate({registry,consentBridge,providerHttp,qaAuthorized}={}){
   if(!path.startsWith(CONSENT))
    return send(res,404,{ok:false,code:'NOT_FOUND'});
   if(path===CONSENT+'status'&&req.method==='GET'){
-   const info=await registry.status();
+   const [info,native]=await Promise.all([registry.status(),consentBoundary.status()]);
    return send(res,200,{ok:true,route:'R129_ORDER_FIELD_BOUND_R128_CONSENT',
     native_widget_count:12,individual_route_count:ROUTE_KEYS.length,
     qa_only_native_widget_count:2,
     order_callback_contract_verified:info.order_field_ids_verified,
-    callback_secret_configured:false, // no secret or provider proof exposed through this route
-    challenge_issuance_enabled:false, // public release remains HOLD regardless of test metadata
+    callback_secret_configured:native.callback_shared_secret_configured===true,
+    challenge_issuance_enabled:info.order_field_ids_verified===true&&
+     native.callback_shared_secret_configured===true&&native.approved_offer_revisions>0,
     order_field_ids_verified:info.order_field_ids_verified,
     postgres_ready:info.postgres_ready,field_gate_code:info.gate_code,
     client_field_22204810_accepted_as_proof:false,

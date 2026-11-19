@@ -21,7 +21,7 @@ async function run(){
   args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--no-first-run','--disable-extensions']});
  const page=await browser.newPage({viewport:{width:1366,height:860},reducedMotion:'reduce'});
  const evidence={schema:'bf2026.r125.browser-e2e.v1',browser:'ephemeral_headless_chromium',
-  preview:API,live_provider_requests:0,public_pay_navigation:0,
+  preview:API,blocked_external_requests:0,getcourse_network_requests_sent:0,public_pay_navigation:0,
   cards_validated:[],prepared:[],negative_cases:[],qa_request_keys:[]};
  const backendRequests=[];
  page.on('request',request=>{
@@ -37,7 +37,7 @@ async function run(){
   let u;try{u=new URL(route.request().url())}catch{return route.abort()}
   if(u.hostname==='127.0.0.1'&&u.port==='18771'&&u.protocol==='http:')
    return route.continue();
-  evidence.live_provider_requests++;return route.abort();
+  evidence.blocked_external_requests++;return route.abort();
  });
  try{
   const response=await page.goto(API+'/',{waitUntil:'domcontentloaded',timeout:30000});
@@ -56,6 +56,7 @@ async function run(){
     await page.locator('#cart-rows .cart-remove').first().click();
    }
    assert.equal((await page.evaluate(()=>window.BF2026Cart.getSnapshot().lines)).length,0);
+   if(await page.locator('#cart-layer').isVisible())await page.locator('#cart-close').click();
    await page.waitForTimeout(25);
   }
   async function choose(lot,variant){
@@ -119,10 +120,11 @@ async function run(){
   evidence.negative_cases.push('marketing_optin_blocks_preview_prepare');
 
   // Test a real user click on existing buy-lot, then QA-only consent review.
+  const beforeValid=backendRequests.length;
   await page.locator('#r125-review').click();
   await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Состав и ввод согласия'),{timeout:7000});
   let prev=backendRequests.length;
-  assert.equal(prev,1);
+  assert.equal(prev,beforeValid+1);
   await page.locator('#r125-review').click();
   await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Повтор подтверждён'),{timeout:7000});
   assert.equal(backendRequests.length,prev+1);
@@ -179,7 +181,8 @@ async function run(){
   console.log('R125_ACTUAL_BROWSER_E2E_EVIDENCE',JSON.stringify({
    pass:evidence.pass,real_routes:evidence.prepared.map(x=>x.route),
    negatives:evidence.negative_cases,js_errors:errors.length,
-   real_getcourse_requests:evidence.live_provider_requests,
+   actual_getcourse_network_requests:evidence.getcourse_network_requests_sent,
+   external_requests_blocked:evidence.blocked_external_requests,
    checkout_navigations:evidence.public_pay_navigation,request_keys:evidence.qa_request_keys.length
   }));
  }

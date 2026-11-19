@@ -7,6 +7,7 @@ const crypto=require('node:crypto');
 const http=require('node:http');
 const pool=require('/srv/factory-scratch/bf2026-r118-relay-stage-20261119/stage-pool-module.cjs').pool;
 const {createConsentBoundary,validNativeConsentAttestation}=require('./r127-consent-boundary.cjs');
+const {signRevisionManifest,verifySignedRevisionManifest,SCHEMA,ISSUER}=require('./r127-signed-revision-manifest.cjs');
 const {createConsentHttp}=require('./r127-consent-http.cjs');
 const enabled=process.env.BF2026_STAGE_ONLY==='1'&&
  process.env.BF2026_R127_STAGE_PORT==='18774'&&
@@ -37,6 +38,36 @@ test('R127 real PG + HTTP: nonce/order/revision/timestamp/replay, always native-
   const r=await fetch(base+path,{method,headers:h,body,redirect:'error'});
   return {status:r.status,headers:r.headers,data:await r.json()};
  }
+ await t.test('Ed25519 owner-signed revision manifest pins exact Offer and expires',async()=>{
+  const now=Date.now();
+  const {publicKey,privateKey}=crypto.generateKeyPairSync('ed25519');
+  const payload={
+   schema:SCHEMA,source:ISSUER,
+   issued_at:new Date(now-1000).toISOString(),
+   expires_at:new Date(now+86400000).toISOString(),
+   offers:{[route]:{
+    offer_id:offer,revision_sha256:revision,native_readback_verified:true,
+    readback_at:new Date(now-1000).toISOString(),
+    readback_evidence_sha256:crypto.createHash('sha256').update('TEST_FIXTURE_READBACK_ONLY').digest('hex')
+   }}
+  };
+  const signed=signRevisionManifest(payload,privateKey);
+  const verified=verifySignedRevisionManifest(signed,{publicKey,now});
+  assert.equal(verified.approved,true);
+  assert.equal(verified.signature_verified,true);
+  assert.equal(verified.offers[route].offer_id,offer);
+  assert.equal(verified.offers[route].revision_sha256,revision);
+  assert.throws(()=>verifySignedRevisionManifest({...signed,payload:{
+   ...payload,offers:{[route]:{...payload.offers[route],offer_id:8934925}}
+  }},{publicKey,now}));
+  const {publicKey:otherKey}=crypto.generateKeyPairSync('ed25519');
+  assert.throws(()=>verifySignedRevisionManifest(signed,{publicKey:otherKey,now}));
+  const expiredPayload={...payload,expires_at:new Date(now-1000).toISOString()};
+  assert.throws(()=>verifySignedRevisionManifest(signRevisionManifest(expiredPayload,privateKey),{publicKey,now}));
+  const stalePayload={...payload,offers:{[route]:{...payload.offers[route],
+   readback_at:new Date(now-31*86400000).toISOString()}}};
+  assert.throws(()=>verifySignedRevisionManifest(signRevisionManifest(stalePayload,privateKey),{publicKey,now}));
+ });
  await t.test('private auth, server-generated HttpOnly session, no browser-supplied session id',async()=>{
   assert.equal((await call('/api/checkout/_qa/consent-boundary/status',{qa:false})).status,404);
   const s=await call('/api/checkout/_qa/consent-boundary/status');

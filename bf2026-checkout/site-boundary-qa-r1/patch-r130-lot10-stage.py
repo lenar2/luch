@@ -18,8 +18,8 @@ setup=(
 anchor='const server=http.createServer(async(req,res)=>{'
 if s.count(anchor)!=1:sys.exit('R130_LOT10_SERVER_ANCHOR_UNIQUE_REQUIRED')
 s=s.replace(anchor,setup+anchor,1)
-route=" if(path.startsWith('/api/checkout/_qa/consent-boundary/'))return BF2026_R127_CONSENT_HTTP(req,res,path);"
-if s.count(route)!=1:sys.exit('R130_LOT10_R127_ANCHOR_MISSING')
+route=" if(path.startsWith('/api/checkout/_qa/consent-boundary/')||path.startsWith('/api/checkout/_qa/manifest/')"
+if s.count(route)!=1:sys.exit('R130_LOT10_R130_MANIFEST_GATE_ANCHOR_MISSING')
 s=s.replace(route,
  " if(path.startsWith('/api/checkout/_qa/set-order/')||path.startsWith('/api/checkout/set/'))return BF2026_R130_LOT10_SET_ROUTER(req,res,path);\n"+route,1)
 backup=SITE.with_name('server.js.before-r130-lot10-stage.backup')

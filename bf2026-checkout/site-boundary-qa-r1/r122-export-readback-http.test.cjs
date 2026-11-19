@@ -12,7 +12,7 @@ async function serve(t,router){
 }
 async function post(base,body,auth=true){
  const r=await fetch(base+'export-readback',{method:'POST',headers:{
-  'content-type':'application/json',...(auth?{'x-qa':key}:{})},body:JSON.stringify(body)});
+  'content-type':'application/json','x-bf2026-idempotency-key':'a'.repeat(32),...(auth?{'x-qa':key}:{})},body:JSON.stringify(body)});
  return {status:r.status,body:await r.json()};
 }
 test('R122 export-readback route fails closed until API key provider configured',async t=>{
@@ -23,7 +23,7 @@ test('R122 export-readback route fails closed until API key provider configured'
  assert.equal(status.status,503);
  const s=await status.json();assert.equal(s.export_reader_configured,false);
  const r=await post(base,{});assert.equal(r.status,503);
- assert.equal(r.body.code,'GETCOURSE_API_KEY_NOT_CONFIGURED');
+ assert.equal(r.body.code,'GETCOURSE_READBACK_SECRET_OR_LEDGER_UNCONFIGURED');
  assert.equal(r.body.receipt_verified,false);assert.equal(r.body.grants_verified,false);
 });
 test('R122 export-readback route returns only sanitized read-only order/payment fields',async t=>{
@@ -35,7 +35,8 @@ test('R122 export-readback route returns only sanitized read-only order/payment 
   order_status:'new',paid_total_rub:0,payment_record_verified:false,
   receipt_verified:true,grants_verified:true
  }}};
- const router=createQARouter({qaAuthorized:req=>req.headers['x-qa']===key,exportReader});
+ const router=createQARouter({qaAuthorized:req=>req.headers['x-qa']===key,exportReader,
+  readbackOnce:async id=>{assert.equal(id,'a'.repeat(32));return exportReader.readBundleOrderAndPayment()}});
  const base=await serve(t,router);
  const r=await post(base,{});assert.equal(r.status,200);assert.equal(calls,1);
  assert.equal(r.body.state,'VERIFIED_UNPAID_ORDER');

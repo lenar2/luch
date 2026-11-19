@@ -167,7 +167,8 @@ function createConsentBridge({
   }catch(e){
    const code=typeof e?.code==='string'&&/^R128_[A-Z0-9_]+$/.test(e.code)?e.code:
     typeof e?.code==='string'&&/^R127_[A-Z0-9_]+$/.test(e.code)?e.code:'R128_FAIL_CLOSED';
-   const status=/ORIGIN|REQUIRED/.test(code)?(code==='R128_HTTP_ONLY_SESSION_REQUIRED'?401:403):
+   const status=code==='R128_HTTP_ONLY_SESSION_REQUIRED'?401:
+    /ORIGIN/.test(code)?403:
     /NOT_IN_APPROVED/.test(code)?404:
     /CALLBACK_CONTRACT|OFFER_REVISION|SECRET|VERIFIER/.test(code)?503:
     /MISMATCH|CONFLICT/.test(code)?409:422;

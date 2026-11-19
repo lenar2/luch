@@ -16,8 +16,12 @@ const digest=x=>crypto.createHash('sha256').update(fs.readFileSync(x)).digest('h
 const productionHash=digest(path.join(ORIGIN,'server.js'));
 for(const name of ['server.js','pricing-r107.json','catalog-r110.json','offer-registry.json'])
  fs.copyFileSync(path.join(ORIGIN,name),path.join(stage,name));
+for(const name of ['site-boundary-qa-r1','dynamic-adapter-r1'])
+ fs.cpSync(path.join(ORIGIN,name),path.join(stage,name),{recursive:true});
 fs.writeFileSync(path.join(stage,'private-widget-qa.secret'),qaKey,{mode:0o600});
-cp.execFileSync('python3',[PATCH,path.join(stage,'server.js'),MOD]);
+// Current R112 source already contains the private native-order QA HTTP route.
+if(!fs.readFileSync(path.join(stage,'server.js'),'utf8').includes('BF2026_R112_NATIVE_HTTP_QA_BRIDGE'))
+ cp.execFileSync('python3',[PATCH,path.join(stage,'server.js'),MOD]);
 process.env.BF2026_ORDER_QA_ENABLED='1';
 process.env.BF2026_QA_ORDER_HMAC_HEX=hmac;
 process.env.BF_PRICING_PATH=path.join(stage,'pricing-r107.json');

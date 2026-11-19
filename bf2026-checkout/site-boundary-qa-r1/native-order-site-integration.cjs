@@ -207,6 +207,11 @@ function createNativeOrderPostgresStore(pool){
  const base=createPostgresIdempotencyStore(pool);
  return {
   ...base,
+  async getByProviderOrder(providerOrderId){
+   if(typeof providerOrderId!=='string'||!providerOrderId.trim())fail('PROVIDER_ORDER_ID_REQUIRED');
+   const r=await pool.query("SELECT checkout_idempotency_key,selection_sha256,trusted_order_payload_sha256,provider_order_id,state,paid_event_id FROM bf2026_native_checkout_idempotency WHERE scope='BF2026' AND provider_order_id=$1 LIMIT 1",[providerOrderId]);
+   return r.rows?.[0]||null;
+  },
   async bindPayload({checkoutIdempotencyKey,selectionSha256,payloadSha256,ownerToken}){
    if(!isHex(payloadSha256,64)||!isHex(selectionSha256,64))fail('BAD_ORDER_PAYLOAD_HASH');
    const r=await pool.query(

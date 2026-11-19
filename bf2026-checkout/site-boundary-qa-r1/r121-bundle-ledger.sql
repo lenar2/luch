@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS bf2026_native_bundle_verification (
 CREATE UNIQUE INDEX IF NOT EXISTS bf2026_native_bundle_unique_real_paid_event
  ON bf2026_native_bundle_verification(paid_event_id)
  WHERE state='INDEPENDENT_NATIVE_PAID_ATTESTED';
+CREATE UNIQUE INDEX IF NOT EXISTS bf2026_native_bundle_unique_paid_event
+ ON bf2026_native_bundle_verification(paid_event_id);
 COMMENT ON TABLE bf2026_native_bundle_verification IS
  'Signed independent readback hashes only; TEST_ONLY never verifies real payment.';
 COMMIT;

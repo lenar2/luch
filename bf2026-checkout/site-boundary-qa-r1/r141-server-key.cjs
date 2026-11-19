@@ -35,7 +35,7 @@ async function readNativeOrderFields({filePath,fetchImpl=globalThis.fetch,timeou
  try{
   response=await fetchImpl('https://'+ACCOUNT+'/pl/api/account/fields',{
    method:'POST',redirect:'error',headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'},
-   body:new URLSearchParams({action:'Get',key}).toString(),signal:AbortSignal.timeout(timeoutMs)});
+   body:new URLSearchParams({action:'get',key}).toString(),signal:AbortSignal.timeout(timeoutMs)});
   if(response?.status!==200)throw Error('R141_NATIVE_FIELDS_HTTP_FAILED');
   raw=await response.text();if(typeof raw!=='string'||Buffer.byteLength(raw,'utf8')>100000)throw Error('R141_NATIVE_FIELDS_RESPONSE_TOO_LARGE');
   json=JSON.parse(raw);

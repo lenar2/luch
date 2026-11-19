@@ -6,7 +6,7 @@ const {verifyCallback,ingest,createStore,SCHEMA,HOST}=require('./getcourse-callb
 function fixture(secret){
  const body={schema:SCHEMA,account_host:HOST,deal_id:'924624456',deal_number:'71994',
   offers:['8935004'],status:'payed',cost_money_value:'11690',payed_money:'11690',
-  payed_at:'2026-11-19T10:30:00.000Z',created_at:'2026-11-19T09:30:00.000Z'};
+  payed_at:new Date().toISOString(),created_at:new Date().toISOString()};
  return {rawBody:Buffer.from(JSON.stringify(body)),authorization:'Bearer '+secret.toString('hex'),
   accountHost:HOST,secret};
 }

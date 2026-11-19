@@ -116,3 +116,8 @@ New independent backend work builds on the already deployed private R112 order-p
 ## R118 live native bundle QA
 
 Live private QA endpoints for GetCourse ONE Offer 8935004 / two Products 4557988 + 4550895, native Widget1686790, 11,690 RUB, true unpaid order #71994 reported by UI worker (no grants before payment). 8/8 live site HTTP smoke PASS, 72/72 focused native/site regression PASS. Public sale remains HOLD. See `R118_NATIVE_BUNDLE_LIVE_QA_HANDOFF.md` and `r112-live-native-bundle-qa-deploy-evidence.json`. No GetCourse API writes or buyer payment.
+
+
+## BF2026 R120 — real staging PostgreSQL/HTTP replay + Import API idempotency
+
+R115 relay and event inbox were exercised in the isolated actual site stage: R115 route mounted on `127.0.0.1:18765`, separate PostgreSQL `bfstage` on host binding `127.0.0.1:55439`; R120 migration adds `bf2026_getcourse_import_ledger`. Actual HTTP handler + real PostgreSQL test: signed relay hint `202 ACCEPTED_PENDING_READBACK`, exact replay `202 DUPLICATE_PENDING_READBACK`, forged HMAC `401`, conflicting same ID / PII / spoofed source `422`; no payment/grant state. R120 import state machine persists customer-identity HMAC (not email), binds provider deal ID/number/user ID across sequential Import API steps, and prevents automatic retry after ambiguous provider timeout. Unit 13/13 and staging integration 5/5 PASS. No GetCourse API request/credentials were used; all provider responses are explicitly synthetic test fixtures. GetCourse docs do not document Import API response signatures and warn Import API is for import, not operational real-time control. See `R120_IMPORT_API_AND_STAGING_HANDOFF.md` and `R120_STAGING_INTEGRATION_EVIDENCE.json`. Public site remains `sales_ready=false`, `verified_sale_routes=0`.

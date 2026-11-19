@@ -1,0 +1,61 @@
+{
+  "schema": "bf2026.r120.staging.integration.evidence.v1",
+  "captured_utc": "2026-11-19T03:08:28.073Z",
+  "stage_server": "127.0.0.1:18765",
+  "postgres": {
+    "database": "bfstage",
+    "host_binding": "127.0.0.1:55439",
+    "server_port": 5432,
+    "r115_event_inbox_present": true,
+    "r120_import_ledger_migration_applied": true
+  },
+  "r115_http": {
+    "mounted_on_actual_stage_server": true,
+    "unauthenticated_request_rejected": 401,
+    "real_http_handler_and_postgres_inbox": true,
+    "relay_key": "EPHEMERAL_IN_MEMORY_TEST_ONLY",
+    "accepted": 202,
+    "exact_replay": 202,
+    "forged_signature": 401,
+    "conflicting_replay": 422,
+    "pii_or_source_spoof": 422,
+    "primary_rows_persisted": 1,
+    "primary_row_state": "PENDING_PROVIDER_READBACK",
+    "test_rows_cleaned": true
+  },
+  "r120_import_ledger": {
+    "real_postgres_state_machine": true,
+    "reserve": "NEW",
+    "duplicate": "IN_PROGRESS",
+    "ambiguous_timeout": "OUTCOME_UNKNOWN",
+    "automatic_retry_blocked": true,
+    "sequential_fixture": [
+      "STEP_0_CONFIRMED",
+      "ORDER_CREATED"
+    ],
+    "repeat_commit": "REPLAY",
+    "duplicate_reservation": "COMMITTED",
+    "changed_identity": "CONFLICT",
+    "test_rows_cleaned": true
+  },
+  "tests": {
+    "r119_and_r120_unit": 13,
+    "unit_pass": 13,
+    "unit_fail": 0,
+    "integration_tests": 5,
+    "integration_pass": 5,
+    "integration_fail": 0
+  },
+  "provider_api_calls": 0,
+  "provider_credentials_used": 0,
+  "real_getcourse_events": 0,
+  "synthetic_provider_responses": "TEST_FIXTURE_ONLY",
+  "provider_signature": "NOT_DOCUMENTED_BY_GETCOURSE",
+  "live_order_71994_touched": false,
+  "payments": 0,
+  "grant_writes": 0,
+  "production_writes": 0,
+  "public_release": "HOLD",
+  "sales_ready": false,
+  "verified_sale_routes": 0
+}

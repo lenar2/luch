@@ -74,7 +74,7 @@ async function run(){
    await page.locator('#r128-challenge').click();
    await page.waitForFunction(()=>
     document.getElementById('r128-result')?.textContent.includes(
-     'R129_ORDER_LEVEL_NATIVE_FIELDS_NOT_ATTESTED'),
+     'R130_VERSIONED_MANIFEST_NOT_ACTIVE'),
     null,{timeout:9000});
    assert.equal(requests.length,prior+1);
    const p=JSON.parse(requests.at(-1).post);
@@ -86,7 +86,7 @@ async function run(){
    assert.equal(Object.hasOwn(p,'provider_consent_verified'),false);
    assert.equal(await page.locator('#cart-layer .cart-checkout').isDisabled(),true);
    report.validated_routes.push({route_key:route,offer_id:offer,
-    status:'HOLD_NATIVE_ORDER_FIELD_IDS_UNSET',challenge_http_posted:true,
+    status:'HOLD_R130_VERSIONED_MANIFEST_NOT_ACTIVE',challenge_http_posted:true,
     native_payment_opened:false});
   }
   assert.deepEqual(report.validated_routes.map(x=>x.route_key),CASES.map(x=>x[1]));

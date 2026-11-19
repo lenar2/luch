@@ -71,5 +71,5 @@ test('R122 fails closed for missing key, redirect, wrong host, wrong identity, a
 test('R122 refuses broad export filters and wrong payment amount',async()=>{
  const reader=createGetCourseExportReader({apiKeyProvider:async()=>'D'.repeat(32),budget:fakeBudget(),fetchImpl:async()=>response({result:{export_id:'x'}})});
  await assert.rejects(reader.readBundleOrderAndPayment(),{code:'GETCOURSE_EXPORT_RESPONSE_SHAPE_UNKNOWN'});
- await assert.rejects(reader.startDealsExport({user_id:'1'}),{code:'GETCOURSE_EXPORT_FILTER_NOT_ALLOWED'});
+ await assert.rejects(reader.startExport('deals',{user_id:'1'}),{code:'GETCOURSE_EXPORT_DEAL_SCOPE_MUST_BE_QA_BUYER'});
 });

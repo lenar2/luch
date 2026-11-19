@@ -23,9 +23,10 @@ function validBuyerEmail(email){
  return validEmail(email)&&typeof email==='string'&&!/\s/.test(email)&&
    email===email.trim()&&email.length<=254;
 }
-function createLot10Coordinator({quoteFn,makeWorker,transport,preflight,
+function createLot10Coordinator({quoteFn,planBuilder=null,makeWorker,transport,preflight,
  nativeOrderReadback,nativeConsentReadback,allowProviderWrites=false}={}){
- if(typeof quoteFn!=='function'||typeof makeWorker!=='function'||
+ if((typeof quoteFn!=='function'&&typeof planBuilder!=='function')||
+    (planBuilder!==null&&typeof planBuilder!=='function')||typeof makeWorker!=='function'||
     typeof transport?.send!=='function'||typeof preflight!=='function'||
     typeof nativeOrderReadback!=='function'||typeof nativeConsentReadback!=='function')
   throw Error('R136_REAL_READBACK_AND_WORKER_DEPENDENCIES_REQUIRED');
@@ -70,7 +71,7 @@ function createLot10Coordinator({quoteFn,makeWorker,transport,preflight,
      typeof idempotencyKey!=='string'||!/^[a-f0-9]{64}$/.test(idempotencyKey))
    return hold('R136_BUYER_OR_SERVER_CONSENT_CHALLENGE_INVALID');
   let plan;
-  try{plan=buildSetImportPlan({selection,quoteFn})}
+  try{plan=planBuilder?planBuilder({selection,quoteFn}):buildSetImportPlan({selection,quoteFn})}
   catch{return hold('R136_SET_SELECTION_INVALID')}
   // PREPARE and external writes use original R130's PG mutex/idempotency ledger.
   let prepared;

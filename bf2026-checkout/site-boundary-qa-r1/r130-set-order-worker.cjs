@@ -19,10 +19,11 @@ function safe(row){return Object.freeze({
   public_payment_link:null,public_release_allowed:false,
   reason:row.last_error_code||'HOLD_NATIVE_ORDER_LINES_AND_CONSENT_PROOF'
  })}
-function createSetOrderWorker({pool,quoteFn,transport,
+function createSetOrderWorker({pool,quoteFn,planBuilder=null,transport,
  allowExternalWrites=false,testOnly=false,requiredNativePreflight=null}={}){
  if(!pool||typeof pool.connect!=='function'||typeof pool.query!=='function'||
-  typeof quoteFn!=='function'||typeof transport?.send!=='function')
+  (typeof quoteFn!=='function'&&typeof planBuilder!=='function')||
+  (planBuilder!==null&&typeof planBuilder!=='function')||typeof transport?.send!=='function')
   fail('R130_WORKER_DEPENDENCIES_MISSING');
  if(allowExternalWrites===true&&!testOnly&&typeof requiredNativePreflight!=='function')
   fail('R130_REAL_WRITES_REQUIRE_INDEPENDENT_PREFLIGHT');
@@ -30,7 +31,7 @@ function createSetOrderWorker({pool,quoteFn,transport,
   if(!validIntentKey(idempotencyKey)||!validEmail(email)||!validNonce(nonce)||
     !validSha(offerRevisionSha256))
    fail('R130_PREPARE_REQUIRED_SERVER_IDENTITY_OR_CONSENT_MISSING');
-  const plan=buildSetImportPlan({selection,quoteFn});
+  const plan=planBuilder?planBuilder({selection,quoteFn}):buildSetImportPlan({selection,quoteFn});
   const emailHash=sha(email.trim().toLowerCase()),nonceHash=sha(nonce);
   const inputHash=sha(JSON.stringify({email_sha256:emailHash,nonce_sha256:nonceHash,
    revision:offerRevisionSha256,plan_sha256:plan.plan_sha256}));
@@ -113,7 +114,7 @@ function createSetOrderWorker({pool,quoteFn,transport,
   if(!validIntentKey(idempotencyKey)||!validEmail(email)||
    !validNonce(nonce)||!validSha(offerRevisionSha256))
    fail('R130_ASSEMBLY_REQUIRED_IDENTITY_MISSING');
-  const plan=buildSetImportPlan({selection,quoteFn});
+  const plan=planBuilder?planBuilder({selection,quoteFn}):buildSetImportPlan({selection,quoteFn});
   const inputHash=sha(JSON.stringify({email_sha256:sha(email.trim().toLowerCase()),
    nonce_sha256:sha(nonce),revision:offerRevisionSha256,
    plan_sha256:plan.plan_sha256}));
@@ -148,7 +149,8 @@ function createSetOrderWorker({pool,quoteFn,transport,
     await client.query("UPDATE bf2026_r130_set_order_steps SET state='SEND_UNCERTAIN',sent_at=now() "+
      'WHERE intent_key=$1 AND step_index=$2',[idempotencyKey,i]);
     const payload=createImportStep({line:plan.lines[i],index:i,total:plan.items_count,
-     dealNumber:row.deal_number,email:email.trim().toLowerCase(),nonce,offerRevisionSha256});
+     dealNumber:row.deal_number,email:email.trim().toLowerCase(),nonce,offerRevisionSha256,
+     maxItems:plan.schema==='bf2026.r154.lot12.one-deal.plan.v1'?7:5});
     let ack;
     try{
      ack=await transport.send({payload,dealNumber:row.deal_number,

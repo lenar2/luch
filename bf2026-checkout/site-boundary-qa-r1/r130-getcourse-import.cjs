@@ -11,8 +11,8 @@ function validEmail(v){return typeof v==='string'&&v.length<=254&&/^[^\s@<>"']+@
 function validId(v){return typeof v==='string'&&/^[0-9]{10,18}$/.test(v)}
 function validNonce(v){return typeof v==='string'&&/^[A-Za-z0-9_-]{40,100}$/.test(v)}
 function validSha(v){return typeof v==='string'&&/^[a-f0-9]{64}$/.test(v)}
-function createImportStep({line,index,total,dealNumber,email,nonce,offerRevisionSha256}={}){
- if(!line||!Number.isInteger(index)||index<0||index>=total||total<2||total>5||
+function createImportStep({line,index,total,dealNumber,email,nonce,offerRevisionSha256,maxItems=5}={}){
+ if(!line||!Number.isInteger(index)||index<0||index>=total||total<2||![5,7].includes(maxItems)||total>maxItems||
   !validId(dealNumber)||!validEmail(email)||!validNonce(nonce)||
   !validSha(offerRevisionSha256)||!Number.isSafeInteger(line.offer_id)||
   !Number.isSafeInteger(line.discounted_line_price_rub)||line.discounted_line_price_rub<=0)

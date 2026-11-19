@@ -136,8 +136,8 @@ function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,
   if(typeof key!=='string'||key.length<20||key.length>256||/\s/.test(key))fail('GETCOURSE_API_KEY_INVALID');
   return key;
  }
- async function get(path,params){
-  const key=await apiKey();
+ async function get(path,params,providedKey){
+  const key=providedKey??await apiKey();
   const url=new URL(path,'https://'+host);
   for(const [k,v] of Object.entries(params||{}))url.searchParams.set(k,String(v));
   url.searchParams.set('key',key);
@@ -159,16 +159,18 @@ function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,
   if(kind==='deals'&&filters.user_id!==expected.userId)fail('GETCOURSE_EXPORT_DEAL_SCOPE_MUST_BE_QA_BUYER');
   if(kind==='payments'&&(!filters['created_at[from]']||filters['created_at[from]']!==filters['created_at[to]']))
    fail('GETCOURSE_EXPORT_PAYMENT_DATE_WINDOW_MUST_BE_ONE_DAY');
+  const key=await apiKey();
   await budget.claimStart();
-  const body=await get('/pl/api/account/'+kind,filters);
+  const body=await get('/pl/api/account/'+kind,filters,key);
   const id=exportIdFrom(body);
   await budget.markExport(id);
   return id;
  }
  async function poll(id){
   if(!safeId(id))fail('GETCOURSE_EXPORT_ID_MISSING_OR_INVALID');
+  const key=await apiKey();
   await budget.claimPoll(id);
-  const body=await get('/pl/api/account/exports/'+encodeURIComponent(id),{});
+  const body=await get('/pl/api/account/exports/'+encodeURIComponent(id),{},key);
   const rows=rowsFrom(body);
   if(rows){await budget.complete(id);return {state:'READY',rows};}
   if(pending(body))return {state:'PENDING',rows:null};
@@ -210,7 +212,8 @@ function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,
    payment_source:'GETCOURSE_EXPORT_API_READONLY',
    note:'Export API does not establish fiscal receipt or purchase-level Training access.'};
  }
- return Object.freeze({startDealsExport:()=>start('deals',{user_id:expected.userId}),
+ return Object.freeze({startExport:(kind,filters)=>start(kind,filters),
+  startDealsExport:()=>start('deals',{user_id:expected.userId}),
   pollExport:poll,readBundleOrderAndPayment});
 }
 module.exports={DEFAULTS,parseRub,parseIds,rowsFrom,exportIdFrom,normalizeDeal,normalizePaymentRows,

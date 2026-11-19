@@ -98,7 +98,8 @@ test('R127 real PG + HTTP: nonce/order/revision/timestamp/replay, always native-
   assert.equal(badRevision.status,409);
   const badTime=await provider({...callback(),created_at:new Date(Date.now()-30*60_000).toISOString()});
   assert.equal(badTime.status,409);
-  const ok=await provider(callback());
+  globalThis.r127ProviderPayload=callback();
+  const ok=await provider(globalThis.r127ProviderPayload);
   assert.equal(ok.status,202,JSON.stringify(ok.data));
   assert.equal(ok.data.state,'ORDER_CALLBACK_MATCHED_HOLD');
   assert.equal(ok.data.provider_order_matched,true);
@@ -114,13 +115,13 @@ test('R127 real PG + HTTP: nonce/order/revision/timestamp/replay, always native-
   assert.equal(inspect.data.public_release_allowed,false);
  });
  await t.test('exact callback replay idempotent; changed replay denied',async()=>{
-  const duplicate=await provider(callback());
+  const duplicate=await provider(globalThis.r127ProviderPayload);
   assert.equal(duplicate.status,200);assert.equal(duplicate.data.duplicate,true);
-  const changed=await provider({...callback(),deal_number:'99127002'});
+  const changed=await provider({...globalThis.r127ProviderPayload,deal_number:'99127002'});
   assert.equal(changed.status,409);
  });
  await t.test('nonce cannot be reused for a second provider order',async()=>{
-  const reuse=await provider({...callback(),deal_id:'99127002',deal_number:'99127002'});
+  const reuse=await provider({...globalThis.r127ProviderPayload,deal_id:'99127002',deal_number:'99127002'});
   assert.equal(reuse.status,409);
  });
  await t.test('PostgreSQL stores only matched order correlation and permanent HOLD',async()=>{

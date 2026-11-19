@@ -1,0 +1,301 @@
+{
+  "key_id": null,
+  "payload": {
+    "schema": "bf2026.r130.versioned-site-offer-manifest.v1",
+    "source": "BF2026_OWNER_APPROVED_NATIVE_SITE_OFFER_READBACK",
+    "registry_scope": "BF2026_SITE",
+    "version": 1,
+    "previous_manifest_sha256": null,
+    "native_map_sha256": null,
+    "route_keys": [
+      "single:devaluation",
+      "single:dnv",
+      "single:guilt",
+      "single:personal_zoom",
+      "single:rejection",
+      "single:rejection_program",
+      "single:self",
+      "single:source:1",
+      "single:source:2",
+      "single:union"
+    ],
+    "issued_at": null,
+    "expires_at": null,
+    "entries": {
+      "single:rejection": {
+        "site_entry_key": "single:rejection",
+        "route_key": "single:rejection",
+        "site_lot": 1,
+        "variant": null,
+        "widget_id": 1686768,
+        "offer_id": 8934973,
+        "amount_rub": 3333,
+        "product_training_pairs": [
+          {
+            "product_id": 4555636,
+            "training_id": 936016494
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:devaluation": {
+        "site_entry_key": "single:devaluation",
+        "route_key": "single:devaluation",
+        "site_lot": 2,
+        "variant": null,
+        "widget_id": 1686753,
+        "offer_id": 8934925,
+        "amount_rub": 3333,
+        "product_training_pairs": [
+          {
+            "product_id": 4555642,
+            "training_id": 936016504
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:self": {
+        "site_entry_key": "single:self",
+        "route_key": "single:self",
+        "site_lot": 3,
+        "variant": null,
+        "widget_id": 1686770,
+        "offer_id": 8934974,
+        "amount_rub": 3333,
+        "product_training_pairs": [
+          {
+            "product_id": 4557112,
+            "training_id": 936016509
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:guilt": {
+        "site_entry_key": "single:guilt",
+        "route_key": "single:guilt",
+        "site_lot": 4,
+        "variant": null,
+        "widget_id": 1686767,
+        "offer_id": 8934979,
+        "amount_rub": 3333,
+        "product_training_pairs": [
+          {
+            "product_id": 4557582,
+            "training_id": 936016513
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:rejection_program": {
+        "site_entry_key": "single:rejection_program",
+        "route_key": "single:rejection_program",
+        "site_lot": 5,
+        "variant": null,
+        "widget_id": 1686693,
+        "offer_id": 8933492,
+        "amount_rub": 6990,
+        "product_training_pairs": [
+          {
+            "product_id": 4557988,
+            "training_id": 936022301
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": "Исцеление отвержения",
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:dnv": {
+        "site_entry_key": "single:dnv",
+        "route_key": "single:dnv",
+        "site_lot": 6,
+        "variant": null,
+        "widget_id": 1686740,
+        "offer_id": 8934207,
+        "amount_rub": 7200,
+        "product_training_pairs": [
+          {
+            "product_id": 4550894,
+            "training_id": 583995140
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:union": {
+        "site_entry_key": "single:union",
+        "route_key": "single:union",
+        "site_lot": 7,
+        "variant": null,
+        "widget_id": 1686738,
+        "offer_id": 8919715,
+        "amount_rub": 6000,
+        "product_training_pairs": [
+          {
+            "product_id": 4550895,
+            "training_id": 933861292
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:source:1": {
+        "site_entry_key": "single:source:1",
+        "route_key": "single:source:1",
+        "site_lot": 9,
+        "variant": "1",
+        "widget_id": 1686741,
+        "offer_id": 8934262,
+        "amount_rub": 6000,
+        "product_training_pairs": [
+          {
+            "product_id": 4550889,
+            "training_id": 934905122
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:source:2": {
+        "site_entry_key": "single:source:2",
+        "route_key": "single:source:2",
+        "site_lot": 9,
+        "variant": "2",
+        "widget_id": 1686774,
+        "offer_id": 8934987,
+        "amount_rub": 10000,
+        "product_training_pairs": [
+          {
+            "product_id": 4550889,
+            "training_id": 934905122
+          },
+          {
+            "product_id": 4550891,
+            "training_id": 934905123
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:personal_zoom": {
+        "site_entry_key": "single:personal_zoom",
+        "route_key": "single:personal_zoom",
+        "site_lot": 12,
+        "variant": null,
+        "widget_id": 1686776,
+        "offer_id": 8934993,
+        "amount_rub": 80000,
+        "product_training_pairs": [
+          {
+            "product_id": 4559058,
+            "training_id": null
+          }
+        ],
+        "fulfillment": "3_ZOOM_SESSIONS_NO_TRAINING",
+        "customer_title": null,
+        "route_status": "INDIVIDUAL_QA_ONLY",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "trainer_qa_only": {
+        "site_entry_key": "trainer_qa_only",
+        "route_key": null,
+        "site_lot": 8,
+        "variant": null,
+        "widget_id": 1686781,
+        "offer_id": 8934247,
+        "amount_rub": 28000,
+        "product_training_pairs": [
+          {
+            "product_id": 4550897,
+            "training_id": 935051957
+          }
+        ],
+        "fulfillment": "FULL_TRAINER_WITH_PROMOTION",
+        "customer_title": null,
+        "route_status": "QA_ONLY_NOT_IN_R123_SINGLE_ALLOWLIST",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "bundle_qa_only": {
+        "site_entry_key": "bundle_qa_only",
+        "route_key": null,
+        "site_lot": null,
+        "variant": null,
+        "widget_id": 1686790,
+        "offer_id": 8935004,
+        "amount_rub": 11690,
+        "product_training_pairs": [
+          {
+            "product_id": 4557988,
+            "training_id": 936022301
+          },
+          {
+            "product_id": 4550895,
+            "training_id": 933861292
+          }
+        ],
+        "fulfillment": null,
+        "customer_title": null,
+        "route_status": "QA_ONLY_NOT_IN_R123_SINGLE_ALLOWLIST",
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      }
+    }
+  },
+  "signature": null,
+  "notes": "TEMPLATE ONLY. All 12 revision hashes, native readback booleans/timestamps/evidence, pinned owner key, signature and dates are deliberately unset. Obtain owner-authorized native GetCourse readbacks first. Route entries must exactly match the separately owner-signed R127 10-route manifest. Do not sign or register this template."
+}

@@ -24,29 +24,27 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
   },body:JSON.stringify(body),redirect:'error'});
   return {status:r.status,data:await r.json(),headers:r.headers};
  }
- await t.test('QA routes require auth and no real revision/callback secret is configured',async()=>{
-  assert.equal((await get('/api/checkout/_qa/consent-boundary/status',false)).status,404);
-  const s=await get('/api/checkout/_qa/consent-boundary/status');
+ await t.test('R130 versioned manifest status is private and no owner trust/config is installed',async()=>{
+  assert.equal((await get('/api/checkout/_qa/manifest/status',false)).status,404);
+  const s=await get('/api/checkout/_qa/manifest/status');
   assert.equal(s.status,200);
   assert.equal(s.data.postgres_ready,true);
-  assert.equal(s.data.approved_offer_revisions,0);
-  assert.equal(s.data.callback_shared_secret_configured,false);
-  assert.equal(s.data.provider_native_consent_verifier_configured,false);
-  assert.equal(s.data.provider_native_unchecked_submit_negative_test_verified,false);
-  assert.equal(s.data.legacy_user_custom_field_22204810_accepted_as_proof,false);
+  assert.equal(s.data.trust_root_configured,false);
+  assert.equal(s.data.r127_route_manifest_verified,false);
+  assert.equal(s.data.manifest_active,false);
+  assert.equal(s.data.manifest_version,null);
+  assert.equal(s.data.site_entry_count,12);
+  assert.equal(s.data.individual_route_count,10);
   assert.equal(s.data.public_release_allowed,false);
  });
- await t.test('session can be issued but challenge fails without owner-approved offer revision',async()=>{
-  const sessionResponse=await fetch(base+'/api/checkout/_qa/consent-boundary/session',{method:'POST',headers:{'x-bf2026-qa-key':key},redirect:'error'});
-  const session={status:sessionResponse.status,data:await sessionResponse.json(),headers:sessionResponse.headers};
-  assert.equal(session.status,201);
-  const cookie=session.headers.get('set-cookie').split(';')[0];
-  assert.match(session.headers.get('set-cookie'),/HttpOnly/);
-  assert.match(session.headers.get('set-cookie'),/Secure/);
-  const challenge=await post('/api/checkout/_qa/consent-boundary/challenge',{route_key:'single:rejection'},{cookie});
-  assert.equal(challenge.status,503);
-  assert.equal(challenge.data.code,'R127_OFFER_REVISION_NOT_OWNER_VERIFIED');
-  assert.equal(challenge.data.provider_consent_verified,false);
+ await t.test('private R127 session/challenge cannot bypass missing R130 signed manifest',async()=>{
+  const response=await fetch(base+'/api/checkout/_qa/consent-boundary/session',{
+   method:'POST',headers:{'x-bf2026-qa-key':key},redirect:'error'
+  });
+  const result={status:response.status,data:await response.json()};
+  assert.equal(result.status,503);
+  assert.equal(result.data.code,'R130_VERSIONED_MANIFEST_NOT_ACTIVE');
+  assert.equal(result.data.public_release_allowed,false);
  });
  await t.test('GetCourse callback route remains disabled without private server-only secret',async()=>{
   const response=await fetch(base+'/api/checkout/_provider/getcourse/order-created',{method:'POST',
@@ -60,10 +58,8 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
   // R129's stricter owner-signed ORDER-field gateway deliberately denies
   // before R127 can even inspect its shared callback secret. Both states
   // must fail closed and neither can prove native consent or payment.
-  assert.ok([
-   'HOLD_PROVIDER_CALLBACK_SECRET_NOT_CONFIGURED',
-   'HOLD_NATIVE_GETCOURSE_ORDER_FIELD_IDS_OR_CALLBACK_CONFIG'
-  ].includes(r.data.state));
+  assert.equal(r.data.code,'R130_VERSIONED_MANIFEST_NOT_ACTIVE');
+  assert.equal(r.data.state,'HOLD_OWNER_SIGNED_12_ENTRY_MANIFEST_OR_R127_ROUTE_REVISION');
   assert.notEqual(r.data.public_release_allowed,true);
  });
  await t.test('direct public checkout/start cannot trust fake client consent/JS/provider flags',async()=>{

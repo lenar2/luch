@@ -353,6 +353,7 @@ function createManifestGate({registry,fieldGate,qaConsentHttp,qaAuthorized}={}){
    return send(res,status.postgres_ready?200:503,{ok:true,...status});
   }
   const qaConsent=path.startsWith('/api/checkout/_qa/consent-boundary/');
+  if(qaConsent&&!qaAuthorized(req))return qaConsentHttp(req,res,path);
   if(qaConsent||path===CALLBACK||(path===CONSENT+'challenge'&&req.method==='POST')){
    const active=await registry.current();
    if(!active)return send(res,503,{ok:false,

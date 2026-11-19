@@ -9,7 +9,8 @@ const {strictConfig,safeResult,routeGate,validateNativeReceiptAndGrants,
 const {stageMetadata}=require('./r124-stage-training-overlay.cjs');
 const fs=require('node:fs');
 const path=require('node:path');
-const {validateSignedEnvelope,createSignedReadOnlyObserver,readApprovedKey}=require('./r126-signed-native-observer.cjs');
+const crypto=require('node:crypto');
+const {validateSignedEnvelope,createSignedReadOnlyObserver,readApprovedKey,SCHEMA}=require('./r126-signed-native-observer.cjs');
 const {createConfiguredObserver}=require('./r126-approved-observer-loader.cjs');
 const DIR='/srv/factory-scratch/bf2026-r118-relay-stage-20261119';
 test('R126 default no native provider, feature keys disabled',()=>{
@@ -88,4 +89,28 @@ test('R126 native observer loader stays OFF unless explicitly provisioned, fail 
   {code:'R126_OBSERVER_PARENT_FLAG_REQUIRED'});
  assert.throws(()=>createConfiguredObserver({BF2026_R126_NATIVE_OBSERVER_ENABLED:'1',
   BF2026_R126_PROVIDER_VERIFY_ENABLED:'1'}),{code:'R126_OBSERVER_PUBLIC_KEY_FILE_REQUIRED'});
+});
+
+test('R126 Ed25519 challenge replay/tamper protection (LOCAL PROTOCOL UNIT, NOT NATIVE PROOF)',()=>{
+ const {publicKey,privateKey}=crypto.generateKeyPairSync('ed25519');
+ const nonce=crypto.randomBytes(24).toString('hex');
+ const payload={
+  schema:SCHEMA,action:'origin',nonce,
+  issuer:'BF2026_OWNER_APPROVED_READONLY_NATIVE_OBSERVER',
+  account_host:SUBJECT.account_host,qa_user_id:SUBJECT.qa_user_id,
+  order_number:SUBJECT.order_number,deal_id:SUBJECT.deal_id,
+  offer_id:SUBJECT.offer_id,amount_rub:SUBJECT.amount_rub,
+  observed_at:new Date().toISOString(),
+  data:{approved_read_only_observer:true,server_authenticated:true,
+   source_account_host:SUBJECT.account_host}
+ };
+ const envelope={key_id:'BF2026_LOCAL_PROTOCOL_TEST_KEY',
+  payload,signature:crypto.sign(null,Buffer.from(JSON.stringify(payload)),privateKey).toString('base64url')};
+ assert.equal(validateSignedEnvelope({envelope,action:'origin',nonce,key:publicKey}),payload);
+ assert.throws(()=>validateSignedEnvelope({envelope,action:'origin',nonce:'wrong-nonce',key:publicKey}));
+ assert.throws(()=>validateSignedEnvelope({envelope:{
+  ...envelope,payload:{...payload,amount_rub:12990}
+ },action:'origin',nonce,key:publicKey}));
+ assert.throws(()=>validateSignedEnvelope({envelope,action:'origin',nonce,key:publicKey,
+  clock:()=>Date.now()+3600_000}));
 });

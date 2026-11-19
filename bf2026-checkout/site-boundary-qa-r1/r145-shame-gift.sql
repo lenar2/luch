@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS bf2026_r145_shame_gift_outbox (
     'READY','GRANTING','GRANTED','ALREADY_ENTITLED','REFUNDED_NO_GRANT',
     'REFUND_AFTER_GRANT_REVIEW','RECONCILIATION_REQUIRED','HOLD')),
   attempt_count integer NOT NULL DEFAULT 0 CHECK (attempt_count>=0),
+  provider_write_attempt_count integer NOT NULL DEFAULT 0 CHECK (provider_write_attempt_count>=0),
   lease_until timestamptz,
   provider_grant_id text,
   access_from timestamptz,

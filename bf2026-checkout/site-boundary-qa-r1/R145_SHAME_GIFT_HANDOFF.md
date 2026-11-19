@@ -25,7 +25,7 @@ The prior local 12/12 pure eligibility guard did not provide a durable buyer led
 
 ## What R145 adds
 
-- `r145-shame-gift.cjs`: strict activation manifest validation; Moscow-time window; callback hint normalization; independent native paid/refund readback contract; encrypted-at-rest buyer ID; PostgreSQL transaction store; unique buyer+Training gift outbox; one callback event key; row-locked `SKIP LOCKED` worker; stable provider idempotency key; pre-grant and post-grant entitlement readbacks.
+- `r145-shame-gift.cjs`: strict activation manifest validation; Moscow-time window; callback hint normalization; independent native paid/refund readback contract; encrypted-at-rest buyer ID; PostgreSQL transaction store; unique buyer+Training gift outbox; one callback event key; row-locked `SKIP LOCKED` worker; separate durable provider-write-attempt counter; stable provider idempotency key; pre-grant and post-grant entitlement readbacks.
 - `r145-shame-gift.sql`: additive event ledger + durable grant outbox. **Migration is not applied anywhere.**
 - `r145-shame-gift.test.cjs`: 22 deterministic unit/query-contract tests using an in-memory store and synthetic provider adapter. No real GetCourse call or entitlement write.
 
@@ -36,7 +36,7 @@ The prior local 12/12 pure eligibility guard did not provide a durable buyer led
 3. A database unique constraint allows one gift per GetCourse buyer + Training, even across multiple BF orders. Callback event replay with identical digest is a duplicate; changed content under the same event ID is a conflict.
 4. Buyer ID is encrypted with AES-256-GCM before PostgreSQL persistence; only its SHA-256 is used for uniqueness.
 5. The worker re-reads the paid order immediately before grant, reads current Training entitlement first, writes only through an injected owner-approved native provider adapter, then independently reads back the exact active Training entitlement before marking `GRANTED`.
-6. If a process restarts after an ambiguous provider write and native entitlement is absent, the worker will NOT blindly repeat unless the provider's idempotency-key behavior is independently verified. It then holds for reconciliation. If provider idempotency is verified, retries reuse the same stable key.
+6. Worker claim attempts and provider-write attempts are counted separately, so a failed pre-grant readback does not consume a grant attempt. If a process restarts after an ambiguous provider write and native entitlement is absent, the worker will NOT blindly repeat unless the provider's idempotency-key behavior is independently verified. It then holds for reconciliation. If provider idempotency is verified, retries reuse the same stable key.
 7. A refund/chargeback before grant marks `REFUNDED_NO_GRANT` and removes the row from retry. A refund after an already verified grant becomes `REFUND_AFTER_GRANT_REVIEW`; automatic revocation is deliberately not implemented until the owner separately approves and verifies a native revoke capability.
 8. The gift does not alter order pricing, create an Offer/order, send email, send marketing, or infer marketing consent.
 

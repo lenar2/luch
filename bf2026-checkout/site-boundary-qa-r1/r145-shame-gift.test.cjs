@@ -28,12 +28,13 @@ class FakeStore{
   const old=this.events.get(event.event_id);if(old){if(old!==event.raw_sha256){const e=Error('R145_CALLBACK_REPLAY_PAYLOAD_CONFLICT');e.code='R145_CALLBACK_REPLAY_PAYLOAD_CONFLICT';throw e;}return {status:'DUPLICATE_CALLBACK',duplicate:true};}
   this.events.set(event.event_id,event.raw_sha256);
   const existing=this.grants.get(gift.buyer_id_sha256);if(existing)return {status:'BUYER_ALREADY_CLAIMED',duplicate:false,existing_state:existing.state};
-  this.grants.set(gift.buyer_id_sha256,{...gift,source_event_id:event.event_id,state:'READY',attempt_count:0,lease_until:0});return {status:'QUEUED_NOT_GRANTED',duplicate:false,gift_key:gift.gift_key};
+  this.grants.set(gift.buyer_id_sha256,{...gift,source_event_id:event.event_id,state:'READY',attempt_count:0,provider_write_attempt_count:0,lease_until:0});return {status:'QUEUED_NOT_GRANTED',duplicate:false,gift_key:gift.gift_key};
  }
  async claimNext(now=NOW){const row=[...this.grants.values()].find(x=>x.state==='READY'||x.state==='RECONCILIATION_REQUIRED'||(x.state==='GRANTING'&&x.lease_until<=now));if(!row)return null;row.state='GRANTING';row.attempt_count++;row.lease_until=now+120000;return {...row};}
  async markState(key,state,details={}){const row=[...this.grants.values()].find(x=>x.gift_key===key);if(!row)return false;row.state=state;row.lease_until=0;Object.assign(row,details);return true;}
  async recordRefund({orderId,buyerHash,evidenceSha,eventId,rawSha}){const old=this.events.get(eventId);if(old){assert.equal(old,rawSha);return {updated:0,duplicate:true,states:[]};}this.events.set(eventId,rawSha);const row=this.grants.get(buyerHash);if(!row||row.source_order_id!==orderId)return {updated:0,duplicate:false,states:[]};row.state=row.state==='GRANTED'?'REFUND_AFTER_GRANT_REVIEW':'REFUNDED_NO_GRANT';row.lease_until=0;row.last_code='R145_NATIVE_REFUND_CONFIRMED:'+evidenceSha;return {updated:1,duplicate:false,states:[row.state]};}
- async getState(key){const row=[...this.grants.values()].find(x=>x.gift_key===key);return row?{state:row.state,attempt_count:row.attempt_count}:null;}
+ async getState(key){const row=[...this.grants.values()].find(x=>x.gift_key===key);return row?{state:row.state,attempt_count:row.attempt_count,provider_write_attempt_count:row.provider_write_attempt_count}:null;}
+ async recordProviderWriteAttempt(key){const row=[...this.grants.values()].find(x=>x.gift_key===key);if(!row||row.state!=='GRANTING')return 0;row.provider_write_attempt_count++;return row.provider_write_attempt_count;}
 }
 function coordinator({store=new FakeStore(),cfg=activation(),currentOrder=order(),adapter=null,now=NOW}={}){
  return {store,instance:R.createGiftCoordinator({store,activationProvider:()=>cfg,readNativeOrder:async()=>currentOrder,userIdEncryptionKeyProvider:()=>KEY,providerAdapter:adapter,clock:()=>now})};
@@ -171,4 +172,12 @@ test('PostgreSQL refund transaction cancels reconciliation retries and flags alr
  const r=await store.recordRefund({orderId:'9001',buyerHash:'a'.repeat(64),evidenceSha:'b'.repeat(64),eventId:'c'.repeat(64),rawSha:'d'.repeat(64)});
  assert.equal(r.updated,1);assert.ok(sql.some(x=>x.includes("'REFUND_AFTER_GRANT_REVIEW'")));
  assert.ok(sql.some(x=>x.includes("'RECONCILIATION_REQUIRED','HOLD'")));
+});
+
+test('pre-grant readback failure does not consume the provider write attempt budget',async()=>{
+ const store=new FakeStore();let reads=0,writes=0,active=false;const adapter={capabilities:{native_grant_write_verified:true,native_entitlement_readback_verified:true},readGiftEntitlement:async()=>active?activeEntitlement():notFound(),grantGiftAccess:async()=>{writes++;active=true;return {accepted:true,native_grant_id:'1234567'};}};
+ const instance=R.createGiftCoordinator({store,activationProvider:()=>activation(),readNativeOrder:async()=>{reads++;if(reads===2)throw Error('temporary readback failure');return order();},userIdEncryptionKeyProvider:()=>KEY,providerAdapter:adapter,clock:()=>NOW});
+ await instance.processCallbackHint(hint());
+ assert.equal((await instance.drainOne()).code,'R145_PRE_GRANT_PAYMENT_READBACK_FAILED');
+ assert.equal((await instance.drainOne()).grant_writes_verified,1);assert.equal(writes,1);
 });

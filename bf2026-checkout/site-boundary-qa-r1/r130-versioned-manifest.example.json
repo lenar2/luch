@@ -6,7 +6,7 @@
     "registry_scope": "BF2026_SITE",
     "version": 1,
     "previous_manifest_sha256": null,
-    "native_map_sha256": null,
+    "native_map_sha256": "f4e5d8505e74952e09d9a7f5d1d098eb4d4425d0a17b378ab68f4ba9d9d010b6",
     "route_keys": [
       "single:devaluation",
       "single:dnv",

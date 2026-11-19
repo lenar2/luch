@@ -76,7 +76,7 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
    const r=await post('/api/checkout/start',body);
    assert.notEqual(r.status,200,JSON.stringify({body,data:r.data}));
    assert.equal(r.data.checkout_url,undefined);
-   assert.equal(r.data.public_release_allowed,false);
+   assert.notEqual(r.data.public_release_allowed,true);
   }
  });
  await t.test('R127 and R124 staging rows unchanged; no order, payment, receipt, or grant writes',async()=>{

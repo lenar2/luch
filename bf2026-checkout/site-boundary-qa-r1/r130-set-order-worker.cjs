@@ -103,7 +103,11 @@ function createSetOrderWorker({pool,quoteFn,transport,
     allowed?.provider_side_consent_enforced!==true||
     allowed?.buyer_order_specific_consent_verified!==true||
     allowed?.write_api_key_owner_approved!==true||
-    allowed?.source_provider_identity_verified!==true)
+    allowed?.source_provider_identity_verified!==true||
+    // GetCourse may send an automatic email when the Order is created:
+    // never test this connector using an uncontrolled real customer.
+    allowed?.owner_controlled_qa_buyer_verified!==true||
+    allowed?.provider_order_notification_behavior_owner_approved!==true)
     fail('R130_LIVE_ORDER_PREFLIGHT_UNVERIFIED');
   }
   if(!validIntentKey(idempotencyKey)||!validEmail(email)||

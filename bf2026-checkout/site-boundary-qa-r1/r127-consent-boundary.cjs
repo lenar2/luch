@@ -48,11 +48,12 @@ function parseRub(v){
  return null;
 }
 function validateRevisionManifest(manifest,{allowTestFixture=false}={}){
+ const trustedSource=manifest?.source==='OWNER_APPROVED_NATIVE_OFFER_REVISION_READBACK'
+  ?manifest.signature_verified===true
+  :(allowTestFixture&&manifest?.source==='TEST_FIXTURE_ONLY');
  if(!manifest||typeof manifest!=='object'||Array.isArray(manifest)||
   manifest.schema!=='bf2026.r127.offer-revisions.v1'||manifest.approved!==true||
-  !['OWNER_APPROVED_NATIVE_OFFER_REVISION_READBACK',
-    ...(allowTestFixture?['TEST_FIXTURE_ONLY']:[])].includes(manifest.source)||
-  !manifest.offers||typeof manifest.offers!=='object'||Array.isArray(manifest.offers))
+  !trustedSource||!manifest.offers||typeof manifest.offers!=='object'||Array.isArray(manifest.offers))
   return Object.freeze({});
  const out={};
  for(const [key,row] of Object.entries(manifest.offers)){
@@ -76,8 +77,8 @@ function readOwnerPrivateFile(filePath,{maxBytes=16384,uid=process.getuid?.()}={
  }catch{return null}
 }
 function loadRevisionManifest(env=process.env){
- const raw=readOwnerPrivateFile(env.BF2026_R127_REVISION_MANIFEST_FILE,{maxBytes:32768});
- if(!raw)return null;try{return JSON.parse(raw)}catch{return null}
+ try{return require('./r127-signed-revision-manifest.cjs').loadSignedRevisionManifest(env)}
+ catch{return null}
 }
 function loadCallbackSecret(env=process.env){
  const raw=readOwnerPrivateFile(env.BF2026_R127_CALLBACK_SECRET_FILE,{maxBytes:4096});

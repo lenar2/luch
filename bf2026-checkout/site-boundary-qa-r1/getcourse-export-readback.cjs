@@ -220,6 +220,10 @@ function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,
   const matches=deals.rows.filter(r=>String(r?.deal_number??r?.number??'')===expected.orderNumber||
    String(r?.id??r?.deal_id??'')===expected.dealId);
   if(matches.length!==1)fail(matches.length?'GETCOURSE_DEAL_DUPLICATE_MATCH':'GETCOURSE_DEAL_NOT_FOUND');
+  if(strictProductIdentity){
+   if(String(matches[0]?.user_id??'')!==expected.userId)fail('GETCOURSE_EXPORT_QA_BUYER_ID_MISSING_OR_MISMATCHED');
+   if(matches[0]?.account_host!==expected.host)fail('GETCOURSE_EXPORT_ACCOUNT_HOST_NOT_ATTESTED');
+  }
   const deal=normalizeDeal(matches[0],expected);
   const productIdentity=validateExportProductIdentity(matches[0]);
   if(strictProductIdentity&&!productIdentity.product_identity_verified)

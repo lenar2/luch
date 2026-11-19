@@ -103,7 +103,10 @@ function createConsentBridge({
  function originAllowed(req){return req.headers.origin===allowedOrigin}
  async function handle(req,res,path){
   if(!path.startsWith(PREFIX))return send(res,404,{ok:false,code:'NOT_FOUND'});
-  if(!originAllowed(req))return send(res,403,{ok:false,code:'R128_ORIGIN_REQUIRED'});
+  if(req.headers.origin!==undefined&&req.headers.origin!==allowedOrigin)
+   return send(res,403,{ok:false,code:'R128_ORIGIN_DENIED'});
+  if(req.method==='POST'&&!originAllowed(req))
+   return send(res,403,{ok:false,code:'R128_ORIGIN_REQUIRED'});
   if(!rateAllowed(req))return send(res,429,{ok:false,code:'R128_RATE_LIMITED'});
   const action=path.slice(PREFIX.length);
   try{

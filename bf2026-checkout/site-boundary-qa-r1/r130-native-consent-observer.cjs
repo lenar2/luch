@@ -85,6 +85,7 @@ function verifyEnvelope(envelope,{action,nonce,publicKey,callback,challenge,cloc
 }
 function createNativeConsentVerifier({transport,publicKey,clock=()=>Date.now()}={}){
  if(!transport||typeof transport!=='object'||
+  (Object.getPrototypeOf(transport)!==Object.prototype&&Object.getPrototypeOf(transport)!==null)||
   transport.kind!=='BF2026_GETCOURSE_NATIVE_CONSENT_READONLY_V1'||
   transport.readOnly!==true||transport.mutationMethodsAvailable!==false||
   !exactKeys(transport,['kind','readOnly','mutationMethodsAvailable',
@@ -120,13 +121,17 @@ function createNativeConsentVerifier({transport,publicKey,clock=()=>Date.now()}=
      account_host:HOST,deal_id:String(callback.deal_id),
      deal_number:String(callback.deal_number),offer_id:challenge.offer_id,
      offer_revision_sha256:challenge.offer_revision_sha256,
+     widget_id:challenge.widget_id,route_key:challenge.route_key,
      native_consent_scope:'SYSTEM_OFFER_CHECKBOX',
      native_consent_accepted:true,native_field_22204810_used_as_proof:false,
+     native_readback_sha256:order.readback_evidence_sha256,
      observed_at:order.observed_at,
      provider_negative_test:{
       source:'GETCOURSE_NATIVE_UNCHECKED_SUBMIT_TEST',
       result:'REJECTED_BEFORE_ORDER_CREATION',
       report_sha256:negative.report_sha256,
+      provider_response_sha256:negative.provider_response_sha256,
+      test_run_id:negative.test_run_id,
       observed_at:negative.observed_at
      },
      public_release_allowed:false

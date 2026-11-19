@@ -30,7 +30,13 @@ R130 adds that missing layer. The 12 records mean 12 mapped **site entries**, no
   - Explicit one-shot staging-only registration CLI. Requires `BF2026_STAGE_ONLY=1`, `BF2026_R130_APPLY_MANIFEST=1`, exact stage DB pool path, owner-private R130 public key + signed 12-entry manifest, and independently verified R127 route manifest.
   - Genesis version 1 requires null previous hash. Later versions must be exactly previous+1, carry the exact current previous-manifest hash, and have strictly increasing issue time. Exact same-version/same-hash retry is idempotent; same/lower version with a different hash, skipped version or wrong previous hash is rejected.
 - `r130-stage.env.example`
-  - Owner-private paths only; apply disabled. No keys or credentials.
+  - Owner-private paths only; apply disabled. Optional native-consent observer is explicitly OFF.
+- `r130-native-consent-observer.cjs`
+  - Optional R127-compatible verifier backed only by a fixed-path, owner-private, audited read-only transport. It requires two fresh Ed25519-signed readbacks bound to the same R127 nonce, order, Offer, Widget and revision: native SYSTEM offer-checkbox acceptance, plus a separate previously executed unchecked-submit negative-test report showing rejection before order creation. It never submits a form, creates an order, calls GetCourse directly, or accepts USER field 22204810 as proof. Observer signature authenticates the owner observer, **not GetCourse**. Any missing/invalid/expired response returns null and leaves consent HOLD.
+- `r130-native-consent-observer.test.cjs`
+  - Six unit tests: valid R127-compatible attestation, wrong order/Offer/revision, missing or false native consent, USER-field substitution, missing/failed unchecked-submit report, wrong key/tamper, stale evidence, nonce replay, mutable transport rejection and default-off behavior.
+- `patch-r130-native-consent-observer.py`
+  - One-shot patch for the exact R130 staging server to wire the optional verifier into R127. With the flag unset or owner-private files absent, loader returns null. No live provider call is made.
 - `patch-r130-stage.py`
   - One-shot source-anchored patch for only `/srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js`. Refuses production/other paths and duplicate patching.
 - `r130-versioned-manifest.test.cjs`
@@ -44,6 +50,7 @@ R130 adds that missing layer. The 12 records mean 12 mapped **site entries**, no
 
 - `r127-consent-boundary.cjs`: optional R130 manifest binding is inserted into the **same** R127 challenge row as the nonce. R130 callback guard runs **inside the existing R127 PostgreSQL callback transaction** after `SELECT … FOR UPDATE`; it locks the current manifest head `FOR SHARE` and requires exact current version/hash, site entry, route, Offer, Widget, amount and revision SHA. Old-manifest nonce callbacks are stale after a version rotation. Legacy R127 tests without an R130 binding remain supported.
 - `r127-consent-http.cjs`: stale R130 nonce linkage maps to HTTP 409.
+- `patch-r130-stage.py`: fresh R129 stage patch now wires the optional native-consent verifier loader, default OFF.
 - `r127-stage.integration.test.cjs`, `r129-stage.integration.test.cjs`, `r129-browser-preview.e2e.cjs`: regressions now expect the stricter R130 manifest HOLD before R129 field/callback gates.
 
 ## HTTP order of enforcement
@@ -63,9 +70,9 @@ The 12 entries are:
 
 - R130 migration applied successfully to the existing isolated PostgreSQL16.
 - R130 one-shot stage patch applied to the existing isolated R129 server; backup: `server.js.before-r130-stage.backup`.
-- R130 site server restarted: **127.0.0.1:18774**, PID **2512732**.
+- R130 site server restarted after the optional adapter hook was wired: **127.0.0.1:18774**, PID **2802941**. Observer enable flag is absent/OFF.
 - Existing isolated R128 storefront preview remains **127.0.0.1:18775**, PID **2299919**. Independent R126 stage remains **127.0.0.1:18773**, PID **1738222**.
-- Actual runtime has **no** `BF2026_R130_VERSIONED_PUBLIC_KEY_FILE`, `BF2026_R130_VERSIONED_MANIFEST_FILE`, R127 signed route manifest or R129 owner config. Private-file check confirmed all corresponding files absent.
+- Actual runtime has **no** R130 manifest public key/file, R127 signed route manifest/key, R129 owner config/key, R130 native-consent observer public key or fixed-path observer transport. `BF2026_R130_NATIVE_CONSENT_OBSERVER_ENABLED` is absent/OFF; loader returns null. Private-file checks confirmed all corresponding files absent.
 - Actual R130 PostgreSQL scope `BF2026_SITE`: no head/history row. Test scope `BF2026_R130_TEST`: no head/history row after cleanup. R127 challenges **0**, R124 intents **0**, R123 readbacks **0**, native bundle verifications **0**, callback hints **0**. GetCourse Export budget **0**, outstanding export NULL.
 - R129 fields remain `consent_nonce.field_id=NULL`, `offer_revision_sha256.field_id=NULL`, state `UNVERIFIED`; native Process ID NULL/UNVERIFIED.
 - Actual `/api/checkout/consent/status`: challenge issuance false, callback contract false, provider signature false, provider unchecked-consent negative test false, public release false.
@@ -75,12 +82,13 @@ The 12 entries are:
 
 ## Tests actually run
 
-**31/31 Node tests PASS**:
+**37/37 Node tests PASS**:
 - R130 unit: 5/5.
 - R130 PG16 + real loopback HTTP + fresh-process persistence: 1/1.
-- R130 actual 18774 stage HTTP/PG: 1/1.
+- R130 actual 18774 stage HTTP/PG: 1/1 (re-run after optional observer wiring).
+- R130 native-consent observer adapter: 6/6.
 - R127 actual stage regression: 6/6.
-- R129 actual site + preview + PG regression: 7/7.
+- R129 actual site + preview + PG regression: 7/7 (re-run after optional observer wiring).
 - R127 real PG/HTTP protocol regression: 10/10.
 - R128 ten-route challenge/callback regression: 1/1.
 

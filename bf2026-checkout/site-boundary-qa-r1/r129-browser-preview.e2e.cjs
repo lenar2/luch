@@ -103,8 +103,8 @@ async function run(){
     headers:{'content-type':'application/json'},body:'{}'});
    return {status:response.status,text:await response.text()};
   });
-  assert.equal(direct.status,404);
-  report.negative_scenarios.push('preview_denies_provider_callback_proxy');
+  assert.equal(direct.status,405);
+  report.negative_scenarios.push('preview_denies_provider_callback_proxy_METHOD_NOT_ALLOWED');
   assert.equal(errors.length,0,JSON.stringify(errors));
   assert.equal(navigation.every(x=>x.startsWith(API)),true);
   report.blocked_external_requests=externalBlocked.length;

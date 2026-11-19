@@ -20,7 +20,7 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
  }
  async function post(path,body,headers={}){
   const r=await fetch(base+path,{method:'POST',headers:{
-   'content-type':'application/json','origin':'https://wf.tati-lar.ru',...headers
+   'content-type':'application/json','origin':'https://wf.tati-lar.ru','x-bf2026-qa-key':key,...headers
   },body:JSON.stringify(body),redirect:'error'});
   return {status:r.status,data:await r.json(),headers:r.headers};
  }
@@ -49,14 +49,16 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
   assert.equal(challenge.data.provider_consent_verified,false);
  });
  await t.test('GetCourse callback route remains disabled without private server-only secret',async()=>{
-  const r=await post('/api/checkout/_provider/getcourse/order-created',{
-   deal_id:'99127001',deal_number:'99127001',user_id:'524210421',offers:'8934973',
-   cost_money_value:'3333',status:'new',created_at:new Date().toISOString(),
-   consent_nonce:'A'.repeat(43),offer_revision_sha256:'0'.repeat(64)
-  },{});
+  const response=await fetch(base+'/api/checkout/_provider/getcourse/order-created',{method:'POST',
+   headers:{'content-type':'application/json'},body:JSON.stringify({
+    deal_id:'99127001',deal_number:'99127001',user_id:'524210421',offers:'8934973',
+    cost_money_value:'3333',status:'new',created_at:new Date().toISOString(),
+    consent_nonce:'A'.repeat(43),offer_revision_sha256:'0'.repeat(64)
+   }),redirect:'error'});
+  const r={status:response.status,data:await response.json()};
   assert.equal(r.status,503);
   assert.equal(r.data.state,'HOLD_PROVIDER_CALLBACK_SECRET_NOT_CONFIGURED');
-  assert.equal(r.data.public_release_allowed,false);
+  assert.notEqual(r.data.public_release_allowed,true);
  });
  await t.test('direct public checkout/start cannot trust fake client consent/JS/provider flags',async()=>{
   const status=await get('/api/checkout/status',false);

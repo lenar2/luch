@@ -84,7 +84,7 @@ Even a matched callback remains ORDER_CALLBACK_MATCHED_HOLD while the independen
 - R128 site server: loopback 127.0.0.1:18774, PID 2290769.
 - Existing R126 read-only stage remains 127.0.0.1:18773, PID 1738222.
 - Isolated R109 frontend copy: /srv/factory-scratch/bf2026-r128-frontend-isolated-20261119/www/; preview server 127.0.0.1:18775, PID 2299919.
-- Approved original R109 index.html SHA-256 remained 89ca216804b3073092906c73b1362c1d07f54351295d7c0a1a4d3f65ee26e5a3; isolated annotated preview SHA-256 93b09b03d650620ef742a1a1b… (see R128_FRONTEND_PATCH_EVIDENCE.json on the paired stage).
+- Approved original R109 index.html SHA-256 remained 89ca216804b3073092906c73b1362c1d07f54351295d7c0a1a4d3f65ee26e5a3; isolated annotated preview SHA-256 93b09b03d650620df610a400963c787dbec7d625e32ed845c6cf28df18c48937; preview JS SHA-256 89bebd750c3152d1e1486cd6ea12dc6f7485cc3c71893cb0d73277f031e1b460.
 - Preview HTTP smoke: homepage 200, preview JS 200, consent status 200, session 201 with Secure/HttpOnly/SameSite=Strict cookie; challenge returns the expected HTTP503 R128_ORDER_CALLBACK_CONTRACT_NOT_VERIFIED. No native fields or callback config were fabricated.
 
 ## Test results

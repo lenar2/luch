@@ -39,8 +39,8 @@ async function readJson(req){
 }
 function statusFor(code){
  if(/AUTH_FAILED|UNAUTHORIZED/.test(code))return 401;
- if(/NOT_FOUND|UNKNOWN_OR_REPLAYED|NONCE_ALREADY_CONSUMED/.test(code))return 404;
- if(/MISMATCH|CONFLICT|ALREADY_BOUND/.test(code))return 409;
+ if(/MISMATCH|CONFLICT|ALREADY_BOUND|ALREADY_CONSUMED|OUTSIDE_CHALLENGE_WINDOW/.test(code))return 409;
+ if(/NOT_FOUND|UNKNOWN_OR_REPLAYED/.test(code))return 404;
  if(/REVISION_NOT_OWNER_VERIFIED|SECRET|VERIFIER|PROVIDER_NATIVE_CONSENT/.test(code))return 503;
  return 422;
 }

@@ -4,7 +4,7 @@ Date: 2026-11-19. Existing PR #17, branch **bf2026-r109-site-boundary-qa-r1-2026
 
 ## Verified current code and actual stage
 
-PR HEAD before this handoff: **fa31dce8d34b451839e1c4032e3e41cfbbd95ac3** (will advance when this document is committed).
+PR HEAD before this handoff: **5d0a4ae9f65cdb3f4c82ad57ea4ef35fd54eec22** (will advance when this document is committed).
 
 New files:
 - **r127-consent-boundary.sql** — PostgreSQL ledger for single-use challenges and provider order callbacks.

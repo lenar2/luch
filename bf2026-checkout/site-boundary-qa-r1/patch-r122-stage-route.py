@@ -10,7 +10,7 @@ if not server.is_file() or not module.is_file():sys.exit("R122_STAGE_INPUT_MISSI
 s=server.read_text()
 tag='BF2026_R121_BUNDLE_QA_READBACK_ROUTE'
 pattern=r"const "+tag+r"=require\([^\n]+\)\.createQARouter\(\{qaAuthorized\}\);"
-if s.count(tag)!=1:sys.exit("R121_ROUTE_TAG_NOT_UNIQUE")
+if len(re.findall(pattern,s))!=1:sys.exit("R121_ROUTE_DECLARATION_NOT_UNIQUE")
 new=(
 "const BF2026_R121_STAGE_POOL=(()=>{"
 "const p=process.env.BF2026_R115_DB_POOL_MODULE;"

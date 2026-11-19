@@ -24,7 +24,7 @@ test('R130 actual patched R129 stage persists anti-rollback schema and stays HOL
    body:body===undefined?undefined:JSON.stringify(body),redirect:'error'});
   return {status:r.status,data:await r.json()};
  }
- const status=await get('/api/checkout/_qa/manifest/status',{});
+ const status=await get('/api/checkout/_qa/manifest/status',false);
  assert.equal(status.status,404);
  const privateStatus=await get('/api/checkout/_qa/manifest/status',true);
  assert.equal(privateStatus.status,200,JSON.stringify(privateStatus.data));

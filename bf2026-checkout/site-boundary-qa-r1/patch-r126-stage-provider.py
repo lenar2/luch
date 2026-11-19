@@ -17,7 +17,8 @@ if s.count(anchor)!=1:sys.exit('R126_MISSING_SERVER_ANCHOR')
 setup=(
 "const BF2026_R126_PROVIDER_VERIFY=require("+repr(path+'/r126-provider-verification.cjs')+").createProviderVerification({\n"
 " pool:BF2026_R121_STAGE_POOL,stage:BF2026_R124_SINGLE_STAGE,\n"
-" readOnce:BF2026_R123_READBACK_ONCE,env:process.env,observer:null});\n"
+" readOnce:BF2026_R123_READBACK_ONCE,env:process.env,\n"
+" observer:require("+repr(path+'/r126-approved-observer-loader.cjs')+").createConfiguredObserver(process.env)});\n"
 "const BF2026_R126_PROVIDER_HTTP=require("+repr(path+'/r126-provider-verification-http.cjs')+").createProviderHttp({\n"
 " provider:BF2026_R126_PROVIDER_VERIFY,qaAuthorized});\n"
 )

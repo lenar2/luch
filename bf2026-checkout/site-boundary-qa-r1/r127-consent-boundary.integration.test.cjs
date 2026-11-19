@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
 const http=require('node:http');
 const pool=require('/srv/factory-scratch/bf2026-r118-relay-stage-20261119/stage-pool-module.cjs').pool;
-const {createConsentBoundary,validNativeConsentAttestation}=require('./r127-consent-boundary.cjs');
+const {createConsentBoundary,validNativeConsentAttestation,validateRevisionManifest}=require('./r127-consent-boundary.cjs');
 const {signRevisionManifest,verifySignedRevisionManifest,SCHEMA,ISSUER}=require('./r127-signed-revision-manifest.cjs');
 const {createConsentHttp}=require('./r127-consent-http.cjs');
 const enabled=process.env.BF2026_STAGE_ONLY==='1'&&
@@ -57,6 +57,10 @@ test('R127 real PG + HTTP: nonce/order/revision/timestamp/replay, always native-
   assert.equal(verified.signature_verified,true);
   assert.equal(verified.offers[route].offer_id,offer);
   assert.equal(verified.offers[route].revision_sha256,revision);
+  assert.equal(Object.keys(validateRevisionManifest(verified)).includes(route),true);
+  const unsigned={schema:'bf2026.r127.offer-revisions.v1',source:'OWNER_APPROVED_NATIVE_OFFER_REVISION_READBACK',approved:true,
+   offers:{[route]:{offer_id:offer,revision_sha256:revision,native_readback_verified:true}}};
+  assert.deepEqual(Object.keys(validateRevisionManifest(unsigned)),[]);
   assert.throws(()=>verifySignedRevisionManifest({...signed,payload:{
    ...payload,offers:{[route]:{...payload.offers[route],offer_id:8934925}}
   }},{publicKey,now}));

@@ -70,7 +70,7 @@ report={
  'preview_js_sha256':hashlib.sha256((DST/'assets'/'r128-cta-challenge-preview.js').read_bytes()).hexdigest(),
  'existing_cta_buttons_patched':len(ACTIONS),
  'site_lots':list(ACTIONS),
- 'individual_route_keys':9,
+ 'individual_route_keys':10,
  'source_variants':2,
  'trainer_qa_only':True,
  'public_payment_enabled':False,

@@ -16,6 +16,7 @@ function safeSnapshot(v){
  'PAID_ORDER_PAYMENT_DATE_MISSING','PAID_ORDER_PAYMENT_DATE_UNPARSEABLE',
  'PENDING_DEALS_EXPORT','PENDING_PAYMENTS_EXPORT','PAYMENT_RECORD_MATCHED']);
  if(!goodState.has(v.state))fail('R123_EXPORT_STATE_UNEXPECTED');
+ if(!v.state.startsWith('PENDING')&&v.source!=='GETCOURSE_EXPORT_API_READONLY')fail('R123_EXPORT_SOURCE_NOT_TRUSTED');
  if(!v.state.startsWith('PENDING')&&
    (v.deal_id!==DEFAULTS.dealId||v.order_number!==DEFAULTS.orderNumber||
     Number(v.offer_id)!==DEFAULTS.offerId||v.order_total_rub!==DEFAULTS.amountRub))
@@ -65,7 +66,7 @@ function createReadbackOnce({pool,reader}={}){
   }catch(e){
    try{await pool.query("UPDATE bf2026_getcourse_readback_once SET state='UNKNOWN',updated_at=now() WHERE request_key=$1 AND state='PENDING'",[requestKey]);}
    catch{}
-   return {duplicate:false,state:'HOLD_READBACK_UNKNOWN',reason_code:e?.code||'R123_READBACK_FAILED',
+   return {duplicate:false,state:'HOLD_READBACK_UNKNOWN',reason_code:typeof e?.code==='string'&&/^[A-Z0-9_]{3,80}$/.test(e.code)?e.code:'R123_READBACK_FAILED',
     payment_record_verified:false,provider_cryptographic_signature_verified:false,
     fiscal_receipt_verified:false,actual_grants_verified:false,grant_writes:0,
     release_allowed:false,checkout_url:null};

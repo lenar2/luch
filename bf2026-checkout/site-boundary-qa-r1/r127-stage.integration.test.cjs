@@ -57,7 +57,13 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
    }),redirect:'error'});
   const r={status:response.status,data:await response.json()};
   assert.equal(r.status,503);
-  assert.equal(r.data.state,'HOLD_PROVIDER_CALLBACK_SECRET_NOT_CONFIGURED');
+  // R129's stricter owner-signed ORDER-field gateway deliberately denies
+  // before R127 can even inspect its shared callback secret. Both states
+  // must fail closed and neither can prove native consent or payment.
+  assert.ok([
+   'HOLD_PROVIDER_CALLBACK_SECRET_NOT_CONFIGURED',
+   'HOLD_NATIVE_GETCOURSE_ORDER_FIELD_IDS_OR_CALLBACK_CONFIG'
+  ].includes(r.data.state));
   assert.notEqual(r.data.public_release_allowed,true);
  });
  await t.test('direct public checkout/start cannot trust fake client consent/JS/provider flags',async()=>{

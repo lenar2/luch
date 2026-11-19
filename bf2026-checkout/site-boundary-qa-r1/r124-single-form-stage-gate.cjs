@@ -75,7 +75,9 @@ function createSingleFormGate({stage,catalog,registry,quoteFn,checkoutKey,qaAuth
   const pairs=expected.pairs.map(([product_id,training_id])=>({product_id,training_id:training_id||null}));
   return Object.freeze({key,widget_id:expected.widget_id,offer_id:expected.offer_id,
    lot:input.lot,price_rub:q.total_rub,currency:'RUB',
-   product_training_pairs:pairs,access_period:'AFTER_PAY_365_DAYS',
+   product_training_pairs:pairs,
+   access_contract:expected.service?'SERVICE_BOOKING_AFTER_PAYMENT_NO_TRAINING':
+     'AFTER_PAY_365_DAYS_EXPECTED_NOT_E2E_PROVEN',
    fulfillment_type:expected.service?'3_ZOOM_SESSIONS_NO_TRAINING':'COURSE',
    ...STATES});
  }

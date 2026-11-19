@@ -47,11 +47,14 @@ function expectedEntry(key){
  };
 }
 const NATIVE_MAP_SHA256=sha(stable(ENTRIES));
-function routeManifestReady(m){
+function routeManifestReady(m,now=Date.now()){
  if(!m||m.schema!=='bf2026.r127.offer-revisions.v1'||
   m.source!=='OWNER_APPROVED_NATIVE_OFFER_REVISION_READBACK'||
   m.approved!==true||m.signature_verified!==true||
   !m.offers||typeof m.offers!=='object'||Array.isArray(m.offers))return false;
+ const issued=iso(m.issued_at),expires=iso(m.expires_at);
+ if(issued===null||expires===null||issued>now+300000||expires<=now||
+  expires<=issued||expires-issued>MAX_LIFETIME_MS)return false;
  const keys=Object.keys(m.offers).sort();
  return keys.length===ROUTE_SET.length&&keys.every((k,i)=>k===ROUTE_SET[i]);
 }
@@ -89,7 +92,7 @@ function verifyVersionedManifest(envelope,{
  if(!p.entries||typeof p.entries!=='object'||Array.isArray(p.entries)||
   Object.keys(p.entries).sort().join('|')!==ENTRY_KEYS.join('|'))
   fail('R130_EXACT_TWELVE_SITE_ENTRY_SET_REQUIRED');
- if(!routeManifestReady(routeRevisionManifest))
+ if(!routeManifestReady(routeRevisionManifest,now))
   fail('R130_R127_ROUTE_REVISION_MANIFEST_NOT_VERIFIED');
  const normalized={};
  for(const key of ENTRY_KEYS){
@@ -164,7 +167,8 @@ function createVersionedManifestRegistry({
   if(!publicKey||!routeRevisionManifest)return null;
   try{
    const q=await queryable.query(
-    'SELECT h.manifest_version,h.manifest_sha256,v.signed_envelope '+
+    'SELECT h.manifest_version,h.manifest_sha256,v.signed_envelope,'+
+    '(SELECT max(x.manifest_version) FROM bf2026_r130_manifest_history x WHERE x.registry_scope=h.registry_scope) AS max_version '+
     'FROM bf2026_r130_manifest_head h JOIN bf2026_r130_manifest_history v '+
     'ON v.registry_scope=h.registry_scope AND v.manifest_version=h.manifest_version '+
     'AND v.manifest_sha256=h.manifest_sha256 WHERE h.registry_scope=$1'+
@@ -176,6 +180,7 @@ function createVersionedManifestRegistry({
     publicKey,scope,routeRevisionManifest,now:clock()
    });
    if(verified.version!==Number(row.manifest_version)||
+    verified.version!==Number(row.max_version)||
     verified.manifest_sha256!==String(row.manifest_sha256).trim())
     return null;
    return verified;
@@ -199,7 +204,7 @@ function createVersionedManifestRegistry({
    route:'R130_VERSIONED_SITE_OFFER_MANIFEST',
    registry_scope:scope,postgres_ready:dbReady,
    trust_root_configured:Boolean(publicKey),
-   r127_route_manifest_verified:routeManifestReady(routeRevisionManifest),
+   r127_route_manifest_verified:routeManifestReady(routeRevisionManifest,clock()),
    manifest_active:Boolean(active),
    manifest_version:active?.version??(head?Number(head.manifest_version):null),
    manifest_sha256:active?.manifest_sha256??(head?String(head.manifest_sha256).trim():null),

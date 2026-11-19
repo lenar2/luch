@@ -92,9 +92,17 @@
    }
   }catch(e){
    result.textContent='HOLD: серверная проверка недоступна. Заказ и оплата не запускались.';
-  }finally{busy=false;refresh()}
+  }finally{
+   busy=false;
+   if(active){button.disabled=false;button.setAttribute('aria-disabled','false')}
+   else refresh();
+  }
  });
- const observer=new MutationObserver(refresh);
+ // Observe only the REAL cart, never our own preview panel changes.
+ // Observing status/button changes would recursively trigger refresh().
+ const observer=new MutationObserver(records=>{
+  if(records.some(record=>!panel.contains(record.target)))refresh();
+ });
  observer.observe(cart,{subtree:true,childList:true,attributes:true});
  document.addEventListener('click',e=>{
   if(e.target.closest('button.buy-lot')||e.target.closest('.cart-remove')||

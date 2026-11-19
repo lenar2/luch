@@ -70,7 +70,7 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
    {kind:'single',lot:1,consent_checked:true,consent:true,provider_consent_verified:true,
     consent_nonce:'A'.repeat(43),offer_revision_sha256:'0'.repeat(64)},
    {kind:'single',lot:9,variant:'2',consent_checked:true},
-   {kind:'set',items:[1,2],consent_checked:true,provider_consent_verified:true}
+   {kind:'set',items:['rejection','union'],consent_checked:true,provider_consent_verified:true}
   ];
   for(const body of cases){
    const r=await post('/api/checkout/start',body);

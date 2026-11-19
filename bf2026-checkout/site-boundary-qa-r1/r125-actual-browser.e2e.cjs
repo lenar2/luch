@@ -42,7 +42,7 @@ async function run(){
  try{
   const response=await page.goto(API+'/',{waitUntil:'domcontentloaded',timeout:30000});
   assert.equal(response.status(),200);
-  await page.waitForFunction(()=>window.BF2026R125Preview?.mode==='STAGE_ONLY_NO_PAYMENT',{timeout:12000});
+  await page.waitForFunction(()=>window.BF2026R125Preview?.mode==='STAGE_ONLY_NO_PAYMENT',null,{timeout:12000});
   assert.equal(await page.locator('#r125-preview-review').count(),1);
   const originals=await page.locator('.lot-card button.buy-lot[data-r125-lot]').count();
   assert.equal(originals,10,'exact existing 10 CTA buttons from R109 patched in isolated copy');
@@ -65,7 +65,7 @@ async function run(){
     await page.locator('input[name="source-variant"][value="'+variant+'"]').check();
    }
    await page.locator('#lot-'+lot+' button.buy-lot').click();
-   await page.waitForFunction(()=>window.BF2026R125Preview?.getStatus()?.inspected===true,{timeout:8000});
+   await page.waitForFunction(()=>window.BF2026R125Preview?.getStatus()?.inspected===true,null,{timeout:8000});
    const snap=await page.evaluate(()=>window.BF2026R125Preview.getStatus());
    assert.equal(snap.payment_button_disabled,true);
    assert.equal(snap.button_disabled,true,'unchecked oferta cannot enable review');
@@ -112,7 +112,7 @@ async function run(){
   evidence.negative_cases.push('server_side_unchecked_and_marketing_and_wrong_field_and_forged_paid_and_extra_offer_422');
 
   await page.locator('#r125-oferta').check();
-  await page.waitForFunction(()=>!document.getElementById('r125-review').disabled,{timeout:4000});
+  await page.waitForFunction(()=>!document.getElementById('r125-review').disabled,null,{timeout:4000});
   await page.locator('#r125-marketing').check();
   assert.equal(await page.locator('#r125-review').isDisabled(),true);
   await page.locator('#r125-marketing').uncheck();
@@ -122,11 +122,11 @@ async function run(){
   // Test a real user click on existing buy-lot, then QA-only consent review.
   const beforeValid=backendRequests.length;
   await page.locator('#r125-review').click();
-  await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Состав и ввод согласия'),{timeout:7000});
+  await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Состав и ввод согласия'),null,{timeout:7000});
   let prev=backendRequests.length;
   assert.equal(prev,beforeValid+1);
   await page.locator('#r125-review').click();
-  await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Повтор подтверждён'),{timeout:7000});
+  await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Повтор подтверждён'),null,{timeout:7000});
   assert.equal(backendRequests.length,prev+1);
   evidence.prepared.push({route:first.route,exact_replay:true,idempotent:true});
 
@@ -141,9 +141,9 @@ async function run(){
    const snap=await choose(lot,variant);
    assert.equal(snap.route,route);
    await page.locator('#r125-oferta').check();
-   await page.waitForFunction(()=>!document.getElementById('r125-review').disabled,{timeout:4000});
+   await page.waitForFunction(()=>!document.getElementById('r125-review').disabled,null,{timeout:4000});
    await page.locator('#r125-review').click();
-   await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Состав и ввод согласия'),{timeout:7000});
+   await page.waitForFunction(()=>document.getElementById('r125-review-status').textContent.includes('Состав и ввод согласия'),null,{timeout:7000});
    evidence.prepared.push({route,real_browser_DOM:true,http_post_to_staging:true,
     no_payment:true,public_checkout_url:null});
    assert.equal(await page.locator('#cart-layer .cart-checkout').isDisabled(),true);
@@ -154,7 +154,7 @@ async function run(){
   // NOT one of the 10 supported Offer routes; do not substitute it.
   await resetCart();
   await page.locator('#lot-8 button.buy-lot').click();
-  await page.waitForFunction(()=>document.getElementById('r125-route').textContent.includes('Тренер по отношениям'),{timeout:3000});
+  await page.waitForFunction(()=>document.getElementById('r125-route').textContent.includes('Тренер по отношениям'),null,{timeout:3000});
   assert.equal(await page.locator('#r125-review').isDisabled(),true);
   assert.equal(await page.locator('#cart-layer .cart-checkout').isDisabled(),true);
   evidence.negative_cases.push('trainer_QA_only_no_R124_route');

@@ -34,6 +34,12 @@ function validateSignedEnvelope({envelope,action,nonce,key,clock=()=>Date.now()}
  if(!envelope||typeof envelope!=='object'||Array.isArray(envelope)||
    Object.keys(envelope).sort().join(',')!=='key_id,payload,signature')
    fail('R126_OBSERVER_ENVELOPE_SHAPE_INVALID');
+ const serialized=JSON.stringify(envelope);
+ if(typeof serialized!=='string'||Buffer.byteLength(serialized,'utf8')>32768)
+  fail('R126_OBSERVER_ENVELOPE_TOO_LARGE');
+ const expectedKeyId='BF2026_'+crypto.createHash('sha256')
+  .update(key.export({type:'spki',format:'der'})).digest('hex').slice(0,32).toUpperCase();
+ if(envelope.key_id!==expectedKeyId)fail('R126_OBSERVER_KEY_ID_NOT_PINNED');
  const data=envelope.payload;
  if(!data||typeof data!=='object'||Array.isArray(data)||
    data.schema!==SCHEMA||data.action!==action||

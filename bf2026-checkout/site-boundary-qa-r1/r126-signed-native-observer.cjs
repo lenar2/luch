@@ -34,6 +34,7 @@ function validateSignedEnvelope({envelope,action,nonce,key,clock=()=>Date.now()}
  if(!envelope||typeof envelope!=='object'||Array.isArray(envelope)||
    Object.keys(envelope).sort().join(',')!=='key_id,payload,signature')
    fail('R126_OBSERVER_ENVELOPE_SHAPE_INVALID');
+ if(!key||key.asymmetricKeyType!=='ed25519')fail('R126_OBSERVER_ED25519_REQUIRED');
  const serialized=JSON.stringify(envelope);
  if(typeof serialized!=='string'||Buffer.byteLength(serialized,'utf8')>32768)
   fail('R126_OBSERVER_ENVELOPE_TOO_LARGE');

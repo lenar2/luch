@@ -109,13 +109,15 @@ function validNativeConsentAttestation(a,{callback,challenge,now=Date.now()}={})
 }
 function createConsentBoundary({
  pool,stage,revisionManifest=null,callbackSecret=null,
- nativeConsentVerifier=null,clock=()=>Date.now(),allowTestRevisionFixture=false
+ nativeConsentVerifier=null,callbackGuard=null,clock=()=>Date.now(),allowTestRevisionFixture=false
 }={}){
  if(typeof pool?.query!=='function'||!stage?.stage_only)fail('R127_STAGE_POSTGRES_REQUIRED');
  if(callbackSecret!==null&&(typeof callbackSecret!=='string'||callbackSecret.length<32))
   fail('R127_CALLBACK_SECRET_INVALID');
  if(nativeConsentVerifier!==null&&typeof nativeConsentVerifier?.verify!=='function')
   fail('R127_NATIVE_CONSENT_VERIFIER_INVALID');
+ if(callbackGuard!==null&&typeof callbackGuard!=='function')
+  fail('R127_VERSIONED_MANIFEST_CALLBACK_GUARD_INVALID');
  const revisions=validateRevisionManifest(revisionManifest,{allowTestFixture:allowTestRevisionFixture});
  const callbackSecretHash=callbackSecret?sha(callbackSecret):null;
  function offerFor(key){
@@ -125,20 +127,39 @@ function createConsentBoundary({
    fail('R127_OFFER_REVISION_NOT_OWNER_VERIFIED');
   return {key,expected,revision};
  }
- async function issueChallenge({routeKey,sessionToken}={}){
+ async function issueChallenge({routeKey,sessionToken,manifestBinding=null}={}){
   if(!validToken(sessionToken))fail('R127_HTTP_ONLY_SESSION_REQUIRED');
   const {key,expected,revision}=offerFor(routeKey);
+  if(manifestBinding!==null&&(!exactKeys(manifestBinding,[
+   'registry_scope','manifest_version','manifest_sha256','site_entry_key','revision_sha256'
+  ])||!['BF2026_SITE','BF2026_R130_TEST'].includes(manifestBinding.registry_scope)||
+   !Number.isSafeInteger(manifestBinding.manifest_version)||manifestBinding.manifest_version<1||
+   !isHex64(manifestBinding.manifest_sha256)||manifestBinding.site_entry_key!==key||
+   manifestBinding.revision_sha256!==revision.revision_sha256))
+   fail('R127_VERSIONED_MANIFEST_BINDING_INVALID');
   const now=clock(),nonce=crypto.randomBytes(32).toString('base64url');
   const issued=new Date(now),expires=new Date(now+CHALLENGE_TTL_MS);
   const sessionHash=sha(sessionToken),nonceHash=sha(nonce);
   const pricingVersion=String(stage.catalog?.pricing_version||'');
   if(!pricingVersion)fail('R127_PRICING_VERSION_MISSING');
-  await pool.query(
-   "INSERT INTO bf2026_r127_consent_challenges "+
-   "(nonce_sha256,session_sha256,route_key,offer_id,widget_id,amount_rub,pricing_version,offer_revision_sha256,issued_at,expires_at,state) "+
-   "VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'PENDING')",
-   [nonceHash,sessionHash,key,expected.offer_id,expected.widget_id,expected.price,
-    pricingVersion,revision.revision_sha256,issued.toISOString(),expires.toISOString()]);
+  if(manifestBinding){
+   await pool.query(
+    "INSERT INTO bf2026_r127_consent_challenges "+
+    "(nonce_sha256,session_sha256,route_key,offer_id,widget_id,amount_rub,pricing_version,offer_revision_sha256,issued_at,expires_at,state,"+
+    "r130_registry_scope,r130_manifest_version,r130_manifest_sha256,r130_site_entry_key) "+
+    "VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'PENDING',$11,$12,$13,$14)",
+    [nonceHash,sessionHash,key,expected.offer_id,expected.widget_id,expected.price,
+     pricingVersion,revision.revision_sha256,issued.toISOString(),expires.toISOString(),
+     manifestBinding.registry_scope,manifestBinding.manifest_version,
+     manifestBinding.manifest_sha256,manifestBinding.site_entry_key]);
+  }else{
+   await pool.query(
+    "INSERT INTO bf2026_r127_consent_challenges "+
+    "(nonce_sha256,session_sha256,route_key,offer_id,widget_id,amount_rub,pricing_version,offer_revision_sha256,issued_at,expires_at,state) "+
+    "VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'PENDING')",
+    [nonceHash,sessionHash,key,expected.offer_id,expected.widget_id,expected.price,
+     pricingVersion,revision.revision_sha256,issued.toISOString(),expires.toISOString()]);
+  }
   return Object.freeze({state:'PENDING_PROVIDER_ORDER_CALLBACK',
    route_key:key,offer_id:expected.offer_id,widget_id:expected.widget_id,
    amount_rub:expected.price,currency:'RUB',pricing_version:pricingVersion,
@@ -176,6 +197,8 @@ function createConsentBoundary({
     'SELECT * FROM bf2026_r127_consent_challenges WHERE nonce_sha256=$1 FOR UPDATE',[nonceHash]);
    const row=q.rows?.[0];
    if(!row)fail('R127_NONCE_UNKNOWN_OR_REPLAYED');
+   if(callbackGuard)await callbackGuard({client,row,callback:normalized,
+    nonceHash,receivedAt});
    if(row.state!=='PENDING'){
     if(row.provider_callback_sha256===digest&&row.provider_order_id===dealId){
      await client.query('COMMIT');transaction=false;

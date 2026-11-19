@@ -70,7 +70,7 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
    {kind:'single',lot:1,consent_checked:true,consent:true,provider_consent_verified:true,
     consent_nonce:'A'.repeat(43),offer_revision_sha256:'0'.repeat(64)},
    {kind:'single',lot:9,variant:'2',consent_checked:true},
-   {kind:'set',items:['rejection','union'],consent_checked:true,provider_consent_verified:true}
+   {kind:'set',items:['rejection','union']}
   ];
   for(const body of cases){
    const r=await post('/api/checkout/start',body);
@@ -78,6 +78,12 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
    assert.equal(r.data.checkout_url,undefined);
    assert.notEqual(r.data.public_release_allowed,true);
   }
+  const validSet=await post('/api/checkout/start',{kind:'set',items:['rejection','union']});
+  assert.equal(validSet.status,503);
+  assert.equal(validSet.data.code,'R127_PROVIDER_NATIVE_CONSENT_HOLD');
+  assert.equal(validSet.data.provider_consent_verified,false);
+  assert.equal(validSet.data.checkout_url,null);
+  assert.equal(validSet.data.public_release_allowed,false);
  });
  await t.test('R127 and R124 staging rows unchanged; no order, payment, receipt, or grant writes',async()=>{
   const after=await pool.query('SELECT count(*)::int n FROM bf2026_r127_consent_challenges');

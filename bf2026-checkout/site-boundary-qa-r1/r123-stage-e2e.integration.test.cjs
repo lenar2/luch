@@ -67,7 +67,9 @@ test('R123 full isolated PostgreSQL+HTTP, secret provider, idempotency and callb
     case 'bad_amount':deal.cost_money_value=12990;break;
     case 'wrong_deal':deal.id='924624457';break;
     case 'wrong_user':deal.user_id='524210422';break;
+    case 'missing_user':delete deal.user_id;break;
     case 'wrong_host':deal.account_host='other.example';break;
+    case 'missing_host':delete deal.account_host;break;
    }
    return reply({success:true,result:{rows:[deal]}});
   }
@@ -163,7 +165,7 @@ test('R123 full isolated PostgreSQL+HTTP, secret provider, idempotency and callb
   assert.equal(mode.getCalls-start,4);
  });
  await t.test('mismatched account, order, Offer, Product/Training, price and buyer hold, replay cannot retry',async()=>{
-  for(const bad of ['wrong_host','wrong_deal','bad_offer','bad_product','bad_amount','wrong_user']){
+  for(const bad of ['wrong_host','missing_host','wrong_deal','bad_offer','bad_product','bad_amount','wrong_user','missing_user']){
    mode.type=bad;const id=nextKey(),start=mode.getCalls;
    const r=await postRead(id);
    assert.equal(r.status,202,bad+' '+JSON.stringify(r.body));

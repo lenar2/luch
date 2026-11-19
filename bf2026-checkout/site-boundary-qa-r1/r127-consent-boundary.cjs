@@ -266,7 +266,8 @@ function createConsentBoundary({
    'issued_at,expires_at,state,provider_order_id,provider_order_number,provider_order_status,'+
    'provider_order_created_at,provider_callback_received_at,provider_callback_auth,'+
    'provider_signature_verified,native_consent_verified,native_consent_source,'+
-   'native_negative_test_sha256,public_release_allowed FROM bf2026_r127_consent_challenges '+
+   'native_negative_test_sha256,public_release_allowed,r130_registry_scope,'+
+   'r130_manifest_version,r130_manifest_sha256,r130_site_entry_key FROM bf2026_r127_consent_challenges '+
    'WHERE nonce_sha256=$1',[sha(nonce)]);
   if(!r.rows?.length)fail('R127_CHALLENGE_NOT_FOUND');
   const row=r.rows[0];

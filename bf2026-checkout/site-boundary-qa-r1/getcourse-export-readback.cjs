@@ -64,6 +64,33 @@ function normalizeDeal(row,expected=DEFAULTS){
   payment_record_verified:false,receipt_verified:false,grants_verified:false,
   limitations:['EXPORT_API_DOES_NOT_PROVE_FISCAL_RECEIPT','EXPORT_API_DOES_NOT_EXPOSE_PURCHASE_ENTITLEMENTS']});
 }
+const EXPECTED_PRODUCT_TRAINING=Object.freeze([
+ Object.freeze({product_id:4557988,training_id:936022301}),
+ Object.freeze({product_id:4550895,training_id:933861292})
+]);
+function validateExportProductIdentity(row){
+ // Only explicit product-to-training pairs in the *same exported deal*
+ // can complete this structural check. Product IDs or display names alone
+ // do not establish actual Training grants or a paid Purchase.
+ if(row?.account_host!==undefined&&row.account_host!==DEFAULTS.host)
+  fail('GETCOURSE_EXPORT_ACCOUNT_HOST_MISMATCH');
+ const given=row?.products??row?.offer_products??row?.product_training;
+ if(given===undefined)return {product_identity_verified:false,
+  product_identity_reason:'EXPORT_PRODUCT_TRAINING_PAIRS_ABSENT'};
+ if(!Array.isArray(given)||given.length!==2)
+  fail('GETCOURSE_EXPORT_PRODUCTS_NOT_EXACTLY_TWO');
+ const normalized=given.map(p=>{
+  if(!p||typeof p!=='object'||Array.isArray(p)||
+   !/^[0-9]+$/.test(String(p.product_id??''))||
+   !/^[0-9]+$/.test(String(p.training_id??'')))fail('GETCOURSE_EXPORT_PRODUCT_TRAINING_PAIR_INVALID');
+  return {product_id:Number(p.product_id),training_id:Number(p.training_id)};
+ }).sort((a,b)=>a.product_id-b.product_id);
+ const want=[...EXPECTED_PRODUCT_TRAINING].sort((a,b)=>a.product_id-b.product_id);
+ if(JSON.stringify(normalized)!==JSON.stringify(want))
+  fail('GETCOURSE_EXPORT_PRODUCT_TRAINING_MAPPING_MISMATCH');
+ return {product_identity_verified:true,product_ids:want.map(x=>x.product_id),
+  training_ids:want.map(x=>x.training_id),actual_grants_verified:false};
+}
 function normalizePaymentRows(rows,deal,expected=DEFAULTS){
  const matches=rows.filter(row=>{
   const did=String(row?.deal_id??row?.provider_deal_id??'');
@@ -126,7 +153,8 @@ function createPostgresBudget(pool,{accountHost=DEFAULTS.host,maxRequests=DEFAUL
  });
 }
 function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,budget,host=DEFAULTS.host,
- timeoutMs=10000,maxPolls=3,pollDelayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms)),expected=DEFAULTS}={}){
+ timeoutMs=10000,maxPolls=3,pollDelayMs=1000,sleep=ms=>new Promise(r=>setTimeout(r,ms)),
+ strictProductIdentity=false,expected=DEFAULTS}={}){
  if(host!==DEFAULTS.host)fail('GETCOURSE_EXPORT_HOST_NOT_ALLOWLISTED');
  if(typeof fetchImpl!=='function')fail('GETCOURSE_FETCH_UNAVAILABLE');
  for(const k of ['claimStart','markExport','claimPoll','complete'])if(typeof budget?.[k]!=='function')fail('GETCOURSE_EXPORT_DURABLE_BUDGET_REQUIRED');
@@ -193,21 +221,25 @@ function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,
    String(r?.id??r?.deal_id??'')===expected.dealId);
   if(matches.length!==1)fail(matches.length?'GETCOURSE_DEAL_DUPLICATE_MATCH':'GETCOURSE_DEAL_NOT_FOUND');
   const deal=normalizeDeal(matches[0],expected);
+  const productIdentity=validateExportProductIdentity(matches[0]);
+  if(strictProductIdentity&&!productIdentity.product_identity_verified)
+   return {...deal,...productIdentity,state:'PARTIAL_PRODUCT_MAPPING_UNAVAILABLE',
+    payment_record_verified:false,receipt_verified:false,grants_verified:false};
   if(deal.order_status!=='payed'){
-   if(deal.order_status!=='new')return {...deal,state:'PARTIAL_ORDER_STATE',payment_record_verified:false};
-   if(deal.paid_total_rub!==0)return {...deal,state:'PARTIAL_UNPAID_WITHOUT_ZERO_PAYMENT_READBACK'};
-   return {...deal,state:'VERIFIED_UNPAID_ORDER',payment_record_verified:false};
+   if(deal.order_status!=='new')return {...deal,...productIdentity,state:'PARTIAL_ORDER_STATE',payment_record_verified:false};
+   if(deal.paid_total_rub!==0)return {...deal,...productIdentity,state:'PARTIAL_UNPAID_WITHOUT_ZERO_PAYMENT_READBACK'};
+   return {...deal,...productIdentity,state:'VERIFIED_UNPAID_ORDER',payment_record_verified:false};
   }
   if(deal.paid_total_rub!==expected.amountRub)fail('GETCOURSE_PAID_ORDER_TOTAL_NOT_EXACT');
-  if(!deal.payed_at) return {...deal,state:'PAID_ORDER_PAYMENT_DATE_MISSING',payment_record_verified:false};
+  if(!deal.payed_at) return {...deal,...productIdentity,state:'PAID_ORDER_PAYMENT_DATE_MISSING',payment_record_verified:false};
   const date=new Date(deal.payed_at);
-  if(!Number.isFinite(date.getTime()))return {...deal,state:'PAID_ORDER_PAYMENT_DATE_UNPARSEABLE',payment_record_verified:false};
+  if(!Number.isFinite(date.getTime()))return {...deal,...productIdentity,state:'PAID_ORDER_PAYMENT_DATE_UNPARSEABLE',payment_record_verified:false};
   const day=date.toISOString().slice(0,10);
   const payments=await collect('payments',{'created_at[from]':day,'created_at[to]':day,status:'accepted'});
-  if(payments.state!=='READY')return {...deal,state:'PENDING_PAYMENTS_EXPORT',payment_export_id:payments.export_id,
+  if(payments.state!=='READY')return {...deal,...productIdentity,state:'PENDING_PAYMENTS_EXPORT',payment_export_id:payments.export_id,
    payment_record_verified:false};
   const proof=normalizePaymentRows(payments.rows,deal,expected);
-  return {...deal,...proof,state:'PAYMENT_RECORD_MATCHED',
+  return {...deal,...productIdentity,...proof,state:'PAYMENT_RECORD_MATCHED',
    receipt_verified:false,grants_verified:false,
    payment_source:'GETCOURSE_EXPORT_API_READONLY',
    note:'Export API does not establish fiscal receipt or purchase-level Training access.'};
@@ -216,5 +248,6 @@ function createGetCourseExportReader({apiKeyProvider,fetchImpl=globalThis.fetch,
   startDealsExport:()=>start('deals',{user_id:expected.userId}),
   pollExport:poll,readBundleOrderAndPayment});
 }
-module.exports={DEFAULTS,parseRub,parseIds,rowsFrom,exportIdFrom,normalizeDeal,normalizePaymentRows,
+module.exports={DEFAULTS,EXPECTED_PRODUCT_TRAINING,validateExportProductIdentity,
+ parseRub,parseIds,rowsFrom,exportIdFrom,normalizeDeal,normalizePaymentRows,
  createPostgresBudget,createGetCourseExportReader};

@@ -6,7 +6,7 @@ const assert=require('node:assert/strict');
 const crypto=require('node:crypto');
 const http=require('node:http');
 const pool=require('/srv/factory-scratch/bf2026-r118-relay-stage-20261119/stage-pool-module.cjs').pool;
-const {createConsentBoundary,COOKIE}=require('./r127-consent-boundary.cjs');
+const {createConsentBoundary,validNativeConsentAttestation}=require('./r127-consent-boundary.cjs');
 const {createConsentHttp}=require('./r127-consent-http.cjs');
 const enabled=process.env.BF2026_STAGE_ONLY==='1'&&
  process.env.BF2026_R127_STAGE_PORT==='18774'&&
@@ -90,6 +90,35 @@ test('R127 real PG + HTTP: nonce/order/revision/timestamp/replay, always native-
   assert.equal((await provider(callback(),'wrong-secret')).status,401);
   assert.equal((await provider({...callback(),consent_checked:true})).status,422);
   assert.equal((await provider({...callback(),provider_consent_verified:true})).status,422);
+ });
+ await t.test('native consent attestation rejects user-field 22204810 and missing provider negative test',async()=>{
+  const now=Date.now(),payload=globalThis.r127Challenge;
+  const base={
+   schema:'bf2026.r127.provider-consent-attestation.v1',
+   source:'GETCOURSE_NATIVE_SYSTEM_OFFER_CONSENT_READBACK',
+   account_host:'study.shkola-dnv.com',deal_id:'99127001',deal_number:'99127001',
+   offer_id:offer,offer_revision_sha256:revision,
+   native_consent_scope:'USER_CUSTOM_FIELD',native_consent_accepted:true,
+   native_field_22204810_used_as_proof:true,
+   observed_at:new Date(now).toISOString(),
+   provider_negative_test:{source:'GETCOURSE_NATIVE_UNCHECKED_SUBMIT_TEST',
+    result:'REJECTED_BEFORE_ORDER_CREATION',report_sha256:'a'.repeat(64),
+    observed_at:new Date(now).toISOString()}
+  };
+  assert.equal(validNativeConsentAttestation(base,{
+   callback:{deal_id:'99127001',deal_number:'99127001'},
+   challenge:{offer_id:offer,offer_revision_sha256:revision},now
+  }),null);
+  assert.equal(validNativeConsentAttestation({...base,native_consent_scope:'SYSTEM_OFFER_CHECKBOX'},{
+   callback:{deal_id:'99127001',deal_number:'99127001'},
+   challenge:{offer_id:offer,offer_revision_sha256:revision},now
+  }),null);
+  const missingNegative={...base,native_consent_scope:'SYSTEM_OFFER_CHECKBOX',
+   native_field_22204810_used_as_proof:false,provider_negative_test:null};
+  assert.equal(validNativeConsentAttestation(missingNegative,{
+   callback:{deal_id:'99127001',deal_number:'99127001'},
+   challenge:{offer_id:offer,offer_revision_sha256:revision},now
+  }),null);
  });
  await t.test('exact provider order callback matches nonce/offer/revision/time, but does NOT prove consent',async()=>{
   const badOffer=await provider({...callback(),offers:'8934925'});

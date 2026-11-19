@@ -1,0 +1,39 @@
+/* BF2026 R167 — visible Lot12 native completion form, matches main site checkout. */
+#lot-10-set #submit[hidden],#bf167-order[hidden]{display:none!important}
+#bf167-order{box-sizing:border-box;width:min(100%,600px);margin:25px auto 15px;padding:10px 8px 4px;color:#6a5240;text-align:left}
+#bf167-order *{box-sizing:border-box}
+#bf167-order .bf167-divider{display:flex;align-items:center;gap:15px;text-transform:uppercase;letter-spacing:.18em;font:700 12px/1.4 Manrope,system-ui,sans-serif;color:#a7794b;margin:0 0 28px}
+#bf167-order .bf167-divider:after{content:'';height:1px;flex:1;background:#d6b78e}
+#bf167-order .bf167-heading{display:flex;align-items:center;gap:17px;margin:0 0 28px}
+#bf167-order .bf167-seal{flex:0 0 62px;width:62px;height:62px;border:1.5px solid #dabc8e;border-radius:50%;background:#f9f0e3;color:#b88954;display:grid;place-items:center;font:35px Georgia,serif}
+#bf167-order h3{margin:0;font:500 43px/1.05 'Cormorant Garamond',Georgia,serif;color:#875737}
+#bf167-order .bf167-heading p{margin:5px 0 0;font:400 14px/1.5 Manrope,system-ui,sans-serif;color:#96816e}
+#bf167-order .bf167-fields{display:grid;gap:9px}
+#bf167-order .bf167-fields label{font:700 14px/1.5 Manrope,system-ui,sans-serif;color:#77523b;margin-top:14px}
+#bf167-order .bf167-fields label em{font-style:normal;color:#ad3c76}
+#bf167-order .bf167-fields input{display:block;width:100%;height:68px;padding:0 19px;border:1.5px solid #dfcab7;border-radius:15px;background:rgba(255,255,255,.96);font:500 18px/1.4 Manrope,system-ui,sans-serif;color:#533e32;outline:0}
+#bf167-order .bf167-fields input:focus{border-color:#bc8d68;box-shadow:0 0 0 3px #e7d0b14d}
+#bf167-order .bf167-fields input::placeholder{color:#bdad9d}
+#bf167-order .bf167-consents{display:grid;gap:16px;margin:29px 0 25px}
+#bf167-order .bf167-consents label{display:flex;gap:15px;align-items:flex-start;font:400 15px/1.5 Manrope,system-ui,sans-serif;color:#867163;cursor:pointer}
+#bf167-order .bf167-consents input{appearance:auto;accent-color:#b43170;width:23px;height:23px;min-width:23px;margin:0;cursor:pointer}
+#bf167-order .bf167-consents a{color:#a74875;text-decoration:underline;text-underline-offset:3px}
+#bf167-order #bf167-status{font:500 14px/1.55 Manrope,system-ui,sans-serif;color:#976041;margin:12px 0;min-height:0}
+#bf167-order #bf167-status:empty{display:none}
+#bf167-order .bf167-pay{display:block;width:100%;min-height:80px;margin:5px auto 0;padding:12px 17px;border:3px solid #ecd6a1;border-radius:90px;background:linear-gradient(105deg,#aa3972,#c04c85 60%,#a83071);color:white;font:500 24px/1.15 'Cormorant Garamond',Georgia,serif;box-shadow:0 8px 18px #af57743d,0 0 0 4px #ebdfd0;cursor:pointer;text-align:center}
+#bf167-order .bf167-pay:disabled{opacity:.65;cursor:wait}
+#bf167-order .bf167-note{text-align:center;font:400 13px/1.5 Manrope,system-ui,sans-serif;color:#978573;margin:22px auto 6px;max-width:420px}
+@media(max-width:600px){
+ #bf167-order{padding:6px 3px 12px;margin-top:23px}
+ #bf167-order .bf167-divider{font-size:11px;letter-spacing:.13em;margin-bottom:21px}
+ #bf167-order .bf167-heading{gap:12px;margin-bottom:24px}
+ #bf167-order .bf167-seal{width:49px;height:49px;flex-basis:49px;font-size:27px}
+ #bf167-order h3{font-size:37px}
+ #bf167-order .bf167-heading p{font-size:12px}
+ #bf167-order .bf167-fields label{font-size:13px}
+ #bf167-order .bf167-fields input{height:62px;padding:0 15px;font-size:16px}
+ #bf167-order .bf167-consents label{font-size:13px;gap:12px}
+ #bf167-order .bf167-consents input{width:20px;height:20px;min-width:20px}
+ #bf167-order .bf167-pay{font-size:21px;min-height:68px}
+ #bf167-order .bf167-note{font-size:11px}
+}

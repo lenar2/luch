@@ -52,3 +52,8 @@ GetCourse official documentation supports one Offer with multiple Products, but 
 
 
 Combined focused regression: **57/57 PASS** (43 existing + 14 new fallback tests). No exhaustive 265-vector rerun. Node syntax and production export guard PASS.
+
+
+## R112 trusted native-order site integration
+
+See R112_SITE_ORDER_INTEGRATION.md and the new native-order-site-integration.cjs/.test.cjs/.sql. The module creates a signed server-authoritative 11,690 RUB two-line order payload, binds it to a stable idempotency key and a durable PostgreSQL ledger, requires a separately pinned independent reviewer in addition to live GetCourse evidence, verifies paid 365d AFTER_PAY grants and receipts, and deduplicates paid events. It contains no guessed GetCourse API or production provider driver; the real native capability and driver remain hard gates. No migration or production deployment is performed by this PR.

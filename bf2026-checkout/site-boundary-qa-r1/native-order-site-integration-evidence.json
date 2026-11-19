@@ -1,0 +1,97 @@
+{
+  "schema": "bf2026.r112.native-order-site-integration-evidence.r1",
+  "observed_at": "2026-11-19T01:36:00Z",
+  "target_selection": {
+    "kind": "set",
+    "items": [
+      "rejection_program",
+      "union"
+    ],
+    "selection_key": "set:rejection_program|union"
+  },
+  "server_recomputed_quote": {
+    "currency": "RUB",
+    "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107",
+    "subtotal_rub": 12990,
+    "discount_percent": 10,
+    "discount_rub": 1300,
+    "amount_due_rub": 11690
+  },
+  "exact_lines": [
+    {
+      "selection_key": "rejection_program",
+      "offer_id": 8933492,
+      "product_id": 4557988,
+      "training_id": 936022301,
+      "unit_price_rub": 6990,
+      "grant": {
+        "start": "AFTER_PAY",
+        "duration_days": 365
+      }
+    },
+    {
+      "selection_key": "union",
+      "offer_id": 8919715,
+      "product_id": 4550895,
+      "training_id": 933861292,
+      "unit_price_rub": 6000,
+      "grant": {
+        "start": "AFTER_PAY",
+        "duration_days": 365
+      }
+    }
+  ],
+  "internal_reconciliation_only": {
+    "discount_allocations_rub": [
+      700,
+      600
+    ],
+    "line_totals_rub": [
+      6290,
+      5400
+    ],
+    "sum_rub": 11690,
+    "provider_line_price_override": false
+  },
+  "implementation": {
+    "files": [
+      "native-order-site-integration.cjs",
+      "native-order-site-integration.test.cjs",
+      "native-order-site-integration.sql",
+      "R112_SITE_ORDER_INTEGRATION.md"
+    ],
+    "features": [
+      "HMAC signed server order payload",
+      "independent Ed25519 reviewer gate",
+      "provider driver interface with no guessed API",
+      "PostgreSQL durable checkout idempotency",
+      "unknown-outcome reconciliation without blind retry",
+      "paid-event exactly-once ledger",
+      "native 365d AFTER_PAY grant readback validation",
+      "receipt/tax/consent/duplicate guard validation"
+    ]
+  },
+  "qa": {
+    "focused_tests_passed": 73,
+    "focused_tests_failed": 0,
+    "exhaustive_265_reaudit_run": false,
+    "provider_order_created": false,
+    "provider_payment_attempted": false,
+    "paid_grants_verified": false
+  },
+  "blockers": [
+    "No trusted live native two-line GetCourse order evidence at 11690 RUB",
+    "No independent reviewer attestation/key configured",
+    "No production GetCourse native order driver implemented",
+    "PostgreSQL additive migration not deployed"
+  ],
+  "production": {
+    "site_changed": false,
+    "registry_changed": false,
+    "production_database_changed": false,
+    "getcourse_ui_touched": false,
+    "checkout_sales_ready": false,
+    "verified_sale_routes": 0,
+    "checkout_release": "HOLD"
+  }
+}

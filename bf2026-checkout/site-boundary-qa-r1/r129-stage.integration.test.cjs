@@ -80,7 +80,7 @@ test('R129 actual staged site+preview HTTP and PostgreSQL reject all unverified 
     method:'POST',body:selection,cookie
    });
    assert.equal(resp.status,503,JSON.stringify({selection,response:resp.body}));
-   assert.equal(resp.body.code,'R129_ORDER_LEVEL_NATIVE_FIELDS_NOT_ATTESTED');
+   assert.equal(resp.body.code,'R130_VERSIONED_MANIFEST_NOT_ACTIVE');
    assert.equal(resp.body.public_release_allowed,false);
   }
  });
@@ -89,7 +89,7 @@ test('R129 actual staged site+preview HTTP and PostgreSQL reject all unverified 
    method:'POST',origin:null,body:{deal_id:'99129001',consent_nonce:'a'.repeat(43)}
   });
   assert.equal(unknown.status,503);
-  assert.equal(unknown.body.code,'R129_ORDER_LEVEL_NATIVE_FIELDS_NOT_ATTESTED');
+  assert.equal(unknown.body.code,'R130_VERSIONED_MANIFEST_NOT_ACTIVE');
   const noOrigin=await call(SITE,'/api/checkout/consent/challenge',{
    method:'POST',origin:null,body:{kind:'single',lot:1}
   });

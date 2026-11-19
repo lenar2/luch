@@ -10,6 +10,7 @@ const {stageMetadata}=require('./r124-stage-training-overlay.cjs');
 const fs=require('node:fs');
 const path=require('node:path');
 const {validateSignedEnvelope,createSignedReadOnlyObserver,readApprovedKey}=require('./r126-signed-native-observer.cjs');
+const {createConfiguredObserver}=require('./r126-approved-observer-loader.cjs');
 const DIR='/srv/factory-scratch/bf2026-r118-relay-stage-20261119';
 test('R126 default no native provider, feature keys disabled',()=>{
  const c=strictConfig({env:{}});
@@ -78,4 +79,13 @@ test('R126 signer refuses unsigned, invalid and unprovisioned observer',()=>{
  assert.throws(()=>createSignedReadOnlyObserver({transport:{}}));
  assert.throws(()=>validateSignedEnvelope({envelope:{payload:{},signature:'fake',key_id:'x'},
   action:'origin',nonce:'a',key:null}));
+});
+
+test('R126 native observer loader stays OFF unless explicitly provisioned, fail closed if enabled with missing key',()=>{
+ assert.equal(createConfiguredObserver({}),null);
+ assert.equal(createConfiguredObserver({BF2026_R126_NATIVE_OBSERVER_ENABLED:'0'}),null);
+ assert.throws(()=>createConfiguredObserver({BF2026_R126_NATIVE_OBSERVER_ENABLED:'1'}),
+  {code:'R126_OBSERVER_PARENT_FLAG_REQUIRED'});
+ assert.throws(()=>createConfiguredObserver({BF2026_R126_NATIVE_OBSERVER_ENABLED:'1',
+  BF2026_R126_PROVIDER_VERIFY_ENABLED:'1'}),{code:'R126_OBSERVER_PUBLIC_KEY_FILE_REQUIRED'});
 });

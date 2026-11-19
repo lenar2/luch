@@ -3,7 +3,7 @@
  * GetCourse process callback. No endpoint accepts a browser consent boolean.
  */
 const crypto=require('node:crypto');
-const {COOKIE,SESSION_TTL_SECONDS,ALLOWED_KEYS}=require('./r127-consent-boundary.cjs');
+const {COOKIE,SESSION_TTL_SECONDS}=require('./r127-consent-boundary.cjs');
 const PREFIX='/api/checkout/_qa/consent-boundary/';
 const CALLBACK='/api/checkout/_provider/getcourse/order-created';
 const MAX_BODY=8192;

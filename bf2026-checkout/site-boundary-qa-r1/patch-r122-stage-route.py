@@ -22,7 +22,7 @@ new=(
 "if(typeof key!=='string'||key.length<20)return null;"
 "const x=require("+repr(str(module.parent / 'getcourse-export-readback.cjs'))+");"
 "return x.createGetCourseExportReader({apiKeyProvider:()=>key,budget:x.createPostgresBudget(BF2026_R121_STAGE_POOL)});"
-"})();\\n"+
+"})();\n"+
 "const "+tag+"=require("+repr(str(module))+").createQARouter({qaAuthorized,pool:BF2026_R121_STAGE_POOL,exportReader:BF2026_R122_EXPORT_READER});"
 )
 updated,n=re.subn(pattern,lambda _:new,s)

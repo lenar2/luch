@@ -26,7 +26,7 @@ test('R122 callback rejects bad secret, wrong account, wrong deal, offer, price,
  assert.throws(()=>verifyCallback({...input,accountHost:'wrong.example'}),{code:'GETCOURSE_CALLBACK_ACCOUNT_IDENTITY_MISMATCH'});
  for(const mutate of [
   b=>b.deal_id='1',b=>b.deal_number='1',b=>b.offers=['8934207'],
-  b=>b.cost_money_value='12990',b=>b.status='payed',b=>b.payed_money='100',
+  b=>b.cost_money_value='12990',b=>b.status='unknown',b=>b.payed_money='100',
   b=>b.email='buyer@example.test'
  ]){
   const b=JSON.parse(input.rawBody);mutate(b);

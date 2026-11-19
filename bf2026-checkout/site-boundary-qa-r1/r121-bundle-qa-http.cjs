@@ -45,7 +45,9 @@ function createQARouter({qaAuthorized,pool,reader,exportReader,readbackOnce,keys
     const held=String(result.state||'').startsWith('PENDING')||String(result.state||'').startsWith('HOLD')||
       String(result.state||'').startsWith('PARTIAL')||String(result.state||'').startsWith('PAID_ORDER_');
     return reply(res,held?202:200,{ok:true,duplicate:result.duplicate===true,...safe,
-      provider_signature_verified:false,receipt_verified:false,grants_verified:false,
+      provider_signature_verified:false,provider_cryptographic_signature_verified:false,
+      receipt_verified:false,fiscal_receipt_verified:false,
+      grants_verified:false,actual_grants_verified:false,
       grant_writes:0,release_allowed:false,checkout_url:null});
    }catch(e){return reply(res,422,{ok:false,code:e.code||'GETCOURSE_EXPORT_READBACK_FAILED',
     payment_record_verified:false,receipt_verified:false,grants_verified:false,release_allowed:false})}

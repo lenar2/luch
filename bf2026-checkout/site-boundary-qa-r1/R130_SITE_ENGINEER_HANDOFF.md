@@ -70,7 +70,7 @@ The 12 entries are:
 
 - R130 migration applied successfully to the existing isolated PostgreSQL16.
 - R130 one-shot stage patch applied to the existing isolated R129 server; backup: `server.js.before-r130-stage.backup`.
-- R130 site server restarted after the optional adapter hook was wired: **127.0.0.1:18774**, PID **2802941**. Observer enable flag is absent/OFF.
+- R130 site server restarted after the optional adapter hook was wired: **127.0.0.1:18774**, PID **2923392**. Observer enable flag is absent/OFF.
 - Existing isolated R128 storefront preview remains **127.0.0.1:18775**, PID **2299919**. Independent R126 stage remains **127.0.0.1:18773**, PID **1738222**.
 - Actual runtime has **no** R130 manifest public key/file, R127 signed route manifest/key, R129 owner config/key, R130 native-consent observer public key or fixed-path observer transport. `BF2026_R130_NATIVE_CONSENT_OBSERVER_ENABLED` is absent/OFF; loader returns null. Private-file checks confirmed all corresponding files absent.
 - Actual R130 PostgreSQL scope `BF2026_SITE`: no head/history row. Test scope `BF2026_R130_TEST`: no head/history row after cleanup. R127 challenges **0**, R124 intents **0**, R123 readbacks **0**, native bundle verifications **0**, callback hints **0**. GetCourse Export budget **0**, outstanding export NULL.
@@ -106,6 +106,9 @@ For a fresh isolated R129 stage only:
 python3 bf2026-checkout/site-boundary-qa-r1/patch-r130-stage.py \
   /srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js
 node --check /srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js
+# If R130 is already installed on a stage and only the optional observer hook is missing:
+python3 bf2026-checkout/site-boundary-qa-r1/patch-r130-native-consent-observer.py \
+  /srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js
 # 3. After independent owner-native readbacks and offline signatures exist:
 BF2026_STAGE_ONLY=1 BF2026_R130_APPLY_MANIFEST=1 \
 BF2026_R115_DB_POOL_MODULE=/srv/factory-scratch/bf2026-r118-relay-stage-20261119/stage-pool-module.cjs \

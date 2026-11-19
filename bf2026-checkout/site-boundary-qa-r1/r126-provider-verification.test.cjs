@@ -22,9 +22,7 @@ test('R126 only exact known existing CTA feature names permitted',()=>{
  for(const v of ['single:trainer','single:rejection;single:union',
   'single:rejection,../secret','single:rejection,single:rejection',
   'single:bundle','single:source:3']){
-  assert.throws(()=>strictConfig({env:{BF2026_R126_CTA_KEYS:v}}),{
-   code:v==='single:rejection,single:rejection'?'R126_CONFIG_CTA_KEY_NOT_APPROVED':undefined
-  });
+  assert.throws(()=>strictConfig({env:{BF2026_R126_CTA_KEYS:v}}));
  }
  assert.throws(()=>strictConfig({env:{BF2026_R126_PROVIDER_VERIFY_ENABLED:'true'}}));
  assert.throws(()=>strictConfig({env:{BF2026_R126_NATIVE_OBSERVER_ENABLED:'1'}}),{

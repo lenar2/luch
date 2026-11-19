@@ -1,58 +1,82 @@
 {
-  "schema": "bf2026.r127.offer-revisions.v1",
-  "source": "OWNER_APPROVED_NATIVE_OFFER_REVISION_READBACK",
-  "approved": false,
-  "note": "Template only. No approved native terms hashes have been supplied. Do not change approved=false or native_readback_verified=false without owner-approved read-only native GetCourse offer+terms readback.",
-  "offers": {
-    "single:rejection": {
-      "offer_id": 8934973,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:devaluation": {
-      "offer_id": 8934925,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:self": {
-      "offer_id": 8934974,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:guilt": {
-      "offer_id": 8934979,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:rejection_program": {
-      "offer_id": 8933492,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:dnv": {
-      "offer_id": 8934207,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:union": {
-      "offer_id": 8919715,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:source:1": {
-      "offer_id": 8934262,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:source:2": {
-      "offer_id": 8934987,
-      "revision_sha256": null,
-      "native_readback_verified": false
-    },
-    "single:personal_zoom": {
-      "offer_id": 8934993,
-      "revision_sha256": null,
-      "native_readback_verified": false
+  "key_id": null,
+  "payload": {
+    "schema": "bf2026.r127.signed-offer-revisions.v1",
+    "source": "BF2026_OWNER_APPROVED_NATIVE_OFFER_REVISION_READBACK",
+    "issued_at": null,
+    "expires_at": null,
+    "offers": {
+      "single:rejection": {
+        "offer_id": 8934973,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:devaluation": {
+        "offer_id": 8934925,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:self": {
+        "offer_id": 8934974,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:guilt": {
+        "offer_id": 8934979,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:rejection_program": {
+        "offer_id": 8933492,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:dnv": {
+        "offer_id": 8934207,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:union": {
+        "offer_id": 8919715,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:source:1": {
+        "offer_id": 8934262,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:source:2": {
+        "offer_id": 8934987,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      },
+      "single:personal_zoom": {
+        "offer_id": 8934993,
+        "revision_sha256": null,
+        "native_readback_verified": false,
+        "readback_at": null,
+        "readback_evidence_sha256": null
+      }
     }
-  }
+  },
+  "signature": null
 }

@@ -6,7 +6,7 @@ function reply(res,status,obj){
   'x-robots-tag':'noindex,nofollow','x-content-type-options':'nosniff'});
  res.end(JSON.stringify(obj));
 }
-function createQARouter({qaAuthorized,pool,reader,exportReader,keys={},allowLive=false}={}){
+function createQARouter({qaAuthorized,pool,reader,exportReader,readbackOnce,keys={},allowLive=false}={}){
  if(typeof qaAuthorized!=='function')throw Error('R121_QA_AUTH_REQUIRED');
  const verify=pool?createVerifier({pool,reader,keys,allowLive}):null;
  return async(req,res,path)=>{
@@ -26,7 +26,7 @@ function createQARouter({qaAuthorized,pool,reader,exportReader,keys={},allowLive
     payment_verified:false,release_allowed:false});
   }
   if(req.method==='POST'&&action==='export-readback'){
-   if(!exportReader)return reply(res,503,{ok:false,code:'GETCOURSE_API_KEY_NOT_CONFIGURED',
+   if(!exportReader||typeof readbackOnce!=='function')return reply(res,503,{ok:false,code:'GETCOURSE_READBACK_SECRET_OR_LEDGER_UNCONFIGURED',
     payment_record_verified:false,receipt_verified:false,grants_verified:false,release_allowed:false});
    if(String(req.headers['content-type']||'').split(';')[0].trim()!=='application/json')
     return reply(res,415,{ok:false,code:'APPLICATION_JSON_REQUIRED'});
@@ -35,13 +35,16 @@ function createQARouter({qaAuthorized,pool,reader,exportReader,keys={},allowLive
     for await(const part of req){size+=part.length;if(size>64)throw Error('EMPTY_JSON_BODY_REQUIRED');parts.push(part)}
     const data=JSON.parse(Buffer.concat(parts).toString('utf8'));
     if(!data||Array.isArray(data)||Object.keys(data).length!==0)throw Error('EMPTY_JSON_BODY_REQUIRED');
-    const result=await exportReader.readBundleOrderAndPayment();
+    const requestKey=String(req.headers['x-bf2026-idempotency-key']||'');
+    const result=await readbackOnce(requestKey);
     const safe={};
     for(const k of ['state','source','deal_id','order_number','offer_id','order_total_rub',
       'order_status','paid_total_rub','payed_at','payment_record_verified','payment_status',
-      'payment_amount_rub','payment_id','payment_source'])
+      'payment_amount_rub','payment_id','payment_source','product_identity_verified','product_identity_reason','reason_code'])
       if(result[k]!==undefined)safe[k]=result[k];
-    return reply(res,String(result.state||'').startsWith('PENDING')?202:200,{ok:true,...safe,
+    const held=String(result.state||'').startsWith('PENDING')||String(result.state||'').startsWith('HOLD')||
+      String(result.state||'').startsWith('PARTIAL')||String(result.state||'').startsWith('PAID_ORDER_');
+    return reply(res,held?202:200,{ok:true,duplicate:result.duplicate===true,...safe,
       provider_signature_verified:false,receipt_verified:false,grants_verified:false,
       grant_writes:0,release_allowed:false,checkout_url:null});
    }catch(e){return reply(res,422,{ok:false,code:e.code||'GETCOURSE_EXPORT_READBACK_FAILED',

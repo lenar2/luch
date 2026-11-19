@@ -12,11 +12,7 @@ test('R122 GetCourse shared-secret callback hint: real staging PostgreSQL + HTTP
  const pool=require(process.env.BF2026_STAGE_PG_POOL_MODULE).pool;
  assert.equal(pool.options.host,'127.0.0.1');assert.equal(Number(pool.options.port),55439);
  await pool.query(fs.readFileSync(path.join(__dirname,'getcourse-callback-hints.sql'),'utf8'));
- const secret=crypto.randomBytes(32),eventId=crypto.createHash('sha256').update(JSON.stringify({
-  schema:'bf2026.getcourse.callback.hint.v1',account_host:'study.shkola-dnv.com',
-  deal_id:'924624456',deal_number:'71994',offers:['8935004'],status:'new',
-  cost_money_value:'11690',payed_money:'0',payed_at:'',created_at:'2026-11-19T10:00:00.000Z'
- })).digest('hex');
+ const secret=crypto.randomBytes(32);
  const body={schema:'bf2026.getcourse.callback.hint.v1',account_host:'study.shkola-dnv.com',
   deal_id:'924624456',deal_number:'71994',offers:['8935004'],status:'new',
   cost_money_value:'11690',payed_money:'0',payed_at:'',created_at:new Date().toISOString()};

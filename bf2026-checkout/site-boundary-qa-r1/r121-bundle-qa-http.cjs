@@ -14,9 +14,16 @@ function createQARouter({qaAuthorized,pool,reader,keys={},allowLive=false}={}){
   if(req.headers.origin&&req.headers.origin!=='https://wf.tati-lar.ru')
    return reply(res,403,{ok:false,code:'ORIGIN_DENIED'});
   const action=path.slice(PREFIX.length);
-  if(req.method==='GET'&&action==='status')
-   return reply(res,reader?200:503,{ok:true,route:'R121_BUNDLE_READBACK_QA_ONLY',
+  if(req.method==='GET'&&action==='status'){
+   let postgresLedgerReady=false,exportBudgetReady=false;
+   if(pool){try{const db=await pool.query("SELECT to_regclass('public.bf2026_native_bundle_verification') AS ledger,to_regclass('public.bf2026_getcourse_export_budget') AS export_budget");
+    postgresLedgerReady=!!db.rows?.[0]?.ledger;exportBudgetReady=!!db.rows?.[0]?.export_budget;
+   }catch{}}
+   const ready=!!reader&&postgresLedgerReady&&exportBudgetReady;
+   return reply(res,ready?200:503,{ok:true,route:'R121_BUNDLE_READBACK_QA_ONLY',
+    postgres_ledger_ready:postgresLedgerReady,export_budget_ready:exportBudgetReady,
     provider_reader_configured:!!reader,payment_verified:false,release_allowed:false});
+  }
   if(req.method!=='POST'||action!=='reconcile')return reply(res,404,{ok:false,code:'NOT_FOUND'});
   if(!reader||!verify)return reply(res,503,{ok:false,code:'HOLD_PROVIDER_READBACK_UNCONFIGURED',
    payment_verified:false,release_allowed:false});

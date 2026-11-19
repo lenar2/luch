@@ -192,6 +192,7 @@ function createConsentBoundary({
     providerCreated=createdAt.getTime();
    if(!Number.isFinite(issued)||!Number.isFinite(expires)||
     providerCreated<issued-30000||providerCreated>expires||
+    providerCreated>receivedAt+60000||
     receivedAt>expires+CALLBACK_GRACE_MS||receivedAt<issued-30000)
     fail('R127_PROVIDER_ORDER_OUTSIDE_CHALLENGE_WINDOW');
    const attestation=nativeConsentVerifier?

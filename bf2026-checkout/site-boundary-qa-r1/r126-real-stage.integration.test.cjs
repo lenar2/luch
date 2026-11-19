@@ -8,9 +8,9 @@ const fs=require('node:fs');
 const crypto=require('node:crypto');
 const {EXPECTED}=require('./r123-single-widget-adapter.cjs');
 const enabled=process.env.BF2026_STAGE_ONLY==='1'&&
- process.env.BF2026_R126_STAGE_PORT==='18772'&&
+ ['18772','18773'].includes(process.env.BF2026_R126_STAGE_PORT)&&
  Boolean(process.env.BF2026_STAGE_PG_POOL_MODULE);
-const base='http://127.0.0.1:18772';
+const base='http://127.0.0.1:'+process.env.BF2026_R126_STAGE_PORT;
 test('R126 real site server/PG native readback HOLD and exact ten CTA gates', {skip:!enabled},async t=>{
  const pool=require(process.env.BF2026_STAGE_PG_POOL_MODULE).pool;
  assert.equal(pool.options.host,'127.0.0.1');

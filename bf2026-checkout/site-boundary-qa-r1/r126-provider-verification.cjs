@@ -170,7 +170,8 @@ function createProviderVerification({pool,stage,env=process.env,
      observer.readFiscallyRegisteredReceipt(SUBJECT),
      observer.readPurchaseGrants(SUBJECT)
     ]);
-    const check=validateNativeReceiptAndGrants({receipt,grants,subject:SUBJECT,clock});
+    const check=validateNativeReceiptAndGrants({receipt,grants,
+     subject:{...SUBJECT,payed_at:native.observed_payed_at},clock});
     return Object.freeze({state:'HOLD_CONSENT_AND_OWNER_RELEASE_NOT_VERIFIED',
      evidence_present:native.evidence_present,
      export_order_identity_verified:native.export_order_identity_verified,
@@ -243,12 +244,17 @@ function validateNativeReceiptAndGrants({receipt,grants,subject=SUBJECT,clock=()
    String(receipt.order_number)!==subject.order_number||
    String(receipt.deal_id)!==subject.deal_id||
    receipt.offer_id!==subject.offer_id||
-   receipt.fiscal_status!=='registered'||
+   receipt.fiscal_status!=='registered'||receipt.operation!=='income'||
    receipt.amount_rub!==subject.amount_rub||
    typeof receipt.fiscal_receipt_number!=='string'||
    !/^[A-Za-z0-9._/-]{6,128}$/.test(receipt.fiscal_receipt_number)||
    receipt.refunded!==false)
   error('R126_NATIVE_FISCAL_RECEIPT_IDENTITY_INVALID');
+ const paidAt=Date.parse(subject.payed_at);
+ const fiscalAt=Date.parse(receipt.fiscalized_at);
+ if(!Number.isFinite(paidAt)||!Number.isFinite(fiscalAt)||
+    fiscalAt<paidAt-24*3600_000||fiscalAt>clock()+300_000)
+  error('R126_NATIVE_RECEIPT_NOT_LINKED_TO_REAL_PAYMENT_TIME');
  if(!Array.isArray(grants)||grants.length!==2)
   error('R126_NATIVE_PURCHASE_GRANTS_NOT_EXACTLY_TWO');
  const uniq=new Set();
@@ -268,6 +274,8 @@ function validateNativeReceiptAndGrants({receipt,grants,subject=SUBJECT,clock=()
   const start=Date.parse(g.access_start),end=Date.parse(g.access_end);
   if(!Number.isFinite(start)||!Number.isFinite(end)||
     end<=start||Math.abs((end-start)/86400000-365)>1.1||
+    Math.abs(start-paidAt)>36*3600_000||
+    Math.abs(end-(paidAt+365*86400000))>36*3600_000||
     end<clock()||!Number.isFinite(clock()))
    error('R126_NATIVE_GRANT_365_DAY_WINDOW_INVALID');
  }

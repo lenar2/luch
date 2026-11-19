@@ -4,7 +4,7 @@
 // treats Export API output as receipt or Training entitlement proof.
 const DEFAULTS=Object.freeze({
  host:'study.shkola-dnv.com', userId:'524210421', orderNumber:'71994',
- dealId:'924624456', offerId:'8935004', amountRub:11690,
+ dealId:'924624456', offerId:8935004, amountRub:11690,
  apiWindowMs:2*60*60*1000, maxRequestsPerWindow:70, maxResponseBytes:2*1024*1024
 });
 function fail(code){const e=new Error(code);e.code=code;throw e}

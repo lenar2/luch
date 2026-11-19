@@ -33,7 +33,7 @@ test('R122 GetCourse shared-secret callback hint: real staging PostgreSQL + HTTP
    'x-getcourse-account':'study.shkola-dnv.com','authorization':'Bearer '+token},body:raw});
   return {status:r.status,body:await r.json()};
  }
- const a=await post();assert.equal(a.status,202);
+ const a=await post();assert.equal(a.status,202,JSON.stringify(a.body));
  assert.equal(a.body.status,'ACCEPTED_HINT_ONLY');assert.equal(a.body.payment_verified,false);
  assert.equal(a.body.provider_signature_verified,false);assert.equal(a.body.grant_writes,0);
  const b=await post();assert.equal(b.status,202);assert.equal(b.body.duplicate,true);

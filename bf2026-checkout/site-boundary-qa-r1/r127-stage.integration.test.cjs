@@ -37,7 +37,7 @@ test('R127 actual isolated site HTTP/PG defaults HOLD and direct HTTP cannot byp
   assert.equal(s.data.public_release_allowed,false);
  });
  await t.test('session can be issued but challenge fails without owner-approved offer revision',async()=>{
-  const session=await post('/api/checkout/_qa/consent-boundary/session',{});
+  const sessionResponse=await fetch(base+'/api/checkout/_qa/consent-boundary/session',{method:'POST',headers:{'x-bf2026-qa-key':key},redirect:'error'});\n  const session={status:sessionResponse.status,data:await sessionResponse.json(),headers:sessionResponse.headers};
   assert.equal(session.status,201);
   const cookie=session.headers.get('set-cookie').split(';')[0];
   assert.match(session.headers.get('set-cookie'),/HttpOnly/);

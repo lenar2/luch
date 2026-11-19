@@ -111,3 +111,8 @@ Production checkout container now makes a real GET-only call to GetCourse Widget
 ## R115 — current 12-slot matrix, signed callback inbox and paid readback
 
 New independent backend work builds on the already deployed private R112 order-prepare bridge and the newer GetCourse widget driver. It does not replace or deploy either. Added `native-slot-matrix.cjs/.test.cjs/.snapshot.json`, `provider-relay-webhook.cjs/.test.cjs`, `r115-relay-http.cjs/.test.cjs`, `r115-event-inbox.sql`, `r115-postgres-inbox-store.cjs/.test.cjs`, `patch-r115-event-http.py`, `paid-proof-reconciler.cjs/.test.cjs`, the updated signed-order Postgres lookup, and `R115_SITE_ENGINEER_HANDOFF.md`. The R115 callback is **not** a GetCourse-authenticated payment: it requires an HMAC signature from a trusted relay, persists only a replay-safe event hint, and independent signed native order/payment/receipt/entitlement readback. 105/105 focused tests passed in local staging before the concurrent PR17 head update, without repeating 265 pricing vectors. No R115 production/DB/GC writes occurred.
+
+
+## R118 live native bundle QA
+
+Live private QA endpoints for GetCourse ONE Offer 8935004 / two Products 4557988 + 4550895, native Widget1686790, 11,690 RUB, true unpaid order #71994 reported by UI worker (no grants before payment). 8/8 live site HTTP smoke PASS, 72/72 focused native/site regression PASS. Public sale remains HOLD. See `R118_NATIVE_BUNDLE_LIVE_QA_HANDOFF.md` and `r112-live-native-bundle-qa-deploy-evidence.json`. No GetCourse API writes or buyer payment.

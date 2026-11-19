@@ -58,7 +58,8 @@ test('R128 all 10 individual native CTAs → server challenge → order-scoped c
   await pool.end();
  });
  async function post(path,body,{cookie,origin='https://wf.tati-lar.ru',authorization}={}){
-  const headers={origin};
+  const headers={};
+  if(origin)headers.origin=origin;
   if(body!==undefined)headers['content-type']='application/json';
   if(cookie)headers.cookie=cookie;
   if(authorization)headers.authorization=authorization;
@@ -119,7 +120,7 @@ test('R128 all 10 individual native CTAs → server challenge → order-scoped c
    status:'new',created_at:c.issued_at,
    consent_nonce:c.nonce,offer_revision_sha256:c.offer_revision_sha256
   };
-  const received=await post(CALLBACK,payload,{origin:undefined,
+  const received=await post(CALLBACK,payload,{origin:null,
    authorization:'Bearer '+TEST_SECRET});
   assert.equal(received.status,202,JSON.stringify(received.data));
   assert.equal(received.data.state,'ORDER_CALLBACK_MATCHED_HOLD');

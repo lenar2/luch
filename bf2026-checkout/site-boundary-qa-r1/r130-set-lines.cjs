@@ -6,7 +6,6 @@
  */
 const crypto=require('node:crypto');
 const {EXPECTED}=require('./r123-single-widget-adapter.cjs');
-const {manifest}=require('./r129-getcourse-site-quote.cjs');
 function fail(code){const e=Error(code);e.code=code;throw e}
 const KEY_TO_ROUTE=Object.freeze({
  rejection:'single:rejection',devaluation:'single:devaluation',self:'single:self',
@@ -59,11 +58,8 @@ function buildSetImportPlan({selection,quoteFn}={}){
    EXPECTED[key==='source'?'single:source:'+item.variant:KEY_TO_ROUTE[key]];
   if(!entry||!Number.isSafeInteger(entry.offer_id)||entry.offer_id<=0||
    !Array.isArray(entry.pairs)||!entry.pairs.length||
-   entry.price!==(key==='trainer'?undefined:item.base_price_rub))
-  {
-   // Trainer uses a separately read-back Offer and full Training.
-   if(key!=='trainer')fail('R130_NATIVE_OFFER_OR_PRICE_MISMATCH');
-  }
+   entry.price!==item.base_price_rub)
+   fail('R130_NATIVE_OFFER_OR_PRICE_MISMATCH');
   if(key==='trainer'&&item.base_price_rub!==28000)
    fail('R130_TRAINER_PRICE_MISMATCH');
   if(key==='source'&&!['1','2'].includes(item.variant))

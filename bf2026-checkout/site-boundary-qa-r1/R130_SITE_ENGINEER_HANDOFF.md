@@ -82,7 +82,7 @@ The 12 entries are:
 
 ## Tests actually run
 
-**37/37 Node tests PASS**:
+**39/39 Node tests PASS**:
 - R130 unit: 5/5.
 - R130 PG16 + real loopback HTTP + fresh-process persistence: 1/1.
 - R130 actual 18774 stage HTTP/PG: 1/1 (re-run after optional observer wiring).
@@ -91,6 +91,7 @@ The 12 entries are:
 - R129 actual site + preview + PG regression: 7/7 (re-run after optional observer wiring).
 - R127 real PG/HTTP protocol regression: 10/10.
 - R128 ten-route challenge/callback regression: 1/1.
+- Separate R130 native-order-readback contract suite in the same PR: 2/2. It uses synthetic readback objects to test validation logic only; it is **not** a real signed provider readback, payment, receipt or grant.
 
 **Separate disposable headless Chromium:** 10/10 actual R109 Buy CTA clicks through cart → R128 preview → actual R130 HTTP HOLD. Both Source variants included. Two negative browser cases PASS (Trainer remains QA-only; preview cannot proxy provider callback). `native_provider_requests=0`, orders=0, payments=0, public payment navigations=0. This browser was separate from the GetCourse UI browser; external network requests were blocked.
 

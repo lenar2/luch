@@ -245,7 +245,7 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
   "const {verifySignedRevisionManifest}=require(process.env.R127_MODULE);",
   "const key=crypto.createPublicKey(process.env.R130_PUBLIC_KEY);",
   "const route=verifySignedRevisionManifest(JSON.parse(process.env.R127_ENVELOPE),{publicKey:key});",
-  "const reg=createVersionedManifestRegistry({pool,publicKey:key,routeRevisionManifest:route,scope:'BF2026_R130_TEST',allowTestScope:true});",
+  "const reg=createVersionedManifestRegistry({pool,publicKey:key,routeRevisionManifest:route,scope:'BF2026_R130_TEST',allowTestScope:true,clock:()=>Number(process.env.R130_TEST_NOW)});",
   "reg.current().then(async m=>{console.log(JSON.stringify({version:m?.version,hash:m?.manifest_sha256,entries:m?.site_entry_count}));await pool.end()}).catch(async e=>{console.error(e.code||e.message);await pool.end();process.exitCode=1});"
  ].join('\n');
  const child=spawnSync(process.execPath,['-e',childCode],{
@@ -254,7 +254,8 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
    R130_MODULE:require.resolve('./r130-versioned-manifest.cjs'),
    R127_MODULE:require.resolve('./r127-signed-revision-manifest.cjs'),
    R130_PUBLIC_KEY:pair.publicKey.export({type:'spki',format:'pem'}),
-   R127_ENVELOPE:JSON.stringify(r127Envelope)}
+   R127_ENVELOPE:JSON.stringify(r127Envelope),
+   R130_TEST_NOW:String(nowRef.value)}
  });
  assert.equal(child.status,0,child.stderr);
  const restored=JSON.parse(child.stdout.trim());

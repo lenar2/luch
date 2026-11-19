@@ -128,7 +128,7 @@ test('R128 all 10 individual native CTAs → server challenge → order-scoped c
   assert.equal(received.data.provider_consent_verified,false);
   assert.equal(received.data.provider_signature_verified,false);
   assert.equal(received.data.public_release_allowed,false);
-  const replay=await post(CALLBACK,payload,{origin:undefined,
+  const replay=await post(CALLBACK,payload,{origin:null,
    authorization:'Bearer '+TEST_SECRET});
   assert.equal(replay.status,200);assert.equal(replay.data.duplicate,true);
   const altered=await post(CALLBACK,{...payload,deal_number:String(Number(id)+1)},

@@ -34,7 +34,8 @@ if b'assets/vf109-cart.js' not in raw or b'assets/vf109-checkout-bridge.js' not 
 html=raw.decode('utf8')
 if 'r125-single-cta-preview.js' in html:fail('R125_ALREADY_INSTALLED')
 for lot,(title,offer,widget) in ACTIONS.items():
- if f'id="lot-title-{lot}">{title}</h3>' not in html:
+ title_rx=r'<h3\\b(?=[^>]*id="lot-title-'+str(lot)+r'")[^>]*>'+re.escape(title)+r'</h3>'
+ if len(re.findall(title_rx,html))!=1:
   fail('R125_APPROVED_TITLE_MISMATCH_'+str(lot))
  pat=r'(<button class="buy-lot" type="button" data-add="'+str(lot)+r'")([^>]*)(>)'
  attrs=' data-r125-lot="'+str(lot)+'" data-r125-offer="'+str(offer)+'" data-r125-widget="'+str(widget)+'"'

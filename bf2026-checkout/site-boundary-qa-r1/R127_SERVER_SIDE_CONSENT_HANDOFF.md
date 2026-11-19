@@ -4,15 +4,16 @@ Date: 2026-11-19. Existing PR #17, branch **bf2026-r109-site-boundary-qa-r1-2026
 
 ## Verified current code and actual stage
 
-PR HEAD before this handoff: **3bec9f76fb2d52767f6b711e268847b03e000b51** (will advance when this document is committed).
+PR HEAD before this handoff: **fa31dce8d34b451839e1c4032e3e41cfbbd95ac3** (will advance when this document is committed).
 
 New files:
 - **r127-consent-boundary.sql** — PostgreSQL ledger for single-use challenges and provider order callbacks.
 - **r127-consent-boundary.cjs** — exact route/Offer/revision challenge issuance, 32-byte nonce, HttpOnly-session binding, timestamp window, strict GetCourse order callback matching, transactional replay prevention, and fail-closed native-consent attestation validator.
+- **r127-signed-revision-manifest.cjs** — offline-owner-signed Ed25519 Offer revision manifest verification, key fingerprint pinning, exact Offer IDs, evidence hashes, seven-day manifest expiry and 30-day native-readback freshness.
 - **r127-consent-http.cjs** — QA-only session/challenge/inspect routes and a separate bearer-authenticated GetCourse process callback route.
 - **patch-r127-stage-consent.py** — one-shot patch for the exact isolated staging server.js; refuses production paths and duplicate patching.
 - **r127-offer-revisions.example.json** — ten Offer IDs with approved=false and no fabricated revision hashes.
-- **r127-consent-boundary.env.example** — private file paths only, no secret values.
+- **r127-consent-boundary.env.example** — private manifest, Ed25519 public-key and callback-secret file paths only, no secret values.
 - **r127-consent-boundary.integration.test.cjs** — real PostgreSQL16 + HTTP protocol E2E with test-only fixture revision and test-only bearer secret.
 - **r127-stage.integration.test.cjs** — actual patched site HTTP + PostgreSQL E2E with no revision manifest or callback secret.
 
@@ -20,7 +21,7 @@ Actual execution:
 - SQL migration applied to isolated database **bfstage**; table **bf2026_r127_consent_challenges** exists.
 - Actual copied site server patched only under **/srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js**, with backup **server.js.before-r127-consent.backup**.
 - R127 server runs on loopback only: **127.0.0.1:18774**, PID **1793815**. R126 remains on **127.0.0.1:18773**, PID **1738222**.
-- **15/15 targeted test results PASS**: 9 real PG+HTTP protocol checks, 6 actual site-stage checks. These validate the callback contract and fail-closed behavior; they do NOT claim a real GetCourse callback or native consent PASS.
+- **16/16 targeted test results PASS**: 10 real PG+HTTP protocol checks (including Ed25519 manifest tamper/key/expiry/staleness rejection), 6 actual site-stage checks. These validate the callback contract and fail-closed behavior; they do NOT claim a real GetCourse callback or native consent PASS.
 - Actual R127 QA status: HTTP200 with QA key, approved_offer_revisions=0, callback_shared_secret_configured=false, provider_native_consent_verifier_configured=false, provider_native_unchecked_submit_negative_test_verified=false. Anonymous QA access is 404.
 - Challenge route returns 503 R127_OFFER_REVISION_NOT_OWNER_VERIFIED; callback route returns 503 HOLD_PROVIDER_CALLBACK_SECRET_NOT_CONFIGURED.
 - A valid direct multi-item POST /api/checkout/start is rejected by R127 with HTTP503 R127_PROVIDER_NATIVE_CONSENT_HOLD; forged client consent booleans/nonces do not grant access. Single routes remain independently blocked by R124/R126.
@@ -35,6 +36,8 @@ The 12 existing widget JS guards and custom field **22204810** are not provider-
 A challenge is issued only from server-owned route metadata:
 - fixed route key → exact existing Offer, Widget and amount;
 - an owner-approved per-Offer terms revision SHA-256 (none approved yet);
+
+The revision registry itself is **not trusted as unsigned JSON**. The owner prepares and signs the manifest offline with Ed25519. The server accepts it only when the signature verifies against the owner-private public-key file, the key fingerprint matches, every route maps to its exact existing Offer ID, every native readback has an evidence SHA-256, the readback is no older than 30 days, and the signed manifest expires within seven days. The signing private key is never placed on the server. No public key or signed manifest is provisioned now; the example JSON is an unsigned payload template and cannot enable challenges.
 - server issued_at, expires_at (10 minutes), and a cryptographically random 32-byte nonce;
 - a server-created __Host session cookie with Secure/HttpOnly/SameSite=Strict. Only the hash of session and nonce is stored in PostgreSQL.
 
@@ -84,6 +87,7 @@ Cherry-pick only these files from the existing branch:
     git restore --source=FETCH_HEAD -- \
       bf2026-checkout/site-boundary-qa-r1/r127-consent-boundary.sql \
       bf2026-checkout/site-boundary-qa-r1/r127-consent-boundary.cjs \
+      bf2026-checkout/site-boundary-qa-r1/r127-signed-revision-manifest.cjs \
       bf2026-checkout/site-boundary-qa-r1/r127-consent-http.cjs \
       bf2026-checkout/site-boundary-qa-r1/patch-r127-stage-consent.py \
       bf2026-checkout/site-boundary-qa-r1/r127-offer-revisions.example.json \
@@ -97,7 +101,7 @@ Then in an **isolated stage only**, after confirming the R123/R124/R126 prerequi
     python3 bf2026-checkout/site-boundary-qa-r1/patch-r127-stage-consent.py \
       /srv/factory-scratch/bf2026-r118-relay-stage-20261119/server.js
 
-Keep both R127 paths unset until the owner supplies a genuine approved revision manifest and a private callback secret. The example manifest is intentionally approved=false, has no hashes, and must not be edited to “approved” without native read-only Offer/terms readback. The callback route must remain disabled without its private secret. No production deployment, native GetCourse UI edit, order, payment, email, or grant is part of this handoff.
+Keep all three R127 paths unset until the owner supplies (1) a genuine Ed25519-signed revision manifest, (2) its owner-private public key, and (3) a private callback secret. The example manifest is intentionally approved=false, has no hashes, and must be read back from native GetCourse Offer/terms before offline signing. No signing private key is to be stored on the server. The callback route must remain disabled without its private secret. No production deployment, native GetCourse UI edit, order, payment, email, or grant is part of this handoff.
 
 ## Release status
 

@@ -5,7 +5,7 @@ const crypto=require('node:crypto');
 const fs=require('node:fs');
 const path=require('node:path');
 const http=require('node:http');
-const {createStore}=require('./getcourse-callback-hint.cjs');
+const {createStore,verifyCallback}=require('./getcourse-callback-hint.cjs');
 const {PATH,createHttpHandler}=require('./getcourse-callback-hint-http.cjs');
 const enabled=process.env.BF2026_STAGE_ONLY==='1'&&Boolean(process.env.BF2026_STAGE_PG_POOL_MODULE);
 test('R122 GetCourse shared-secret callback hint: real staging PostgreSQL + HTTP; no provider signature claim',{skip:!enabled},async t=>{
@@ -20,7 +20,8 @@ test('R122 GetCourse shared-secret callback hint: real staging PostgreSQL + HTTP
  const body={schema:'bf2026.getcourse.callback.hint.v1',account_host:'study.shkola-dnv.com',
   deal_id:'924624456',deal_number:'71994',offers:['8935004'],status:'new',
   cost_money_value:'11690',payed_money:'0',payed_at:'',created_at:new Date().toISOString()};
- const raw=Buffer.from(JSON.stringify(body)),id=crypto.createHash('sha256').update(raw).digest('hex');
+ const raw=Buffer.from(JSON.stringify(body));
+ const id=verifyCallback({rawBody:raw,authorization:'Bearer '+secret.toString('hex'),accountHost:'study.shkola-dnv.com',secret}).event_id;
  const server=http.createServer(createHttpHandler({secret,store:createStore(pool)}));
  await new Promise((ok,err)=>{server.once('error',err);server.listen(0,'127.0.0.1',ok)});
  const url='http://127.0.0.1:'+server.address().port+PATH;

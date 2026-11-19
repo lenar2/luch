@@ -32,7 +32,7 @@ test('R123 secret provider reads only owner-private, pinned-account regular file
  fs.symlinkSync(filePath,symlink);
  await assert.rejects(createFileSecretProvider({root,filePath:symlink}).readKey(),
   {code:'R123_SECRET_PERMISSIONS_INVALID'});
- await assert.rejects(createFileSecretProvider({root,filePath:path.join(root,'..','escape.json')}).readKey(),
+ assert.throws(()=>createFileSecretProvider({root,filePath:path.join(root,'..','escape.json')}),
   {code:'R123_SECRET_PATH_NOT_ALLOWLISTED'});
  fs.chmodSync(root,0o777);
  await assert.rejects(provider.readKey(),{code:'R123_SECRET_DIRECTORY_UNSAFE'});

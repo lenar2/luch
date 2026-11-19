@@ -132,7 +132,7 @@ test('R128 all 10 individual native CTAs → server challenge → order-scoped c
    authorization:'Bearer '+TEST_SECRET});
   assert.equal(replay.status,200);assert.equal(replay.data.duplicate,true);
   const altered=await post(CALLBACK,{...payload,deal_number:String(Number(id)+1)},
-   {origin:undefined,authorization:'Bearer '+TEST_SECRET});
+   {origin:null,authorization:'Bearer '+TEST_SECRET});
   assert.equal(altered.status,409);
  }
  const hashes=nonceList.map(n=>crypto.createHash('sha256').update(n).digest('hex'));

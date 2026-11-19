@@ -97,7 +97,9 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
  const duplicate=await registry.register(v1);
  assert.equal(duplicate.duplicate,true);
  assert.equal(duplicate.changed,false);
- const changedSameVersion=manifest(1,null);
+ const alteredSameVersionPayload=structuredClone(v1.payload);
+ alteredSameVersionPayload.issued_at=new Date(nowRef.value+20).toISOString();
+ const changedSameVersion=signFixture(alteredSameVersionPayload,pair.privateKey);
  await assert.rejects(registry.register(changedSameVersion),/R130_MANIFEST_ROLLBACK_OR_REPLAY/);
  const wrongChain=manifest(2,'f'.repeat(64));
  await assert.rejects(registry.register(wrongChain),/R130_MANIFEST_HASH_CHAIN_MISMATCH/);
@@ -123,7 +125,7 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
  });
  const gate=createManifestGate({registry,fieldGate,qaConsentHttp:providerHttp,
   qaAuthorized:()=>true});
- const server=http.createServer((req,res)=>{
+ server=http.createServer((req,res)=>{
   const path=new URL(req.url,'http://localhost').pathname;
   if(path.startsWith('/api/checkout/consent/')||
    path===CALLBACK||path.startsWith('/api/checkout/_qa/consent-boundary/')||
@@ -133,8 +135,9 @@ test('R130 PG16+HTTP: 12-entry manifest version chain, nonce linkage, stale/dupl
  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
  const base='http://127.0.0.1:'+server.address().port;
  const nonces=[];
+ let server=null;
  t.after(async()=>{
-  await new Promise(resolve=>server.close(resolve));
+  if(server)await new Promise(resolve=>server.close(resolve));
   if(nonces.length){
    const hashes=nonces.map(n=>sha(n));
    await pool.query('DELETE FROM bf2026_r127_consent_challenges WHERE nonce_sha256=ANY($1::char(64)[])',[hashes]);

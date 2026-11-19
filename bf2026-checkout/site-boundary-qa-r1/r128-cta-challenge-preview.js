@@ -39,7 +39,8 @@
    route=card.dataset.r128Route;offer=card.dataset.r128Offer;
    widget=card.dataset.r128Widget;guard=card.dataset.r128GuardBlock;
   }
-  if(!route||!offer||!widget||!guard||line.display_price_rub!==Number(card.dataset.r128Price))
+  const expectedPrice=Number(variant?card.getAttribute('data-r128-price-'+variant):card.dataset.r128Price);
+  if(!route||!offer||!widget||!guard||line.display_price_rub!==expectedPrice)
    return null;
   return {selection:{kind:'single',lot:line.lot,...(variant?{variant}:{})},
    route,offer:Number(offer),widget:Number(widget),guard:Number(guard)};

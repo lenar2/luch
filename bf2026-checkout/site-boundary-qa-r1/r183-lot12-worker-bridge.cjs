@@ -53,6 +53,15 @@ function createWorkerBridge(){
     const result=exec(['ack',json.deal_number,proof]);
     return reply(res,200,result);
    }
+   if(path0==='/api/checkout/lot12/worker/restore'){
+    if(Object.keys(json).sort().join(',')!=='deal_number,proof')throw Error('WORKER_RESTORE_KEYS_INVALID');
+    if(typeof json.deal_number!=='string'||!/^[1-9][0-9]{9,17}$/.test(json.deal_number)||
+       !json.proof||typeof json.proof!=='object'||Array.isArray(json.proof))
+      throw Error('WORKER_RESTORE_INVALID');
+    const proof=Buffer.from(JSON.stringify(json.proof),'utf8').toString('base64');
+    if(proof.length>18000)throw Error('WORKER_RESTORE_TOO_LARGE');
+    return reply(res,200,exec(['restore',json.deal_number,proof]));
+   }
    return reply(res,404,{ok:false,code:'WORKER_NOT_FOUND'});
   }catch(e){
    const c=String(e.message||'WORKER_ERROR');

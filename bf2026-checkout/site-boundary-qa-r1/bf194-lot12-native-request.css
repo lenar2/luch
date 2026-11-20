@@ -1,0 +1,36 @@
+/* BF2026 R194: fast confirmed custom-set handoff to native GetCourse. */
+#bf172-set-layer #bf194-close{
+ display:grid;place-items:center;width:42px;height:42px;border:1px solid #e4cfb8;
+ background:#fff;border-radius:50%;font:500 20px/1 Manrope,system-ui,sans-serif;
+ color:#86654d;cursor:pointer
+}
+#bf172-set-layer #bf194-discount{margin:9px 0 2px;text-align:center;
+ font:700 13px/1.5 Manrope,system-ui,sans-serif;color:#a4487c}
+#bf172-set-layer #bf167-order .bf167-consents{margin:16px 0 22px}
+#bf172-set-layer #bf167-order .bf167-consents label{display:flex;gap:12px;
+ align-items:flex-start;font:400 14px/1.55 Manrope,system-ui,sans-serif;
+ cursor:pointer;color:#816b5c}
+#bf172-set-layer #bf167-order .bf167-consents input{flex:0 0 20px;
+ width:20px;height:20px;accent-color:#b43170;cursor:pointer}
+#bf172-set-layer #bf167-order .bf167-consents strong{color:#81543c}
+#bf172-set-layer #bf167-order .bf167-consents a{color:#af3d76;
+ text-decoration:underline;text-underline-offset:2px}
+#bf172-set-layer #bf167-order .bf167-pay{display:block;
+ width:min(100%,540px);min-height:70px;margin:16px auto 0;
+ padding:13px 21px;border:3px solid #e9d5a6;border-radius:72px;
+ background:linear-gradient(110deg,#ab3978,#c84a89 60%,#ac3275);
+ box-shadow:0 6px 16px #b0496a38,0 0 0 3px #eee2cc;
+ color:white;font:500 26px/1.2 'Cormorant Garamond',Georgia,serif;
+ cursor:pointer}
+#bf172-set-layer #bf167-order .bf167-pay:hover{filter:brightness(1.04)}
+#bf172-set-layer #bf167-order .bf167-note{margin:20px auto 4px;
+ max-width:510px;text-align:center;font:400 12px/1.6 Manrope,system-ui,sans-serif;
+ color:#998473}
+#bf172-set-layer #bf167-order #bf194-status{margin:8px 0;
+ color:#945376;font:500 13px/1.5 Manrope,system-ui,sans-serif}
+#bf172-set-layer #bf167-order #bf194-status:empty{display:none}
+#bf172-set-layer #bf167-order .bf167-heading h3{font-size:37px}
+@media(max-width:640px){
+ #bf172-set-layer #bf167-order .bf167-heading h3{font-size:32px}
+ #bf172-set-layer #bf167-order .bf167-pay{min-height:65px;font-size:23px}
+}

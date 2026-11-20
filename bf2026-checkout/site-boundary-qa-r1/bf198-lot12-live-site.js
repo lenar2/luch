@@ -18,7 +18,7 @@
   trainer:'Тренер по отношениям'
  };
  const tiers={2:10,3:15,4:25,5:35,6:40,7:45};
- const fmt=x=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(x)+' ₽';
+ const fmt=x=>new Intl.NumberFormat('ru-RU',{minimumFractionDigits:x%1?2:0,maximumFractionDigits:2}).format(x)+' ₽';
  const nativeBase={rejection:3333,devaluation:3333,self:3333,guilt:3333,rejection_program:6990,dnv:7200,union:6000,trainer:28000,dgs2:7000,knopochka:5990};
  function nativeTotal(s){
   const discount=tiers[s.items.length];

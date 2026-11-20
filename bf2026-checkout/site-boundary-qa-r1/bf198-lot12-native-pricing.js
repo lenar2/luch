@@ -15,8 +15,8 @@
  const filled=$('#set-quote-filled');
  const el={subtotal:$('#set-subtotal'),discount:$('#set-discount-pct'),saved:$('#set-saved'),total:$('#set-final-price')};
  const tiers=[...root.querySelectorAll('.tier')];
- const rubles=new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2,minimumFractionDigits:0});
- const money=value=>rubles.format(value)+' ₽';
+ const rubles=value=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2,minimumFractionDigits:value%1?2:0}).format(value);
+ const money=value=>rubles(value)+' ₽';
  let manifest=null;
  let current=null;
  const limit=7;

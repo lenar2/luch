@@ -1,0 +1,4052 @@
+{
+  "schema": "bf2026.live-r109-quote-input-vectors.r1",
+  "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107",
+  "catalog_canonical_sha256": "fc5cb2de32323ef22fbfe6d7cb99d2d72637501334b6d1dcc76e4ec1593401ff",
+  "source_vector_digest": "c611b927497d203622d14d76e330190f15c1267609723f569adf6912246f8136",
+  "case_count": 265,
+  "cases": [
+    {
+      "selection_key": "set:rejection|devaluation",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation"
+        ]
+      },
+      "subtotal_rub": 6666,
+      "discount_percent": 10,
+      "total_rub": 6000
+    },
+    {
+      "selection_key": "set:rejection|self",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self"
+        ]
+      },
+      "subtotal_rub": 6666,
+      "discount_percent": 10,
+      "total_rub": 6000
+    },
+    {
+      "selection_key": "set:devaluation|self",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self"
+        ]
+      },
+      "subtotal_rub": 6666,
+      "discount_percent": 10,
+      "total_rub": 6000
+    },
+    {
+      "selection_key": "set:rejection|guilt",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt"
+        ]
+      },
+      "subtotal_rub": 6666,
+      "discount_percent": 10,
+      "total_rub": 6000
+    },
+    {
+      "selection_key": "set:devaluation|guilt",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt"
+        ]
+      },
+      "subtotal_rub": 6666,
+      "discount_percent": 10,
+      "total_rub": 6000
+    },
+    {
+      "selection_key": "set:self|guilt",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt"
+        ]
+      },
+      "subtotal_rub": 6666,
+      "discount_percent": 10,
+      "total_rub": 6000
+    },
+    {
+      "selection_key": "set:rejection|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 10533,
+      "discount_percent": 10,
+      "total_rub": 9480
+    },
+    {
+      "selection_key": "set:devaluation|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 10533,
+      "discount_percent": 10,
+      "total_rub": 9480
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 13866,
+      "discount_percent": 15,
+      "total_rub": 11790
+    },
+    {
+      "selection_key": "set:self|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 10533,
+      "discount_percent": 10,
+      "total_rub": 9480
+    },
+    {
+      "selection_key": "set:rejection|self|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 13866,
+      "discount_percent": 15,
+      "total_rub": 11790
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 13866,
+      "discount_percent": 15,
+      "total_rub": 11790
+    },
+    {
+      "selection_key": "set:guilt|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 10533,
+      "discount_percent": 10,
+      "total_rub": 9480
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 13866,
+      "discount_percent": 15,
+      "total_rub": 11790
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 13866,
+      "discount_percent": 15,
+      "total_rub": 11790
+    },
+    {
+      "selection_key": "set:self|guilt|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 13866,
+      "discount_percent": 15,
+      "total_rub": 11790
+    },
+    {
+      "selection_key": "set:rejection_program|dnv",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv"
+        ]
+      },
+      "subtotal_rub": 14190,
+      "discount_percent": 10,
+      "total_rub": 12770
+    },
+    {
+      "selection_key": "set:rejection|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "union"
+        ]
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:devaluation|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "union"
+        ]
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:rejection|devaluation|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:self|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "union"
+        ]
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:rejection|self|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:devaluation|self|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:guilt|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "union"
+        ]
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:rejection|guilt|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:devaluation|guilt|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:self|guilt|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:rejection_program|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union"
+        ]
+      },
+      "subtotal_rub": 12990,
+      "discount_percent": 10,
+      "total_rub": 11690
+    },
+    {
+      "selection_key": "set:dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 13200,
+      "discount_percent": 10,
+      "total_rub": 11880
+    },
+    {
+      "selection_key": "set:rejection|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:devaluation|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:self|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:guilt|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "union"
+        ]
+      },
+      "subtotal_rub": 20190,
+      "discount_percent": 15,
+      "total_rub": 17160
+    },
+    {
+      "selection_key": "set:rejection|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 31333,
+      "discount_percent": 10,
+      "total_rub": 28200
+    },
+    {
+      "selection_key": "set:devaluation|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 31333,
+      "discount_percent": 10,
+      "total_rub": 28200
+    },
+    {
+      "selection_key": "set:rejection|devaluation|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34666,
+      "discount_percent": 15,
+      "total_rub": 29470
+    },
+    {
+      "selection_key": "set:self|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 31333,
+      "discount_percent": 10,
+      "total_rub": 28200
+    },
+    {
+      "selection_key": "set:rejection|self|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34666,
+      "discount_percent": 15,
+      "total_rub": 29470
+    },
+    {
+      "selection_key": "set:devaluation|self|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34666,
+      "discount_percent": 15,
+      "total_rub": 29470
+    },
+    {
+      "selection_key": "set:guilt|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 31333,
+      "discount_percent": 10,
+      "total_rub": 28200
+    },
+    {
+      "selection_key": "set:rejection|guilt|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34666,
+      "discount_percent": 15,
+      "total_rub": 29470
+    },
+    {
+      "selection_key": "set:devaluation|guilt|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34666,
+      "discount_percent": 15,
+      "total_rub": 29470
+    },
+    {
+      "selection_key": "set:self|guilt|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34666,
+      "discount_percent": 15,
+      "total_rub": 29470
+    },
+    {
+      "selection_key": "set:rejection_program|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34990,
+      "discount_percent": 10,
+      "total_rub": 31490
+    },
+    {
+      "selection_key": "set:dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 35200,
+      "discount_percent": 10,
+      "total_rub": 31680
+    },
+    {
+      "selection_key": "set:rejection|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 38533,
+      "discount_percent": 15,
+      "total_rub": 32750
+    },
+    {
+      "selection_key": "set:devaluation|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 38533,
+      "discount_percent": 15,
+      "total_rub": 32750
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41866,
+      "discount_percent": 25,
+      "total_rub": 31400
+    },
+    {
+      "selection_key": "set:self|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 38533,
+      "discount_percent": 15,
+      "total_rub": 32750
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41866,
+      "discount_percent": 25,
+      "total_rub": 31400
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41866,
+      "discount_percent": 25,
+      "total_rub": 31400
+    },
+    {
+      "selection_key": "set:guilt|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 38533,
+      "discount_percent": 15,
+      "total_rub": 32750
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41866,
+      "discount_percent": 25,
+      "total_rub": 31400
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41866,
+      "discount_percent": 25,
+      "total_rub": 31400
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41866,
+      "discount_percent": 25,
+      "total_rub": 31400
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 42190,
+      "discount_percent": 15,
+      "total_rub": 35860
+    },
+    {
+      "selection_key": "set:union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 34000,
+      "discount_percent": 10,
+      "total_rub": 30600
+    },
+    {
+      "selection_key": "set:rejection|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:devaluation|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:rejection|devaluation|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:self|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:rejection|self|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:devaluation|self|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:guilt|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:rejection|guilt|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:devaluation|guilt|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:self|guilt|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:rejection_program|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 40990,
+      "discount_percent": 15,
+      "total_rub": 34840
+    },
+    {
+      "selection_key": "set:dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 41200,
+      "discount_percent": 15,
+      "total_rub": 35020
+    },
+    {
+      "selection_key": "set:rejection|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:devaluation|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:self|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:guilt|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|union|trainer",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "union",
+          "trainer"
+        ]
+      },
+      "subtotal_rub": 48190,
+      "discount_percent": 25,
+      "total_rub": 36140
+    },
+    {
+      "selection_key": "set:rejection|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:rejection|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 13333,
+      "discount_percent": 10,
+      "total_rub": 12000
+    },
+    {
+      "selection_key": "set:devaluation|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:devaluation|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 13333,
+      "discount_percent": 10,
+      "total_rub": 12000
+    },
+    {
+      "selection_key": "set:rejection|devaluation|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:rejection|devaluation|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16666,
+      "discount_percent": 15,
+      "total_rub": 14170
+    },
+    {
+      "selection_key": "set:self|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:self|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 13333,
+      "discount_percent": 10,
+      "total_rub": 12000
+    },
+    {
+      "selection_key": "set:rejection|self|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:rejection|self|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16666,
+      "discount_percent": 15,
+      "total_rub": 14170
+    },
+    {
+      "selection_key": "set:devaluation|self|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:devaluation|self|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16666,
+      "discount_percent": 15,
+      "total_rub": 14170
+    },
+    {
+      "selection_key": "set:guilt|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 9333,
+      "discount_percent": 10,
+      "total_rub": 8400
+    },
+    {
+      "selection_key": "set:guilt|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 13333,
+      "discount_percent": 10,
+      "total_rub": 12000
+    },
+    {
+      "selection_key": "set:rejection|guilt|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:rejection|guilt|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16666,
+      "discount_percent": 15,
+      "total_rub": 14170
+    },
+    {
+      "selection_key": "set:devaluation|guilt|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:devaluation|guilt|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16666,
+      "discount_percent": 15,
+      "total_rub": 14170
+    },
+    {
+      "selection_key": "set:self|guilt|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12666,
+      "discount_percent": 15,
+      "total_rub": 10770
+    },
+    {
+      "selection_key": "set:self|guilt|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16666,
+      "discount_percent": 15,
+      "total_rub": 14170
+    },
+    {
+      "selection_key": "set:rejection_program|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12990,
+      "discount_percent": 10,
+      "total_rub": 11690
+    },
+    {
+      "selection_key": "set:rejection_program|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16990,
+      "discount_percent": 10,
+      "total_rub": 15290
+    },
+    {
+      "selection_key": "set:dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 13200,
+      "discount_percent": 10,
+      "total_rub": 11880
+    },
+    {
+      "selection_key": "set:dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 17200,
+      "discount_percent": 10,
+      "total_rub": 15480
+    },
+    {
+      "selection_key": "set:rejection|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:rejection|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 20533,
+      "discount_percent": 15,
+      "total_rub": 17450
+    },
+    {
+      "selection_key": "set:devaluation|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:devaluation|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 20533,
+      "discount_percent": 15,
+      "total_rub": 17450
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23866,
+      "discount_percent": 25,
+      "total_rub": 17900
+    },
+    {
+      "selection_key": "set:self|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:self|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 20533,
+      "discount_percent": 15,
+      "total_rub": 17450
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23866,
+      "discount_percent": 25,
+      "total_rub": 17900
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23866,
+      "discount_percent": 25,
+      "total_rub": 17900
+    },
+    {
+      "selection_key": "set:guilt|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 16533,
+      "discount_percent": 15,
+      "total_rub": 14050
+    },
+    {
+      "selection_key": "set:guilt|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 20533,
+      "discount_percent": 15,
+      "total_rub": 17450
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23866,
+      "discount_percent": 25,
+      "total_rub": 17900
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23866,
+      "discount_percent": 25,
+      "total_rub": 17900
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19866,
+      "discount_percent": 25,
+      "total_rub": 14900
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23866,
+      "discount_percent": 25,
+      "total_rub": 17900
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 20190,
+      "discount_percent": 15,
+      "total_rub": 17160
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 24190,
+      "discount_percent": 15,
+      "total_rub": 20560
+    },
+    {
+      "selection_key": "set:union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 12000,
+      "discount_percent": 10,
+      "total_rub": 10800
+    },
+    {
+      "selection_key": "set:union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 16000,
+      "discount_percent": 10,
+      "total_rub": 14400
+    },
+    {
+      "selection_key": "set:rejection|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 15333,
+      "discount_percent": 15,
+      "total_rub": 13030
+    },
+    {
+      "selection_key": "set:rejection|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 19333,
+      "discount_percent": 15,
+      "total_rub": 16430
+    },
+    {
+      "selection_key": "set:devaluation|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 15333,
+      "discount_percent": 15,
+      "total_rub": 13030
+    },
+    {
+      "selection_key": "set:devaluation|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 19333,
+      "discount_percent": 15,
+      "total_rub": 16430
+    },
+    {
+      "selection_key": "set:rejection|devaluation|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18666,
+      "discount_percent": 25,
+      "total_rub": 14000
+    },
+    {
+      "selection_key": "set:rejection|devaluation|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22666,
+      "discount_percent": 25,
+      "total_rub": 17000
+    },
+    {
+      "selection_key": "set:self|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 15333,
+      "discount_percent": 15,
+      "total_rub": 13030
+    },
+    {
+      "selection_key": "set:self|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 19333,
+      "discount_percent": 15,
+      "total_rub": 16430
+    },
+    {
+      "selection_key": "set:rejection|self|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18666,
+      "discount_percent": 25,
+      "total_rub": 14000
+    },
+    {
+      "selection_key": "set:rejection|self|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22666,
+      "discount_percent": 25,
+      "total_rub": 17000
+    },
+    {
+      "selection_key": "set:devaluation|self|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18666,
+      "discount_percent": 25,
+      "total_rub": 14000
+    },
+    {
+      "selection_key": "set:devaluation|self|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22666,
+      "discount_percent": 25,
+      "total_rub": 17000
+    },
+    {
+      "selection_key": "set:guilt|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 15333,
+      "discount_percent": 15,
+      "total_rub": 13030
+    },
+    {
+      "selection_key": "set:guilt|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 19333,
+      "discount_percent": 15,
+      "total_rub": 16430
+    },
+    {
+      "selection_key": "set:rejection|guilt|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18666,
+      "discount_percent": 25,
+      "total_rub": 14000
+    },
+    {
+      "selection_key": "set:rejection|guilt|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22666,
+      "discount_percent": 25,
+      "total_rub": 17000
+    },
+    {
+      "selection_key": "set:devaluation|guilt|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18666,
+      "discount_percent": 25,
+      "total_rub": 14000
+    },
+    {
+      "selection_key": "set:devaluation|guilt|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22666,
+      "discount_percent": 25,
+      "total_rub": 17000
+    },
+    {
+      "selection_key": "set:self|guilt|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18666,
+      "discount_percent": 25,
+      "total_rub": 14000
+    },
+    {
+      "selection_key": "set:self|guilt|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22666,
+      "discount_percent": 25,
+      "total_rub": 17000
+    },
+    {
+      "selection_key": "set:rejection_program|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 18990,
+      "discount_percent": 15,
+      "total_rub": 16140
+    },
+    {
+      "selection_key": "set:rejection_program|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 22990,
+      "discount_percent": 15,
+      "total_rub": 19540
+    },
+    {
+      "selection_key": "set:dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 19200,
+      "discount_percent": 15,
+      "total_rub": 16320
+    },
+    {
+      "selection_key": "set:dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 23200,
+      "discount_percent": 15,
+      "total_rub": 19720
+    },
+    {
+      "selection_key": "set:rejection|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 22533,
+      "discount_percent": 25,
+      "total_rub": 16900
+    },
+    {
+      "selection_key": "set:rejection|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 26533,
+      "discount_percent": 25,
+      "total_rub": 19900
+    },
+    {
+      "selection_key": "set:devaluation|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 22533,
+      "discount_percent": 25,
+      "total_rub": 16900
+    },
+    {
+      "selection_key": "set:devaluation|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 26533,
+      "discount_percent": 25,
+      "total_rub": 19900
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 25866,
+      "discount_percent": 35,
+      "total_rub": 16810
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 29866,
+      "discount_percent": 35,
+      "total_rub": 19410
+    },
+    {
+      "selection_key": "set:self|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 22533,
+      "discount_percent": 25,
+      "total_rub": 16900
+    },
+    {
+      "selection_key": "set:self|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 26533,
+      "discount_percent": 25,
+      "total_rub": 19900
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 25866,
+      "discount_percent": 35,
+      "total_rub": 16810
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 29866,
+      "discount_percent": 35,
+      "total_rub": 19410
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 25866,
+      "discount_percent": 35,
+      "total_rub": 16810
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 29866,
+      "discount_percent": 35,
+      "total_rub": 19410
+    },
+    {
+      "selection_key": "set:guilt|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 22533,
+      "discount_percent": 25,
+      "total_rub": 16900
+    },
+    {
+      "selection_key": "set:guilt|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 26533,
+      "discount_percent": 25,
+      "total_rub": 19900
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 25866,
+      "discount_percent": 35,
+      "total_rub": 16810
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 29866,
+      "discount_percent": 35,
+      "total_rub": 19410
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 25866,
+      "discount_percent": 35,
+      "total_rub": 16810
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 29866,
+      "discount_percent": 35,
+      "total_rub": 19410
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 25866,
+      "discount_percent": 35,
+      "total_rub": 16810
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 29866,
+      "discount_percent": 35,
+      "total_rub": 19410
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|union|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 26190,
+      "discount_percent": 25,
+      "total_rub": 19640
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|union|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "union",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 30190,
+      "discount_percent": 25,
+      "total_rub": 22640
+    },
+    {
+      "selection_key": "set:trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 34000,
+      "discount_percent": 10,
+      "total_rub": 30600
+    },
+    {
+      "selection_key": "set:trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 38000,
+      "discount_percent": 10,
+      "total_rub": 34200
+    },
+    {
+      "selection_key": "set:rejection|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:rejection|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 41333,
+      "discount_percent": 15,
+      "total_rub": 35130
+    },
+    {
+      "selection_key": "set:devaluation|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:devaluation|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 41333,
+      "discount_percent": 15,
+      "total_rub": 35130
+    },
+    {
+      "selection_key": "set:rejection|devaluation|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:rejection|devaluation|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44666,
+      "discount_percent": 25,
+      "total_rub": 33500
+    },
+    {
+      "selection_key": "set:self|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:self|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 41333,
+      "discount_percent": 15,
+      "total_rub": 35130
+    },
+    {
+      "selection_key": "set:rejection|self|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:rejection|self|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44666,
+      "discount_percent": 25,
+      "total_rub": 33500
+    },
+    {
+      "selection_key": "set:devaluation|self|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:devaluation|self|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44666,
+      "discount_percent": 25,
+      "total_rub": 33500
+    },
+    {
+      "selection_key": "set:guilt|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 37333,
+      "discount_percent": 15,
+      "total_rub": 31730
+    },
+    {
+      "selection_key": "set:guilt|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 41333,
+      "discount_percent": 15,
+      "total_rub": 35130
+    },
+    {
+      "selection_key": "set:rejection|guilt|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:rejection|guilt|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44666,
+      "discount_percent": 25,
+      "total_rub": 33500
+    },
+    {
+      "selection_key": "set:devaluation|guilt|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:devaluation|guilt|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44666,
+      "discount_percent": 25,
+      "total_rub": 33500
+    },
+    {
+      "selection_key": "set:self|guilt|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40666,
+      "discount_percent": 25,
+      "total_rub": 30500
+    },
+    {
+      "selection_key": "set:self|guilt|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44666,
+      "discount_percent": 25,
+      "total_rub": 33500
+    },
+    {
+      "selection_key": "set:rejection_program|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40990,
+      "discount_percent": 15,
+      "total_rub": 34840
+    },
+    {
+      "selection_key": "set:rejection_program|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44990,
+      "discount_percent": 15,
+      "total_rub": 38240
+    },
+    {
+      "selection_key": "set:dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 41200,
+      "discount_percent": 15,
+      "total_rub": 35020
+    },
+    {
+      "selection_key": "set:dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 45200,
+      "discount_percent": 15,
+      "total_rub": 38420
+    },
+    {
+      "selection_key": "set:rejection|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:rejection|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 48533,
+      "discount_percent": 25,
+      "total_rub": 36400
+    },
+    {
+      "selection_key": "set:devaluation|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:devaluation|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 48533,
+      "discount_percent": 25,
+      "total_rub": 36400
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:rejection|devaluation|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51866,
+      "discount_percent": 35,
+      "total_rub": 33710
+    },
+    {
+      "selection_key": "set:self|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:self|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 48533,
+      "discount_percent": 25,
+      "total_rub": 36400
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:rejection|self|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51866,
+      "discount_percent": 35,
+      "total_rub": 33710
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:devaluation|self|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51866,
+      "discount_percent": 35,
+      "total_rub": 33710
+    },
+    {
+      "selection_key": "set:guilt|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 44533,
+      "discount_percent": 25,
+      "total_rub": 33400
+    },
+    {
+      "selection_key": "set:guilt|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 48533,
+      "discount_percent": 25,
+      "total_rub": 36400
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:rejection|guilt|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51866,
+      "discount_percent": 35,
+      "total_rub": 33710
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:devaluation|guilt|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51866,
+      "discount_percent": 35,
+      "total_rub": 33710
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47866,
+      "discount_percent": 35,
+      "total_rub": 31110
+    },
+    {
+      "selection_key": "set:self|guilt|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51866,
+      "discount_percent": 35,
+      "total_rub": 33710
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 48190,
+      "discount_percent": 25,
+      "total_rub": 36140
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 52190,
+      "discount_percent": 25,
+      "total_rub": 39140
+    },
+    {
+      "selection_key": "set:union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 40000,
+      "discount_percent": 15,
+      "total_rub": 34000
+    },
+    {
+      "selection_key": "set:union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 44000,
+      "discount_percent": 15,
+      "total_rub": 37400
+    },
+    {
+      "selection_key": "set:rejection|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 43333,
+      "discount_percent": 25,
+      "total_rub": 32500
+    },
+    {
+      "selection_key": "set:rejection|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 47333,
+      "discount_percent": 25,
+      "total_rub": 35500
+    },
+    {
+      "selection_key": "set:devaluation|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 43333,
+      "discount_percent": 25,
+      "total_rub": 32500
+    },
+    {
+      "selection_key": "set:devaluation|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 47333,
+      "discount_percent": 25,
+      "total_rub": 35500
+    },
+    {
+      "selection_key": "set:rejection|devaluation|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46666,
+      "discount_percent": 35,
+      "total_rub": 30330
+    },
+    {
+      "selection_key": "set:rejection|devaluation|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50666,
+      "discount_percent": 35,
+      "total_rub": 32930
+    },
+    {
+      "selection_key": "set:self|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 43333,
+      "discount_percent": 25,
+      "total_rub": 32500
+    },
+    {
+      "selection_key": "set:self|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 47333,
+      "discount_percent": 25,
+      "total_rub": 35500
+    },
+    {
+      "selection_key": "set:rejection|self|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46666,
+      "discount_percent": 35,
+      "total_rub": 30330
+    },
+    {
+      "selection_key": "set:rejection|self|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "self",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50666,
+      "discount_percent": 35,
+      "total_rub": 32930
+    },
+    {
+      "selection_key": "set:devaluation|self|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46666,
+      "discount_percent": 35,
+      "total_rub": 30330
+    },
+    {
+      "selection_key": "set:devaluation|self|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "self",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50666,
+      "discount_percent": 35,
+      "total_rub": 32930
+    },
+    {
+      "selection_key": "set:guilt|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 43333,
+      "discount_percent": 25,
+      "total_rub": 32500
+    },
+    {
+      "selection_key": "set:guilt|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 47333,
+      "discount_percent": 25,
+      "total_rub": 35500
+    },
+    {
+      "selection_key": "set:rejection|guilt|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46666,
+      "discount_percent": 35,
+      "total_rub": 30330
+    },
+    {
+      "selection_key": "set:rejection|guilt|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50666,
+      "discount_percent": 35,
+      "total_rub": 32930
+    },
+    {
+      "selection_key": "set:devaluation|guilt|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46666,
+      "discount_percent": 35,
+      "total_rub": 30330
+    },
+    {
+      "selection_key": "set:devaluation|guilt|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50666,
+      "discount_percent": 35,
+      "total_rub": 32930
+    },
+    {
+      "selection_key": "set:self|guilt|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46666,
+      "discount_percent": 35,
+      "total_rub": 30330
+    },
+    {
+      "selection_key": "set:self|guilt|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "guilt",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50666,
+      "discount_percent": 35,
+      "total_rub": 32930
+    },
+    {
+      "selection_key": "set:rejection_program|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 46990,
+      "discount_percent": 25,
+      "total_rub": 35240
+    },
+    {
+      "selection_key": "set:rejection_program|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 50990,
+      "discount_percent": 25,
+      "total_rub": 38240
+    },
+    {
+      "selection_key": "set:dnv|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 47200,
+      "discount_percent": 25,
+      "total_rub": 35400
+    },
+    {
+      "selection_key": "set:dnv|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 51200,
+      "discount_percent": 25,
+      "total_rub": 38400
+    },
+    {
+      "selection_key": "set:rejection|dnv|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 50533,
+      "discount_percent": 35,
+      "total_rub": 32850
+    },
+    {
+      "selection_key": "set:rejection|dnv|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 54533,
+      "discount_percent": 35,
+      "total_rub": 35450
+    },
+    {
+      "selection_key": "set:devaluation|dnv|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 50533,
+      "discount_percent": 35,
+      "total_rub": 32850
+    },
+    {
+      "selection_key": "set:devaluation|dnv|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "devaluation",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 54533,
+      "discount_percent": 35,
+      "total_rub": 35450
+    },
+    {
+      "selection_key": "set:self|dnv|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 50533,
+      "discount_percent": 35,
+      "total_rub": 32850
+    },
+    {
+      "selection_key": "set:self|dnv|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "self",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 54533,
+      "discount_percent": 35,
+      "total_rub": 35450
+    },
+    {
+      "selection_key": "set:guilt|dnv|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 50533,
+      "discount_percent": 35,
+      "total_rub": 32850
+    },
+    {
+      "selection_key": "set:guilt|dnv|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "guilt",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 54533,
+      "discount_percent": 35,
+      "total_rub": 35450
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|union|trainer|source:1",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "1"
+      },
+      "subtotal_rub": 54190,
+      "discount_percent": 35,
+      "total_rub": 35220
+    },
+    {
+      "selection_key": "set:rejection_program|dnv|union|trainer|source:2",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "dnv",
+          "union",
+          "trainer",
+          "source"
+        ],
+        "source_variant": "2"
+      },
+      "subtotal_rub": 58190,
+      "discount_percent": 35,
+      "total_rub": 37820
+    }
+  ]
+}

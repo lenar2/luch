@@ -1,0 +1,78 @@
+{
+  "schema": "bf2026.r118.native-single-bundle-integration-evidence.v1",
+  "native_provider": "GetCourse",
+  "checked_at": "2026-11-19",
+  "live_native_public_widget": {
+    "widget_id": 1686790,
+    "offer_id": 8935004,
+    "action_id": "2263285969",
+    "checked_one_offer": true,
+    "visible_native_price_rub": 11690,
+    "http_status": 200,
+    "tls_valid": true,
+    "source": "public HTTPS GET /pl/lite/widget/widget?id=1686790",
+    "buyer_submit_performed": false
+  },
+  "native_QA_unpaid_readback": {
+    "order_number": "71994",
+    "deal_id": "924624456",
+    "offer_id": 8935004,
+    "amount_rub": 11690,
+    "product_ids": [
+      4557988,
+      4550895
+    ],
+    "training_ids": [
+      936022301,
+      933861292
+    ],
+    "access_start": "AFTER_PAY",
+    "access_days": 365,
+    "status": "Новый",
+    "no_new_product_grants": true,
+    "source_issue_comment_ids": [
+      6997884393,
+      6997903834
+    ],
+    "captured_by": "GetCourse UI worker",
+    "rechecked_directly_by_this_backend": false
+  },
+  "existing_live_site_QA_bundle_check": {
+    "http_status": 200,
+    "provider_order_method": "ONE_OFFER_TWO_EXISTING_PRODUCTS_NATIVE_WIDGET",
+    "native_widget_id": 1686790,
+    "native_offer_id": 8935004,
+    "exact_total_rub": 11690,
+    "offer_status": "QA_INACTIVE_AT_LAST_NATIVE_READBACK",
+    "ready": false,
+    "checkout_url": null
+  },
+  "new_implementation": {
+    "modules": [
+      "native-bundle-qa.cjs",
+      "native-bundle-site-qa-http.cjs"
+    ],
+    "tests": [
+      "native-bundle-qa.test.cjs",
+      "native-bundle-site-qa-http.test.cjs"
+    ],
+    "focused_passed": 16,
+    "failed": 0,
+    "new_customer_payment_route_deployed": false,
+    "isolated_http_server_tested": true
+  },
+  "public_readiness": {
+    "native_offer_active": false,
+    "paid_receipt_e2e_verified": false,
+    "customer_checkout_live": false,
+    "public_checkout_start_http": 503,
+    "verified_sale_routes": 0
+  },
+  "safety": {
+    "production_write_for_R118": false,
+    "getcourse_ui_write_for_R118": false,
+    "actual_new_order_created_by_R118": false,
+    "customer_charge_for_R118": false,
+    "external_grants_created": false
+  }
+}

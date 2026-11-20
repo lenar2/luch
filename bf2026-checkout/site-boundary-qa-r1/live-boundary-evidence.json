@@ -1,0 +1,342 @@
+{
+  "schema": "bf2026.live-site-adapter-boundary-evidence.r1",
+  "observed_at": "2026-11-18T20:37:56.192Z",
+  "source": {
+    "site": "https://wf.tati-lar.ru",
+    "quote_endpoint": "https://wf.tati-lar.ru/api/checkout/quote",
+    "status_endpoint": "https://wf.tati-lar.ru/api/checkout/status"
+  },
+  "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107",
+  "pricing_file_sha256": "c20dd54301ab2bdfe4c2944abda0a7b51ec821f885465bbf17c7eb71b2277135",
+  "status": {
+    "http_status": 200,
+    "body": {
+      "ok": true,
+      "service": "BF2026_CHECKOUT_R1",
+      "site": "wf.tati-lar.ru",
+      "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107",
+      "sales_ready": false,
+      "provider_offer_ready": false,
+      "verified_sale_routes": 0,
+      "checkout_mode": "NATIVE_GETCOURSE_VERIFIED_FORM_ONLY",
+      "status": "WAITING_FOR_VERIFIED_OFFERS",
+      "total_eligible_fixed": 10,
+      "set_combination_policy": "SERVER_VALIDATED"
+    }
+  },
+  "quote_observations": [
+    {
+      "label": "lot5_single",
+      "boundary_status": "PASS_LIVE_SITE_QUOTE_EQUALS_ADAPTER",
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/quote",
+      "http_status": 200,
+      "input": {
+        "kind": "single",
+        "lot": 5
+      },
+      "site_quote": {
+        "kind": "single",
+        "items": [
+          {
+            "key": "rejection_program",
+            "site_lot": 5,
+            "variant": null,
+            "base_price_rub": 6990
+          }
+        ],
+        "currency": "RUB",
+        "count": 1,
+        "subtotal_rub": 6990,
+        "discount_percent": 0,
+        "total_rub": 6990,
+        "savings_rub": 0,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      },
+      "site_availability": {
+        "ready": false,
+        "reason": "GETCOURSE_OFFER_NOT_READY"
+      },
+      "adapter": {
+        "selection_key": "single:rejection_program",
+        "ready_for_native_binding": true,
+        "blockers": [],
+        "line_binding_sha256": "6b8fccfbf98e6c18bcd56952bf309459313bdbe4f2f6559a6e7e2367ba6b6d02"
+      },
+      "provider_order_status": "NOT_CREATED_BY_BOUNDARY_TEST",
+      "checkout_url": null
+    },
+    {
+      "label": "lot5_plus_union",
+      "boundary_status": "PASS_LIVE_SITE_QUOTE_EQUALS_ADAPTER",
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/quote",
+      "http_status": 200,
+      "input": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union"
+        ]
+      },
+      "site_quote": {
+        "kind": "set",
+        "items": [
+          {
+            "key": "rejection_program",
+            "site_lot": 5,
+            "variant": null,
+            "base_price_rub": 6990
+          },
+          {
+            "key": "union",
+            "site_lot": 7,
+            "variant": null,
+            "base_price_rub": 6000
+          }
+        ],
+        "currency": "RUB",
+        "count": 2,
+        "subtotal_rub": 12990,
+        "discount_percent": 10,
+        "total_rub": 11690,
+        "savings_rub": 1300,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      },
+      "site_availability": {
+        "ready": false,
+        "reason": "GETCOURSE_OFFER_NOT_READY"
+      },
+      "adapter": {
+        "selection_key": "set:rejection_program|union",
+        "ready_for_native_binding": false,
+        "blockers": [
+          {
+            "line_key": "union",
+            "codes": [
+              "NATIVE_NOT_ACTIVE_VERIFIED"
+            ]
+          }
+        ],
+        "line_binding_sha256": "645e1d4a38337e106973fe828ab971437e25328e72cb6724d3d6e771f5f116fe"
+      },
+      "provider_order_status": "NOT_CREATED_BY_BOUNDARY_TEST",
+      "checkout_url": null
+    },
+    {
+      "label": "two_audio",
+      "boundary_status": "PASS_LIVE_SITE_QUOTE_EQUALS_ADAPTER",
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/quote",
+      "http_status": 200,
+      "input": {
+        "kind": "set",
+        "items": [
+          "rejection",
+          "devaluation"
+        ]
+      },
+      "site_quote": {
+        "kind": "set",
+        "items": [
+          {
+            "key": "rejection",
+            "site_lot": 1,
+            "variant": null,
+            "base_price_rub": 3333
+          },
+          {
+            "key": "devaluation",
+            "site_lot": 2,
+            "variant": null,
+            "base_price_rub": 3333
+          }
+        ],
+        "currency": "RUB",
+        "count": 2,
+        "subtotal_rub": 6666,
+        "discount_percent": 10,
+        "total_rub": 6000,
+        "savings_rub": 666,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      },
+      "site_availability": {
+        "ready": false,
+        "reason": "GETCOURSE_OFFER_NOT_READY"
+      },
+      "adapter": {
+        "selection_key": "set:rejection|devaluation",
+        "ready_for_native_binding": false,
+        "blockers": [
+          {
+            "line_key": "rejection",
+            "codes": [
+              "OFFER_UNVERIFIED",
+              "TRAINING_UNVERIFIED",
+              "NATIVE_NOT_ACTIVE_VERIFIED",
+              "NATIVE_PRICE_NOT_VERIFIED",
+              "365D_NOT_VERIFIED",
+              "NATIVE_EVIDENCE_INCOMPLETE"
+            ]
+          },
+          {
+            "line_key": "devaluation",
+            "codes": [
+              "OFFER_UNVERIFIED",
+              "TRAINING_UNVERIFIED",
+              "NATIVE_NOT_ACTIVE_VERIFIED",
+              "NATIVE_PRICE_NOT_VERIFIED",
+              "365D_NOT_VERIFIED",
+              "NATIVE_EVIDENCE_INCOMPLETE"
+            ]
+          }
+        ],
+        "line_binding_sha256": "56926d325fe60629f0aef0aa865c30b655b9ea6ed50302d9a2942b035a032564"
+      },
+      "provider_order_status": "NOT_CREATED_BY_BOUNDARY_TEST",
+      "checkout_url": null
+    },
+    {
+      "label": "source_variant_2",
+      "boundary_status": "PASS_LIVE_SITE_QUOTE_EQUALS_ADAPTER",
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/quote",
+      "http_status": 200,
+      "input": {
+        "kind": "single",
+        "lot": 9,
+        "variant": "2"
+      },
+      "site_quote": {
+        "kind": "single",
+        "items": [
+          {
+            "key": "source",
+            "site_lot": 9,
+            "variant": "2",
+            "base_price_rub": 10000
+          }
+        ],
+        "currency": "RUB",
+        "count": 1,
+        "subtotal_rub": 10000,
+        "discount_percent": 0,
+        "total_rub": 10000,
+        "savings_rub": 0,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      },
+      "site_availability": {
+        "ready": false,
+        "reason": "GETCOURSE_OFFER_NOT_READY"
+      },
+      "adapter": {
+        "selection_key": "single:source:2",
+        "ready_for_native_binding": false,
+        "blockers": [
+          {
+            "line_key": "source:2",
+            "codes": [
+              "OFFER_UNVERIFIED",
+              "PRODUCT_UNVERIFIED",
+              "TRAINING_UNVERIFIED",
+              "NATIVE_NOT_ACTIVE_VERIFIED",
+              "NATIVE_PRICE_NOT_VERIFIED",
+              "365D_NOT_VERIFIED",
+              "NATIVE_EVIDENCE_INCOMPLETE"
+            ]
+          }
+        ],
+        "line_binding_sha256": "30c95048043154f4008584632b676c69d68efbaa31fa47e90197d0ca9e7f3cd1"
+      },
+      "provider_order_status": "NOT_CREATED_BY_BOUNDARY_TEST",
+      "checkout_url": null
+    }
+  ],
+  "start_observations": [
+    {
+      "label": "lot5_single",
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/start",
+      "http_status": 503,
+      "code": "GETCOURSE_OFFER_NOT_READY",
+      "returned_checkout_url": null,
+      "quote": {
+        "kind": "single",
+        "items": [
+          {
+            "key": "rejection_program",
+            "site_lot": 5,
+            "variant": null,
+            "base_price_rub": 6990
+          }
+        ],
+        "currency": "RUB",
+        "count": 1,
+        "subtotal_rub": 6990,
+        "discount_percent": 0,
+        "total_rub": 6990,
+        "savings_rub": 0,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      },
+      "provider_order_status": "NOT_CREATED_BY_BOUNDARY_TEST"
+    },
+    {
+      "label": "lot5_plus_union",
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/start",
+      "http_status": 503,
+      "code": "GETCOURSE_OFFER_NOT_READY",
+      "returned_checkout_url": null,
+      "quote": {
+        "kind": "set",
+        "items": [
+          {
+            "key": "rejection_program",
+            "site_lot": 5,
+            "variant": null,
+            "base_price_rub": 6990
+          },
+          {
+            "key": "union",
+            "site_lot": 7,
+            "variant": null,
+            "base_price_rub": 6000
+          }
+        ],
+        "currency": "RUB",
+        "count": 2,
+        "subtotal_rub": 12990,
+        "discount_percent": 10,
+        "total_rub": 11690,
+        "savings_rub": 1300,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      },
+      "provider_order_status": "NOT_CREATED_BY_BOUNDARY_TEST"
+    }
+  ],
+  "rejected_inputs": [
+    {
+      "label": "client_price_override",
+      "http_status": 422,
+      "code": "INVALID_SELECTION",
+      "ok": false
+    },
+    {
+      "label": "three_audio_invalid",
+      "http_status": 422,
+      "code": "INVALID_SELECTION",
+      "ok": false
+    }
+  ],
+  "safety": {
+    "getcourse_ui_accessed": false,
+    "getcourse_lock_touched": false,
+    "native_order_created": false,
+    "payment_attempted": false,
+    "customer_data_submitted": false,
+    "production_registry_changed": false,
+    "site_design_changed": false,
+    "checkout_url_returned": false
+  },
+  "interpretation": {
+    "boundary_quote_parity": "PASS_FOR_ALL_OBSERVED_INPUTS",
+    "lot5_native_mapping": "ACTIVE_VERIFIED_FROM_4073_6988661595",
+    "union_native_mapping": "BLOCKED_INACTIVE_QA_ONLY_PER_4073_6988302858",
+    "public_checkout": "BLOCKED_BY_R109_REGISTRY",
+    "audio_price_conflict": "UNRESOLVED_R109_3333_VS_OLDER_3000"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "schema": "bf2026.getcourse.native-widget-pair.readonly.r1",
+  "observed_at": "2026-11-19T01:31:44 (native GetCourse session last_activity; direct public GET performed in this dispatch)",
+  "widgets": [
+    {
+      "widget_id": 1686693,
+      "offer_id": 8933492,
+      "product_id": 4557988,
+      "training_id": 936022301,
+      "selection_key": "rejection_program",
+      "base_price_rub": 6990,
+      "embed": {
+        "url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693",
+        "http_status": 200
+      },
+      "iframe": {
+        "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?&id=1686693&ref=&loc=https%3A%2F%2Fwf.tati-lar.ru%2F",
+        "http_status": 200,
+        "bytes": 28327,
+        "sha256": "183d2d71bb1a23863b40ae62dc33eb5b0a2b3cc729422f4a2e90f3ff248cc5d1",
+        "form": {
+          "method": "post",
+          "action_url_stable": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127",
+          "action_id": "2263265127",
+          "dynamic_session_parameter_names": [
+            "gcSession",
+            "gcSessionHash",
+            "gcVisit",
+            "gcVisitor"
+          ],
+          "dynamic_values_redacted": true,
+          "data_open_new_window": "0",
+          "data_sequential_request": "1"
+        },
+        "offer_input_name": "formParams[offer_id][]",
+        "offer_input_count": 1,
+        "offer_inputs": [
+          {
+            "name": "formParams[offer_id][]",
+            "type": "radio",
+            "value": "8933492",
+            "checked": true,
+            "class": "form-position-input form-position-offer-8933492",
+            "data_price_rub": 6990
+          }
+        ],
+        "formparams_will_create_paid_deal": "1",
+        "formparams_in_widget": "1",
+        "formparams_need_offer": "1",
+        "submit_button_caption": "Оформить заказ",
+        "consent": {
+          "offer_terms_enabled": true,
+          "offer_terms_required": true,
+          "marketing_enabled": true,
+          "marketing_checked_by_default": false,
+          "marketing_optional_from_ui_readback": true,
+          "marketing_optional_source": "ai-factory-evidence#4073/comment/6993420543"
+        },
+        "script_sources": [
+          "/pl/nassets/js/superlite-block-bda658ef20c5517785345a87440a5ee7.js?v=1795038893",
+          "/pl/nassets/e1dea5fc/widget.js?v=1765633900",
+          "/pl/nassets/js/custom-form-c79e9b9feb9a15cad0eef3f7b08b5043.js?v=1795038893"
+        ]
+      },
+      "native_mapping_source": "ai-factory-evidence#4073/comment/6993420543"
+    },
+    {
+      "widget_id": 1686738,
+      "offer_id": 8919715,
+      "product_id": 4550895,
+      "training_id": 933861292,
+      "selection_key": "union",
+      "base_price_rub": 6000,
+      "embed": {
+        "url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686738",
+        "http_status": 200
+      },
+      "iframe": {
+        "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?&id=1686738&ref=&loc=https%3A%2F%2Fwf.tati-lar.ru%2F",
+        "http_status": 200,
+        "bytes": 28346,
+        "sha256": "3877b9ba5f9c740d7c5eb3d8b5585f52e6ae37b2644ff0d2911cae08f65aeae6",
+        "form": {
+          "method": "post",
+          "action_url_stable": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263282483",
+          "action_id": "2263282483",
+          "dynamic_session_parameter_names": [
+            "gcSession",
+            "gcSessionHash",
+            "gcVisit",
+            "gcVisitor"
+          ],
+          "dynamic_values_redacted": true,
+          "data_open_new_window": "0",
+          "data_sequential_request": "1"
+        },
+        "offer_input_name": "formParams[offer_id][]",
+        "offer_input_count": 1,
+        "offer_inputs": [
+          {
+            "name": "formParams[offer_id][]",
+            "type": "radio",
+            "value": "8919715",
+            "checked": true,
+            "class": "form-position-input form-position-offer-8919715",
+            "data_price_rub": 6000
+          }
+        ],
+        "formparams_will_create_paid_deal": "1",
+        "formparams_in_widget": "1",
+        "formparams_need_offer": "1",
+        "submit_button_caption": "Оформить заказ",
+        "consent": {
+          "offer_terms_enabled": true,
+          "offer_terms_required": true,
+          "marketing_enabled": true,
+          "marketing_checked_by_default": false,
+          "marketing_optional_from_ui_readback": true,
+          "marketing_optional_source": "ai-factory-evidence#4073/comment/6993420543"
+        },
+        "script_sources": [
+          "/pl/nassets/js/superlite-block-bda658ef20c5517785345a87440a5ee7.js?v=1795038893",
+          "/pl/nassets/e1dea5fc/widget.js?v=1765633900",
+          "/pl/nassets/js/custom-form-c79e9b9feb9a15cad0eef3f7b08b5043.js?v=1795038893"
+        ]
+      },
+      "native_mapping_source": "ai-factory-evidence#4073/comment/6993420543"
+    }
+  ],
+  "pair_assessment": {
+    "observed_native_form_count": 2,
+    "observed_offer_radio_count": 2,
+    "each_widget_has_exactly_one_offer_radio": true,
+    "exact_expected_offer_ids": true,
+    "distinct_native_form_action_ids": true,
+    "distinct_native_form_action_urls": true,
+    "same_native_form": false,
+    "one_native_form_with_both_offers_observed": false,
+    "multi_offer_selection_transfer_verified": false,
+    "native_two_line_order_verified": false,
+    "classification": "TWO_DISTINCT_NATIVE_SINGLE_OFFER_FORMS_NOT_ONE_MULTI_OFFER_FORM"
+  },
+  "safety": {
+    "public_get_only": true,
+    "form_submitted": false,
+    "buyer_data_entered": false,
+    "order_created": false,
+    "payment_attempted": false,
+    "getcourse_ui_or_lock_touched": false,
+    "session_values_persisted": false
+  }
+}

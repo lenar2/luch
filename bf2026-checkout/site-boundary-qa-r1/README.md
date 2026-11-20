@@ -1,0 +1,123 @@
+# BF2026 R109 site-boundary QA + native order execution contract (isolated)
+
+This is an isolated backend contract/test branch, not a production release. It does not create GetCourse orders and contains no native GetCourse multi-offer driver.
+
+## Current provider evidence
+
+Canonical UI readback: `ai-factory-evidence#4073/comment/6993420543`.
+
+- Widget 1686693: Offer 8933492 → Product 4557988 → Training 936022301, 6990 RUB.
+- Widget 1686738: Offer 8919715 → Product 4550895 → Training 933861292, 6000 RUB.
+- Each public iframe is a distinct POST form, each with one checked `formParams[offer_id][]` radio, its own stable form action ID (2263265127 vs 2263282483), and exact one-offer selection.
+- Marketing consent is optional and unchecked by default; offer/privacy acceptance remains required.
+- These are two single-offer forms, not one native multi-offer form. No one-form/two-line order or actual unpaid two-line order is evidenced.
+
+See `PROVIDER_WIDGET_READONLY_FINDINGS.md` and `native-widget-pair-readonly-evidence.json`.
+
+## Backend work in this patch
+
+- `native-order-execution-contract.cjs`: HMAC-SHA256 signed selection envelope, R109 plan recomputation, stable checkout idempotency key, strict native multi-offer capability gate, unpaid order readback validator, and exact paid grant validation.
+- `native-order-idempotency.sql`: PostgreSQL durable idempotency schema; NOT deployed.
+- `createPostgresIdempotencyStore()`: transactional unique reservation, conditional transitions, replay handling, and ambiguity reconciliation. Tests use a query-recorder test double; no live DB was connected.
+- The coordinator fails before touching idempotency storage/provider when no independently reviewed one-form/two-line native capability is supplied. There is no GetCourse native order driver in this branch.
+
+## Exact signed selection
+
+The signed selection binds R109's server-recomputed `set:rejection_program|union` plan: subtotal 12990 RUB, 10%, final 11690 RUB; Offer/Product/Training IDs and 365-day AFTER_PAY grant mappings are exact. The stable 32-hex checkout idempotency key is separate from the token nonce and remains the same across retries.
+
+## Durable idempotency policy
+
+- Unique `(scope, checkout_idempotency_key)`.
+- Same key + same selection replays prior state/order; no second provider call.
+- Same key + changed selection conflicts.
+- `PROVIDER_SUBMITTING` or `PROVIDER_OUTCOME_UNKNOWN` blocks automatic retry; only independent native order lookup can reconcile.
+- `ORDER_CREATED` replays the provider order ID.
+
+## Exact focused QA run
+
+    BF_R109_SERVER=/srv/factory-scratch/bf2026-checkout-r1-20261118/server.js \
+    BF_R109_PRICING=/srv/factory-scratch/bf2026-checkout-r1-20261118/pricing-r107.json \
+    node --test bf2026-checkout/site-boundary-qa-r1/site-boundary.test.cjs \
+      bf2026-checkout/site-boundary-qa-r1/native-order-boundary-contract.test.cjs \
+      bf2026-checkout/site-boundary-qa-r1/widget-1686693-inspection.test.cjs \
+      bf2026-checkout/site-boundary-qa-r1/native-order-execution-contract.test.cjs
+
+Captured deterministic suite: **43/43 PASS**. The live 265 quote test suite was not rerun. Widget tests consume the sanitized pair snapshot; `inspect-native-widget-pair.cjs` is a public-GET-only refresh utility and never submits a form.
+
+## Current blockers
+
+- No site-engineer ACK in #4112; the latest UI/owner handoff is not an engineer acceptance.
+- No single native multi-offer public form or actual unpaid two-line order readback.
+- No native provider order driver; do not infer it from `formParams[offer_id][]` array syntax or two separate widgets.
+- Production remains `sales_ready=false`, `provider_offer_ready=false`, `verified_sale_routes=0`; last observed `/start` is 503 `GETCOURSE_OFFER_NOT_READY`.
+
+## Boundaries
+
+No GetCourse UI/lock, form submit, buyer data, order, payment, email, production registry, route, design or deployment was touched. Do not merge to production or enable sales from this contract alone.
+
+
+## Native provider evidence intake (Dispatch A)
+
+See `NATIVE_PROVIDER_EVIDENCE_ACCEPTANCE.md` for the signed evidence-bundle schema and exact acceptance command. `native-provider-evidence.cjs` verifies the Ed25519 attestation, raw artifact SHA-256, one-form/two-offer control semantics, stable form action ID, two-line order reconciliation, exact 11,690 RUB amount and paid grant mapping. TEST_ONLY fixtures are structurally validated but have `provider_verified=false` and cannot unlock the capability gate. No trusted production key or live multi-offer evidence is currently configured.
+
+
+## Provider-supported single-Offer fallback (Dispatch B 06:30)
+
+Native widget 1686745 shows two selectable Offers but sums to 12990 and its order handler retains only one Offer. This is NOT a 11690 sale route. Official GetCourse docs support a single Offer with multiple existing Products, native Cart for a combined order, and staged Import API multiple_offers=1; the Import API documentation explicitly says not to use imports for operational object management.
+
+The isolated fallback files are `provider-supported-fallback.cjs`, `fallback-site-bridge.cjs`, `provider-supported-fallback.test.cjs`, `fallback-site-bridge.test.cjs`, `fallback-decision-evidence.json`, and `FALLBACK_SITE_ENGINEER_HANDOFF.md`. They calculate exact 6290 + 5400 = 11690 from server R109, hold all checkout starts at HTTP 503, and test one-payment/two-grant/no-duplicate constraints. They never create native orders or payment URLs.
+
+Refer to `FALLBACK_SITE_ENGINEER_HANDOFF.md` for source links, exact native composition requirements, proven limitations and acceptance command. Do not merge into production.
+
+
+Combined focused regression: **57/57 PASS** (43 existing + 14 new fallback tests). No exhaustive 265-vector rerun. Node syntax and production export guard PASS.
+
+
+## LIVE public fixed-widget preflight — 19.11.2026 07:55 Altai
+
+New read-only native iframe check: `native-fixed-widget-preflight.cjs` and `native-fixed-widget-preflight.test.cjs`. Tests **6/6 PASS**; current live readback **4 of 5 fixed widgets structurally PASS**, **1 HOLD**. This does **not** establish public paid E2E or increase production sale routes.
+
+- 1686693 → Offer 8933492, 6990: exactly one native form/Offer, explicit oferta and optional unchecked mailing; structural PASS.
+- 1686738 → Offer 8919715, 6000: same, structural PASS.
+- 1686740 → Offer 8934207, 7200: same, structural PASS.
+- 1686741 → Offer 8934262, 6000: same, structural PASS.
+- **1686753 → expected audio Offer 8934925, 3333: FAIL**. Public HTML currently contains **TWO separate native forms**: first Offer 8934925 at 3333 but **without explicit oferta**; second copied Union Offer 8919715 at 6000 with oferta. This is a real wrong-item and consent failure, not just a test fixture.
+
+**UI worker action:** in existing Widget 1686753 remove the copied second Union native FORM (do not delete Offer 8919715), add the explicit required oferta inside the first intended audio form; keep only selected Offer 8934925 at 3333, optional unchecked marketing. Save+full reopen; rerun the exact read-only preflight. Never publish 1686753 before passing structural check and native unpaid/paid receipts/access QA. Existing products/offers must be reused.
+
+**Site engineer action:** enforce the exact one-form/one-Offer check before adding any fixed widget to site. Example: `node bf2026-checkout/site-boundary-qa-r1/native-fixed-widget-preflight.cjs`. The machine-readable report is `native-fixed-widget-preflight-evidence.json` (observed 2026-11-19T00:55:44.941Z). The correct sale status for all these widgets is still HOLD without real payment/receipt/grant E2E.
+
+
+## R112 trusted native order integration (19 Nov 2026)
+
+New isolated module `native-order-site-integration.cjs` prepares the exact server-signed Lot5 + Союз payload (12,990 ₽ subtotal, 1,300 ₽ order-level discount, 11,690 ₽ due), binds both existing Offer/Product/Training lines and 365-day AFTER_PAY grants, and adds Postgres payload/idempotency/paid-event persistence. A separate pinned Ed25519 independent reviewer must attest the real GetCourse native form + unpaid order and legal-consent/duplicate negative tests. Provider driver remains an injected interface: no undocumented GetCourse API is fabricated. Paid evidence verifies the same order/event, two native grants and receipt/tax; it performs zero external grant writes. See `R112_SITE_ORDER_INTEGRATION.md`. Focused tests 73/73 PASS; no exhaustive 265-vector re-audit; no production write or provider order.
+
+
+## R112 isolated R2 site HTTP integration
+
+QA-only site HTTP bridge: `native-order-site-qa-http.cjs`, `patch-r112-qa-order-server.py`, `native-order-site-qa-http.test.cjs`. Six real loopback HTTP tests against an isolated copy of live R112 server PASS. No provider call or production write. See `R112_SITE_HTTP_INTEGRATION.md`.
+
+
+## Live private QA native-order bridge deployed 2026-11-19
+
+The owner-authorized deployment `deploy-r112-native-qa-live.py` activated the private signed-order QA HTTP bridge in the existing R2 checkout container. Seven **live** HTTP smoke checks PASS (private prepare/verify/start, unauthenticated 404, public quote 11690, checkout HOLD and status). The first activation was automatically rolled back after a function-name error; runtime import preflight was added, and the second activation succeeded with normal service health. No GetCourse order API/real payment is connected: the existing native widget still totals 12990. See `R112_LIVE_QA_DEPLOYMENT.md` and `r112-live-qa-deployment-evidence.json`.
+
+
+## Live GetCourse native form QA readback (2026-11-19)
+
+Production checkout container now makes a real GET-only call to GetCourse Widget1686745 through the private QA `POST /api/checkout/_qa/native-order/provider-check`. TLS/host/action/form/Offer checks passed: action2263283894, Offers8919715/6000 +8933492/6990, native base12990, approved11690. The public hidden `formParams[willCreatePaidDeal]` is currently 0, so handler behavior is not established. `checkout_ready=false`, public sale HOLD. Code `native-getcourse-widget-driver.cjs`, authenticated router, upgrade/rollback script and full evidence in `R112_LIVE_GETCOURSE_DRIVER.md`. Focused QA regression 85/85 PASS; no native order/payment/grant created.
+
+
+## R115 — current 12-slot matrix, signed callback inbox and paid readback
+
+New independent backend work builds on the already deployed private R112 order-prepare bridge and the newer GetCourse widget driver. It does not replace or deploy either. Added `native-slot-matrix.cjs/.test.cjs/.snapshot.json`, `provider-relay-webhook.cjs/.test.cjs`, `r115-relay-http.cjs/.test.cjs`, `r115-event-inbox.sql`, `r115-postgres-inbox-store.cjs/.test.cjs`, `patch-r115-event-http.py`, `paid-proof-reconciler.cjs/.test.cjs`, the updated signed-order Postgres lookup, and `R115_SITE_ENGINEER_HANDOFF.md`. The R115 callback is **not** a GetCourse-authenticated payment: it requires an HMAC signature from a trusted relay, persists only a replay-safe event hint, and independent signed native order/payment/receipt/entitlement readback. 105/105 focused tests passed in local staging before the concurrent PR17 head update, without repeating 265 pricing vectors. No R115 production/DB/GC writes occurred.
+
+
+## R118 live native bundle QA
+
+Live private QA endpoints for GetCourse ONE Offer 8935004 / two Products 4557988 + 4550895, native Widget1686790, 11,690 RUB, true unpaid order #71994 reported by UI worker (no grants before payment). 8/8 live site HTTP smoke PASS, 72/72 focused native/site regression PASS. Public sale remains HOLD. See `R118_NATIVE_BUNDLE_LIVE_QA_HANDOFF.md` and `r112-live-native-bundle-qa-deploy-evidence.json`. No GetCourse API writes or buyer payment.
+
+
+## BF2026 R120 — real staging PostgreSQL/HTTP replay + Import API idempotency
+
+R115 relay and event inbox were exercised in the isolated actual site stage: R115 route mounted on `127.0.0.1:18765`, separate PostgreSQL `bfstage` on host binding `127.0.0.1:55439`; R120 migration adds `bf2026_getcourse_import_ledger`. Actual HTTP handler + real PostgreSQL test: signed relay hint `202 ACCEPTED_PENDING_READBACK`, exact replay `202 DUPLICATE_PENDING_READBACK`, forged HMAC `401`, conflicting same ID / PII / spoofed source `422`; no payment/grant state. R120 import state machine persists customer-identity HMAC (not email), binds provider deal ID/number/user ID across sequential Import API steps, and prevents automatic retry after ambiguous provider timeout. Unit 13/13 and staging integration 5/5 PASS. No GetCourse API request/credentials were used; all provider responses are explicitly synthetic test fixtures. GetCourse docs do not document Import API response signatures and warn Import API is for import, not operational real-time control. See `R120_IMPORT_API_AND_STAGING_HANDOFF.md` and `R120_STAGING_INTEGRATION_EVIDENCE.json`. Public site remains `sales_ready=false`, `verified_sale_routes=0`.

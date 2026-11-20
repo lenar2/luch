@@ -1,0 +1,106 @@
+{
+  "schema": "bf2026.r110.public-site-and-native-form-preflight.r1",
+  "captured_at": "2026-11-19T01:18:06.361Z",
+  "site": {
+    "origin": "https://wf.tati-lar.ru",
+    "index_sha256": "26b428e736bda81255670ea90aa01f7b3cc1c518d1f676ac164704b8aea66101",
+    "bridge_sha256": "628d99b89fbfb88c57ba8cbc3fc28065a887837f4a15f97b33ebe6838a729c12",
+    "cart_sha256": "67c042e81dac2b9d6cf30f026600f0f5402e24ab435e26962c69aa4d80e04ba1",
+    "main_page_uses_r110_bridge": true,
+    "main_page_uses_r110_cart": true,
+    "bridge_supports_multiple_cart": true,
+    "bridge_requires_sales_ready": true,
+    "bridge_quote_endpoint": "/api/checkout/quote",
+    "status": {
+      "service": "BF2026_CHECKOUT_R2",
+      "sales_ready": false,
+      "provider_offer_ready": false,
+      "verified_sale_routes": 0,
+      "set_configurations_server_calculated": 265
+    },
+    "example": {
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union"
+        ]
+      },
+      "quote_http_status": 200,
+      "subtotal_rub": 12990,
+      "discount_percent": 10,
+      "savings_rub": 1300,
+      "total_rub": 11690,
+      "provider_availability_ready": false
+    }
+  },
+  "getcourse": {
+    "observed_forms": [
+      {
+        "widget_id": 1686745,
+        "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686745",
+        "http_status": 200,
+        "sha256": "f40134016dc5927aa32e2914b1ee5bfc7ae227d0456d9c69f8a06c1267a25563",
+        "form_count": 1,
+        "forms": [
+          {
+            "action_id": "2263283894",
+            "offers": [
+              {
+                "offer_id": 8919715,
+                "price_rub": 6000,
+                "type": "checkbox",
+                "checked": false
+              },
+              {
+                "offer_id": 8933492,
+                "price_rub": 6990,
+                "type": "checkbox",
+                "checked": false
+              }
+            ],
+            "explicit_oferta": true
+          }
+        ],
+        "marketing_checked_by_default": "false",
+        "native_order_created": false,
+        "native_paid_order_verified": false
+      },
+      {
+        "widget_id": 1686753,
+        "url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686753",
+        "http_status": 200,
+        "sha256": "cfcd9a985bd31a7ed92c446255fb7c4632c2992d8afbaae4fcefe3bc42b7b060",
+        "form_count": 1,
+        "forms": [
+          {
+            "action_id": "2263284969",
+            "offers": [
+              {
+                "offer_id": 8934925,
+                "price_rub": 3333,
+                "type": "radio",
+                "checked": true
+              }
+            ],
+            "explicit_oferta": true
+          }
+        ],
+        "marketing_checked_by_default": "false",
+        "native_order_created": false,
+        "native_paid_order_verified": false
+      }
+    ],
+    "native_one_order_two_items_verified": false,
+    "provider_11690_order_verified": false,
+    "reason": "Public form GET cannot establish Create order handler, discount or actual order payment/entitlement semantics"
+  },
+  "safety": {
+    "only_public_get_and_quote_post": true,
+    "no_form_post": true,
+    "no_order_created": true,
+    "no_payment": true,
+    "no_getcourse_ui_or_lock_access": true,
+    "no_site_change": true
+  }
+}

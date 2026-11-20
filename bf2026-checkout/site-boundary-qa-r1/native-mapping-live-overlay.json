@@ -1,0 +1,31 @@
+{
+  "schema": "bf2026.native.mapping.overlay.r1",
+  "purpose": "Apply the freshest independently documented native Lot5 and Union mappings without rewriting the PR15 historical mapping snapshot.",
+  "source_refs": {
+    "rejection_program": "ai-factory-evidence#4073/comment/6988661595",
+    "union": "ai-factory-evidence#4073/comment/6991630755"
+  },
+  "entries": {
+    "rejection_program": {
+      "offer_ids": [8933492],
+      "product_ids": [4557988],
+      "training_ids": [936022301],
+      "release_status": "ACTIVE_VERIFIED",
+      "access_days": 365,
+      "native_price_rub": 6990,
+      "native_readback_ref": "4073:6988661595",
+      "grant_readback_ref": "4073:6988661595"
+    },
+    "union": {
+      "offer_ids": [8919715],
+      "product_ids": [4550895],
+      "training_ids": [933861292],
+      "release_status": "ACTIVE_VERIFIED",
+      "access_days": 365,
+      "native_price_rub": 6000,
+      "native_readback_ref": "4073:6991630755",
+      "grant_readback_ref": "4073:6991630755"
+    }
+  }
+}
+

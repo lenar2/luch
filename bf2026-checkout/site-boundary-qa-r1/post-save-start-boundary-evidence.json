@@ -1,0 +1,91 @@
+{
+  "schema": "bf2026.post-save-r109-start-boundary.r1",
+  "observed_at": "2026-11-18T21:42:41.913Z",
+  "site": "https://wf.tati-lar.ru",
+  "status_before": {
+    "sales_ready": false,
+    "verified_sale_routes": 0,
+    "status": "WAITING_FOR_VERIFIED_OFFERS"
+  },
+  "starts": [
+    {
+      "key": "lot5",
+      "selection": {
+        "kind": "single",
+        "lot": 5
+      },
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/start",
+      "http_status": 503,
+      "code": "GETCOURSE_OFFER_NOT_READY",
+      "returned_checkout_url": null,
+      "quote": {
+        "kind": "single",
+        "items": [
+          {
+            "key": "rejection_program",
+            "site_lot": 5,
+            "variant": null,
+            "base_price_rub": 6990
+          }
+        ],
+        "currency": "RUB",
+        "count": 1,
+        "subtotal_rub": 6990,
+        "discount_percent": 0,
+        "total_rub": 6990,
+        "savings_rub": 0,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      }
+    },
+    {
+      "key": "lot5_union",
+      "selection": {
+        "kind": "set",
+        "items": [
+          "rejection_program",
+          "union"
+        ]
+      },
+      "endpoint": "https://wf.tati-lar.ru/api/checkout/start",
+      "http_status": 503,
+      "code": "GETCOURSE_OFFER_NOT_READY",
+      "returned_checkout_url": null,
+      "quote": {
+        "kind": "set",
+        "items": [
+          {
+            "key": "rejection_program",
+            "site_lot": 5,
+            "variant": null,
+            "base_price_rub": 6990
+          },
+          {
+            "key": "union",
+            "site_lot": 7,
+            "variant": null,
+            "base_price_rub": 6000
+          }
+        ],
+        "currency": "RUB",
+        "count": 2,
+        "subtotal_rub": 12990,
+        "discount_percent": 10,
+        "total_rub": 11690,
+        "savings_rub": 1300,
+        "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107"
+      }
+    }
+  ],
+  "status_after": {
+    "sales_ready": false,
+    "verified_sale_routes": 0,
+    "status": "WAITING_FOR_VERIFIED_OFFERS"
+  },
+  "safety": {
+    "form_submitted": false,
+    "provider_order_created": false,
+    "payment_attempted": false,
+    "buyer_data_submitted": false,
+    "production_registry_changed": false
+  }
+}

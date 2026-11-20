@@ -1,0 +1,44 @@
+{
+  "schema": "bf2026.gc.native-bundle.order-readback.v1",
+  "provider": "GetCourse",
+  "capture_source": "NATIVE_ADMIN_AND_USER_PRODUCTS_READBACK",
+  "source_assertion": "GetCourse UI worker native Save/full reload and userProducts authenticated GET; independently fetched by UI worker, not this backend process",
+  "native_deal_id": "924624456",
+  "native_order_number": "71994",
+  "native_offer_id": 8935004,
+  "native_widget_id": 1686790,
+  "status": "Новый",
+  "currency": "RUB",
+  "native_offer_line_count": 1,
+  "order_total_rub": 11690,
+  "paid_total_rub": 0,
+  "paid_event_count": 0,
+  "product_rights_config": [
+    {
+      "product_id": 4557988,
+      "training_id": 936022301,
+      "grant_start": "AFTER_PAY",
+      "access_days": 365
+    },
+    {
+      "product_id": 4550895,
+      "training_id": 933861292,
+      "grant_start": "AFTER_PAY",
+      "access_days": 365
+    }
+  ],
+  "newly_granted_product_ids": [],
+  "source_refs": [
+    "https://github.com/lenar2/ai-factory-evidence/issues/4112#issuecomment-6997884393",
+    "https://github.com/lenar2/ai-factory-evidence/issues/4112#issuecomment-6997903834"
+  ],
+  "limitations": {
+    "evidence_pinned_independently": false,
+    "native_offer_active": false,
+    "customer_widget_order_submit_proven": false,
+    "paid_event_verified": false,
+    "receipt_verified": false,
+    "actual_grants_after_pay_verified": false,
+    "public_checkout_ready": false
+  }
+}

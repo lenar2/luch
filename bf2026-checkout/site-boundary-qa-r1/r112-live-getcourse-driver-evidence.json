@@ -1,0 +1,40 @@
+{
+  "schema": "bf2026.r112.live-native-widget-driver.v1",
+  "observed_utc": "2026-11-19T02:23:40Z",
+  "files_updated": [
+    "native-order-site-qa-http.cjs",
+    "native-getcourse-widget-driver.cjs"
+  ],
+  "qa_only": true,
+  "getcourse_order_created": false,
+  "payment_created": false,
+  "public_site_price_unchanged": true,
+  "live_http": {
+    "private_qa_prepare_http": 200,
+    "verify_http": 200,
+    "start_http": 503,
+    "anonymous_provider_http": 404,
+    "public_checkout_http": 503,
+    "actual_getcourse_readback": {
+      "http": 200,
+      "widget_id": 1686745,
+      "action_id": "2263283894",
+      "offer_ids": [
+        8919715,
+        8933492
+      ],
+      "native_base_total_rub": 12990,
+      "approved_total_rub": 11690,
+      "checkout_ready": false,
+      "no_provider_post": true,
+      "will_create_paid_deal_field_value": 0,
+      "native_order_handler_action_verified": false
+    }
+  },
+  "focused_regression": {
+    "tests": 85,
+    "passed": 85,
+    "failed": 0,
+    "exhaustive_265_quote_audit_repeated": false
+  }
+}

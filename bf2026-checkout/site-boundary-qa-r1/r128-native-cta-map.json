@@ -1,0 +1,226 @@
+{
+  "schema": "bf2026.r128.native-cta-map.v1",
+  "source_refs": {
+    "native_widget_and_client_guard_ids": "ai-factory-evidence#4112/comment/7001395021",
+    "product_training_ids": "ai-factory-evidence#4112/comment/6999798652",
+    "trainer_full_program": "ai-factory-evidence#4112/comment/7000281666",
+    "bundle_native_readback": "ai-factory-evidence#4112/comment/7000377508"
+  },
+  "consent": {
+    "client_field_id": 22204810,
+    "client_field_scope": "USER",
+    "client_guard_is_provider_proof": false,
+    "provider_side_negative_test_verified": false,
+    "public_release_allowed": false
+  },
+  "order_fields": {
+    "consent_nonce_field_id": null,
+    "offer_revision_sha256_field_id": null,
+    "native_order_field_readback_verified": false
+  },
+  "entries": {
+    "single:rejection": {
+      "route_key": "single:rejection",
+      "site_lot": 1,
+      "variant": null,
+      "widget_id": 1686768,
+      "offer_id": 8934973,
+      "amount_rub": 3333,
+      "product_training_pairs": [
+        {
+          "product_id": 4555636,
+          "training_id": 936016494
+        }
+      ],
+      "client_guard_block_id": 2263300143,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:devaluation": {
+      "route_key": "single:devaluation",
+      "site_lot": 2,
+      "variant": null,
+      "widget_id": 1686753,
+      "offer_id": 8934925,
+      "amount_rub": 3333,
+      "product_training_pairs": [
+        {
+          "product_id": 4555642,
+          "training_id": 936016504
+        }
+      ],
+      "client_guard_block_id": 2263300584,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:self": {
+      "route_key": "single:self",
+      "site_lot": 3,
+      "variant": null,
+      "widget_id": 1686770,
+      "offer_id": 8934974,
+      "amount_rub": 3333,
+      "product_training_pairs": [
+        {
+          "product_id": 4557112,
+          "training_id": 936016509
+        }
+      ],
+      "client_guard_block_id": 2263300881,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:guilt": {
+      "route_key": "single:guilt",
+      "site_lot": 4,
+      "variant": null,
+      "widget_id": 1686767,
+      "offer_id": 8934979,
+      "amount_rub": 3333,
+      "product_training_pairs": [
+        {
+          "product_id": 4557582,
+          "training_id": 936016513
+        }
+      ],
+      "client_guard_block_id": 2263301182,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:rejection_program": {
+      "route_key": "single:rejection_program",
+      "site_lot": 5,
+      "variant": null,
+      "widget_id": 1686693,
+      "offer_id": 8933492,
+      "amount_rub": 6990,
+      "product_training_pairs": [
+        {
+          "product_id": 4557988,
+          "training_id": 936022301
+        }
+      ],
+      "client_guard_block_id": 2263299065,
+      "route_status": "INDIVIDUAL_QA_ONLY",
+      "customer_title": "Исцеление отвержения"
+    },
+    "single:dnv": {
+      "route_key": "single:dnv",
+      "site_lot": 6,
+      "variant": null,
+      "widget_id": 1686740,
+      "offer_id": 8934207,
+      "amount_rub": 7200,
+      "product_training_pairs": [
+        {
+          "product_id": 4550894,
+          "training_id": 583995140
+        }
+      ],
+      "client_guard_block_id": 2263299929,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:union": {
+      "route_key": "single:union",
+      "site_lot": 7,
+      "variant": null,
+      "widget_id": 1686738,
+      "offer_id": 8919715,
+      "amount_rub": 6000,
+      "product_training_pairs": [
+        {
+          "product_id": 4550895,
+          "training_id": 933861292
+        }
+      ],
+      "client_guard_block_id": 2263299843,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:source:1": {
+      "route_key": "single:source:1",
+      "site_lot": 9,
+      "variant": "1",
+      "widget_id": 1686741,
+      "offer_id": 8934262,
+      "amount_rub": 6000,
+      "product_training_pairs": [
+        {
+          "product_id": 4550889,
+          "training_id": 934905122
+        }
+      ],
+      "client_guard_block_id": 2263300014,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:source:2": {
+      "route_key": "single:source:2",
+      "site_lot": 9,
+      "variant": "2",
+      "widget_id": 1686774,
+      "offer_id": 8934987,
+      "amount_rub": 10000,
+      "product_training_pairs": [
+        {
+          "product_id": 4550889,
+          "training_id": 934905122
+        },
+        {
+          "product_id": 4550891,
+          "training_id": 934905123
+        }
+      ],
+      "client_guard_block_id": 2263301667,
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "single:personal_zoom": {
+      "route_key": "single:personal_zoom",
+      "site_lot": 12,
+      "variant": null,
+      "widget_id": 1686776,
+      "offer_id": 8934993,
+      "amount_rub": 80000,
+      "product_training_pairs": [
+        {
+          "product_id": 4559058,
+          "training_id": null
+        }
+      ],
+      "client_guard_block_id": 2263298821,
+      "fulfillment": "3_ZOOM_SESSIONS_NO_TRAINING",
+      "route_status": "INDIVIDUAL_QA_ONLY"
+    },
+    "trainer_qa_only": {
+      "route_key": null,
+      "site_lot": 8,
+      "variant": null,
+      "widget_id": 1686781,
+      "offer_id": 8934247,
+      "amount_rub": 28000,
+      "product_training_pairs": [
+        {
+          "product_id": 4550897,
+          "training_id": 935051957
+        }
+      ],
+      "client_guard_block_id": 2263302397,
+      "fulfillment": "FULL_TRAINER_WITH_PROMOTION",
+      "route_status": "QA_ONLY_NOT_IN_R123_SINGLE_ALLOWLIST"
+    },
+    "bundle_qa_only": {
+      "route_key": null,
+      "site_lot": null,
+      "variant": null,
+      "widget_id": 1686790,
+      "offer_id": 8935004,
+      "amount_rub": 11690,
+      "product_training_pairs": [
+        {
+          "product_id": 4557988,
+          "training_id": 936022301
+        },
+        {
+          "product_id": 4550895,
+          "training_id": 933861292
+        }
+      ],
+      "client_guard_block_id": 2263297893,
+      "route_status": "QA_ONLY_NOT_IN_R123_SINGLE_ALLOWLIST"
+    }
+  }
+}

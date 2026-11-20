@@ -1,0 +1,38 @@
+{
+  "schema": "bf2026.r112.private-native-qa-live-deploy.v1",
+  "observed_utc": "2026-11-19T02:05:29Z",
+  "original_server_sha256": "5b8b6ca19009776bac018f2d6eb2d8c71b6c5d3df0e347720461809982acdc26",
+  "current_server_sha256": "47de3ea5a4394a32ba5a3c169904afdb4507b5352a5d49c80fea226441a34fa7",
+  "backup_file": "/srv/factory-scratch/bf2026-checkout-r2-20261119/server.js.before-r112-native-qa.20261119-020524.backup",
+  "package_files": [
+    "dynamic-adapter-r1/adapter.cjs",
+    "dynamic-adapter-r1/native-mapping-observed.json",
+    "site-boundary-qa-r1/native-mapping-live-overlay.json",
+    "site-boundary-qa-r1/native-order-execution-contract.cjs",
+    "site-boundary-qa-r1/native-order-execution-contract.json",
+    "site-boundary-qa-r1/native-order-site-integration.cjs",
+    "site-boundary-qa-r1/native-order-site-qa-http.cjs",
+    "site-boundary-qa-r1/native-provider-evidence.cjs",
+    "site-boundary-qa-r1/provider-supported-fallback.cjs"
+  ],
+  "checkout_container_restarted": true,
+  "production_qa_route_enabled": true,
+  "production_public_cart_changed": false,
+  "production_registry_changed": false,
+  "getcourse_order_driver_connected": false,
+  "smoke": {
+    "status": 503,
+    "actual_http_checks": 7,
+    "signed_exact_two_offer_ids": [
+      8933492,
+      8919715
+    ],
+    "due_rub": 11690,
+    "public_sales_ready": false,
+    "verified_sale_routes": 0,
+    "public_checkout_http": 503,
+    "private_qa_unauthed_http": 404,
+    "qa_start_http": 503,
+    "payment_created": false
+  }
+}

@@ -1,0 +1,392 @@
+{
+  "schema": "bf2026.native.slot.matrix.r115",
+  "source": "CURRENT_SITE_CATALOG_REGISTRY_READBACK",
+  "slots": [
+    {
+      "lot": 1,
+      "title": "Исцеление раны отвержения",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:rejection",
+          "variant": null,
+          "offer_id": 8934973,
+          "widget_id": 1686768,
+          "product_ids": [
+            4555636
+          ],
+          "training_ids": [],
+          "grant_count_required": 1,
+          "price_rub": 3333,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686768",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686768",
+          "script_id": "0a448ece9dab83492f186c10afbfcdefc40ac6bf",
+          "registered": true,
+          "training_mapping_complete": false,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "TRAINING_MAPPING_NUMERIC_ID_UNCONFIRMED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 2,
+      "title": "Исцеление раны обесценивания",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:devaluation",
+          "variant": null,
+          "offer_id": 8934925,
+          "widget_id": 1686753,
+          "product_ids": [
+            4555642
+          ],
+          "training_ids": [],
+          "grant_count_required": 1,
+          "price_rub": 3333,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686753",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686753",
+          "script_id": "1e1651876b1e99e6e2a83b6089b3159bbb7dbb73",
+          "registered": true,
+          "training_mapping_complete": false,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "TRAINING_MAPPING_NUMERIC_ID_UNCONFIRMED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 3,
+      "title": "Исцеление страха быть собой",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:self",
+          "variant": null,
+          "offer_id": 8934974,
+          "widget_id": 1686770,
+          "product_ids": [
+            4557112
+          ],
+          "training_ids": [],
+          "grant_count_required": 1,
+          "price_rub": 3333,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686770",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686770",
+          "script_id": "bf23d8f104835405573722de3737daccc6d02640",
+          "registered": true,
+          "training_mapping_complete": false,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "TRAINING_MAPPING_NUMERIC_ID_UNCONFIRMED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 4,
+      "title": "Исцеление чувства вины",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:guilt",
+          "variant": null,
+          "offer_id": 8934979,
+          "widget_id": 1686767,
+          "product_ids": [
+            4557582
+          ],
+          "training_ids": [],
+          "grant_count_required": 1,
+          "price_rub": 3333,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686767",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686767",
+          "script_id": "27a9068a9367706d7c67a0a6024213c108bfe95c",
+          "registered": true,
+          "training_mapping_complete": false,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "TRAINING_MAPPING_NUMERIC_ID_UNCONFIRMED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 5,
+      "title": "Исцеление отвержения",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:rejection_program",
+          "variant": null,
+          "offer_id": 8933492,
+          "widget_id": 1686693,
+          "product_ids": [
+            4557988
+          ],
+          "training_ids": [
+            936022301
+          ],
+          "grant_count_required": 1,
+          "price_rub": 6990,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686693",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686693",
+          "script_id": "c81febf3fabfff7c8eecb0076b2477c2db46be01",
+          "registered": true,
+          "training_mapping_complete": true,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "OFFER_CONSENT_NEGATIVE_TEST_UNVERIFIED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 6,
+      "title": "Школа для девушек на выданье (ДНВ)",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:dnv",
+          "variant": null,
+          "offer_id": 8934207,
+          "widget_id": 1686740,
+          "product_ids": [
+            4550894
+          ],
+          "training_ids": [],
+          "grant_count_required": 1,
+          "price_rub": 7200,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686740",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686740",
+          "script_id": "7403ffc22f85551f003df442c915bf2c41aef3d8",
+          "registered": true,
+          "training_mapping_complete": false,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "TRAINING_MAPPING_NUMERIC_ID_UNCONFIRMED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 7,
+      "title": "Союз нового времени",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:union",
+          "variant": null,
+          "offer_id": 8919715,
+          "widget_id": 1686738,
+          "product_ids": [
+            4550895
+          ],
+          "training_ids": [
+            933861292
+          ],
+          "grant_count_required": 1,
+          "price_rub": 6000,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686738",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686738",
+          "script_id": "0c3b851827b21ad921c72411252b9ee927797a9d",
+          "registered": true,
+          "training_mapping_complete": true,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "OFFER_CONSENT_NEGATIVE_TEST_UNVERIFIED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 8,
+      "title": "Тренер по отношениям",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_PENDING",
+          "key": "single:trainer",
+          "offer_id": 8934247,
+          "widget_id": null,
+          "ready": false,
+          "reason": "NATIVE_FORM_NOT_READY"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 9,
+      "title": "ИСТОЧНИК",
+      "type": "course",
+      "variants": [
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:source:1",
+          "variant": "1",
+          "offer_id": 8934262,
+          "widget_id": 1686741,
+          "product_ids": [
+            4550889
+          ],
+          "training_ids": [],
+          "grant_count_required": 1,
+          "price_rub": 6000,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686741",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686741",
+          "script_id": "2a118f76ae5cdd67665e777fa0e5c42f6985624f",
+          "registered": true,
+          "training_mapping_complete": false,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "TRAINING_MAPPING_NUMERIC_ID_UNCONFIRMED"
+        },
+        {
+          "kind": "NATIVE_TRAINING",
+          "key": "single:source:2",
+          "variant": "2",
+          "offer_id": 8934987,
+          "widget_id": 1686774,
+          "product_ids": [
+            4550889,
+            4550891
+          ],
+          "training_ids": [
+            934905122,
+            934905123
+          ],
+          "grant_count_required": 2,
+          "price_rub": 10000,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686774",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686774",
+          "script_id": "70154f4c7a4e4a269602ce87836084c012a0f15c",
+          "registered": true,
+          "training_mapping_complete": true,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": null,
+          "ready": false,
+          "reason": "OFFER_CONSENT_NEGATIVE_TEST_UNVERIFIED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 10,
+      "title": "Собери свой сет",
+      "type": "set",
+      "variants": [
+        {
+          "kind": "DYNAMIC_SET",
+          "ready": false,
+          "reason": "NO_265_NATIVE_OFFERS"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 11,
+      "title": "ИНТЕГРАЦИЯ В сторис блога «Нельзяграм» @tati_lar  122K",
+      "type": "application",
+      "variants": [
+        {
+          "kind": "APPLICATION_ONLY",
+          "ready": false,
+          "reason": "NO_NATIVE_CHARGE"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    },
+    {
+      "lot": 12,
+      "title": "Личная работа",
+      "type": "service",
+      "variants": [
+        {
+          "kind": "NATIVE_SERVICE_NO_TRAINING",
+          "key": "single:personal_zoom",
+          "variant": null,
+          "offer_id": 8934993,
+          "widget_id": 1686776,
+          "product_ids": [
+            4559058
+          ],
+          "training_ids": [],
+          "grant_count_required": 0,
+          "price_rub": 80000,
+          "public_widget_url": "https://study.shkola-dnv.com/pl/lite/widget/widget?id=1686776",
+          "script_url": "https://study.shkola-dnv.com/pl/lite/widget/script?id=1686776",
+          "script_id": "f1782d31bf7f3c80decc1f6d129ebce78f57a9c0",
+          "registered": true,
+          "training_mapping_complete": true,
+          "legal_consent_verified": false,
+          "paid_e2e_verified": false,
+          "service_fulfillment": {
+            "zoom_sessions": 3,
+            "booking_required_after_payment": true
+          },
+          "ready": false,
+          "reason": "OFFER_CONSENT_NEGATIVE_TEST_UNVERIFIED"
+        }
+      ],
+      "checkout_released": false,
+      "paid_e2e_verified": false
+    }
+  ],
+  "status": {
+    "slots_total": 12,
+    "registered_native_forms": 10,
+    "unregistered_slots": [
+      8,
+      10,
+      11
+    ],
+    "released_routes": 0,
+    "source_ii_two_training_readback": true,
+    "zoom_has_training_grant": false
+  },
+  "forbidden_duplicate_ids": [
+    1686766,
+    8934988
+  ],
+  "no_customer_redirect_until_release": true,
+  "no_guessed_provider_ids": true,
+  "input_sha256": "e1ea2c688baedcd05d58782b4913389389e5f5fcf37928c98e49657da8fdaf9c"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "bf2026.r112.live-native-bundle-private-qa.v1",
+  "timestamp_utc": "2026-11-19T02:47:36Z",
+  "original_server_sha256": "cae466df79917c143f587e8e803debfdd2a846f863a9aecfa894eeecf74a6785",
+  "current_server_sha256": "7be31cbd0d3faf037d57a417e95cc9fe323124f060c0a5196b1f06402d2d4773",
+  "backup_file": "/srv/factory-scratch/bf2026-checkout-r2-20261119/server.js.before-r112-bundle-qa.20261119-024734.backup",
+  "new_modules": [
+    "native-bundle-qa.cjs",
+    "native-bundle-site-qa-http.cjs"
+  ],
+  "observed_live_http_checks": [
+    "live_sale_routes_zero",
+    "server_quote_11690",
+    "private_signed_bundle_prepare",
+    "bundle_two_product_rights",
+    "qa_bundle_start_hold",
+    "private_native_widget_preview",
+    "anonymous_qa_denied",
+    "public_checkout_stays_hold"
+  ],
+  "native_bundle_offer_id": 8935004,
+  "native_widget_id": 1686790,
+  "native_unpaid_deal_id": "924624456",
+  "approved_price_rub": 11690,
+  "public_sale_enabled": false,
+  "public_sale_routes": 0,
+  "new_getcourse_order_created": false,
+  "payment_attempted": false,
+  "customer_data_used": false,
+  "registry_changed": false,
+  "cart_design_changed": false
+}

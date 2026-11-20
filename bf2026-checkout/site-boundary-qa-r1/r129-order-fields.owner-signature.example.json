@@ -1,0 +1,70 @@
+{
+  "schema": "bf2026.r129.owner-signed-order-fields.v1",
+  "key_id": null,
+  "issued_at": null,
+  "expires_at": null,
+  "process_id": null,
+  "form_population_evidence_sha256": {
+    "consent_nonce": null,
+    "offer_revision_sha256": null
+  },
+  "config": {
+    "schema": "bf2026.r128.getcourse-order-callback-config.v1",
+    "account_host": "study.shkola-dnv.com",
+    "owner_approved": false,
+    "order_fields": {
+      "consent_nonce": {
+        "scope": "order",
+        "title": "BF2026 Consent Nonce",
+        "field_id": null,
+        "type": "string",
+        "native_readback_verified": false,
+        "form_population_verified": false,
+        "readback_evidence_sha256": null
+      },
+      "offer_revision_sha256": {
+        "scope": "order",
+        "title": "BF2026 Offer Revision SHA256",
+        "field_id": null,
+        "type": "string",
+        "native_readback_verified": false,
+        "form_population_verified": false,
+        "readback_evidence_sha256": null
+      }
+    },
+    "callback_process": {
+      "process_object": "orders",
+      "operation": "Вызвать URL",
+      "method": "POST",
+      "url": "https://wf.tati-lar.ru/api/checkout/_provider/getcourse/order-created",
+      "content_type": "application/json",
+      "authorization_header_configured": false,
+      "authorization_secret_file_only": false,
+      "provider_signature_supported": false,
+      "created_at_iso8601_timezone_verified": false,
+      "error_branch_configured": false,
+      "readback_evidence_sha256": null,
+      "body_variables": {
+        "deal_id": "{object.id}",
+        "deal_number": "{object.number}",
+        "user_id": "{object.user.id}",
+        "offers": "{object.offers}",
+        "cost_money_value": "{object.cost_money_value}",
+        "status": "{object.status}",
+        "created_at": "{object.created_at}",
+        "consent_nonce": "{object.BF2026 Consent Nonce}",
+        "offer_revision_sha256": "{object.BF2026 Offer Revision SHA256}"
+      }
+    }
+  },
+  "signature": null,
+  "notes": {
+    "source": "TEMPLATE_ONLY_NOT_REAL_GETCOURSE_PROOF",
+    "numeric_field_ids": "UNSET_AND_MUST_NOT_BE_FABRICATED",
+    "process_id": "UNSET_AND_MUST_BE_READ_BACK_FROM_NATIVE_GETCOURSE",
+    "signing": "Sign the canonical JSON fields excluding signature and notes with an owner-controlled offline Ed25519 private key, then store the signed envelope as an owner-private 0600 file. Remove notes before signing.",
+    "evidence": "Native GetCourse Order field IDs, form-population proofs, Process GET URL callback readback and timezone format must be confirmed independently by UI owner.",
+    "client_user_field_22204810": "FORBIDDEN_AS_ORDER_PROOF",
+    "release_allowed": false
+  }
+}

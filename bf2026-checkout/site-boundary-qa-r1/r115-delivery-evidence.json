@@ -1,0 +1,50 @@
+{
+  "schema": "bf2026.r115.backend_continuous_delivery.v1",
+  "captured_at": "2026-11-19T02:28:27.036Z",
+  "matrix_status": {
+    "slots_total": 12,
+    "registered_native_forms": 10,
+    "unregistered_slots": [
+      8,
+      10,
+      11
+    ],
+    "released_routes": 0,
+    "source_ii_two_training_readback": true,
+    "zoom_has_training_grant": false
+  },
+  "source_snapshot_sha256": "e1ea2c688baedcd05d58782b4913389389e5f5fcf37928c98e49657da8fdaf9c",
+  "focused_tests_passed": 105,
+  "isolated_http_tests": [
+    "native-order prepare/verify/start",
+    "trusted relay event accepted/duplicate/malformed"
+  ],
+  "provider_webhook_verified": false,
+  "relay_hmac_interface_implemented": true,
+  "durable_pg_sql_deployed": false,
+  "real_pg_tested": false,
+  "real_getcourse_order_created": false,
+  "real_paid_receipt_access_verified": false,
+  "production_site_write": false,
+  "production_database_write": false,
+  "external_grant_calls": 0,
+  "files": [
+    "native-slot-matrix.cjs",
+    "native-slot-matrix.snapshot.json",
+    "native-slot-matrix.test.cjs",
+    "provider-relay-webhook.cjs",
+    "provider-relay-webhook.test.cjs",
+    "r115-relay-http.cjs",
+    "r115-relay-http.test.cjs",
+    "r115-event-inbox.sql",
+    "r115-postgres-inbox-store.cjs",
+    "r115-postgres-inbox-store.test.cjs",
+    "patch-r115-event-http.py",
+    "paid-proof-reconciler.cjs",
+    "paid-proof-reconciler.test.cjs",
+    "native-order-site-integration.cjs",
+    "native-order-site-qa-http.test.cjs",
+    "R115_SITE_ENGINEER_HANDOFF.md"
+  ],
+  "public_sale_release": "HOLD"
+}

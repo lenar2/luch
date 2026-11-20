@@ -1,0 +1,218 @@
+{
+  "schema": "bf2026.native.multi_offer.order_execution_contract.r1",
+  "classification": "SIGNED_SELECTION_AND_IDEMPOTENCY_CONTRACT_ONLY_NO_GETCOURSE_MULTI_OFFER_DRIVER",
+  "evidence": {
+    "canonical_ui_readback": "ai-factory-evidence#4073/comment/6993420543",
+    "latest_site_engineer_ack": "ABSENT_IN_ISSUE_4112_AS_OF_2026-11-19_DISPATCH",
+    "public_widget_snapshot": "native-widget-pair-readonly-evidence.json",
+    "actual_native_form_mechanism": "TWO_DISTINCT_SINGLE_OFFER_WIDGETS",
+    "native_multi_offer_form": "NOT_OBSERVED",
+    "native_two_line_order": "NOT_OBSERVED",
+    "production_sale_routes": 0
+  },
+  "observed_native_forms": [
+    {
+      "widget_id": 1686693,
+      "offer_id": 8933492,
+      "product_id": 4557988,
+      "training_id": 936022301,
+      "price_rub": 6990,
+      "control_name": "formParams[offer_id][]",
+      "control_type": "radio",
+      "controls_in_form": 1,
+      "stable_form_action": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263265127"
+    },
+    {
+      "widget_id": 1686738,
+      "offer_id": 8919715,
+      "product_id": 4550895,
+      "training_id": 933861292,
+      "price_rub": 6000,
+      "control_name": "formParams[offer_id][]",
+      "control_type": "radio",
+      "controls_in_form": 1,
+      "stable_form_action": "https://study.shkola-dnv.com/pl/lite/block-public/process?id=2263282483"
+    }
+  ],
+  "provider_mechanism_assessment": {
+    "provider": "GetCourse",
+    "proven": "Each public widget is an independent POST form with one checked radio Offer position",
+    "not_proven": "One native GetCourse form can accept both Offer IDs and create one order with two order lines",
+    "not_implemented": "No direct provider order API or native multi-offer form driver is present in this branch",
+    "forbidden_shortcut": "Do not concatenate the two formParams[offer_id][] values or POST to either widget action and call it a combined order without a native provider readback"
+  },
+  "signed_selection": {
+    "schema": "bf2026.native.selection.v1",
+    "scope": "INTERNAL_NATIVE_ORDER_CANDIDATE_ONLY",
+    "algorithm": "HMAC-SHA256 over canonical JSON, base64url token",
+    "ttl_seconds_max": 300,
+    "required_fields": [
+      "checkout_idempotency_key",
+      "nonce",
+      "issued_at",
+      "expires_at",
+      "selection_key",
+      "server_recomputed_plan"
+    ],
+    "stable_idempotency_key": "32 lowercase hex chars; reused unchanged across retries for the same logical checkout",
+    "binds": [
+      "R109 authoritative quote",
+      "exact Offer/Product/Training mapping",
+      "365d AFTER_PAY grant mapping",
+      "selection digest"
+    ],
+    "client_supplied_price_or_offer_ids": "REJECT"
+  },
+  "required_native_order": {
+    "provider": "GetCourse",
+    "status_before_payment": "UNPAID",
+    "status_after_payment": "PAID",
+    "currency": "RUB",
+    "selection_key": "set:rejection_program|union",
+    "line_count": 2,
+    "lines": [
+      {
+        "selection_key": "rejection_program",
+        "offer_id": 8933492,
+        "product_id": 4557988,
+        "training_id": 936022301,
+        "base_price_rub": 6990,
+        "quantity": 1,
+        "grant_start": "AFTER_PAY",
+        "access_days": 365
+      },
+      {
+        "selection_key": "union",
+        "offer_id": 8919715,
+        "product_id": 4550895,
+        "training_id": 933861292,
+        "base_price_rub": 6000,
+        "quantity": 1,
+        "grant_start": "AFTER_PAY",
+        "access_days": 365
+      }
+    ],
+    "subtotal_rub": 12990,
+    "discount_percent": 10,
+    "discount_rub": 1300,
+    "amount_due_rub": 11690,
+    "paid_total_rub": 11690,
+    "grants_after_confirmed_paid_event_only": true,
+    "both_grants_same_paid_event": true,
+    "each_grant_same_provider_order_id": true,
+    "receipt_and_tax_readback_required": true,
+    "offer_terms_consent_required": true,
+    "marketing_opt_in_optional_unchecked_by_default": true
+  },
+  "durable_idempotency": {
+    "store": "PostgreSQL table bf2026_native_checkout_idempotency (migration included; NOT DEPLOYED)",
+    "unique_key": [
+      "scope",
+      "checkout_idempotency_key"
+    ],
+    "payload_binding": "selection_sha256",
+    "states": [
+      "RESERVED",
+      "PROVIDER_SUBMITTING",
+      "PROVIDER_OUTCOME_UNKNOWN",
+      "ORDER_CREATED"
+    ],
+    "same_key_same_selection": "Return prior state/order; never create a second provider order",
+    "same_key_different_selection": "IDEMPOTENCY_KEY_PAYLOAD_CONFLICT",
+    "provider_timeout_after_submit": "PROVIDER_OUTCOME_UNKNOWN; block automatic retry until native order lookup reconciliation",
+    "provider_order_id": "Unique when present",
+    "replay_policy": "ORDER_CREATED returns existing provider_order_id; no provider call",
+    "ambiguity_policy": "PROVIDER_SUBMITTING and PROVIDER_OUTCOME_UNKNOWN never auto-retry",
+    "reconcile_requirements": [
+      "same checkout idempotency key",
+      "same selection_sha256",
+      "provider_order_id",
+      "SHA-256 of native order readback",
+      "immutable signed evidence reference"
+    ]
+  },
+  "provider_gate": {
+    "required_mode": "ONE_NATIVE_ORDER_MULTI_OFFER",
+    "required_selection_field": "formParams[offer_id][]",
+    "required_selection_encoding": "MULTIPLE_VALUES_IN_ONE_NATIVE_FORM",
+    "required_form_evidence": "One public native form showing both exact Offer IDs in selectable positions",
+    "required_unpaid_order_evidence": "Actual native unpaid order readback with exactly two lines and 11690 RUB",
+    "required_review": "Independent readback/review",
+    "current_status": "BLOCKED_NATIVE_MULTI_OFFER_MECHANISM_UNVERIFIED"
+  },
+  "release_gates": [
+    "Site engineer ACK and isolated integration branch ownership",
+    "One actual native multi-offer public form + exact form action and supported selection encoding",
+    "Actual native unpaid two-line order readback (not synthetic)",
+    "Signed server selection envelope and R109 quote recomputation",
+    "Durable idempotency store integration and ambiguity reconciliation",
+    "Actual paid 11690 RUB order, both exact 365d AFTER_PAY grants on same event, receipt/tax and consent evidence",
+    "Independent QA and owner release"
+  ],
+  "safety": {
+    "current_branch_only": true,
+    "production_deployed": false,
+    "getcourse_ui_changed": false,
+    "form_submitted": false,
+    "native_order_created": false,
+    "payment_attempted": false,
+    "mailing_attempted": false
+  },
+  "provider_evidence_intake": {
+    "schema": "bf2026.getcourse.provider-evidence.v1",
+    "artifact_requirements": [
+      "one native public form HTML",
+      "one native order detail JSON",
+      "SHA-256 for both artifacts",
+      "immutable artifact references"
+    ],
+    "attestation": {
+      "algorithm": "Ed25519",
+      "capture_types": {
+        "live": "LIVE_PROVIDER_CAPTURE",
+        "test": "TEST_FIXTURE"
+      },
+      "live_key_trust_level": "SITE_ENGINEER_ATTESTED",
+      "live_key_usage": "BF2026_GETCOURSE_PROVIDER_EVIDENCE",
+      "test_key_trust_level": "TEST_ONLY"
+    },
+    "native_form": {
+      "exactly_one_form": true,
+      "method": "POST",
+      "action_host": "study.shkola-dnv.com",
+      "action_path": "/pl/lite/block-public/process",
+      "stable_action_id_required": true,
+      "selection_field": "formParams[offer_id][]",
+      "accepted_selection_encodings": [
+        "MULTI_VALUE_CHECKBOX",
+        "MULTI_VALUE_SELECT"
+      ],
+      "both_exact_offer_ids_selected_simultaneously": true,
+      "radio_controls_rejected": true
+    },
+    "unpaid_order": {
+      "source": "GETCOURSE_NATIVE_ORDER_DETAIL",
+      "status": "UNPAID",
+      "currency": "RUB",
+      "exact_line_count": 2,
+      "subtotal_rub": 12990,
+      "discount_percent": 10,
+      "discount_rub": 1300,
+      "amount_due_rub": 11690,
+      "source_form_action_and_widget_must_match": true,
+      "grants_must_be_empty": true
+    },
+    "paid_order": {
+      "status": "PAID",
+      "paid_total_rub": 11690,
+      "exact_grant_count": 2,
+      "grant_days": 365,
+      "grant_start": "AFTER_PAY",
+      "same_provider_order_and_paid_event": true,
+      "receipt_tax_offer_consent_and_duplicate_guard_required": true
+    },
+    "fixture_policy": "TEST_ONLY evidence may pass structural contract validation but always returns provider_verified=false and cannot unlock capability or reconciliation.",
+    "current_live_key_configured": false,
+    "current_live_native_multi_offer_evidence": false
+  }
+}

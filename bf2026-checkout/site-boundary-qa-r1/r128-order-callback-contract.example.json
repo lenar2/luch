@@ -1,0 +1,79 @@
+{
+  "schema": "bf2026.r128.getcourse-order-callback-contract.v1",
+  "account_host": "study.shkola-dnv.com",
+  "approved": false,
+  "callback_configured": false,
+  "provider_signature_supported": false,
+  "order_fields": {
+    "consent_nonce": {
+      "scope": "order",
+      "title": "BF2026 Consent Nonce",
+      "field_id": null,
+      "type": "string",
+      "native_readback_verified": false,
+      "form_population_verified": false,
+      "readback_evidence_sha256": null
+    },
+    "offer_revision_sha256": {
+      "scope": "order",
+      "title": "BF2026 Offer Revision SHA256",
+      "field_id": null,
+      "type": "string",
+      "native_readback_verified": false,
+      "form_population_verified": false,
+      "readback_evidence_sha256": null
+    }
+  },
+  "forbidden_evidence": {
+    "field_id": 22204810,
+    "scope": "user",
+    "reason": "USER_FIELD_NOT_ORDER_SPECIFIC_CONSENT_OR_CALLBACK_CORRELATION"
+  },
+  "callback_process": {
+    "process_object": "orders",
+    "operation": "Вызвать URL",
+    "method": "POST",
+    "url": "https://wf.tati-lar.ru/api/checkout/_provider/getcourse/order-created",
+    "headers": {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer <OWNER_PRIVATE_CALLBACK_SECRET_NOT_STORED_HERE>"
+    },
+    "body_variables": {
+      "deal_id": "{object.id}",
+      "deal_number": "{object.number}",
+      "user_id": "{object.user.id}",
+      "offers": "{object.offers}",
+      "cost_money_value": "{object.cost_money_value}",
+      "status": "{object.status}",
+      "created_at": "{object.created_at}",
+      "consent_nonce": "{object.BF2026 Consent Nonce}",
+      "offer_revision_sha256": "{object.BF2026 Offer Revision SHA256}"
+    },
+    "created_at_output_format": "ISO8601_WITH_TIMEZONE_REQUIRED",
+    "created_at_format_readback_verified": false,
+    "error_branch_configured": false,
+    "process_readback_evidence_sha256": null
+  },
+  "runtime_gates": {
+    "order_fields_created_and_read_back": false,
+    "fields_present_on_native_order_form": false,
+    "order_field_population_verified": false,
+    "callback_process_read_back": false,
+    "created_at_timezone_format_verified": false,
+    "private_callback_secret_configured": false,
+    "provider_signature_verified": false,
+    "native_consent_negative_test_verified": false,
+    "public_release_allowed": false
+  },
+  "source_docs": [
+    "https://getcourse.ru/blog/276215",
+    "https://getcourse.ru/blog/1183639"
+  ],
+  "notes": [
+    "Use additional fields from the Orders section, not Users.",
+    "GetCourse callback variables for order custom fields use the full field title in {object.FIELD_TITLE}; titles must not contain dots.",
+    "The two fields carry nonce/revision correlation only; they do not prove legal consent.",
+    "The documented callback uses a shared Bearer secret, not a GetCourse provider digital signature.",
+    "created_at must be verified in a controlled callback; do not enable if the emitted value is not ISO-8601 with timezone."
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "bf2026.superseded-single-widget-snapshot.r1",
+  "status": "SUPERSEDED_BY_NATIVE_WIDGET_PAIR_READONLY_EVIDENCE",
+  "superseded_by": "native-widget-pair-readonly-evidence.json",
+  "note": "The old empty setted_offer_id inspection predates the saved native form-position controls. Current native selection is formParams[offer_id][] radio, one per distinct widget/form."
+}

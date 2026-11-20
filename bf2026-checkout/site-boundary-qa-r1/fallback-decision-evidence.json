@@ -1,0 +1,88 @@
+{
+  "schema": "bf2026.provider_fallback_decision.r1",
+  "origin_refs": [
+    "#4073 comment 6994570558",
+    "#4112 comment 6994573333"
+  ],
+  "observed": {
+    "native_widget_id": 1686745,
+    "offers": [
+      8933492,
+      8919715
+    ],
+    "native_visible_sum_rub": 12990,
+    "native_handler_offer_count": 1,
+    "real_two_line_order": false
+  },
+  "r109": {
+    "subtotal_rub": 12990,
+    "discount_percent": 10,
+    "discount_rub": 1300,
+    "total_rub": 11690,
+    "line_allocation": [
+      {
+        "source_offer_id": 8933492,
+        "product_id": 4557988,
+        "training_id": 936022301,
+        "base": 6990,
+        "discount": 700,
+        "allocated": 6290,
+        "grant_days": 365,
+        "grant_start": "AFTER_PAY"
+      },
+      {
+        "source_offer_id": 8919715,
+        "product_id": 4550895,
+        "training_id": 933861292,
+        "base": 6000,
+        "discount": 600,
+        "allocated": 5400,
+        "grant_days": 365,
+        "grant_start": "AFTER_PAY"
+      }
+    ]
+  },
+  "candidates": [
+    {
+      "priority": 1,
+      "mode": "NATIVE_ONE_OFFER_MULTIPLE_PRODUCTS",
+      "official_url": "https://getcourse.ru/blog/1218294#predlozhenie-iz-neskolkih-produktov",
+      "provider_documented": true,
+      "native_bundle_offer_id": null,
+      "release": false
+    },
+    {
+      "priority": 2,
+      "mode": "NATIVE_GETCOURSE_CART",
+      "official_url": "https://getcourse.ru/blog/275826",
+      "provider_documented": true,
+      "exact_discount_11690_verified": false,
+      "release": false
+    },
+    {
+      "priority": 3,
+      "mode": "SEQUENTIAL_IMPORT_DEALS",
+      "official_url": "https://getcourse.ru/help/api",
+      "provider_documented": true,
+      "import_only_not_operational_checkout": true,
+      "release": false
+    }
+  ],
+  "release": {
+    "state": "HOLD",
+    "verified_sale_routes_increment": 0,
+    "requires_one_native_payment_11690": true,
+    "requires_two_exact_native_after_pay_grants": true,
+    "external_grants_forbidden": true,
+    "requires_fiscal_consent": true,
+    "requires_independent_signed_provider_proof": true
+  },
+  "safety": {
+    "getcourse_ui_touched": false,
+    "real_order_created": false,
+    "api_calls_sent": 0,
+    "payment_created": false,
+    "email_sent": false,
+    "production_changed": false
+  }
+}

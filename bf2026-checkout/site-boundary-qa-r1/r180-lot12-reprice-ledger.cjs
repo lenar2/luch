@@ -5,7 +5,7 @@
  */
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const {buildLot12SetPlan}=require('./r154-lot12-set.cjs');
-const DIR='/srv/factory-scratch/bf2026-checkout-r2-20261119/r166-native-order-ledger';
+const DIR=process.env.BF2026_LOT12_LEDGER_DIR||'/srv/factory-scratch/bf2026-checkout-r2-20261119/r166-native-order-ledger';
 const N15=/^[1-9][0-9]{9,17}$/;
 const SHA=/^[a-f0-9]{64}$/;
 function fail(s){throw Error('R180_'+s)}

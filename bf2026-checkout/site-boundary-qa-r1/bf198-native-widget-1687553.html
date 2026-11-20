@@ -1,0 +1,70 @@
+<style>
+body{background:#fcf8f1!important;color:#49372d}
+.form-content{background:#fffcf6!important;border:1px solid #e7d6b7!important;border-radius:24px!important;padding:24px 30px!important;box-shadow:0 10px 35px #5e361310!important}
+.f-header{font-family:Georgia,serif!important;color:#6b4b32!important;font-size:32px!important;font-weight:600!important;letter-spacing:-.5px!important}
+.f-input{border:1px solid #decaa9!important;background:white!important;border-radius:12px!important;min-height:52px!important;color:#443a32!important}
+.form-position{padding:14px 16px!important;background:#fffaf4!important;margin:7px 0!important;border:1px solid #eadcc9!important;border-radius:12px!important;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.form-position-title{font-family:inherit!important;color:#42342c!important}
+.form-position-price{text-align:right!important;white-space:nowrap}
+.form-position-price__discount{color:#988778!important;margin-right:5px}
+.form-position .final-price{color:#9f2456!important;font-weight:700!important}
+.part-total{padding:10px!important}
+.part-button{text-align:center!important;margin-top:16px!important}
+.f-btn{background:#ab285b!important;border:0!important;border-radius:14px!important;min-height:58px!important;font-weight:700!important;width:100%!important;color:#fff!important}
+@media(max-width:620px){.form-content{padding:18px 14px!important}.f-header{font-size:26px!important}.form-position{padding:13px 10px!important;font-size:14px!important;flex-wrap:wrap}.form-position-price{margin-left:auto}}
+</style><script>(function(){
+'use strict';
+const offerMap={rejection:'8934973',devaluation:'8934925',self:'8934974',guilt:'8934979',rejection_program:'8933492',dnv:'8934207',union:'8919715',trainer:'8934247',dgs2:'8937776',knopochka:'8937784'};
+const tiers={2:[10,'50460850'],3:[15,'50460964'],4:[25,'50460969'],5:[35,'50460971'],6:[40,'50460973'],7:[45,'50461031']};
+function init(){
+ const qs=new URLSearchParams(location.search), raw=qs.get('lot12_set');
+ const items=raw?.split(',').filter(Boolean)||[];
+ const variant=qs.get('lot12_source')||'0';
+ const form=document.querySelector('form[id^="ltForm"]');
+ const inputs=[...document.querySelectorAll('input[name="formParams[offer_id][]"]')];
+ const button=form?.querySelector('button[type="submit"]');
+ if(!form||!inputs.length||!button)return;
+ const set=new Set(items), offerIds=items.map(k=>k==='source'?(variant==='2'?'8934987':'8934262'):offerMap[k]);
+ const audio=items.filter(k=>['rejection','devaluation','self','guilt'].includes(k));
+ const valid=!!tiers[items.length]&&set.size===items.length&&items.every(k=>k==='source'||!!offerMap[k])&&
+  (!set.has('source')||['1','2'].includes(variant))&&audio.length<=2&&
+  !(set.has('rejection_program')&&audio.length)&&
+  offerIds.every(o=>inputs.some(i=>i.value===o));
+ if(!valid){button.disabled=true;button.textContent='Вернись к выбору программ';return;}
+ const [discount,code]=tiers[items.length];const wanted=new Set(offerIds);
+ const fmt=n=>new Intl.NumberFormat('ru-RU',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2}).format(n)+' ₽';
+ let total=0;
+ for(const input of inputs){
+  const selected=wanted.has(input.value),base=Number(input.dataset.oldPriceValue);
+  const price=Math.round(base*(100-discount))/100;
+  const hidden=form.querySelector('input[name="formParams[apply_promo_code]['+input.value+']"]');
+  if(!hidden||!Number.isFinite(price)||price<=0){button.disabled=true;return;}
+  hidden.value=code;
+  input.dataset.priceValue=String(price);
+  input.checked=selected; input.disabled=!selected;
+  const label=input.closest('.form-position');
+  if(label){
+   const final=label.querySelector('.final-price');
+   if(final)final.textContent=fmt(price);
+   if(!selected)label.style.display='none';
+  }
+  if(selected)total+=price;
+  input.dispatchEvent(new Event('change',{bubbles:true}));
+ }
+ const totalElt=document.querySelector('.total-price');
+ if(totalElt){const rendered=fmt(Math.round(total*100)/100);totalElt.textContent=rendered;[60,250,850].forEach(ms=>setTimeout(()=>{totalElt.textContent=rendered},ms));}
+ const heading=document.querySelector('.f-header p');
+ if(heading)heading.textContent='Собери свой сет · '+items.length+' программы';
+ button.textContent='Перейти к оплате · '+fmt(Math.round(total*100)/100);
+ const totalBlock=document.querySelector('.builder-item.part-total'),buttonBlock=button.closest('.builder-item.part-button');
+ if(totalBlock&&buttonBlock&&totalBlock.parentElement===buttonBlock.parentElement)totalBlock.after(buttonBlock);
+ button.style.backgroundColor='#aa2858';button.style.borderColor='#aa2858';
+ form.addEventListener('submit',function(ev){
+  const selected=inputs.filter(i=>i.checked).map(i=>i.value);
+  if(selected.length!==items.length||selected.some(o=>!wanted.has(o))){ev.preventDefault();ev.stopImmediatePropagation();return;}
+  for(const i of inputs)if(wanted.has(i.value)){const h=form.querySelector('input[name="formParams[apply_promo_code]['+i.value+']"]'); if(!h||h.value!==code){ev.preventDefault();ev.stopImmediatePropagation();return;}}
+ },true);
+ window.BF2026_LOT12_NATIVE_SELECTION={ready:true,count:items.length,discount,offerIds,total:Math.round(total*100)/100,code};
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();</script>

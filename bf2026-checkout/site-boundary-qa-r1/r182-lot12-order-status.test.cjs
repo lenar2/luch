@@ -25,7 +25,7 @@ test('verified price, native positions and protected nonce release trusted provi
 test('stale readback refuses payment link',()=>{
  const x=setup();Object.assign(x.rec,{state:'price_verified',native_total_readback_verified:true,native_status:'new',
   verified_positions:[{price_rub:6000,quantity:1,currency:'RUB'},{price_rub:5690,quantity:1,currency:'RUB'}],
-  price_verified_at:new Date(Date.now()-660000).toISOString()});x.save();
+  price_verified_at:new Date(Date.now()-73*60*60*1000).toISOString()});x.save();
  const r=stateFor({deal_number:x.rec.deal_number,nonce:x.nonce},{ledgerDir:x.d});
  assert.equal(r.data.price_verified,true);assert.equal(r.data.payment_ready,false)
 });
@@ -42,4 +42,19 @@ test('untrusted provider URL refuses payment',()=>{
   price_verified_at:new Date().toISOString(),provider_checkout_url:'https://attacker.test/'});
  x.save();const r=stateFor({deal_number:x.rec.deal_number,nonce:x.nonce},{ledgerDir:x.d});
  assert.equal(r.data.payment_ready,false);
+});
+
+test('signed resume nonce can continue exact verified existing order',()=>{
+ const x=setup();
+ const freshNonce='b'.repeat(40);
+ x.rec.resume_nonce_sha256=[crypto.createHash('sha256').update(freshNonce).digest('hex')];
+ Object.assign(x.rec,{state:'price_verified',native_total_readback_verified:true,native_status:'new',
+  verified_positions:[{price_rub:6000,quantity:1,currency:'RUB'},{price_rub:5690,quantity:1,currency:'RUB'}],
+  price_verified_at:new Date().toISOString()});
+ x.save();
+ const a=stateFor({deal_number:x.rec.deal_number,nonce:freshNonce},{ledgerDir:x.d});
+ assert.equal(a.http,200);assert.equal(a.data.price_verified,true);
+ assert.equal(a.data.payment_ready,true);
+ const b=stateFor({deal_number:x.rec.deal_number,nonce:'c'.repeat(40)},{ledgerDir:x.d});
+ assert.equal(b.http,404);
 });

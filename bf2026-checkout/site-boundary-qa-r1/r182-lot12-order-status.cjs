@@ -23,8 +23,12 @@ function stateFor({deal_number,nonce},{ledgerDir=DIR}={}){
    if(String(candidate.deal_number)===String(deal_number)){rec=candidate;break}
   }
  }catch(e){if(e.code!=='ENOENT')return {http:503,data:{ok:false,code:'STATUS_STORAGE_UNAVAILABLE'}}}
- if(!rec||typeof rec.nonce_sha256!=='string'||!/^[0-9a-f]{64}$/.test(rec.nonce_sha256)||
-  !crypto.timingSafeEqual(Buffer.from(sha,'hex'),Buffer.from(rec.nonce_sha256,'hex')))
+ // R187: consented buyer may resume the same unpaid native Deal with a fresh
+ // one-time nonce only after proving the phone bound in native GetCourse.
+ const validHashes=rec?[rec.nonce_sha256,...(Array.isArray(rec.resume_nonce_sha256)?rec.resume_nonce_sha256:[])]
+   .filter(x=>typeof x==='string'&&/^[0-9a-f]{64}$/.test(x)):[];
+ if(validHashes.length===0||
+    !validHashes.some(x=>crypto.timingSafeEqual(Buffer.from(sha,'hex'),Buffer.from(x,'hex'))))
   return {http:404,data:{ok:false,code:'ORDER_NOT_FOUND'}};
  const status={ok:true,deal_number:String(rec.deal_number),price_verified:false,payment_ready:false,
   order_submitted:Number.isSafeInteger(rec.deal_id)&&rec.deal_id>0,checkout_url:null};
@@ -39,8 +43,10 @@ function stateFor({deal_number,nonce},{ledgerDir=DIR}={}){
   return {http:200,data:{...status,processing:true}};
  let url=null;
  try{url=exactPaymentUrl(rec.provider_checkout_url)}catch{}
- const age=Date.now()-Date.parse(rec.price_verified_at||'');
- if(!Number.isFinite(age)||age<0||age>10*60*1000)url=null;
+ // BF2026 historical rescue: proof and signed GetCourse link stay usable
+ // through sale even if a shopper returns later; the provider settles payment.
+ const age=Date.now()-Date.parse(rec.provider_checkout_verified_at||rec.price_verified_at||'');
+ if(!Number.isFinite(age)||age<0||age>72*60*60*1000)url=null;
  return {http:200,data:{...status,price_verified:true,order_total_rub:rec.total_rub,
   payment_ready:!!url,processing:!url,checkout_url:url}};
 }

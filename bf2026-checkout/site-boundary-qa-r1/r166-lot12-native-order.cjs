@@ -67,18 +67,40 @@ function createOrderProvider({fetchImpl=globalThis.fetch,keyProvider=()=>secureR
   const signature=crypto.createHash('sha256').update(who.email+'\n'+plan.plan_sha256).digest('hex');
   const recordPath=path.join(ledgerDir,signature+'.json');
   let rec=readRec(recordPath);
-  if(rec&&['complete','created_requires_price_readback'].includes(rec.state)&&rec.total_rub===plan.desired_order_total_rub)
-    return {ok:true,order_submitted:true,deal_number:rec.deal_number,
-      quoted_total_rub:rec.total_rub,checkout_url:null,public_release_allowed:false,
-      native_total_readback_verified:false,replayed:true,
-      message:'Заказ создан, но скидка в GetCourse не подтверждена. Оплата недоступна до корректировки суммы.'};
-  if(rec)throw fail('ORDER_ALREADY_SUBMITTED_CHECK_GETCOURSE',409);
+  // R187: an existing unpaid native Deal must be resumed, not submitted again.
+  // Same email+set fingerprint alone cannot authorize access: match original
+  // one-time nonce OR customer phone authenticated from native GetCourse.
+  if(rec){
+   if(!['complete','created_requires_price_readback','price_verified'].includes(rec.state)||
+      rec.total_rub!==plan.desired_order_total_rub)
+    throw fail('ORDER_ALREADY_SUBMITTED_CHECK_GETCOURSE',409);
+   const wantedNonce=crypto.createHash('sha256').update(nonce).digest('hex');
+   const originalNonce=rec.nonce_sha256===wantedNonce||
+     (Array.isArray(rec.resume_nonce_sha256)&&rec.resume_nonce_sha256.includes(wantedNonce));
+   const phoneHash=crypto.createHash('sha256').update(who.phone.replace(/\D/g,'')).digest('hex');
+   const nativeBuyerPhone=rec.buyer_phone_sha256&&rec.buyer_phone_sha256===phoneHash;
+   if(!originalNonce&&!nativeBuyerPhone)throw fail('ORDER_ALREADY_SUBMITTED_CHECK_GETCOURSE',409);
+   if(!originalNonce){
+    const latest=readRec(recordPath);
+    if(!latest||latest.deal_number!==rec.deal_number||latest.plan_sha256!==rec.plan_sha256)
+      throw fail('ORDER_CONCURRENT_CHANGE',409);
+    const hashes=Array.isArray(latest.resume_nonce_sha256)?latest.resume_nonce_sha256:[];
+    latest.resume_nonce_sha256=[...hashes.filter(x=>x!==wantedNonce).slice(-9),wantedNonce];
+    saveRec(recordPath,latest);rec=latest;
+   }
+   return {ok:true,order_submitted:true,deal_number:rec.deal_number,
+    quoted_total_rub:rec.total_rub,checkout_url:null,
+    native_total_readback_verified:rec.state==='price_verified',
+    public_release_allowed:false,replayed:true,
+    message:'Заказ уже существует. Продолжаем его оформление и открываем оплату после подтверждения суммы.'};
+  }
   const dealNumber=generateDealNumber();
   const state={state:'created',deal_number:dealNumber,plan_sha256:plan.plan_sha256,
     total_rub:plan.desired_order_total_rub,positions_done:0,
     // R180 durable native repricing contract: unique offers + allocated integer RUB.
     expected_lines:plan.lines.map(x=>({offer_id:x.offer_id,price_rub:x.discounted_line_price_rub})),
     buyer_email_sha256:crypto.createHash('sha256').update(who.email).digest('hex'),
+    buyer_phone_sha256:crypto.createHash('sha256').update(who.phone.replace(/\D/g,'')).digest('hex'),
     started_at:new Date().toISOString(),nonce_sha256:crypto.createHash('sha256').update(nonce).digest('hex')};
   // Persistent exclusive reservation: do not create a second native Deal if duplicate request races.
   fs.writeFileSync(recordPath,JSON.stringify(state),{mode:0o600,flag:'wx'});

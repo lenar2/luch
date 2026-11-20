@@ -102,6 +102,69 @@ function ack(dealNo,proof){
  atomicSave(p,verified);
  return {ok:true,deal_number:rec.deal_number,price_verified:true,total_rub:rec.total_rub};
 }
+function restoreExistingPayment(dealNo,proof){
+ // R187: Mac admin Chrome verified user, native per-line amounts and signed
+ // provider payment page. Never creates a deal or marks a deal as paid.
+ const {p,rec}=safeFile(DIR,dealNo);
+ if(rec.state!=='price_verified'||rec.native_total_readback_verified!==true||
+    rec.native_status!=='new'||rec.positions_done<2||rec.positions_done>7||
+    !Array.isArray(rec.verified_positions)||rec.verified_positions.length!==rec.positions_done||
+    !Array.isArray(rec.expected_lines)||rec.expected_lines.length!==rec.positions_done)
+  fail('NOT_PRICE_VERIFIED_UNPAID');
+ const email=String(proof.native_email||'').trim().toLowerCase();
+ const phone=String(proof.native_phone||'').replace(/\D/g,'');
+ if(!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/.test(email)||
+    !/^\d{10,15}$/.test(phone))fail('NATIVE_BUYER_INVALID');
+ const signature=crypto.createHash('sha256').update(email+'\n'+rec.plan_sha256).digest('hex')+'.json';
+ if(path.basename(p)!==signature)fail('NATIVE_BUYER_EMAIL_MISMATCH');
+ const phoneHash=crypto.createHash('sha256').update(phone).digest('hex');
+ if(rec.buyer_phone_sha256&&rec.buyer_phone_sha256!==phoneHash)fail('PHONE_MISMATCH');
+ if(proof.deal_number!==rec.deal_number||
+    String(proof.deal_id)!==String(rec.deal_id)||
+    proof.native_status!=='new'||proof.native_total_rub!==rec.total_rub||
+    proof.native_plan_sha256!==rec.plan_sha256||
+    proof.native_nonce_sha256!==rec.nonce_sha256||
+    proof.payment_page_total_rub!==rec.total_rub||
+    proof.payment_page_order_number!==rec.deal_number||
+    !Array.isArray(proof.positions)||proof.positions.length!==rec.verified_positions.length)
+  fail('NATIVE_ORDER_OR_PAYMENT_PROOF_MISMATCH');
+ const expected=new Map(rec.expected_lines.map(l=>[l.offer_id,l.price_rub]));
+ const seen=new Set();
+ for(const position of proof.positions){
+  if(!Number.isSafeInteger(position.offer_id)||seen.has(position.offer_id)||
+     !Number.isSafeInteger(position.position_id)||
+     position.price_rub!==expected.get(position.offer_id)||
+     !rec.verified_positions.some(p=>p.offer_id===position.offer_id&&
+       p.position_id===position.position_id&&p.price_rub===position.price_rub&&
+       p.quantity===1&&p.currency==='RUB'))
+   fail('NATIVE_OFFER_POSITION_MISMATCH');
+  seen.add(position.offer_id);
+ }
+ if(seen.size!==expected.size)fail('NATIVE_OFFER_COUNT_MISMATCH');
+ const nativeAt=Date.parse(proof.native_verified_at);
+ if(!Number.isFinite(nativeAt)||Math.abs(Date.now()-nativeAt)>180000)
+  fail('NATIVE_READBACK_NOT_RECENT');
+ let url;
+ try{url=new URL(proof.payment_url)}catch{fail('PROVIDER_PAYMENT_URL_INVALID')}
+ if(url.protocol!=='https:'||url.hostname!=='study.shkola-dnv.com'||
+    url.username||url.password||url.port||url.hash||
+    url.pathname!=='/sales/shop/deal'||
+    url.searchParams.get('id')!==String(rec.deal_id)||
+    !/^[a-f0-9]{32,64}$/.test(url.searchParams.get('hash')||'')||
+    [...url.searchParams.keys()].sort().join(',')!=='hash,id')
+  fail('PROVIDER_PAYMENT_URL_NOT_NATIVE');
+ const fresh=JSON.parse(fs.readFileSync(p,'utf8'));
+ if(fresh.state!==rec.state||fresh.plan_sha256!==rec.plan_sha256||
+    fresh.deal_id!==rec.deal_id||fresh.total_rub!==rec.total_rub)
+  fail('CONCURRENT_ORDER_CHANGED');
+ atomicSave(p,{...fresh,buyer_phone_sha256:phoneHash,
+  buyer_email_sha256:crypto.createHash('sha256').update(email).digest('hex'),
+  provider_checkout_url:url.toString(),
+  provider_checkout_verified_at:new Date().toISOString(),
+  native_status:'new'});
+ return {ok:true,deal_number:rec.deal_number,total_rub:rec.total_rub,
+   price_verified:true,checkout_url_stored:true};
+}
 function seed(dealNo,selection){
  const {p,rec}=safeFile(DIR,dealNo);
  if(rec.expected_lines)fail('ALREADY_SEEDED');
@@ -119,6 +182,7 @@ try{
  if(mode==='list')result=readAll();
  else if(mode==='seed')result=seed(arg,JSON.parse(Buffer.from(proof,'base64').toString()));
  else if(mode==='ack')result=ack(arg,JSON.parse(Buffer.from(proof,'base64').toString()));
+ else if(mode==='restore')result=restoreExistingPayment(arg,JSON.parse(Buffer.from(proof,'base64').toString()));
  else if(mode==='status'){
   const {rec}=safeFile(DIR,arg);
   result={deal_number:rec.deal_number,deal_id:rec.deal_id,state:rec.state,

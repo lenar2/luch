@@ -85,8 +85,8 @@ def ssh(*args,timeout=25):
         raise RuntimeError("WORKER_SECRET_INVALID")
     if args==("list",):
         route="queue"; body={}
-    elif len(args)==3 and args[0]=="ack":
-        route="ack"
+    elif len(args)==3 and args[0] in ("ack","restore"):
+        route=args[0]
         body={"deal_number":args[1],"proof":json.loads(base64.b64decode(args[2],validate=True))}
     else:
         raise RuntimeError("WORKER_ACTION_NOT_ALLOWLISTED")

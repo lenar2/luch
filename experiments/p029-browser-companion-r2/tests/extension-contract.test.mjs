@@ -135,6 +135,16 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  assert.equal(Object.keys(store.session.grants).length,0,'unpublished grant must not remain after network failure');
  failGrants=false;
  const success=await send('grant-active');assert.equal(success.ok,true);
+ // During a network outage, revocation is immediate on the extension side.
+ // Reconnection then replaces the cloud grant set with the empty current one.
+ failGrants=true;
+ const pendingRevoke=await send('revoke-active');
+ assert.equal(pendingRevoke.ok,true);assert.equal(pendingRevoke.pendingSync,true);
+ assert.equal(Object.keys(store.session.grants||{}).length,0);
+ failGrants=false;
+ await vm.runInContext('poll()',context);
+ assert.equal(remoteGrants.length,0,'cloud grant must be removed by next successful poll');
+ const restored=await send('grant-active');assert.equal(restored.ok,true);
  pages.get(11).url='https://different.example/changed';
  await handlers.updated(11,{url:'https://different.example/changed'});
  assert.equal(remoteGrants.length,0,'origin navigation revokes');

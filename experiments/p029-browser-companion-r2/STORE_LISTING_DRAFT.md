@@ -1,191 +1,99 @@
-# LUCH Browser Companion — Chrome Web Store & Opera Add-ons listing pack
+# LUCH Browser Companion — Chrome Web Store / Opera Add-ons submission draft
 
-**Candidate:** 0.6.0
-**Status:** listing copy prepared; **not approved for submission**. The public Chrome listing remains 0.4.0. Opera's earlier 0.4.1 submission is a separate moderation state. The 0.6.0 Opera build has not completed its own runtime test.
+**Candidate build:** 0.7.0 · **Updated:** 21 November 2026  
+**Publication state:** **NOT SUBMITTED / RELEASE HOLD**. This file is review copy, not a claim that the add-on is live or reviewed by Google, Opera or OpenAI.
 
-## Release truth — do not remove these qualifications
+## Requirements and limitations to preserve in every listing
 
-LUCH Browser Companion shares only a tab the user explicitly approves. It requires a compatible LUCH Companion already installed and running on the same computer, plus an already-authorized LUCH account and AI client.
+LUCH Browser Companion is a browser-tool extension for compatible **existing AI conversations**. No separate LUCH chat and no personal OpenAI/Anthropic API key are required. The user must separately connect and authorize the public LUCH remote MCP server inside an AI client that supports custom MCP. Feature access, including write actions, varies by AI provider, plan and workspace policy. Do **not** claim support for every ChatGPT account or that installation automatically attaches tools to a chat.
 
-The extension alone does not install the desktop Companion, create a LUCH account or connect an AI host. A general public self-service installer and fresh-user OAuth/onboarding are not available yet. The currently verified local setup is limited to supported, already-authorized macOS configurations. Windows onboarding is unverified; Opera runtime E2E is still required.
+Unlike the historical 0.6.0 concept, the 0.7.0 extension connects to LUCH cloud over HTTPS, without a mandatory desktop broker or localhost setup. Real user data leaves the user's computer when the user explicitly requests approved page content or screenshots in the connected AI tool.
 
-Do not claim that the extension provides all 54 LUCH browser tools. The candidate extension has 17 read/inspection and 28 interaction/navigation operation identifiers. LUCH's broader browser inventory contains separate local-browser and server-browser providers; these are not all functions of this extension.
+**Review blockers:** The Opera runtime has not passed exact-build E2E, a fresh unconnected user has not passed the entire self-service flow, and independent review of the full 45-operation interaction/pointer surface is not complete. Do not submit the package to either store before those gates and final approved screenshots are closed.
 
-## Chrome Web Store
+## Chrome Web Store listing — English
 
-### English listing
+**Name:** LUCH Browser Companion  
+**Category:** Productivity  
+**Short description:** Connect approved browser tabs to your existing supported AI. Reading and interaction require separate consent.
 
-**Name**  
-LUCH Browser Companion
+**Description:**
 
-**Short description**  
-Share selected browser tabs with LUCH. Reading and interaction require separate approval.
+Use LUCH Browser Companion to give a supported, connected AI assistant access to browser tabs **you** choose. Work in your normal ChatGPT or another compatible AI conversation, without a separate LUCH chat or personal model API key.
 
-**Category**  
-Productivity
+**How it works:** Connect an eligible AI client to the LUCH remote MCP endpoint and authorize it with LUCH OAuth. Ask your AI for a one-time browser pairing code, enter it directly in the extension, then click the extension icon on a tab to allow reading. Interaction such as clicking and typing is optional and must be approved separately for that tab.
 
-**Detailed description**
+**You stay in control:** Revoke a tab at any time, change site origin, close the browser session or disconnect a device. Other tabs remain private unless you opt into a separate overview of their titles and addresses. Precise on-page pointer control is an optional advanced action with additional consent and powerful debugger permission.
 
-Share the browser page you choose with your authorized LUCH setup. Keep control over which tab is shared and whether LUCH may only read it or also interact with it.
+**Privacy:** Content from approved tabs may be sent through LUCH cloud to your authorized AI provider. The extension does not request browser-history, cookies, OS-file or all-sites host permissions. See the full policy before approving sensitive tabs.
 
-**Read and understand a page**  
-Ask your connected LUCH workflow to inspect visible page text, headings, links, forms and tables on a tab you approve.
+**Compatibility:** Chromium-based Chrome and Opera are intended targets. Availability and actions depend on your AI host's supported custom MCP features, account plan and workspace permissions. Installing the extension alone does not connect an AI account.
 
-**Move through the page**  
-Navigate, scroll, inspect elements and capture a screenshot of the active approved tab where the connected LUCH route supports that operation.
+**Website:** https://luch.lenarsalimov.ru/en/browser/  
+**Support:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md  
+**Privacy policy:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md
 
-**Allow interaction separately**  
-Reading and interaction are different permissions. You can separately allow supported clicks, ordinary text entry, selection and other bounded page actions. Protected password/file fields and form submissions are restricted; some consequential controls are refused.
+## Chrome Web Store listing — Русский
 
-**Stay in control**  
-Approve each tab yourself. Revoke access at any time, close the tab or browser session, or navigate to another website origin to end that grant. Disconnect the browser to clear the pairing.
+**Название:** LUCH Browser Companion  
+**Категория:** Productivity  
+**Краткое описание:** Подключайте разрешённые вкладки браузера к своему ИИ. Чтение и действия требуют отдельных разрешений.
 
-**Requirements**  
-This early-access extension requires a compatible LUCH Companion already installed and running on the same computer, as well as an already-authorized LUCH account and AI client. Installing the extension alone does not install the desktop Companion or connect an AI host. General public self-service setup is not yet available.
+**Описание:**
 
-Only the page data you request from an approved tab is shared with the local Companion. When you ask an authorized AI host to use that content, the requested page content may be passed to that host. Review the privacy disclosure before approving a tab.
+LUCH Browser Companion позволяет вашему привычному, совместимому ИИ работать с **выбранными вами вкладками**. Отдельный чат LUCH и личный API-ключ OpenAI/Anthropic не нужны.
 
-**Website**  
-https://luch.lenarsalimov.ru/en/browser/
+**Подключение:** Добавьте удалённый MCP LUCH в ИИ-клиент, который поддерживает внешние инструменты, и подтвердите OAuth. Получите одноразовый код сопряжения в своём ИИ и введите его в расширении. Затем нажмите значок расширения на нужной вкладке, чтобы разрешить её чтение. Нажатия, ввод текста и другие действия разрешаются отдельно.
 
-**Support URL**  
-https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md
+**Управление доступом:** Вы можете отозвать разрешение, закрыть вкладку или сеанс, перейти на другой сайт либо отключить браузер. Все другие вкладки остаются закрытыми для чтения. Передача названий и адресов всех открытых вкладок — отдельная необязательная функция.
 
-**Privacy URL**  
-https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md
+**Точный курсор:** Дополнительная функция для действий внутри страницы, требующая отдельного разрешения и доступа Chrome debugger. Браузер может показывать предупреждение о широких возможностях отладчика.
 
-### Русская локализация
+**Приватность:** Содержимое выбранной разрешённой страницы может передаваться через облако LUCH вашему авторизованному ИИ. Расширение не запрашивает историю браузера, cookies и общий доступ ко всем сайтам. Не открывайте чувствительные страницы без понимания последствий.
 
-**Название**  
-LUCH Browser Companion
+**Ограничения:** Набор доступных функций зависит от поддержки MCP самим ИИ, подписки и правил рабочего пространства. Установка расширения не гарантирует полноценное управление браузером в каждом тарифе ChatGPT.
 
-**Краткое описание**  
-Передавайте выбранные вкладки в LUCH. Чтение и взаимодействие требуют отдельных разрешений.
-
-**Категория**  
-Productivity
-
-**Подробное описание**
-
-Передавайте выбранную вами страницу в уже авторизованную конфигурацию LUCH. Вы сами решаете, какую вкладку открыть для LUCH и разрешать ли только чтение или также взаимодействие со страницей.
-
-**Чтение и анализ страницы**  
-Попросите подключённый рабочий процесс LUCH изучить видимый текст, заголовки, ссылки, формы и таблицы на разрешённой вкладке.
-
-**Навигация по странице**  
-Переходите по страницам, прокручивайте содержимое, изучайте элементы и получайте снимок активной разрешённой вкладки там, где соответствующая операция поддерживается подключённым маршрутом LUCH.
-
-**Отдельное разрешение на действия**  
-Чтение и взаимодействие — разные разрешения. Вы отдельно разрешаете поддерживаемые нажатия, ввод обычного текста, выбор значений и другие ограниченные действия. Поля паролей и файлов, а также отправка форм защищены; некоторые значимые действия блокируются.
-
-**Контроль остаётся у вас**  
-Вы сами разрешаете доступ к каждой вкладке. Можно отозвать доступ, закрыть вкладку или сеанс браузера либо перейти на другой сайт. Отключение браузера удаляет сопряжение.
-
-**Требования**  
-Это ранняя версия расширения. Нужен уже установленный и запущенный совместимый LUCH Companion на том же компьютере, а также заранее авторизованные аккаунт LUCH и ИИ-клиент. Одной установки расширения недостаточно: она не устанавливает Companion и не подключает ИИ. Общедоступная самостоятельная установка пока недоступна.
-
-В локальный Companion передаются только данные выбранной вами вкладки, которые вы запросили. Если вы поручаете авторизованному ИИ-клиенту использовать эти данные, содержимое страницы может быть передано этому ИИ. Перед разрешением доступа ознакомьтесь с политикой конфиденциальности.
-
-**Сайт**  
-https://luch.lenarsalimov.ru/ru/browser/
-
-**Поддержка**  
-https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md
-
-**Конфиденциальность**  
-https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md
+**Сайт:** https://luch.lenarsalimov.ru/ru/browser/  
+**Поддержка:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md  
+**Конфиденциальность:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md
 
 ## Opera Add-ons
 
-Opera requires a complete-sentence summary and a description that explains how the extension is used and what it looks like. Keep Opera branding out of the title and graphics.
+**Name:** LUCH Browser Companion
 
-### English
+**English summary:** Connect browser tabs you approve to your existing supported AI client through LUCH. Reading and interaction each require explicit consent.
 
-**Name**  
-LUCH Browser Companion
+**Русское описание:** Подключайте выбранные вкладки Opera к своему совместимому ИИ через защищённый облачный LUCH MCP. Разрешения на чтение, действия и передачу обзора всех вкладок независимы друг от друга.
 
-**Summary**  
-LUCH Browser Companion shares browser tabs you choose with your authorized LUCH setup. Reading and interaction require separate approval.
+Use the full English/Russian Chrome listing above as the Opera long description, with the word **Opera** for the browser being reviewed. Do not imply Opera has passed testing until the real installed version does.
 
-**Description**
+## Permissions and privacy-practices worksheet for reviewers
 
-LUCH Browser Companion adds a small browser popup for pairing with a supported local LUCH Companion and controlling access to the current tab.
+| Requested item | Why it is needed |
+| --- | --- |
+| `activeTab` | Temporary, user-initiated access to the particular tab on which the extension was invoked |
+| `scripting` | Bounded DOM extraction and permitted page actions in an already approved tab |
+| `storage` | Browser device credential and session-scoped tab approvals |
+| `alarms` | Wake a Manifest V3 service worker to receive jobs after idle |
+| `debugger` | Optional precise pointer capability; note this is currently a **required install-time permission**, with a separate in-product user enablement |
+| `https://api.lenarsalimov.ru/luch/browser/*` | Secure account-bound cloud relay and device pairing |
+| Optional `tabs` | Metadata of all open tabs only after user separately enables the overview and cloud sharing |
 
-Open the extension on a regular website. Pair the browser with the local Companion using a one-time code, then choose whether LUCH may read the current tab. If you want supported page actions, approve interaction separately.
+**Prominent disclosure:** Approved tab URLs, titles and requested page contents/screenshots may leave the computer and be processed by LUCH and the connected AI host. Pairing/device metadata, commands, result payloads and limited audit metadata have bounded retention documented in the privacy policy. Review Google and Opera policies before declaring their compliance.
 
-The popup shows the current tab and its access state. You can revoke access to the tab or disconnect the browser. Grants end when revoked, when the tab or browser session closes, or when the tab moves to another website origin.
+## Release acceptance checklist
 
-This early-access extension requires a compatible LUCH Companion already installed and running on the same computer and an already-authorized LUCH account and AI client. Installing the extension alone does not install the desktop app or connect an AI host. General public self-service setup is not yet available.
+- [x] Public cloud MCP endpoint responds and rejects unauthenticated tool calls.
+- [x] Chrome pilot: real OAuth, one-time pairing, approved read, denial after revocation.
+- [x] Local LUCH Server unit/contract suite and legacy broker negative suite pass on current branch.
+- [x] P029 scheduled database retention and cleanup execution verified.
+- [ ] Independent security review: account/device isolation, malicious page content, navigation race, approved click and precise pointer.
+- [ ] Cold-start and idle-browser end-to-end latency acceptance.
+- [ ] Chrome and Opera clean-profile exact ZIP install tests; Opera has not passed.
+- [ ] Fresh user without pre-configured LUCH host: OAuth registration and device pairing.
+- [ ] Store account ownership, privacy-form answers and final version-matched real screenshots.
+- [ ] Approved immutable ZIP and checksum, developer publisher identity and marketplace moderation.
 
-### Русская локализация
+Google may require a registered developer account and review; Opera separately reviews submissions. The public **GitHub** release, Chrome store release, Opera store release and public LUCH signup are separate publication decisions. Do not replace one with another or reuse an old draft store listing.
 
-**Название**  
-LUCH Browser Companion
-
-**Краткое описание**  
-LUCH Browser Companion передаёт выбранные вкладки в авторизованную конфигурацию LUCH. Чтение и взаимодействие требуют отдельных разрешений.
-
-**Описание**
-
-LUCH Browser Companion добавляет небольшое окно расширения для сопряжения с поддерживаемым локальным LUCH Companion и управления доступом к текущей вкладке.
-
-Откройте расширение на обычном сайте. Подключите браузер к локальному Companion одноразовым кодом, затем выберите, можно ли читать текущую вкладку. Если нужны поддерживаемые действия на странице, отдельно разрешите взаимодействие.
-
-В окне расширения отображаются текущая вкладка и состояние доступа. Вы можете отозвать доступ или полностью отключить браузер. Разрешение прекращается после отзыва, закрытия вкладки или сеанса браузера либо перехода на другой сайт.
-
-Это ранняя версия расширения. Нужен совместимый LUCH Companion, уже установленный и запущенный на том же компьютере, а также заранее авторизованные аккаунт LUCH и ИИ-клиент. Установка расширения сама по себе не устанавливает приложение и не подключает ИИ. Общедоступная самостоятельная установка пока недоступна.
-
-## Permissions and data disclosure
-
-| Permission | User-facing reason |
-|---|---|
-| `activeTab` | Temporary access to the tab after the user invokes the extension and approves sharing |
-| `scripting` | Run bundled, bounded page-reading and interaction functions in an approved tab |
-| `storage` | Store the local pairing token and session-scoped tab grants |
-| `alarms` | Poll the local Companion for authorized work while the browser session is active |
-| `http://127.0.0.1:9248/*` | Communicate with the local Companion only |
-
-The extension does not request cookies, browsing history, downloads, geolocation, clipboard, webRequest or all-sites access. Optional tabs permission can show all tab titles and sanitized URLs, shared with the AI only after a second explicit choice. Required debugger permission can move and click a pointer within a separately authorized tab; Chrome displays a prominent security warning during extension installation, and the user must still approve the pointer inside LUCH. The extension does not control the computer mouse. Requested approved-page content may be sent onward to the AI host the user has authorized.
-
-## Graphic asset checklist
-
-### Chrome Web Store
-
-- Store icon: 128×128 PNG; 96×96 artwork centered with 16px transparent padding.
-- Screenshots: 1280×800 PNG/JPEG, at least one and up to five; use the latest real extension UI and a truthful example.
-- Small promotional tile: 440×280 PNG/JPEG (required).
-- Marquee promotional tile: 1400×560 PNG/JPEG (optional).
-- Localize the description and screenshots for English and Russian; Chrome's small and marquee promotional tiles are global rather than localized.
-
-### Opera Add-ons
-
-- Icons: 128×128, 48×48 and 16×16 PNG; keep a consistent simple shape, with a full-bleed icon background.
-- Screenshots: 612×408 recommended; do not exceed 800×600. Use a clean white background and show the actual extension UI and its relation to the page.
-- Do not use Opera marks, names or browser branding in the artwork.
-
-### Current asset status
-
-The candidate branch's old micro-L B icon is **not approved as the final plugin mark**. A new non-letter ray/aperture mark is prepared as a visual candidate only; it is not yet approved or wired into the extension manifest. The approved full luminous LUCH app mark is preserved separately and may be used as a supporting brand asset, not as a substitute for the final extension icon.
-
-The CI-generated Chrome screenshots are captured from the actual headed Chromium E2E fixture and popup UI. They are authentic candidate UI captures, not evidence of Opera runtime verification. Opera-specific screenshots must be recaptured after the Opera E2E gate.
-
-## Submission gates
-
-Do not submit either store until all are true:
-
-1. Founder approves the final non-letter plugin icon and Figma source; the temporary micro-L B is not reused.
-2. Fresh-user onboarding is available or the supported-setup restriction is explicitly accepted for the listing.
-3. The live LUCH Browser Bridge integration and account/tenant isolation pass independent end-to-end verification; a shadow canary is not production activation.
-4. Chrome exact-build E2E passes for the final package.
-5. Opera exact-build E2E passes and its screenshots are captured from Opera.
-6. Privacy disclosure and permission justifications match the final implementation.
-7. The store package, icon, screenshots, listing copy and privacy links all reference the same final version.
-
-
-## Candidate 0.6.0 browser expansion — opt-in, not default access
-
-- 45 named operations total: 17 reading/inspection (including the separately approved tab overview) plus 28 interaction/navigation (including five precision cursor actions).
-- All-open-tab titles and addresses are shown only after Chrome asks for the optional tabs permission. Before they are sent to an already-authorized AI host, the person must explicitly enable tab-overview sharing. URLs are stripped of query parameters and fragments. Individual pages remain private without per-tab consent.
-- Precision cursor uses Chrome's required debugger permission, which produces a high-visibility warning at extension installation. It can move, click, double-click, wheel-scroll and perform bounded drag *inside* the approved tab's viewport. It is not a physical mouse or full-device access.
-- The extension is a browser-control layer, NOT a second chat client and NOT an AI API billing service. Connecting third-party tools into a free or paid ChatGPT/Claude account depends on that host's supported connectors and plan. Do not promise automatic availability in every AI session.
-- The optional cursor is still a candidate until real headed-browser testing and independent security review pass on the final package; do not submit this variant to Chrome/Opera yet.
+**Decision: RELEASE HOLD.**

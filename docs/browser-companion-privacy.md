@@ -1,5 +1,26 @@
 # LUCH Browser Companion — Privacy Policy
 
+**Publisher:** LUCH (Lenar Salimov)  
+**Last updated:** 21 November 2026
+
+## Cloud pilot addendum — Browser Companion 0.7.0 (NOT publicly released)
+
+**This addendum describes a separately authorized engineering pilot of version 0.7.0. It supersedes any conflicting local-only / 15-minute-grant statements below for that pilot. The historical privacy policy farther down this page describes earlier locally paired versions, not the 0.7.0 cloud pilot.**
+
+Version 0.7.0 is an MV3 extension that connects approved tabs to the LUCH cloud relay at `https://api.lenarsalimov.ru/luch/browser` and to the user's existing, separately connected AI via OAuth-protected remote MCP. It **does not require a local desktop broker or a personal OpenAI/Anthropic API key**. Installing the extension alone does not provide access to every ChatGPT plan or workspace.
+
+After the user explicitly grants an individual tab permission, LUCH can send that tab's URL, origin, title, permitted page text, page elements or requested screenshots **from the user's computer through the LUCH cloud to the authorized AI host**. This may include sensitive material present on an approved webpage. No other tab's content is available merely because a tab overview is enabled. The optional overview exposes open-tab titles and redacted addresses only after a separate Chrome `tabs` permission and user sharing switch. Other AI providers' privacy and retention terms apply separately.
+
+The 0.7.0 manifest requests Chrome `activeTab`, `scripting`, `storage`, `alarms`, **`debugger`**, and LUCH cloud host access; `tabs` is optional. Chrome's powerful debugger permission is requested at installation so a separately approved advanced on-page pointer action can use it. The extension does **not** request browsing-history, cookies, downloads, native-messaging, OS files or all-sites host permissions.
+
+The account signs in through Supabase OAuth. A one-time eight-digit code pairs the user's extension to their account with a separate 256-bit random device token; LUCH stores the token's hash, not the raw token. Grants are scoped by user/device/tab/origin and independently separated into read, interaction and precise-pointer permissions. Users may revoke a tab or disconnect their browser at any time.
+
+**Cloud data retention:** A scheduled database cleanup runs every five minutes. Job payloads, which can include requested content or typed field data, are removed approximately 15 minutes after creation. Expired or used pairing-code records are removed after approximately 24 hours, stale overview metadata and idle-device grants after 24 hours, and limited audit metadata after 30 days. Revoked devices are purged after 30 days. Other platform logs, backups and AI-host records can have separate retention schedules. A device's authorization token persists until the user disconnects or it is revoked.
+
+**Pilot limitations:** The full interaction/pointer and Opera runtime, fresh-user self-service enrollment and independent security audit remain unapproved. No public release or store review approval of 0.7.0 is claimed.
+
+## Historical local-broker versions (earlier builds only)
+
 **Effective date:** November 10, 2026  
 **Publisher:** LUCH (Lenar Salimov)  
 **Extension:** LUCH Browser Companion, Chrome extension (Manifest V3)

@@ -21,11 +21,11 @@ test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
  assert.ok(popup.includes('luch_locale'));
 });
 test('minimized scoped permissions, cloud relay only, no remotely supplied scripts',()=>{
- assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage','debugger'].sort());
+ assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
  assert.deepEqual(man.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
  for(const flag of ['cookies','history','webRequest','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(flag));
- assert.deepEqual(man.optional_permissions,['tabs']);
- assert.ok(man.permissions.includes('debugger')&&!man.permissions.includes('tabs'));
+ assert.deepEqual([...man.optional_permissions].sort(),['tabs','debugger'].sort());
+ assert.ok(!man.permissions.includes('debugger')&&man.optional_permissions.includes('debugger')&&!man.permissions.includes('tabs'));
  assert.ok(code.includes("const BASE='https://api.lenarsalimov.ru/luch/browser'"));
  assert.ok(code.includes('const READ_OPS'));assert.ok(code.includes('const INTERACT_OPS'));
  assert.ok(code.includes("TAB_ORIGIN_CHANGED"));

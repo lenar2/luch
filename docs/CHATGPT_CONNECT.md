@@ -28,7 +28,7 @@
 - **LUCH tools unavailable:** Select the connected plugin for the current message. Some supported workspaces must refresh the tool catalog after a server update.
 - **Pairing failed:** Codes can expire or be used already. Create a new one; never share one-time codes or device tokens in a chat.
 - **Browser connected but tab unavailable:** Click the extension icon while on the desired tab and explicitly grant Read.
-- **Chrome debugger warning:** The advanced precise-pointer capability needs this powerful install-time permission. Its use still needs a separate in-extension consent.
+- **Chrome debugger prompt:** The updated 0.7.0 candidate requests this powerful optional permission only when you click to enable advanced precise-pointer control. Ordinary pairing and reading do not need it. Declining leaves precise-pointer access disabled.
 - **Idle browser:** Chrome's background worker may need time to wake. Do not blindly repeat an important action when execution status is uncertain.
 
 ## Availability and data handling

@@ -38,12 +38,12 @@ test('popup executes first render without undefined locale and uses existing-cha
  assert.equal(item('local-setup').href,
   'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md');
  assert.match(item('setup-steps').textContent||'',/^$/);
- assert.match(item('setup-boundary').textContent,/existing ChatGPT/);
+ assert.match(item('setup-boundary').textContent,/existing AI chat/);
 });
 
 test('Russian locale uses correct URL and real ten-minute code instructions',()=>{
  const {item}=popup('ru-RU');
  assert.equal(item('local-setup').href,
   'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md');
- assert.match(item('setup-boundary').textContent,/существующим хостом/);
+ assert.match(item('setup-boundary').textContent,/привычном чате/);
 });

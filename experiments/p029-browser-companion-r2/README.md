@@ -28,7 +28,7 @@ Browser content or interaction
 - Each browser device is attached to exactly one authenticated account.
 - **Read** permission is per tab and must be explicitly granted through Chrome/Opera's extension UI.
 - **Interaction** (clicking, typing, navigation) requires an additional per-tab user choice.
-- **Precise pointer** requires additional approval and the powerful Chrome debugger API.
+- **Precise pointer** requires a separate per-tab interaction approval and Chrome's powerful **optional** `debugger` permission, requested only when the user clicks to enable this advanced mode. Ordinary installation, pairing and reading do not request debugger.
 - Optional **all-open-tabs metadata** requires the optional `tabs` permission and a separate sharing switch; other tabs' contents remain private.
 - Closing the tab/session, changing origin, revoking the grant or disconnecting removes the corresponding access.
 - The cloud server checks exact account, device, tab, grant ID and permission scope. The extension independently checks live grants before browser actions.

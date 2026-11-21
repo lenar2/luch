@@ -338,7 +338,7 @@ function userMcpServer(userId:string) {
   const browserToolOps=[...ALL_OPS].filter((x)=>x!=="list_open_tabs");
   for(const op of browserToolOps) {
     const toolName=`browser_${op}`;
-    const description=`${title(op)} in the user's explicitly approved LUCH Browser Companion tab. Read operations require tab read approval; interaction operations require separate interaction approval; precise pointer operations additionally require precise-cursor approval. Target IDs are obtained from browser_list_open_tabs or the extension's approved tab state.`;
+    const description=`${title(op)} in a tab the user explicitly approved in the LUCH Browser Companion extension. Find target IDs with browser_list_approved_tabs (no all-tabs access needed). Read requires the tab's Read grant; interaction requires a separate Interaction grant; precise pointer actions require additional per-tab cursor permission. Never assume a target or ask for all-tabs metadata as a workaround.`;
     const readOnly=READ_OPS.has(op);
     server.registerTool(toolName,{
       title:title(op),
@@ -393,15 +393,24 @@ async function extensionHandler(req:Request) {
     const body=await req.json().catch(()=>null);
     const grants=Array.isArray(body?.grants)?body.grants:[];
     if(grants.length>80) return json({ok:false,error:"TOO_MANY_GRANTS"},400);
-    await admin.from("p029_browser_grants").delete().eq("device_id",device.id);
     const rows=grants.map((g:any)=>({
       user_id:device.user_id,device_id:device.id,tab_id:Number(g.tabId),grant_id:String(g.grantId||"").slice(0,120),
       origin:origin(g.url)||String(g.origin||"").slice(0,255),url_redacted:redactedUrl(g.url),title:String(g.title||"").slice(0,180),
       scope:g.scope==="interact"?"interact":"read",precise_cursor:g.preciseCursor===true,updated_at:nowIso()
     })).filter((g:any)=>Number.isSafeInteger(g.tab_id)&&g.tab_id>=0&&g.grant_id&&g.origin);
     if(rows.length) {
-      const {error}=await admin.from("p029_browser_grants").insert(rows);
+      // Keep unchanged grants continuously readable during the 30s heartbeat.
+      // Delete-and-reinsert previously caused transient TAB_GRANT_NOT_FOUND.
+      const {error}=await admin.from("p029_browser_grants")
+        .upsert(rows,{onConflict:"device_id,tab_id"});
       if(error) return json({ok:false,error:"GRANTS_UPDATE_FAILED"},500);
+      const allowedIds=[...new Set(rows.map((g:any)=>g.tab_id))].join(",");
+      const {error:pruneError}=await admin.from("p029_browser_grants").delete()
+        .eq("device_id",device.id).not("tab_id","in",`(${allowedIds})`);
+      if(pruneError) return json({ok:false,error:"GRANTS_PRUNE_FAILED"},500);
+    } else {
+      const {error}=await admin.from("p029_browser_grants").delete().eq("device_id",device.id);
+      if(error) return json({ok:false,error:"GRANTS_REVOKE_FAILED"},500);
     }
     return json({ok:true,count:rows.length});
   }

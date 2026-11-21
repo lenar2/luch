@@ -38,10 +38,10 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
  const manifest=JSON.parse(read('extension/manifest.json'));
  const js=read('extension/popup.js');
  const worker=read('extension/background.js');
- assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage','debugger'].sort());
+ assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
  assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
  for(const forbidden of ['cookies','history','webRequest','<all_urls>'])assert.ok(!JSON.stringify(manifest).includes(forbidden));
- assert.deepEqual(manifest.optional_permissions,['tabs']);
+ assert.deepEqual([...manifest.optional_permissions].sort(),['tabs','debugger'].sort());
  assert.match(js,/Allow reading on this tab/);
  assert.match(js,/Allow interaction on this tab/);
  assert.match(js,/Revoke access to this tab/);

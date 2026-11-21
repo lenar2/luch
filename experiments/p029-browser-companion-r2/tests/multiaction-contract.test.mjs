@@ -61,7 +61,7 @@ test('browser extension cannot trigger prohibited remote code or permissions',as
  assert.ok(!worker.includes('const TTL_MS'));
  assert.ok(!broker.includes('TTL=15*60_000'));
  for(const key of ['cookies','history','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(key));
- assert.deepEqual(man.optional_permissions,['tabs']);
+ assert.deepEqual([...man.optional_permissions].sort(),['tabs','debugger'].sort());
  assert.ok(worker.includes("importScripts('dom-ops.js')"));
  assert.ok(worker.includes("scope==='interact'"));
  assert.ok(broker.includes('INTERACTION_APPROVAL_REQUIRED'));

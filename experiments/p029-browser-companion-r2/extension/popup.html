@@ -24,7 +24,7 @@
     <span id="eyebrow"></span>
     <h1 id="headline"></h1>
     <p id="intro"></p>
-    <div class="capability-grid">
+    <div id="capabilities" class="capability-grid">
       <div><span>01</span><b id="cap-read"></b></div>
       <div><span>02</span><b id="cap-navigate"></b></div>
       <div><span>03</span><b id="cap-interact"></b></div>
@@ -32,11 +32,12 @@
     </div>
   </section>
 
-  <div class="connection">
+  <div class="connection" id="connection">
     <span id="dot" class="dot"></span>
     <b id="status" role="status" aria-live="polite"></b>
     <small id="scope"></small>
   </div>
+  <p id="feedback" role="alert" aria-live="polite"></p>
 
   <section id="pairing">
     <div class="setup-card">
@@ -69,7 +70,9 @@
       <button id="interact" type="button" class="interact"></button>
       <button id="revoke" type="button" class="secondary"></button>
     </div>
-    <section class="advanced-browser">
+    <details id="advanced" class="advanced-browser">
+      <summary id="advanced-title"></summary>
+      <div class="advanced-content">
       <h2 id="tabs-heading"></h2>
       <p id="tabs-explain" class="hint"></p>
       <button id="list-tabs" type="button" class="secondary"></button>
@@ -83,14 +86,14 @@
       <p id="cursor-explain" class="hint"></p>
       <button id="enable-cursor" type="button" class="interact"></button>
       <button id="disable-cursor" type="button" class="secondary" hidden></button>
-    </section>
+      </div>
+    </details>
     <p id="session-note" class="hint"></p>
     <p id="host-note" class="host-note"></p>
     <div class="separation"></div>
     <button id="disconnect" type="button" class="danger"></button>
   </section>
 
-  <p id="feedback" role="alert" aria-live="polite"></p>
   <footer>
     <span id="footer"></span>
     <a id="learn" href="https://luch.lenarsalimov.ru/en/browser/" target="_blank" rel="noopener noreferrer"></a>

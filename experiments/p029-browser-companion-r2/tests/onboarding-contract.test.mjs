@@ -13,10 +13,10 @@ test('popup makes browser pairing and AI-host authorization distinct',()=>{
  const js=read('extension/popup.js');
  assert.match(html,/id="setup-boundary"/);
  assert.match(html,/id="setup-steps"/);
- assert.match(js,/Pairing links this browser directly to your LUCH account/);
- assert.match(js,/your existing ChatGPT/i);
- assert.match(js,/напрямую связывает этот браузер с вашим аккаунтом LUCH/);
- assert.match(js,/ChatGPT.*остаётся вашим существующим хостом/);
+ assert.match(js,/Your AI must support custom MCP connections for LUCH to work/);
+ assert.match(js,/existing AI chat/i);
+ assert.match(js,/Нужна поддержка пользовательского MCP в вашем ИИ и тарифе/);
+ assert.match(js,/отдельный чат LUCH и личный API-ключ не нужны/);
  assert.match(js,/Browser paired/);
  assert.doesNotMatch(js,/Put this page to work/);
 });
@@ -27,7 +27,7 @@ test('first-run pairing explains cloud MCP and ten-minute one-time code',()=>{
  assert.match(js,/browser_companion_pairing_create/);
  assert.match(js,/eight-digit code/);
  assert.match(js,/ten minutes/);
- assert.match(js,/десять минут/);
+ assert.match(js,/десяти минут/);
  assert.match(edge,/Date\.now\(\)\+600_000/);
  assert.match(js,/LUCH cloud is not reachable/);
  assert.doesNotMatch(js,/localhost|local setup on this computer|five minutes/i);

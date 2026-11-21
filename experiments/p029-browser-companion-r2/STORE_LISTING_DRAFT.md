@@ -1,99 +1,48 @@
-# LUCH Browser Companion — Chrome Web Store / Opera Add-ons submission draft
+# LUCH Browser Companion · Chrome Web Store submission packet — HEA R18
 
-**Candidate build:** 0.7.0 · **Updated:** 21 November 2026  
-**Publication state:** **NOT SUBMITTED / RELEASE HOLD**. This file is review copy, not a claim that the add-on is live or reviewed by Google, Opera or OpenAI.
+**Candidate:** Chrome 0.7.0 · **Status:** PREPARED / NOT SUBMITTED · 21 November 2026
 
-## Requirements and limitations to preserve in every listing
+## Source of truth for customers
 
-LUCH Browser Companion is a browser-tool extension for compatible **existing AI conversations**. No separate LUCH chat and no personal OpenAI/Anthropic API key are required. The user must separately connect and authorize the public LUCH remote MCP server inside an AI client that supports custom MCP. Feature access, including write actions, varies by AI provider, plan and workspace policy. Do **not** claim support for every ChatGPT account or that installation automatically attaches tools to a chat.
+[**Read the complete Russian and English customer descriptions**](STORE_LISTING_HEA_R18.md).
 
-Unlike the historical 0.6.0 concept, the 0.7.0 extension connects to LUCH cloud over HTTPS, without a mandatory desktop broker or localhost setup. Real user data leaves the user's computer when the user explicitly requests approved page content or screenshots in the connected AI tool.
+This is the HEA-reviewed copy to paste into Chrome Web Store. The old local-broker 0.4.0 and 0.6.0 descriptions must **not** be reused. LUCH now uses an OAuth-protected cloud MCP connection (for eligible host clients) and per-tab Chrome extension consent.
 
-**Review blockers:** The Opera runtime has not passed exact-build E2E, a fresh unconnected user has not passed the entire self-service flow, and independent review of the full 45-operation interaction/pointer surface is not complete. Do not submit the package to either store before those gates and final approved screenshots are closed.
+**Short RU:** Ваш ИИ понимает выбранную вкладку Chrome. Чтение и действия — только с вашего разрешения.
 
-## Chrome Web Store listing — English
+**Short EN:** Help your connected AI understand a Chrome tab you approve. Reading and actions require separate permission.
 
-**Name:** LUCH Browser Companion  
-**Category:** Productivity  
-**Short description:** Connect approved browser tabs to your existing supported AI. Reading and interaction require separate consent.
+## Artwork for the Chrome listing (exactly checked sizes)
 
-**Description:**
+All four files are actual binary GitHub assets in [`store-assets/r18/`](store-assets/r18/), not conceptual promises:
 
-Use LUCH Browser Companion to give a supported, connected AI assistant access to browser tabs **you** choose. Work in your normal ChatGPT or another compatible AI conversation, without a separate LUCH chat or personal model API key.
+| Asset | File | Size | Status |
+| --- | --- | --- | --- |
+| Store icon | `chrome-store-icon-128.png` | 128×128 | Current 0.7.0 manifest icon |
+| Small promo | `chrome-promo-small-440x280.png` | 440×280 | Brand graphic from approved LUCH site mark |
+| Marquee promo | `chrome-promo-marquee-1400x560.jpg` | 1400×560 | Brand graphic; optional |
+| Store screenshot | `chrome-screenshot-01-real-onboarding-1280x800.jpg` | 1280×800 | **Genuine Chrome 0.7.0 clean-install popup + real harmless example.com capture**, no account content |
 
-**How it works:** Connect an eligible AI client to the LUCH remote MCP endpoint and authorize it with LUCH OAuth. Ask your AI for a one-time browser pairing code, enter it directly in the extension, then click the extension icon on a tab to allow reading. Interaction such as clicking and typing is optional and must be approved separately for that tab.
+The promotional images use the exact site-branded LUCH app mark. The screenshot displays the real first-use popup rendered by the exact 0.7.0 ZIP in Chromium, not a fabricated paired state. Separate AI-generated premium hero concepts are **not** substitutes for honest product screenshots.
 
-**You stay in control:** Revoke a tab at any time, change site origin, close the browser session or disconnect a device. Other tabs remain private unless you opt into a separate overview of their titles and addresses. Precise on-page pointer control is an optional advanced action with additional consent and powerful debugger permission.
+## QA evidence
 
-**Privacy:** Content from approved tabs may be sent through LUCH cloud to your authorized AI provider. The extension does not request browser-history, cookies, OS-file or all-sites host permissions. See the full policy before approving sensitive tabs.
+- 41/41 Node tests pass on LUCH Server; 21/21 legacy local-broker negative tests pass.
+- Clean Chromium installation of **the exact ZIP** passes: background service worker, popup startup, first-use copy and JavaScript error-free; safe `example.com` fixture loads.
+- Prior signed-in owner's ChatGPT Plus + Chrome pilot confirmed one-time pairing, approved read, revocation and denied repeat read.
+- Current deterministic 0.7.0 ZIP SHA-256: `128447d4b2d9f80731bf20ed31e0d240a40487c9a55e464a9cb0369854e1e9d8`.
+- Chrome's public listing currently remains **0.4.0** and uses obsolete local-broker text. Do not claim 0.7.0 is live.
 
-**Compatibility:** Chromium-based Chrome and Opera are intended targets. Availability and actions depend on your AI host's supported custom MCP features, account plan and workspace permissions. Installing the extension alone does not connect an AI account.
+## Publishing prerequisites and exact blocker
 
-**Website:** https://luch.lenarsalimov.ru/en/browser/  
-**Support:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md  
-**Privacy policy:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md
+The existing Chrome Web Store publisher account was reachable, but Google prompted the owner to **reconfirm account identity**. Until the owner completes authentication, no draft fields or ZIP can be uploaded using the current authorized Chrome session.
 
-## Chrome Web Store listing — Русский
+After owner confirmation, the existing listing ID is **`lbijjcmjnlcbooadjgjignfmhaiealpd`**. Do not create a duplicate extension. Upload the exact audited ZIP as an **update** to the existing item, replace the full listing and image assets, update Privacy Practices to disclose page content, auth information and the install-time debugger permission, review Distribution, then submit for Google review (not automatic public availability).
 
-**Название:** LUCH Browser Companion  
-**Категория:** Productivity  
-**Краткое описание:** Подключайте разрешённые вкладки браузера к своему ИИ. Чтение и действия требуют отдельных разрешений.
+**Further security blockers before sending to all users:** new-user OAuth onboarding, cloud write/interaction and cross-account isolation E2E, independent review of required debugger permission. Do not bypass these merely because the owner authorized publication; label status accurately.
 
-**Описание:**
+## Client/AI perspective
 
-LUCH Browser Companion позволяет вашему привычному, совместимому ИИ работать с **выбранными вами вкладками**. Отдельный чат LUCH и личный API-ключ OpenAI/Anthropic не нужны.
+The buyer must understand in seconds: **I already have an AI; LUCH connects a tab only with permission; first I must check my AI supports MCP.** The agent must discover its actual tools and an approved tab, not hallucinate access or demand a model API key.
 
-**Подключение:** Добавьте удалённый MCP LUCH в ИИ-клиент, который поддерживает внешние инструменты, и подтвердите OAuth. Получите одноразовый код сопряжения в своём ИИ и введите его в расширении. Затем нажмите значок расширения на нужной вкладке, чтобы разрешить её чтение. Нажатия, ввод текста и другие действия разрешаются отдельно.
-
-**Управление доступом:** Вы можете отозвать разрешение, закрыть вкладку или сеанс, перейти на другой сайт либо отключить браузер. Все другие вкладки остаются закрытыми для чтения. Передача названий и адресов всех открытых вкладок — отдельная необязательная функция.
-
-**Точный курсор:** Дополнительная функция для действий внутри страницы, требующая отдельного разрешения и доступа Chrome debugger. Браузер может показывать предупреждение о широких возможностях отладчика.
-
-**Приватность:** Содержимое выбранной разрешённой страницы может передаваться через облако LUCH вашему авторизованному ИИ. Расширение не запрашивает историю браузера, cookies и общий доступ ко всем сайтам. Не открывайте чувствительные страницы без понимания последствий.
-
-**Ограничения:** Набор доступных функций зависит от поддержки MCP самим ИИ, подписки и правил рабочего пространства. Установка расширения не гарантирует полноценное управление браузером в каждом тарифе ChatGPT.
-
-**Сайт:** https://luch.lenarsalimov.ru/ru/browser/  
-**Поддержка:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md  
-**Конфиденциальность:** https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md
-
-## Opera Add-ons
-
-**Name:** LUCH Browser Companion
-
-**English summary:** Connect browser tabs you approve to your existing supported AI client through LUCH. Reading and interaction each require explicit consent.
-
-**Русское описание:** Подключайте выбранные вкладки Opera к своему совместимому ИИ через защищённый облачный LUCH MCP. Разрешения на чтение, действия и передачу обзора всех вкладок независимы друг от друга.
-
-Use the full English/Russian Chrome listing above as the Opera long description, with the word **Opera** for the browser being reviewed. Do not imply Opera has passed testing until the real installed version does.
-
-## Permissions and privacy-practices worksheet for reviewers
-
-| Requested item | Why it is needed |
-| --- | --- |
-| `activeTab` | Temporary, user-initiated access to the particular tab on which the extension was invoked |
-| `scripting` | Bounded DOM extraction and permitted page actions in an already approved tab |
-| `storage` | Browser device credential and session-scoped tab approvals |
-| `alarms` | Wake a Manifest V3 service worker to receive jobs after idle |
-| `debugger` | Optional precise pointer capability; note this is currently a **required install-time permission**, with a separate in-product user enablement |
-| `https://api.lenarsalimov.ru/luch/browser/*` | Secure account-bound cloud relay and device pairing |
-| Optional `tabs` | Metadata of all open tabs only after user separately enables the overview and cloud sharing |
-
-**Prominent disclosure:** Approved tab URLs, titles and requested page contents/screenshots may leave the computer and be processed by LUCH and the connected AI host. Pairing/device metadata, commands, result payloads and limited audit metadata have bounded retention documented in the privacy policy. Review Google and Opera policies before declaring their compliance.
-
-## Release acceptance checklist
-
-- [x] Public cloud MCP endpoint responds and rejects unauthenticated tool calls.
-- [x] Chrome pilot: real OAuth, one-time pairing, approved read, denial after revocation.
-- [x] Local LUCH Server unit/contract suite and legacy broker negative suite pass on current branch.
-- [x] P029 scheduled database retention and cleanup execution verified.
-- [ ] Independent security review: account/device isolation, malicious page content, navigation race, approved click and precise pointer.
-- [ ] Cold-start and idle-browser end-to-end latency acceptance.
-- [ ] Chrome and Opera clean-profile exact ZIP install tests; Opera has not passed.
-- [ ] Fresh user without pre-configured LUCH host: OAuth registration and device pairing.
-- [ ] Store account ownership, privacy-form answers and final version-matched real screenshots.
-- [ ] Approved immutable ZIP and checksum, developer publisher identity and marketplace moderation.
-
-Google may require a registered developer account and review; Opera separately reviews submissions. The public **GitHub** release, Chrome store release, Opera store release and public LUCH signup are separate publication decisions. Do not replace one with another or reuse an old draft store listing.
-
-**Decision: RELEASE HOLD.**
+[Detailed R17 release gates](RELEASE_READINESS_R17.md) · [Latest HEA copy and review](STORE_LISTING_HEA_R18.md) · [Chrome setup guide](https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md).

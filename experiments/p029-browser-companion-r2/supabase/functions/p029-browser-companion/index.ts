@@ -11,8 +11,8 @@ const AUTH_ISSUER = Deno.env.get("MCP_AUTH_ISSUER") || `${SUPABASE_URL}/auth/v1`
 const MCP_RESOURCE = Deno.env.get("MCP_RESOURCE_URL") || "https://api.lenarsalimov.ru/luch/browser/mcp";
 const FUNCTION_NAME = "p029-browser-companion";
 const MAX_RESULT_BYTES = 900_000;
-const ONLINE_MS = 20_000;
-const JOB_WAIT_MS = 30_000;
+const ONLINE_MS = 90_000;
+const JOB_WAIT_MS = 55_000;
 const JOB_POLL_MS = 250;
 const DEVICE_TOKEN_BYTES = 32;
 
@@ -211,7 +211,7 @@ async function validateTarget(userId:string,device:any,op:string,args:any) {
 async function enqueueAndWait(userId:string,device:any,toolName:string,op:string,args:any,grant:any) {
   const {data,error}=await admin.from("p029_browser_jobs").insert({
     user_id:userId,device_id:device.id,tool_name:toolName,op,target_id:args.targetId||null,args,
-    expires_at:new Date(Date.now()+90_000).toISOString()
+    expires_at:new Date(Date.now()+120_000).toISOString()
   }).select("id").single();
   if(error||!data) throw new Error("BROWSER_JOB_CREATE_FAILED");
   const jobId=data.id as string;
@@ -428,7 +428,7 @@ async function extensionHandler(req:Request) {
       if(error||!pending?.[0]) break;
       const job=pending[0];
       const {data:claimed,error:claimError}=await admin.from("p029_browser_jobs").update({
-        status:"claimed",claimed_at:nowIso(),lease_until:new Date(Date.now()+30_000).toISOString()
+        status:"claimed",claimed_at:nowIso(),lease_until:new Date(Date.now()+60_000).toISOString()
       }).eq("id",job.id).eq("device_id",device.id).eq("user_id",device.user_id).eq("status","pending")
         .select("id,op,target_id,args,tool_name").maybeSingle();
       if(claimError||!claimed) continue;

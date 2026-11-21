@@ -93,3 +93,6 @@ body.is-connected .access-status{font-size:12px;margin:0 0 11px;color:#26714b}
 #pair{min-height:44px}
 #pairing .actions{align-items:stretch}
 #session-note{font-size:11px}
+
+/* R19 HEA: first-run form must be visible without scrolling; marketing tiles belong in the store listing. */
+#capabilities{display:none}

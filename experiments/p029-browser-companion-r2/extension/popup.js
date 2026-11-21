@@ -3,19 +3,19 @@ const $=id=>document.getElementById(id);
 const strings={
  en:{
   eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Share a tab with LUCH.',
-  intro:'Connect a page you choose to your authorized LUCH workflow. You decide what LUCH can read and when it can interact.',
+  headline:'Your browser, in your AI chat.',
+  intro:'Let your supported AI understand a page only after you approve it here. Clicks and typing need a second permission.',
   caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
   paired:'Browser paired',notPaired:'Browser not paired',statusScope:'SECURE LUCH CLOUD',
-  setupTitle:'Before you connect',
+  setupTitle:'Connect in three steps',
   setupSteps:[
-   'Install this LUCH Browser Companion extension in Chrome or Opera.',
-   'In your connected LUCH AI, use browser_companion_pairing_create to generate a one-time eight-digit code.',
-   'Enter the code here. It expires after ten minutes.'
+   'Connect LUCH in your existing supported AI using the setup link below.',
+   'Ask your AI: Create a browser pairing code. Approve the request.',
+   'Enter the eight-digit code here within ten minutes.'
   ],
-  setupBoundary:'Pairing links this browser directly to your LUCH account. Your existing ChatGPT, Claude or other supported AI connection remains the AI host; this extension does not create a second chat or require an OpenAI/Anthropic API key.',
+  setupBoundary:'Your AI must support custom MCP connections for LUCH to work. You stay in your existing AI chat; there is no second LUCH chat and no personal model API key.',
   pairLabel:'One-time pairing code',pairButton:'Connect browser',
-  pairHint:'Enter the eight digits returned by browser_companion_pairing_create.',
+  pairHint:'The code comes from your AI chat (advanced tool: browser_companion_pairing_create).',
   localSetup:'How to connect LUCH to your existing AI',help:'Check account & setup requirements',
   tabLabel:'Current tab',grant:'Allow reading on this tab',
   interact:'Allow interaction on this tab',revoke:'Revoke access to this tab',
@@ -27,7 +27,7 @@ const strings={
   learn:'How browser access works',noTab:'Open a regular website to begin',
   statusUnknown:'Could not check browser status',working:'Checking browser…',
   codeDenied:'That code was not accepted. Request a new code from ChatGPT and try again.',
-  codeExpired:'That code has expired or is unavailable. Request a new code in ChatGPT.',
+  codeExpired:'This code has expired or was already used. Ask your AI to create a new code.',
   alreadyPaired:'This browser is already paired. Disconnect first if you need to pair it again.',
   companionOffline:'LUCH cloud is not reachable. Check your internet connection and try again.',
   ordinaryPage:'Open a regular HTTP or HTTPS website before sharing a tab.',
@@ -50,19 +50,19 @@ const strings={
  },
  ru:{
   eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Подключите вкладку к LUCH.',
-  intro:'Подключите выбранную страницу к разрешённому рабочему процессу LUCH. Вы решаете, что можно читать и когда разрешать действия.',
+  headline:'Ваша вкладка — в вашем ИИ.',
+  intro:'Совместимый ИИ сможет понимать выбранную страницу только после вашего разрешения. Нажатия и ввод текста разрешаются отдельно.',
   caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Снимки и проверка'],
   paired:'Браузер подключён',notPaired:'Браузер не подключён',statusScope:'ЗАЩИЩЁННЫЙ LUCH CLOUD',
-  setupTitle:'Перед подключением',
+  setupTitle:'Подключение за три шага',
   setupSteps:[
-   'Установите расширение LUCH Browser Companion в Chrome или Opera.',
-   'В подключённом ChatGPT вызовите browser_companion_pairing_create, чтобы получить одноразовый восьмизначный код.',
-   'Введите код здесь. Код действует десять минут.'
+   'Подключите LUCH в привычном совместимом ИИ по инструкции ниже.',
+   'Напишите ИИ: «Создай код подключения браузера». Разрешите этот запрос.',
+   'Введите восемь цифр здесь в течение десяти минут.'
   ],
-  setupBoundary:'Сопряжение напрямую связывает этот браузер с вашим аккаунтом LUCH. ChatGPT, Claude или другой поддерживаемый ИИ остаётся вашим существующим хостом. В расширении нет отдельного чата и не требуется API-ключ OpenAI/Anthropic.',
+  setupBoundary:'Нужна поддержка пользовательского MCP в вашем ИИ и тарифе. Вы остаетесь в привычном чате: отдельный чат LUCH и личный API-ключ не нужны.',
   pairLabel:'Одноразовый код подключения',pairButton:'Подключить браузер',
-  pairHint:'Введите восемь цифр, выданных в ChatGPT командой browser_companion_pairing_create.',
+  pairHint:'Код создаёт ваш ИИ (для продвинутых: browser_companion_pairing_create).',
   localSetup:'Как подключить LUCH к существующему ИИ',help:'Проверить требования к аккаунту и подключению',
   tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
   interact:'Разрешить действия в этой вкладке',revoke:'Отозвать доступ к вкладке',
@@ -74,7 +74,7 @@ const strings={
   learn:'Как работает доступ к браузеру',noTab:'Откройте обычный сайт',
   statusUnknown:'Не удалось проверить состояние браузера',working:'Проверка браузера…',
   codeDenied:'Код не принят. Запросите новый код в ChatGPT и повторите попытку.',
-  codeExpired:'Срок действия кода истёк. Запросите новый код в ChatGPT.',
+  codeExpired:'Код устарел или уже использован. Попросите ИИ создать новый.',
   alreadyPaired:'Этот браузер уже привязан. Сначала отключите его для нового сопряжения.',
   companionOffline:'LUCH Cloud недоступен. Проверьте интернет-соединение и повторите попытку.',
   ordinaryPage:'Для доступа откройте обычную страницу HTTP или HTTPS.',
@@ -130,7 +130,7 @@ function friendlyError(value){
  const raw=String(value||t('error'));
  const code=raw.toUpperCase();
  if(code.includes('PAIRING_DENIED'))return t('codeDenied');
- if(code.includes('PAIRING_UNAVAILABLE'))return t('codeExpired');
+ if(code.includes('PAIRING_UNAVAILABLE')||code.includes('PAIRING_CODE_INVALID_OR_EXPIRED'))return t('codeExpired');
  if(code.includes('ALREADY_PAIRED'))return t('alreadyPaired');
  if(code.includes('FAILED TO FETCH')||code.includes('NETWORKERROR')||code.includes('ABORTERROR')||code.includes('BROKER_UNREACHABLE'))return t('companionOffline');
  if(code.includes('OPEN AN ORDINARY WEBPAGE'))return t('ordinaryPage');

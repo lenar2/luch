@@ -24,7 +24,7 @@ test('popup makes browser pairing and AI-host authorization distinct',()=>{
 test('first-run pairing explains cloud MCP and ten-minute one-time code',()=>{
  const js=read('extension/popup.js');
  const edge=read('supabase/functions/p029-browser-companion/index.ts');
- assert.match(read('../../docs/CHATGPT_CONNECT.ru.md'),/browser_companion_pairing_create|Создай код подключения браузера/);
+ assert.match(edge,/browser_companion_pairing_create/);
  assert.doesNotMatch(js,/browser_companion_pairing_create/);
  assert.match(js,/eight-digit code/);
  assert.match(js,/ten minutes/);

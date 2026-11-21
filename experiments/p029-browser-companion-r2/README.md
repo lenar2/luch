@@ -1,46 +1,70 @@
-# LUCH Browser Companion · R2 (Chrome Web Store release candidate)
+# LUCH Browser Companion · 0.7.0 (P029)
 
-**Public product name:** LUCH Browser Companion. The earlier `(QA)` label has been removed from the extension manifest and user interface.
+**Status: DRAFT / RELEASE HOLD — not publicly distributed.** This is the actively maintained engineering candidate for Chrome and Opera. Historical R2 documents remain available in their versioned files, but are not current installation instructions.
 
-**Release gate:** CANDIDATE / DO NOT PUBLISH. This source is an independently staged successor to R1, not a deployed product. R1 remains preserved as its own evidence bundle.
+## Product goal
 
-## Single product, not a separate account
-Browser Companion is the browser capability provider of LUCH, not a stand-alone product or an alternative to the regular LUCH account. An approved tab must show in the authenticated user's ordinary `browser_tabs` tool and respond to `browser_read_text`, with no automatic wrong-profile fallback.
+Use **your existing ChatGPT or another independently compatible AI host** to work with the browser tabs you authorize. LUCH supplies browser tools, not another chat or a paid model API. A personal OpenAI or Anthropic API key is not required.
 
-### Working local capability
-- Chromium Manifest V3 (Chrome, Chromium-family); English/Russian popup UI; normal product name and LUCH ray icons.
-- One-time 8-digit local pairing to a loopback LUCH Companion broker; the paired extension receives a session token. A separate bridge secret protects read operations.
-- Explicit per-tab grant via toolbar/popup (temporary `activeTab` permission), 15-minute expiration, cross-origin revoke, manual revoke, disconnect, per-tab ON badge, bounded DOM text reader.
-- No unapproved tab access; no cookies, history, debugger, all-sites host permission, remotely supplied JS, form submission or credential reader.
-- Originless MV3 job polling GET allowed **only with** a valid bearer token; foreign extension origins always blocked.
-- Grant rollback if the broker is unavailable, rather than silently persisting a grant the user was told had failed.
+The host's own terms, account plan, approval flow and availability still apply. In particular, the ability to install a free browser extension does **not** guarantee that ChatGPT Free/Plus/Pro can use every custom MCP write/cursor action. See [OpenAI's official host requirements](https://help.openai.com/en/articles/12584461-connecting-custom-mcp-servers-in-chatgpt).
 
-### Important unfinished integration
-The current transport is **only 127.0.0.1:9248**, and the broker is not bundled in the installed LUCH Companion or publicly routed through OAuth. A user installing the extension *without* a compatible local LUCH broker cannot complete pairing. This is a critical product-release blocker, not a UI inconvenience.
+## Architecture
 
-The release must not be called fully functional until:
-1. Authenticated LUCH account and paired-device binding for the broker/relay, with server-side tenant isolation, nonce/replay defense, revocation and an idempotent session lifecycle;
-2. Native Browser Bridge `browser_tabs` / `browser_read_text` routing to approved tab IDs, returning explicit `USER_TAB_PERMISSION_REQUIRED` and `WRONG_PROFILE` when appropriate;
-3. Real signed-in **user-consented** Chrome and Opera functional proof, including native popup grant click, revocation during pending jobs, cold-start/reconnect, and XSS/SSRF/cross-tenant attacks;
-4. Independently reviewed privacy notice, user onboarding and installation for common macOS/Windows browsers, and Store screenshots;
-5. Independent release QA on exact commit + ZIP SHA; publisher identity verification; explicit founder approval before review/publish.
+```
+Existing AI chat + user-authorized OAuth
+         ↓
+https://api.lenarsalimov.ru/luch/browser/mcp
+         ↓ account identity + device selection + current tab grant
+LUCH Supabase Edge Function / short-lived job relay
+         ↓ separate paired device token (not AI host OAuth token)
+Chrome / Opera MV3 extension
+         ↓ user-approved tab, permission scope, live origin checks
+Browser content or interaction
+```
 
-**No change to production LUCH, the founder's browser profile, or Xcode is authorized by this package.**
+### Real permission model
 
-## Executed R2 evidence
-10/10 genuine graphical Chromium 153 isolated integration scenarios passed, 18/18 broker negatives, 4/4 R2 contract tests and 3/3 isolated Bridge adapter integration tests. See `QA_RUNTIME_REPORT.md` and `QA_BROWSER_R2_ISOLATED_E2E.json`. The actual native popup grant button and user-account integration remain HOLD; this is **not** independent release approval.
+- One-time 8-digit pairing code, valid for 10 minutes, single use and rate limited.
+- Each browser device is attached to exactly one authenticated account.
+- **Read** permission is per tab and must be explicitly granted through Chrome/Opera's extension UI.
+- **Interaction** (clicking, typing, navigation) requires an additional per-tab user choice.
+- **Precise pointer** requires additional approval and the powerful Chrome debugger API.
+- Optional **all-open-tabs metadata** requires the optional `tabs` permission and a separate sharing switch; other tabs' contents remain private.
+- Closing the tab/session, changing origin, revoking the grant or disconnecting removes the corresponding access.
+- The cloud server checks exact account, device, tab, grant ID and permission scope. The extension independently checks live grants before browser actions.
+- Browser job payloads and revoked metadata follow the [P029 retention policy](../../docs/browser-companion-privacy.md) (see the root repository `docs/browser-companion-privacy.md`).
 
-## Local Bridge adapter staging
-The isolated `bridge-adapter/consented-tab-adapter.mjs` is a tested, additive broker adapter intended for future Browser Bridge integration. It does **not** modify the Mac Browser Bridge or cloud production. It requires an external, already-authenticated device-scoped LUCH caller and an internal secret provider. It exposes consented tab IDs exclusively, rejects CDP-target IDs and non-loopback broker addresses, and uses explicit errors (`WRONG_PROFILE`, `USER_TAB_PERMISSION_REQUIRED`, `BROWSER_COMPANION_UNAVAILABLE`) rather than silently returning an unrelated automation profile. Its integration suite runs against the actual ephemeral R2 broker.
+### What works, and what is not yet verified
 
-## Developer checks
-- `node --test tests/*.test.mjs` checks public branding, permissions, local grant lifecycle, revoke and failure rollback using real extension JS in a controlled VM mock.
-- `node security-qa.mjs` checks 18 broker security cases against an ephemeral loopback HTTP server.
-- `./package.sh` produces a canonical ZIP and a SHA-256 file; updates to an existing Web Store draft require a strictly higher manifest version. Do not click 'Submit for review' until gates close.
+**Verified on a dedicated owner's ChatGPT + Chrome pilot:** OAuth connection, tool discovery, one-time device pairing, an actual approved `https://example.com` tab read, and rejection after tab-grant revocation.
 
-## Support / privacy
-- Public site: https://luch.lenarsalimov.ru/en/
-- Privacy policy: https://luch.lenarsalimov.ru/en/privacy/
-- Support: https://luch.lenarsalimov.ru/en/help/
-- Source: https://github.com/lenar2/luch
-- Store listing must disclose that approved page **visible text** is passed to locally paired LUCH Companion and possibly onwards to user-authorized AI hosts; it is not accurate to say the extension never processes website data.
+**Engineering checks:** 38/38 Node tests and 21/21 historical local-broker security negatives run on LUCH Server; Edge Function v7 deployed; scheduled P029 data retention tested. These are not a substitute for independently verified fresh-user or multi-account E2E.
+
+**Blocking before public release:** real Opera exact-build extension E2E, first-use flow with a new user and workspace, cloud browser write/pointer operation validation, independent security review, a final immutable package + checksum tied to the reviewed commit, verified screenshots and marketplace approval. Chrome Web Store and Opera Add-ons require their own review processes.
+
+## Current connection instructions (eligible users / engineering testers only)
+
+1. In an AI host that actually supports custom remote MCP, add `https://api.lenarsalimov.ru/luch/browser/mcp` and complete LUCH OAuth in that host. Do **not** supply a personal model API key.
+2. Install the **reviewed private test build** in a disposable Chrome profile. No customer download should use GitHub Actions artifacts or old `0.5.x`/`0.6.0` ZIPs; those are historical and not the cloud candidate.
+3. Ask your connected AI to call `browser_companion_pairing_create`. Approve that tool call and enter the one-time code directly into the extension popup. Do not paste it in chat or an issue.
+4. Open a harmless page. Click the extension icon on that tab to grant **Read**. Confirm using `browser_companion_status`, `browser_list_approved_tabs` and `browser_read_text`.
+5. Choose **Interaction** separately only for actions you understand; revoke tab access in the extension when finished.
+
+## Engineering
+
+From this folder:
+```bash
+node --test tests/*.test.mjs
+node security-qa.mjs
+deno check --node-modules-dir=auto supabase/functions/p029-browser-companion/index.ts
+bash package.sh
+```
+
+Run all tests on **LUCH Server**; P029 GitHub Actions workflows are intentionally absent and must not be re-enabled. `package.sh` creates an unpublished local candidate ZIP and SHA-256, **not** a public release.
+
+- [Latest R17 release-gate audit](RELEASE_READINESS_R17.md)
+- [ChatGPT pilot and revoke evidence](https://github.com/lenar2/luch/pull/12)
+- [Browser Companion privacy disclosure](https://github.com/lenar2/luch/blob/main/docs/browser-companion-privacy.md)
+- [Support](https://github.com/lenar2/luch/blob/main/docs/browser-companion-support.md)
+
+No changes to the owner's production browser, Apple profile, another AI host or store listing are made by installing this private candidate.

@@ -1,48 +1,48 @@
-# LUCH Browser Companion · Chrome Web Store submission packet — HEA R18
+# Chrome Web Store — LUCH Browser Companion 0.7.0 · HEA R19 submission pack
 
-**Candidate:** Chrome 0.7.0 · **Status:** PREPARED / NOT SUBMITTED · 21 November 2026
+**State:** Candidate ready for Chrome developer review **after Google owner authentication and remaining security gates**. Not submitted or publicly available as 0.7.0. The public store currently still lists the old 0.4.0.
 
-## Source of truth for customers
+## What customers see
 
-[**Read the complete Russian and English customer descriptions**](STORE_LISTING_HEA_R18.md).
+Complete, HEA-reviewed Russian and English listing descriptions: [STORE_LISTING_HEA_R18.md](STORE_LISTING_HEA_R18.md), updated for Chrome 0.7.0 and on-demand advanced pointer permission.
 
-This is the HEA-reviewed copy to paste into Chrome Web Store. The old local-broker 0.4.0 and 0.6.0 descriptions must **not** be reused. LUCH now uses an OAuth-protected cloud MCP connection (for eligible host clients) and per-tab Chrome extension consent.
+**RU short:** Ваш ИИ понимает выбранную вкладку Chrome. Чтение и действия — только с вашего разрешения.
 
-**Short RU:** Ваш ИИ понимает выбранную вкладку Chrome. Чтение и действия — только с вашего разрешения.
+**EN short:** Help your connected AI understand a Chrome tab you approve. Reading and actions require separate permission.
 
-**Short EN:** Help your connected AI understand a Chrome tab you approve. Reading and actions require separate permission.
+Do not claim that the extension automatically connects to every ChatGPT plan or provides unrestricted click/typing access. Connecting an eligible AI host through OAuth-protected MCP is a separate action; the actual available tools vary by plan and workspace.
 
-## Artwork for the Chrome listing (exactly checked sizes)
+## Actual 0.7.0 popup screenshots — new preferred set
 
-All four files are actual binary GitHub assets in [`store-assets/r18/`](store-assets/r18/), not conceptual promises:
+Use the new [R19 Chrome screenshots](store-assets/r19/), **not the older R18 onboarding illustration as the primary screenshot**.
 
-| Asset | File | Size | Status |
+| Locale | Order | File | What it explains |
 | --- | --- | --- | --- |
-| Store icon | `chrome-store-icon-128.png` | 128×128 | Current 0.7.0 manifest icon |
-| Small promo | `chrome-promo-small-440x280.png` | 440×280 | Brand graphic from approved LUCH site mark |
-| Marquee promo | `chrome-promo-marquee-1400x560.jpg` | 1400×560 | Brand graphic; optional |
-| Store screenshot | `chrome-screenshot-01-real-onboarding-1280x800.jpg` | 1280×800 | **Genuine Chrome 0.7.0 clean-install popup + real harmless example.com capture**, no account content |
+| RU | 1 | `chrome-01-ru-approved-1280x800.jpg` | Only a chosen page is readable, with revoke visible |
+| RU | 2 | `chrome-02-ru-before-consent-1280x800.jpg` | Explicit per-tab read button before any sharing |
+| RU | 3 | `chrome-03-ru-interaction-1280x800.jpg` | Interaction requires an additional approval |
+| EN | 1 | `chrome-01-en-approved-1280x800.jpg` | Selected tab readable and revocable |
+| EN | 2 | `chrome-02-en-before-consent-1280x800.jpg` | Per-tab permission comes first |
+| EN | 3 | `chrome-03-en-interaction-1280x800.jpg` | Interaction is independent |
 
-The promotional images use the exact site-branded LUCH app mark. The screenshot displays the real first-use popup rendered by the exact 0.7.0 ZIP in Chromium, not a fabricated paired state. Separate AI-generated premium hero concepts are **not** substitutes for honest product screenshots.
+All six were rendered from **actual extension 0.7.0 popup code executing inside Chromium**, with deterministic test state and harmless example.com. They are not photographs of an actual customer session or proof of live OAuth; that distinction is printed on each picture. Both locales use exactly the same tested layout. Google may request different or less composed screenshots during review; use the raw captures for inspection if necessary.
 
-## QA evidence
+**Existing brand promotional assets:** `store-assets/r18/chrome-promo-small-440x280.png` (440×280) and `store-assets/r18/chrome-promo-marquee-1400x560.jpg` (1400×560). The 128×128 icon remains the exact icon from the extension manifest. Brand art follows the approved LUCH site mark.
 
-- 41/41 Node tests pass on LUCH Server; 21/21 legacy local-broker negative tests pass.
-- Clean Chromium installation of **the exact ZIP** passes: background service worker, popup startup, first-use copy and JavaScript error-free; safe `example.com` fixture loads.
-- Prior signed-in owner's ChatGPT Plus + Chrome pilot confirmed one-time pairing, approved read, revocation and denied repeat read.
-- Current deterministic 0.7.0 ZIP SHA-256: `128447d4b2d9f80731bf20ed31e0d240a40487c9a55e464a9cb0369854e1e9d8`.
-- Chrome's public listing currently remains **0.4.0** and uses obsolete local-broker text. Do not claim 0.7.0 is live.
+## Privacy & install permissions
 
-## Publishing prerequisites and exact blocker
+**Required at install:** `activeTab`, `scripting`, `storage`, `alarms` and scoped host `https://api.lenarsalimov.ru/luch/browser/*`.
 
-The existing Chrome Web Store publisher account was reachable, but Google prompted the owner to **reconfirm account identity**. Until the owner completes authentication, no draft fields or ZIP can be uploaded using the current authorized Chrome session.
+**Optional, requested only when needed:**
+- `tabs` — explicit optional all-tab metadata overview
+- `debugger` — requested from Chrome ONLY when the user chooses to enable advanced precise-pointer control in a tab; standard read or pairing does not request it. Once granted, Chrome may retain this optional permission until the user removes it.
 
-After owner confirmation, the existing listing ID is **`lbijjcmjnlcbooadjgjignfmhaiealpd`**. Do not create a duplicate extension. Upload the exact audited ZIP as an **update** to the existing item, replace the full listing and image assets, update Privacy Practices to disclose page content, auth information and the install-time debugger permission, review Distribution, then submit for Google review (not automatic public availability).
+Content of an approved page may travel through the LUCH cloud relay to the authorized AI host. Store Privacy Practices must reflect that data processing and retention.
 
-**Further security blockers before sending to all users:** new-user OAuth onboarding, cloud write/interaction and cross-account isolation E2E, independent review of required debugger permission. Do not bypass these merely because the owner authorized publication; label status accurately.
+## QA and publication
 
-## Client/AI perspective
+The final branch candidate ZIP, its SHA-256 and updated tests are referenced from [R19 HEA + engineering audit](R19_HEA_ENGINEERING_AUDIT.md). The old R18 ZIP checksum is obsolete.
 
-The buyer must understand in seconds: **I already have an AI; LUCH connects a tab only with permission; first I must check my AI supports MCP.** The agent must discover its actual tools and an approved tab, not hallucinate access or demand a model API key.
+**Chrome Web Store item:** `lbijjcmjnlcbooadjgjignfmhaiealpd`. Update in place, no duplicate extension. The current publisher browser session requires the Google owner to complete reauthentication; no credential bypass is allowed. Even after sign-in, independent new-user OAuth / cross-account isolation and live host catalog refresh must pass before claiming mass availability. Chrome Web Store moderation is separate.
 
-[Detailed R17 release gates](RELEASE_READINESS_R17.md) · [Latest HEA copy and review](STORE_LISTING_HEA_R18.md) · [Chrome setup guide](https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md).
+**Decision today:** NOT SUBMITTED. The installed old 0.4.0 is not the new cloud 0.7.0.

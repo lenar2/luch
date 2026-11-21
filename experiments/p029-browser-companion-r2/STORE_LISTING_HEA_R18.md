@@ -42,7 +42,7 @@ LUCH не получает автоматический доступ ко все
 
 • Нужен ИИ-клиент и тариф/рабочая среда с поддержкой пользовательского удалённого MCP. Не все аккаунты ChatGPT предоставляют одинаковый доступ к таким инструментам. Одна установка расширения не подключает ChatGPT автоматически.
 
-• Chrome может показать предупреждение о полномочиях отладчика (`debugger`). Оно связано с дополнительным режимом точного указателя; использование режима требует отдельного включения внутри LUCH.
+• Chrome запросит мощное дополнительное разрешение отладчика (`debugger`) только если вы сами включите режим точного указателя. Для обычного чтения вкладки это разрешение не требуется.
 
 • Содержимое разрешённой страницы по вашему запросу может передаваться через защищённое облако LUCH вашему ИИ. Не разрешайте доступ к конфиденциальной странице, если не готовы поделиться её содержимым.
 
@@ -89,7 +89,7 @@ You decide which tab may be read, which permitted actions may be performed, and 
 
 • Your AI app, plan and workspace must support connecting a custom remote MCP server. Features vary by provider and plan. Installing this extension does not automatically add tools to every ChatGPT account.
 
-• Chrome may show a broad debugger-permission warning during installation. LUCH uses it only for separately enabled precise-pointer actions.
+• Chrome asks for the optional debugger permission only when you explicitly enable precise-pointer control. Normal tab reading does not require it.
 
 • When you ask your AI to read approved content, page data may travel through LUCH Cloud to the connected AI provider. Avoid approving sensitive pages without reviewing the privacy policy.
 
@@ -107,7 +107,7 @@ Support: https://github.com/lenar2/luch/issues
 
 **Reasons to install:** Saves repetitive copy/paste, explains and explores a page, may act when separately authorized. Concrete realistic examples, no unproven claims of purchases, site-wide autonomous browsing, all-plan compatibility or mouse control across the OS.
 
-**Reasons to hesitate:** An unfamiliar brand, intimidating `debugger` permission warning, multi-step OAuth + code enrollment, cloud processing of page data, host-plan eligibility. Aesthetic artwork alone cannot erase those legitimate concerns. The listing and screenshots must answer them.
+**Reasons to hesitate:** An unfamiliar brand, an intimidating optional `debugger` permission prompt for advanced pointer mode, multi-step OAuth + code enrollment, cloud processing of page data, host-plan eligibility. Aesthetic artwork alone cannot erase those legitimate concerns. The listing and screenshots must answer them.
 
 **Visual path:** A small, legible icon and 440×280 promo tile; a 1400×560 optional marquee; at least one genuine 1280×800 app screenshot; explanatory image(s) can accompany but must not pretend to be real UI. Brand visuals stay in deep mineral teal, refined soft light, clear typography; no fabricated product outcomes.
 

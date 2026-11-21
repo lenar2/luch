@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
-  "description": "Connect selected browser tabs to your LUCH Companion. Explicit per-tab consent, 15-minute access and one-click revocation.",
-  "version": "0.4.0",
+  "description": "__MSG_appDescription__",
+  "version": "0.7.0",
   "minimum_chrome_version": "116",
   "permissions": [
     "activeTab",
@@ -11,14 +11,14 @@
     "alarms"
   ],
   "host_permissions": [
-    "http://127.0.0.1:9248/*"
+    "https://api.lenarsalimov.ru/luch/browser/*"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "LUCH Browser Companion",
+    "default_title": "__MSG_actionTitle__",
     "default_icon": {
       "16": "assets/icon-16.png",
       "32": "assets/icon-32.png"
@@ -29,5 +29,18 @@
     "32": "assets/icon-32.png",
     "48": "assets/icon-48.png",
     "128": "assets/icon-128.png"
-  }
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      }
+    }
+  },
+  "optional_permissions": [
+    "tabs",
+    "debugger"
+  ],
+  "default_locale": "en"
 }

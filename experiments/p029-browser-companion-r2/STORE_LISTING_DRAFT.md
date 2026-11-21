@@ -1,25 +1,48 @@
-# Draft Chrome Web Store listing (NOT submitted)
+# Chrome Web Store — LUCH Browser Companion 0.7.0 · HEA R19 submission pack
 
-**Name:** LUCH Browser Companion
+**State:** Candidate ready for Chrome developer review **after Google owner authentication and remaining security gates**. Not submitted or publicly available as 0.7.0. The public store currently still lists the old 0.4.0.
 
-**Short description:** Connect selected browser tabs to LUCH with explicit user consent and instant revocation.
+## What customers see
 
-**Long description:**
-LUCH Browser Companion connects the browser tabs you specifically choose with your own paired LUCH Companion. The extension never reads other open tabs by default. For each tab, you choose whether to allow access for up to 15 minutes. You can revoke a tab permission or disconnect the entire browser.
+Complete, HEA-reviewed Russian and English listing descriptions: [STORE_LISTING_HEA_R18.md](STORE_LISTING_HEA_R18.md), updated for Chrome 0.7.0 and on-demand advanced pointer permission.
 
-Browser Companion is a component of the unified LUCH product and requires a compatible running LUCH Companion. All active grants remain visible in the extension popup.
+**RU short:** Ваш ИИ понимает выбранную вкладку Chrome. Чтение и действия — только с вашего разрешения.
 
-**Data disclosure / permission justification:**
-- `activeTab`: to request temporary access only after the user activates the extension on a page.
-- `scripting`: to read bounded visible page text after explicit approval, not to run remote scripts.
-- `storage`: to store local pairing and temporary grant state.
-- `alarms`: to wake the MV3 service worker and process bounded broker jobs.
-- `http://127.0.0.1:9248/*`: the device-local LUCH Companion broker, not a third-party website.
+**EN short:** Help your connected AI understand a Chrome tab you approve. Reading and actions require separate permission.
 
-Data: after approval, the page URL, title and up to 65,536 characters of visible DOM text may be processed by the paired LUCH Companion and provided to user-authorized AI tools. We do not claim that approved page text is never transmitted beyond the device. The extension does not request browsing history, cookies, password databases, or all-sites host access.
+Do not claim that the extension automatically connects to every ChatGPT plan or provides unrestricted click/typing access. Connecting an eligible AI host through OAuth-protected MCP is a separate action; the actual available tools vary by plan and workspace.
 
-Links: https://luch.lenarsalimov.ru/en/ ; https://luch.lenarsalimov.ru/en/privacy/ ; https://luch.lenarsalimov.ru/en/help/
+## Actual 0.7.0 popup screenshots — new preferred set
 
-**Submission hold:** live pairing/onboarding not ready, platform QA incomplete, publisher identity pending.
+Use the new [R19 Chrome screenshots](store-assets/r19/), **not the older R18 onboarding illustration as the primary screenshot**.
 
-Current package v0.4.0 is uploaded as a **Chrome Web Store DRAFT**, public name without QA. The staged adapter is **not included** in the Store extension ZIP: it runs on the LUCH companion side, not in the browser.
+| Locale | Order | File | What it explains |
+| --- | --- | --- | --- |
+| RU | 1 | `chrome-01-ru-approved-1280x800.jpg` | Only a chosen page is readable, with revoke visible |
+| RU | 2 | `chrome-02-ru-before-consent-1280x800.jpg` | Explicit per-tab read button before any sharing |
+| RU | 3 | `chrome-03-ru-interaction-1280x800.jpg` | Interaction requires an additional approval |
+| EN | 1 | `chrome-01-en-approved-1280x800.jpg` | Selected tab readable and revocable |
+| EN | 2 | `chrome-02-en-before-consent-1280x800.jpg` | Per-tab permission comes first |
+| EN | 3 | `chrome-03-en-interaction-1280x800.jpg` | Interaction is independent |
+
+All six were rendered from **actual extension 0.7.0 popup code executing inside Chromium**, with deterministic test state and harmless example.com. They are not photographs of an actual customer session or proof of live OAuth; that distinction is printed on each picture. Both locales use exactly the same tested layout. Google may request different or less composed screenshots during review; use the raw captures for inspection if necessary.
+
+**Existing brand promotional assets:** `store-assets/r18/chrome-promo-small-440x280.png` (440×280) and `store-assets/r18/chrome-promo-marquee-1400x560.jpg` (1400×560). The 128×128 icon remains the exact icon from the extension manifest. Brand art follows the approved LUCH site mark.
+
+## Privacy & install permissions
+
+**Required at install:** `activeTab`, `scripting`, `storage`, `alarms` and scoped host `https://api.lenarsalimov.ru/luch/browser/*`.
+
+**Optional, requested only when needed:**
+- `tabs` — explicit optional all-tab metadata overview
+- `debugger` — requested from Chrome ONLY when the user chooses to enable advanced precise-pointer control in a tab; standard read or pairing does not request it. Once granted, Chrome may retain this optional permission until the user removes it.
+
+Content of an approved page may travel through the LUCH cloud relay to the authorized AI host. Store Privacy Practices must reflect that data processing and retention.
+
+## QA and publication
+
+The final branch candidate ZIP, its SHA-256 and updated tests are referenced from [R19 HEA + engineering audit](R19_HEA_ENGINEERING_AUDIT.md). The old R18 ZIP checksum is obsolete.
+
+**Chrome Web Store item:** `lbijjcmjnlcbooadjgjignfmhaiealpd`. Update in place, no duplicate extension. The current publisher browser session requires the Google owner to complete reauthentication; no credential bypass is allowed. Even after sign-in, independent new-user OAuth / cross-account isolation and live host catalog refresh must pass before claiming mass availability. Chrome Web Store moderation is separate.
+
+**Decision today:** NOT SUBMITTED. The installed old 0.4.0 is not the new cloud 0.7.0.

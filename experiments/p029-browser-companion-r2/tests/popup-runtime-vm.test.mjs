@@ -13,14 +13,14 @@ function popup(locale='en'){
  const item=(id)=>{
   if(!elements.has(id))elements.set(id,{
    id, textContent:'', value:'', href:'', placeholder:'', hidden:false, disabled:false,
-   listeners:{},classList:{toggle(){}},
+   listeners:{},classList:{toggle(){},remove(){}},
    setAttribute(){}, addEventListener(type,fn){this.listeners[type]=fn},
    replaceChildren(){},appendChild(){},append(){},click(){this.listeners.click?.()},
   });
   return elements.get(id);
  };
  const context={
-  document:{documentElement:{lang:''},getElementById:item,createElement(tag){return item('created:'+tag+':'+elements.size)}},
+  document:{documentElement:{lang:''},body:{classList:{toggle(){},remove(){}}},getElementById:item,createElement(tag){return item('created:'+tag+':'+elements.size)}},
   navigator:{language:locale},
   localStorage:{getItem(){return null},setItem(){}},
   chrome:{

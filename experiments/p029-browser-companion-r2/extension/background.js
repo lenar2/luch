@@ -190,15 +190,23 @@ async function grantActive(scope='read'){
 }
 async function revokeActive(){
  const s=await state(),t=await activeTab();
- if(t)delete s.grants[t.id];
- await setGrants(s.grants);await publishGrants(s.auth,s.grants);
- return {message:'Sharing stopped for this tab'};
+ if(!t||!s.grants[t.id])throw new Error('NO_APPROVED_TAB_TO_REVOKE');
+ // Drop the local grant first: the MV3 worker must deny all new commands
+ // immediately, even if the cloud is temporarily unreachable.
+ delete s.grants[t.id];
+ await setGrants(s.grants);
+ try{await publishGrants(s.auth,s.grants)}
+ catch{return {message:'Local tab access revoked; cloud sync pending',pendingSync:true}}
+ return {message:'Sharing stopped for this tab',pendingSync:false};
 }
 async function disconnect(){
- const s=await state();try{if(s.auth)await api('/extension/disconnect',{method:'POST',token:s.auth.token})}catch{}
+ const s=await state();let cloudRevoked=!s.auth;
+ if(s.auth){try{await api('/extension/disconnect',{method:'POST',token:s.auth.token});cloudRevoked=true}catch{}}
+ // Always end LOCAL access; a failed cloud revocation must be clearly
+ // disclosed rather than represented as a successful remote disconnect.
  await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('ownedTabs'),chrome.storage.session.remove('tabOverviewSharing')]);
  await setGrants({});
- return {message:'Browser disconnected from LUCH'};
+ return {message:cloudRevoked?'Browser disconnected from LUCH':'Browser access stopped locally; revoke the device in your AI when online',cloudRevoked};
 }
 async function performJob(job,grants,owned){
  const g=grants[Number(String(job?.targetId||'').split(':')[1])];
@@ -276,13 +284,33 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   if(msg.op==='capabilities')return {ok:true,read:READ_OPS,interact:INTERACT_OPS,sessionScoped:true};
   if(msg.op==='status'){
    const s=await state(),t=await activeTab();await prune(s.grants);
-   let connected=!!s.auth;
-   if(connected){try{const health=await api('/health',{token:s.auth.token});connected=!!health.paired;if(!connected)throw new Error('COMPANION_NOT_PAIRED')}catch{connected=false;await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('tabOverviewSharing')]);await setGrants({})}}
+   let connected=!!s.auth,online=false;
+   if(connected){
+    try{
+     const health=await api('/health',{token:s.auth.token});
+     if(health.paired===true){online=true}
+     else{
+      // Explicit server-side revocation is permanent; network failures are
+      // NOT. Never delete a paired user's credentials because of a timeout.
+      connected=false;
+      await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('tabOverviewSharing')]);
+      await setGrants({});
+     }
+    }catch(e){
+     if(String(e.message||e).includes('DEVICE_UNAUTHORIZED')){
+      connected=false;
+      await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('tabOverviewSharing')]);
+      await setGrants({});
+     }
+     // Transient outage, 5xx, invalid JSON and timeout: preserve the
+     // pairing and local grants. The cloud will be retried on its next poll.
+    }
+   }
    const g=connected&&t&&s.grants[t.id];
    const hasTabs=await chrome.permissions.contains({permissions:['tabs']});
    const hasDebugger=await chrome.permissions.contains({permissions:['debugger']});
    const sharing=connected&&(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true&&hasTabs;
-   return {ok:true,connected,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,
+   return {ok:true,connected,online,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,
     preciseCursor:!!g?.preciseCursor&&hasDebugger,tabOverviewPermission:hasTabs,tabOverviewSharing:sharing,
     grantedCount:connected?Object.keys(s.grants).length:0,sessionScoped:true};
   }

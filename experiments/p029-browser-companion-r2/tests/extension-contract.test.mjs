@@ -123,7 +123,13 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  assert.equal(Object.keys(store.session.grants||{}).length,1);
  healthDown=false;
  assert.equal((await send('status')).online,true);
+ const previousGrant=remoteGrants[0];
  const rev=await send('revoke-active');assert.equal(rev.ok,true);assert.equal(remoteGrants.length,0);assert.equal(badges.get(11),'');
+ // A job claimed before the user clicked Revoke must not be allowed to use
+ // the old poll snapshot after consent was removed.
+ context.pendingRevokedJob={op:'read_text',targetId:'ext:'+previousGrant.tabId+':'+previousGrant.grantId,args:{selector:'body'}};
+ const stale=await vm.runInContext('performJob(pendingRevokedJob)',context);
+ assert.equal(stale.ok,false);assert.equal(stale.error,'USER_TAB_PERMISSION_REQUIRED');
  failGrants=true;
  const failed=await send('grant-active');assert.equal(failed.ok,false);
  assert.equal(Object.keys(store.session.grants).length,0,'unpublished grant must not remain after network failure');

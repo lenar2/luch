@@ -165,10 +165,19 @@ async function prune(grants){
  if(changed)await setGrants(grants);
  return grants;
 }
-async function publishGrants(auth,grants){
- if(!auth?.token)return;
- const list=Object.values(grants).map(g=>({tabId:g.tabId,grantId:g.grantId,url:g.url,title:g.title,scope:g.scope,preciseCursor:g.preciseCursor===true}));
- await api('/extension/grants',{method:'POST',token:auth.token,data:{grants:list}});
+let grantPublishQueue=Promise.resolve();
+function publishGrants(auth,_grants){
+ if(!auth?.token)return Promise.resolve();
+ // A poll and a user revocation may overlap. Serialize publications and
+ // read the LATEST session grants at send time, never a stale poll snapshot.
+ const send=async()=>{
+  const current=await state();
+  if(current.auth?.token!==auth.token)return;
+  const list=Object.values(current.grants).map(g=>({tabId:g.tabId,grantId:g.grantId,url:g.url,title:g.title,scope:g.scope,preciseCursor:g.preciseCursor===true}));
+  await api('/extension/grants',{method:'POST',token:auth.token,data:{grants:list}});
+ };
+ grantPublishQueue=grantPublishQueue.catch(()=>{}).then(send);
+ return grantPublishQueue;
 }
 async function grantActive(scope='read'){
  if(scope!=='read'&&scope!=='interact')throw new Error('INVALID_SCOPE');
@@ -184,7 +193,7 @@ async function grantActive(scope='read'){
  if(existing&&existing.origin!==originOf(t.url))throw new Error('ORIGIN_CHANGED_REAPPROVAL_REQUIRED');
  const previous=existing;
  s.grants[t.id]=g;
- try{await publishGrants(s.auth,s.grants);await setGrants(s.grants)}
+ try{await setGrants(s.grants);await publishGrants(s.auth,s.grants)}
  catch(e){if(previous)s.grants[t.id]=previous;else delete s.grants[t.id];await setGrants(s.grants);throw e}
  return {message:scope==='interact'?'Interactions allowed on this tab until you revoke':'This tab is available to LUCH until you revoke'};
 }
@@ -201,14 +210,19 @@ async function revokeActive(){
 }
 async function disconnect(){
  const s=await state();let cloudRevoked=!s.auth;
- if(s.auth){try{await api('/extension/disconnect',{method:'POST',token:s.auth.token});cloudRevoked=true}catch{}}
- // Always end LOCAL access; a failed cloud revocation must be clearly
- // disclosed rather than represented as a successful remote disconnect.
+ // Stop locally FIRST, so a queued browser command cannot begin while the
+ // remote token is being invalidated. Never claim remote revoke on outage.
  await Promise.all([chrome.storage.local.remove('auth'),chrome.storage.session.remove('grants'),chrome.storage.session.remove('ownedTabs'),chrome.storage.session.remove('tabOverviewSharing')]);
  await setGrants({});
+ if(s.auth){try{await api('/extension/disconnect',{method:'POST',token:s.auth.token});cloudRevoked=true}catch{}}
  return {message:cloudRevoked?'Browser disconnected from LUCH':'Browser access stopped locally; revoke the device in your AI when online',cloudRevoked};
 }
-async function performJob(job,grants,owned){
+async function performJob(job){
+ // A claimed job is NOT consent. Re-read live extension session after every
+ // poll so revoking a tab or disconnecting stops pending commands.
+ const current=await state();
+ if(!current.auth)return {ok:false,error:'DEVICE_DISCONNECTED'};
+ const grants=current.grants,owned=current.owned;
  const g=grants[Number(String(job?.targetId||'').split(':')[1])];
  if(!g||('ext:'+g.tabId+':'+g.grantId)!==job.targetId)return {ok:false,error:'USER_TAB_PERMISSION_REQUIRED'};
  const op=String(job.op|| (job.kind==='read_text'?'read_text':''));
@@ -219,6 +233,10 @@ async function performJob(job,grants,owned){
  const args=job.args&&typeof job.args==='object'&&!Array.isArray(job.args)?job.args:{};
  try{
   if(PAGE_READ.has(op)||PAGE_WRITE.has(op)){
+   const latest=(await state()).grants[g.tabId];
+   if(!latest||latest.grantId!==g.grantId||latest.origin!==g.origin||
+      (INTERACT.has(op)&&latest.scope!=='interact'))
+    return {ok:false,error:'USER_TAB_PERMISSION_REVOKED'};
    const r=await chrome.scripting.executeScript({target:{tabId:g.tabId},func:self.luchDomExecutor,args:[{op,args}]});
    const result=r?.[0]?.result;
    if(!result||!result.ok)return {ok:false,error:result?.error||'NO_SCRIPT_RESULT'};
@@ -273,7 +291,7 @@ async function poll(){
   await publishTabOverview(s.auth);
   const tasks=await api('/extension/jobs',{token:s.auth.token});
   for(const job of (tasks.jobs||[]).slice(0,3)){
-   let result;try{result=await performJob(job,grants,s.owned)}catch(e){result={ok:false,error:String(e.message||e).slice(0,100)}}
+   let result;try{result=await performJob(job)}catch(e){result={ok:false,error:String(e.message||e).slice(0,100)}}
    await api('/extension/result',{method:'POST',token:s.auth.token,data:{jobId:job.id,result}});
   }
  }catch{}finally{working=false}
@@ -355,7 +373,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
    if(msg.enabled===true&&!await chrome.permissions.contains({permissions:['debugger']}))throw new Error('PRECISE_CURSOR_PERMISSION_REQUIRED');
    const old=s.grants[t.id];
    s.grants[t.id]={...old,preciseCursor:msg.enabled===true};
-   try{await publishGrants(s.auth,s.grants);await setGrants(s.grants)}
+   try{await setGrants(s.grants);await publishGrants(s.auth,s.grants)}
    catch(e){s.grants[t.id]=old;await setGrants(s.grants);throw e}
    return {ok:true,enabled:msg.enabled===true};
   }

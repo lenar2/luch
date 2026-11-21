@@ -47,7 +47,7 @@ const strings={
   listTabs:'Show my open tabs',tabSwitch:'Switch to tab',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
   unshareTabs:'Stop sharing the tab overview',tabsShared:'Tab titles and addresses are shared with your authorized LUCH AI. Page contents are not.',
   tabsPrivate:'Only you can see this list until you choose to share it with LUCH.',
-  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome warns about debugger access when installing this extension. Pointer input remains OFF until you separately approve interaction and enable it for this tab. It is not your computer’s physical mouse.',
+  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome requests the optional debugger permission only if you enable this feature. Interaction and pointer access are separate choices for this tab. This is not your computer’s physical mouse.',
   enableCursor:'Enable precise pointer for this tab',disableCursor:'Disable precise pointer',
   cursorNotReady:'Approve interactions on this tab first.',
   permissionDenied:'Chrome permission was not granted.',
@@ -99,7 +99,7 @@ const strings={
   listTabs:'Показать мои вкладки',tabSwitch:'Перейти к вкладке',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
   unshareTabs:'Перестать передавать обзор вкладок',tabsShared:'Названия и адреса вкладок доступны авторизованному ИИ через LUCH. Содержимое страниц не передаётся.',
   tabsPrivate:'Пока это список только для вас. ИИ не получит его без отдельного разрешения.',
-  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Chrome предупреждает о доступе отладчика при установке расширения. Действия курсора выключены, пока вы отдельно не разрешите их для выбранной вкладки. Это не физическая мышь компьютера.',
+  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Только при его включении Chrome запросит дополнительное разрешение отладчика. Действия на вкладке разрешаются отдельно. Это не физическая мышь компьютера.',
   enableCursor:'Включить точный курсор на этой вкладке',disableCursor:'Выключить точный курсор',
   cursorNotReady:'Сначала разрешите действия на этой вкладке.',
   permissionDenied:'Разрешение Chrome не предоставлено.',
@@ -253,6 +253,10 @@ $('unshare-tabs').addEventListener('click',async()=>{
 });
 $('enable-cursor').addEventListener('click',async()=>{
  try{
+  // This must run directly after a real click in the popup: requesting
+  // powerful debugger access on installation is unnecessary for normal use.
+  const approved=await chrome.permissions.request({permissions:['debugger']});
+  if(!approved)throw new Error(t('permissionDenied'));
   await call({op:'precise-cursor',enabled:true});await refresh();
  }catch(e){$('feedback').textContent=friendlyError(e.message)}
 });

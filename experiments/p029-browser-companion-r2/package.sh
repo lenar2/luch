@@ -39,8 +39,9 @@ with zipfile.ZipFile(target) as z:
     assert manifest['version']=='0.7.0'
     assert manifest['default_locale']=='en'
     assert manifest['description']=='__MSG_appDescription__'
-    assert 'debugger' in manifest['permissions']
-    assert manifest.get('optional_permissions')==['tabs']
+    assert 'debugger' not in manifest['permissions']
+    assert 'debugger' in manifest['optional_permissions']
+    assert sorted(manifest.get('optional_permissions',[]))==['debugger','tabs']
     assert z.testzip() is None
     assert sorted(z.namelist())==sorted(['manifest.json','background.js','dom-ops.js','popup.html','popup.css','popup.js','assets/','assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png','_locales/en/messages.json','_locales/ru/messages.json'])
 PY

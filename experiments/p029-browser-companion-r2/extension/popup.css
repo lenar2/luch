@@ -1,6 +1,6 @@
 :root{color-scheme:light;--bg:#f7f6f0;--text:#102f34;--muted:#58696a;--line:#d7deda;--brand:#143c43;--accent:#d6ad73;--surface:#fff}
 *{box-sizing:border-box}
-body{margin:0;width:370px;max-height:620px;overflow-y:auto;background:var(--bg);color:var(--text);font:13px/1.5 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}
+body{margin:0;width:388px;max-height:600px;overflow-y:auto;background:var(--bg);color:var(--text);font:13px/1.5 -apple-system,BlinkMacSystemFont,system-ui,sans-serif}
 main{padding:16px}
 .heading,.brand,.connection,.actions{display:flex;align-items:center;gap:10px}
 .heading{justify-content:space-between}
@@ -65,3 +65,31 @@ footer{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;display
 #tab-list-wrap[hidden],.advanced-browser button[hidden]{display:none}
 
 #tab-list .tab-switch{width:auto;margin:5px 0 2px;padding:5px 9px;min-height:28px;border:1px solid var(--line);background:#edf1ed;color:var(--brand);font-size:10px}
+
+/* R19: product-first connected state; setup and advanced actions are distinct. */
+#feedback:empty{display:none}
+#feedback:not(:empty){margin:11px 0 0;padding:10px 12px;border-radius:9px;border:1px solid #dfd0b9;background:#f8f2e6;font-size:12px;line-height:1.4}
+.connection.offline{border-color:#e4d0a7;background:#f8f0e1}
+.dot.offline{background:#bd8738}
+body.is-connected .hero{margin:17px 0 12px}
+body.is-connected .hero h1{font-size:23px}
+body.is-connected .hero p{margin-bottom:0}
+body.is-connected .capability-grid{display:none}
+body.is-connected #controls{margin-top:13px}
+body.is-connected .tab-box{padding:13px 14px;border-color:#c7d7d0;background:#ffffff}
+body.is-connected .access-status{font-size:12px;margin:0 0 11px;color:#26714b}
+.control-stack button{min-height:43px;border-radius:10px;font-size:13px}
+.control-stack button:not(.secondary){font-weight:750}
+.advanced-browser{margin:16px 0 8px;padding:0;background:#fff;border-radius:10px}
+.advanced-browser summary{cursor:pointer;list-style:revert;padding:13px 16px;color:var(--brand);font-size:12px;font-weight:750}
+.advanced-browser summary:focus-visible{outline:2px solid #b88e4f;outline-offset:-3px}
+.advanced-browser[open] summary{border-bottom:1px solid var(--line)}
+.advanced-content{padding:8px 12px 14px}
+.advanced-content h2:first-child{margin-top:4px}
+#pairing{margin-top:13px}
+#pairing .setup-card{padding:12px 13px}
+#pairing .setup-card li{font-size:12px}
+#pairCode{font-size:16px;letter-spacing:.16em}
+#pair{min-height:44px}
+#pairing .actions{align-items:stretch}
+#session-note{font-size:11px}

@@ -42,7 +42,7 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  const handlers={},store={local:{},session:{}},badges=new Map();
  const pages=new Map([[11,{id:11,windowId:1,url:'https://example.org/one',title:'One'}],[12,{id:12,windowId:2,url:'https://other.example/two',title:'Other'}]]);
  const selected=[];
- let active=11,failGrants=false,remoteGrants=[],token='TEST-TOKEN',healthReads=0,jobReads=0;
+ let active=11,failGrants=false,healthDown=false,cloudRevoked=false,disconnectDown=false,remoteGrants=[],token='TEST-TOKEN',healthReads=0,jobReads=0;
  const chrome={
   runtime:{id:'abc',onMessage:{addListener:cb=>{handlers.message=cb}}},
   storage:{
@@ -67,14 +67,14 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  };
  async function fetchStub(url,init){
   if(url.endsWith('/pair'))return {ok:true,json:async()=>({ok:true,token})};
-  if(url.endsWith('/health')){healthReads++;assert.equal(init.headers.Authorization,'Bearer '+token);return {ok:true,json:async()=>({ok:true,paired:true,authorizedTabs:remoteGrants.length})}}
+  if(url.endsWith('/health')){healthReads++;assert.equal(init.headers.Authorization,'Bearer '+token);if(healthDown)throw Error('NetworkError');return {ok:true,json:async()=>({ok:true,paired:!cloudRevoked,authorizedTabs:remoteGrants.length})}}
   if(url.endsWith('/extension/tab-overview'))return{ok:true,json:async()=>({ok:true,shared:false})};
   if(url.endsWith('/extension/jobs')){jobReads++;return {ok:true,json:async()=>({ok:true,jobs:[]})}}
   if(url.endsWith('/extension/grants')){
    if(failGrants)throw Error('BROKER_UNREACHABLE');
    remoteGrants=JSON.parse(init.body).grants;return{ok:true,json:async()=>({ok:true})};
   }
-  if(url.endsWith('/extension/disconnect')){remoteGrants=[];return{ok:true,json:async()=>({ok:true})}}
+  if(url.endsWith('/extension/disconnect')){if(disconnectDown)throw Error('NetworkError');remoteGrants=[];return{ok:true,json:async()=>({ok:true})}}
   throw Error('unknown');
  }
  const context=vm.createContext({chrome,fetch:fetchStub,AbortController,setTimeout,clearTimeout,Date,URL,crypto:crypto.webcrypto,console,setInterval(){return 0}});
@@ -114,6 +114,15 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  assert.equal((await send('status')).scope,'interact');
  assert.equal(remoteGrants[0].scope,'interact');
  assert.ok(!(await send('status')).tab?.url?.includes('other.example'));
+ // Transient cloud outages must not delete the pairing or stored tab grants.
+ healthDown=true;
+ const offline=await send('status');
+ assert.equal(offline.connected,true);
+ assert.equal(offline.online,false);
+ assert.equal(Boolean(store.local.auth?.token),true);
+ assert.equal(Object.keys(store.session.grants||{}).length,1);
+ healthDown=false;
+ assert.equal((await send('status')).online,true);
  const rev=await send('revoke-active');assert.equal(rev.ok,true);assert.equal(remoteGrants.length,0);assert.equal(badges.get(11),'');
  failGrants=true;
  const failed=await send('grant-active');assert.equal(failed.ok,false);
@@ -123,5 +132,13 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  pages.get(11).url='https://different.example/changed';
  await handlers.updated(11,{url:'https://different.example/changed'});
  assert.equal(remoteGrants.length,0,'origin navigation revokes');
- const disc=await send('disconnect');assert.equal(disc.ok,true);assert.equal((await send('status')).connected,false);
+ const disc=await send('disconnect');assert.equal(disc.ok,true);assert.equal(disc.cloudRevoked,true);assert.equal((await send('status')).connected,false);
+ const pairedAgain=await send('pair',{code:'12345678'});assert.equal(pairedAgain.ok,true);
+ cloudRevoked=true;
+ const revokedStatus=await send('status');assert.equal(revokedStatus.connected,false);assert.equal(Boolean(store.local.auth),false,'explicit server revocation ends pairing');
+ const pairedThird=await send('pair',{code:'12345678'});assert.equal(pairedThird.ok,true);
+ cloudRevoked=false;disconnectDown=true;
+ const localOnly=await send('disconnect');assert.equal(localOnly.ok,true);
+ assert.equal(localOnly.cloudRevoked,false,'must not silently claim cloud token was revoked during outage');
+ assert.equal(Boolean(store.local.auth),false);
 });

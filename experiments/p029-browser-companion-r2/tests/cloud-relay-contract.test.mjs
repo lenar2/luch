@@ -45,7 +45,7 @@ test('cloud OAuth bearer and device bearer remain distinct',()=>{
 });
 test('pairing instructions match the 10-minute code expiry',()=>{
  assert.match(popup,/ten minutes/);
- assert.match(popup,/десять минут/);
+ assert.match(popup,/десяти минут/);
  assert.match(edge,/Date\.now\(\)\+600_000/);
  assert.doesNotMatch(popup,/локального Companion|локальную страницу подключения|five minutes/i);
 });

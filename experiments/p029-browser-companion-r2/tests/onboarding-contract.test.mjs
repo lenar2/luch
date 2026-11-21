@@ -54,11 +54,11 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
 
 test('store copy does not conflate extension operations with the platform inventory',()=>{
  const listing=read('STORE_LISTING_DRAFT.md');
- assert.match(listing,/17 read\/inspection and 28 interaction\/navigation/);
- assert.match(listing,/not all functions of this extension/);
- assert.match(listing,/general public self-service setup is not yet available/i);
- assert.match(listing,/Opera runtime E2E is still required/);
- assert.match(listing,/not approved as the final plugin mark/);
+ assert.match(listing,/full 45-operation interaction\/pointer surface/);
+ assert.doesNotMatch(listing,/all 54 LUCH browser tools/);
+ assert.match(listing,/Feature access, including write actions, varies by AI provider/);
+ assert.match(listing,/Opera runtime has not passed exact-build E2E/);
+ assert.match(listing,/NOT SUBMITTED \/ RELEASE HOLD/);
  const privacy=read('../../docs/browser-companion-privacy.md');
  assert.match(privacy,/https:\/\/api\.lenarsalimov\.ru\/luch\/browser/);
 });

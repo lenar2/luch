@@ -5,6 +5,11 @@ const strings={
   eyebrow:'LUCH / BROWSER COMPANION',
   headline:'Your browser, in your AI chat.',
   intro:'Let your supported AI understand a page only after you approve it here. Clicks and typing need a second permission.',
+  headlineConnected:'Your tab. Your choice.',introConnected:'Share this page with your AI, or keep it private. Other tabs stay closed.',
+  offline:'Waiting for cloud connection',offlineScope:'RECONNECTING',offlineTab:'Your tab approval is saved. Actions will resume after reconnection.',
+  advancedTitle:'More options · tab overview & precise pointer',
+  revokePending:'Access to this tab is stopped on your device. Cloud sync will retry when online.',
+  disconnectPending:'Access ended on this device. When online, also revoke this browser in your AI to invalidate the cloud token.',
   caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
   paired:'Browser paired',notPaired:'Browser not paired',statusScope:'SECURE LUCH CLOUD',
   setupTitle:'Connect in three steps',
@@ -22,7 +27,7 @@ const strings={
   disconnect:'Disconnect browser',expired:'No tab access granted',
   read:'LUCH can read this tab',interacting:'LUCH can read and interact with this tab',
   sessionNote:'Access ends when you revoke it, close this tab or the browser session, or navigate to another website origin.',
-  hostNote:'This browser is paired to LUCH Cloud. Your existing ChatGPT must separately authorize the LUCH MCP connection.',
+  hostNote:'Your AI needs its own authorized LUCH MCP connection. Only approved tabs can be shared.',
   footer:'Only approved tabs are shared. No cookie or browsing-history access. Page content you request may be sent to your authorized AI host.',
   learn:'How browser access works',noTab:'Open a regular website to begin',
   statusUnknown:'Could not check browser status',working:'Checking browser…',
@@ -46,12 +51,17 @@ const strings={
   enableCursor:'Enable precise pointer for this tab',disableCursor:'Disable precise pointer',
   cursorNotReady:'Approve interactions on this tab first.',
   permissionDenied:'Chrome permission was not granted.',
-  error:'Something went wrong.',codePlaceholder:'12345678'
+  error:'Something went wrong.',codePlaceholder:'••••••••'
  },
  ru:{
   eyebrow:'LUCH / BROWSER COMPANION',
   headline:'Ваша вкладка — в вашем ИИ.',
   intro:'Совместимый ИИ сможет понимать выбранную страницу только после вашего разрешения. Нажатия и ввод текста разрешаются отдельно.',
+  headlineConnected:'Вы решаете, что видит ИИ.',introConnected:'Разрешите эту вкладку для чтения или оставьте её закрытой. Остальные вкладки не затрагиваются.',
+  offline:'Ожидание подключения к облаку',offlineScope:'НЕТ СВЯЗИ',offlineTab:'Разрешения сохранены. Действия возобновятся после восстановления связи.',
+  advancedTitle:'Дополнительно · вкладки и точный курсор',
+  revokePending:'На этом устройстве доступ к вкладке закрыт. Синхронизация с облаком повторится после восстановления связи.',
+  disconnectPending:'На устройстве доступ отключён. Когда появится связь, дополнительно отзовите это устройство в своём ИИ.',
   caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Снимки и проверка'],
   paired:'Браузер подключён',notPaired:'Браузер не подключён',statusScope:'ЗАЩИЩЁННЫЙ LUCH CLOUD',
   setupTitle:'Подключение за три шага',
@@ -69,7 +79,7 @@ const strings={
   disconnect:'Отключить браузер',expired:'Доступ к вкладке не предоставлен',
   read:'LUCH может читать эту вкладку',interacting:'LUCH может читать и взаимодействовать с вкладкой',
   sessionNote:'Доступ прекращается после отзыва, закрытия вкладки или сеанса браузера либо перехода на другой сайт.',
-  hostNote:'Браузер привязан к LUCH Cloud. В существующем ChatGPT требуется отдельное разрешённое подключение LUCH MCP.',
+  hostNote:'Ваш ИИ должен отдельно подключить LUCH MCP. Передаются только вкладки, к которым вы дали разрешение.',
   footer:'Передаются только разрешённые вкладки. Нет доступа к cookie и истории браузера. Запрошенное содержимое страницы может быть передано авторизованному ИИ-клиенту.',
   learn:'Как работает доступ к браузеру',noTab:'Откройте обычный сайт',
   statusUnknown:'Не удалось проверить состояние браузера',working:'Проверка браузера…',
@@ -93,7 +103,7 @@ const strings={
   enableCursor:'Включить точный курсор на этой вкладке',disableCursor:'Выключить точный курсор',
   cursorNotReady:'Сначала разрешите действия на этой вкладке.',
   permissionDenied:'Разрешение Chrome не предоставлено.',
-  error:'Произошла ошибка.',codePlaceholder:'12345678'
+  error:'Произошла ошибка.',codePlaceholder:'••••••••'
  }
 };
 let lang=(localStorage.getItem('luch_locale')||((navigator.language||'en').toLowerCase().startsWith('ru')?'ru':'en'));
@@ -108,7 +118,7 @@ function setTexts(){
   'help':'help','grant':'grant','interact':'interact','revoke':'revoke',
   'disconnect':'disconnect','tab-label':'tabLabel','footer':'footer',
   'scope':'statusScope','session-note':'sessionNote','host-note':'hostNote',
-  'learn':'learn',
+  'learn':'learn','advanced-title':'advancedTitle',
   'tabs-heading':'tabsHeading','tabs-explain':'tabsExplain','list-tabs':'listTabs',
   'share-tabs':'shareTabs','unshare-tabs':'unshareTabs','cursor-heading':'cursorHeading',
   'cursor-explain':'cursorExplain','enable-cursor':'enableCursor','disable-cursor':'disableCursor'
@@ -141,27 +151,38 @@ function friendlyError(value){
 async function refresh(){
  try{
   const r=await call({op:'status'});
-  $('pairing').hidden=r.connected;$('controls').hidden=!r.connected;
-  $('status').textContent=r.connected?t('paired'):t('notPaired');
-  $('scope').textContent=t('statusScope');
-  $('dot').classList.toggle('connected',r.connected);
+  const connected=r.connected===true,online=connected&&r.online!==false;
+  document.body.classList.toggle('is-connected',connected);
+  $('pairing').hidden=connected;$('controls').hidden=!connected;
+  $('headline').textContent=connected?t('headlineConnected'):t('headline');
+  $('intro').textContent=connected?t('introConnected'):t('intro');
+  $('status').textContent=!connected?t('notPaired'):(online?t('paired'):t('offline'));
+  $('scope').textContent=online?t('statusScope'):(connected?t('offlineScope'):t('statusScope'));
+  $('dot').classList.toggle('connected',online);
+  $('dot').classList.toggle('offline',connected&&!online);
+  $('connection').classList.toggle('offline',connected&&!online);
   $('currentTab').textContent=r.tab?.title||t('noTab');
   $('currentUrl').textContent=r.tab?.url||'';
-  $('shareStatus').textContent=!r.granted?t('expired'):(r.scope==='interact'?t('interacting'):t('read'));
-  $('grant').hidden=!!r.granted;$('grant').disabled=!r.tab;
-  $('interact').hidden=!r.granted||r.scope==='interact';
+  $('shareStatus').textContent=!online&&connected?t('offlineTab'):(!r.granted?t('expired'):(r.scope==='interact'?t('interacting'):t('read')));
+  $('grant').hidden=!!r.granted;$('grant').disabled=!r.tab||!online;
+  $('interact').hidden=!r.granted||r.scope==='interact';$('interact').disabled=!online;
   $('revoke').hidden=!r.granted;
   $('pair').disabled=$('pairCode').value.length!==8;
   $('enable-cursor').hidden=!!r.preciseCursor;
-  $('enable-cursor').disabled=!(r.granted&&r.scope==='interact');
-  $('disable-cursor').hidden=!r.preciseCursor;
+  $('enable-cursor').disabled=!online||!(r.granted&&r.scope==='interact');
+  $('disable-cursor').hidden=!r.preciseCursor;$('disable-cursor').disabled=!online;
+  $('list-tabs').disabled=!online;
+  $('share-tabs').disabled=!online;$('unshare-tabs').disabled=!online;
   $('share-tabs').hidden=!!r.tabOverviewSharing;
   $('unshare-tabs').hidden=!r.tabOverviewSharing;
   $('tabs-sharing-state').textContent=r.tabOverviewSharing?t('tabsShared'):t('tabsPrivate');
  }catch(e){
+  document.body.classList.remove('is-connected');
   $('pairing').hidden=false;$('controls').hidden=true;
   $('status').textContent=t('statusUnknown');$('scope').textContent=t('statusScope');
-  $('dot').classList.remove('connected');
+  $('dot').classList.remove('connected','offline');
+  $('connection').classList.remove('offline');
+  $('pair').disabled=$('pairCode').value.length!==8;
   $('feedback').textContent=friendlyError(e.message);
  }
 }
@@ -170,13 +191,14 @@ function act(id,make){
   const button=$(id);button.disabled=true;
   try{
    $('feedback').textContent='';
-   await call(make());
+   const result=await call(make());
    const success={pair:'pairSuccess',grant:'readSuccess',interact:'interactSuccess',revoke:'revokeSuccess',disconnect:'disconnectSuccess'};
-   $('feedback').textContent=t(success[id]);
+   $('feedback').textContent=id==='revoke'&&result.pendingSync?t('revokePending'):
+     id==='disconnect'&&result.cloudRevoked===false?t('disconnectPending'):t(success[id]);
    if(id==='pair')$('pairCode').value='';
    await refresh();
   }catch(e){$('feedback').textContent=friendlyError(e.message);await refresh()}
-  finally{button.disabled=id==='pair'&&$('pairCode').value.length!==8}
+  finally{if(id==='pair')button.disabled=$('pairCode').value.length!==8;}
  });
 }
 $('locale').addEventListener('change',event=>{

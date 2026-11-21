@@ -11,11 +11,11 @@ The extension allows tools in an existing, separately authorized AI conversation
 
 When you explicitly approve **Read**, the extension can send the approved tab's origin, URL, title, page text, headings, links, forms, selected elements or a requested screenshot to the LUCH cloud relay and onward to your authorized AI host. **Page content does leave your computer**, and the AI provider has its own data policies and retention controls.
 
-When you separately approve **Interaction**, the extension may execute bounded clicks, typing, scrolling, navigation or window changes. Optional precise pointer actions use the Chrome debugger API and require a further per-tab opt-in. Chrome may show a broad debugger-permission warning at installation; the permission is powerful, even though LUCH limits the operations it performs.
+When you separately approve **Interaction**, the extension may execute bounded clicks, typing, scrolling, navigation or window changes. Optional precise pointer actions use the Chrome debugger API and require a further per-tab opt-in. Chrome requests the powerful debugger permission only when you explicitly activate the advanced precise-pointer mode. Normal installation, pairing and page reading do not request it; the permission may remain granted until removed in Chrome settings.
 
 The optional **All open tabs** view requests the separate `tabs` permission and a second explicit switch before any such metadata is shared with your AI. Tab titles and addresses are metadata, not permissions to read those tabs' page content. Query strings and URL fragments are removed from cloud-shared tab metadata, but approved page content may itself contain sensitive information.
 
-The extension does not request browser-history, cookie, OS-file, clipboard, downloads, native-messaging, or all-sites host permissions. Chrome manifest permissions: `activeTab`, `scripting`, `storage`, `alarms`, `debugger`; optional: `tabs`; required server host: `https://api.lenarsalimov.ru/luch/browser/*`.
+The extension does not request browser-history, cookie, OS-file, clipboard, downloads, native-messaging, or all-sites host permissions. Chrome manifest permissions: `activeTab`, `scripting`, `storage`, `alarms`; optional: `tabs`, `debugger`; required server host: `https://api.lenarsalimov.ru/luch/browser/*`.
 
 ## Identity and security
 

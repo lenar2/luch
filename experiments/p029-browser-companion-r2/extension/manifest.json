@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
-  "description": "Connect your existing AI to browser tabs you explicitly approve. Optional tab overview and precision cursor controls require separate consent.",
+  "description": "__MSG_appDescription__",
   "version": "0.7.0",
   "minimum_chrome_version": "116",
   "permissions": [
@@ -19,7 +19,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "LUCH Browser Companion",
+    "default_title": "__MSG_actionTitle__",
     "default_icon": {
       "16": "assets/icon-16.png",
       "32": "assets/icon-32.png"
@@ -41,5 +41,6 @@
   },
   "optional_permissions": [
     "tabs"
-  ]
+  ],
+  "default_locale": "en"
 }

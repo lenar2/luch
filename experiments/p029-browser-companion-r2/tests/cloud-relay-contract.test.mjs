@@ -114,3 +114,20 @@ test('bounded retention is scheduled and only privileged roles can purge',()=>{
  assert.match(sql,/revoke all on function public\.p029_cleanup_data\(\) from public, anon, authenticated/);
  assert.match(sql,/p029-browser-companion-retention/);
 });
+
+test('grant heartbeats use upsert before pruning to avoid transient consent loss',()=>{
+ const start=edge.indexOf('if(path.endsWith("/extension/grants"))');
+ const stop=edge.indexOf('if(path.endsWith("/extension/tab-overview"))',start);
+ assert.ok(start>=0&&stop>start);
+ const handler=edge.slice(start,stop);
+ assert.match(handler,/\.upsert\(rows,\{onConflict:"device_id,tab_id"\}\)/);
+ assert.match(handler,/\.not\("tab_id","in"/);
+ assert.doesNotMatch(handler,/\.delete\(\)\.eq\("device_id",device\.id\);\s*const rows/);
+});
+test('MCP browser action descriptions prefer approved tabs rather than all-tabs permission',()=>{
+ assert.match(edge,/Find target IDs with browser_list_approved_tabs/);
+ assert.match(worker,/let grantPublishQueue=Promise\.resolve\(\)/);
+ assert.match(worker,/const current=await state\(\);/);
+ assert.match(worker,/async function performJob\(job\)/);
+ assert.match(worker,/USER_TAB_PERMISSION_REVOKED/);
+});

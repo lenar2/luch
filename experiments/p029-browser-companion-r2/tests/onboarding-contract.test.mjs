@@ -58,7 +58,7 @@ test('store copy does not conflate extension operations with the platform invent
  const buyer=read('STORE_LISTING_HEA_R18.md');
  assert.match(listing,/Chrome 0\.7\.0/);
  assert.match(listing,/NOT SUBMITTED/);
- assert.match(listing,/genuine Chrome/i);
+ assert.match(listing,/Actual 0\.7\.0 popup screenshots/i);
  assert.doesNotMatch(listing,/all 54 LUCH browser tools/);
  assert.match(buyer,/совместимом ИИ/);
  assert.match(buyer,/plan and workspace must support/);

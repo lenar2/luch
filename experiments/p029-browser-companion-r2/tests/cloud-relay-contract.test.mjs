@@ -93,3 +93,24 @@ test('one-time pairing is an atomic, role-restricted transaction (no eq-null rac
  assert.doesNotMatch(edge,/\.eq\("used_at",null\)/);
  assert.doesNotMatch(edge,/PAIRING_RACE_RETRY/);
 });
+
+test('MV3 idle alarm is covered by an extended cloud reply window',()=>{
+ // Chrome limits alarm periods to at least 30s and may delay them.
+ assert.match(edge,/const ONLINE_MS = 90_000;/);
+ assert.match(edge,/const JOB_WAIT_MS = 55_000;/);
+ assert.match(edge,/expires_at:new Date\(Date\.now\(\)\+120_000\)/);
+ assert.match(edge,/lease_until:new Date\(Date\.now\(\)\+60_000\)/);
+ assert.match(worker,/chrome\.alarms\.create\('luch-poll',\{periodInMinutes:0\.5\}\)/);
+});
+test('bounded retention is scheduled and only privileged roles can purge',()=>{
+ const sql=fs.readFileSync(path.join(root,'supabase/migrations/20261121060000_p029_data_retention_cron.sql'),'utf8');
+ assert.match(sql,/create extension if not exists pg_cron/);
+ assert.match(sql,/create or replace function public\.p029_cleanup_data\(\)/);
+ assert.match(sql,/delete from public\.p029_browser_jobs/);
+ assert.match(sql,/delete from public\.p029_browser_pairings/);
+ assert.match(sql,/delete from public\.p029_browser_tab_overviews/);
+ assert.match(sql,/delete from public\.p029_browser_grants/);
+ assert.match(sql,/delete from public\.p029_browser_audit_events/);
+ assert.match(sql,/revoke all on function public\.p029_cleanup_data\(\) from public, anon, authenticated/);
+ assert.match(sql,/p029-browser-companion-retention/);
+});

@@ -76,3 +76,20 @@ test('temporary cloud outage never implies user has unpaired or that remote acti
  assert.equal(item('revoke').hidden,false,'local revoke must remain available');
  assert.equal(item('disconnect').disabled,false,'local disconnect must remain available');
 });
+
+test('debugger is NOT requested during onboarding, only after optional pointer click',async()=>{
+ const {item,context}=popup('ru-RU',{connected:true,online:true,granted:true,scope:'interact',
+  tab:{title:'Example Domain',url:'https://example.com/'}});
+ await new Promise(resolve=>setImmediate(resolve));
+ let requested=0;
+ context.chrome.permissions.request=async({permissions})=>{
+  assert.deepEqual(Array.from(permissions),['debugger']);
+  requested++;
+  return false;
+ };
+ assert.equal(requested,0,'no debugger prompt during initial popup render');
+ assert.equal(typeof item('enable-cursor').listeners.click,'function');
+ await item('enable-cursor').listeners.click();
+ assert.equal(requested,1,'one user-click-driven permission request');
+ assert.match(item('feedback').textContent,/Разрешение Chrome не предоставлено/);
+});

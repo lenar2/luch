@@ -8,8 +8,7 @@
     "activeTab",
     "scripting",
     "storage",
-    "alarms",
-    "debugger"
+    "alarms"
   ],
   "host_permissions": [
     "https://api.lenarsalimov.ru/luch/browser/*"
@@ -40,7 +39,8 @@
     }
   },
   "optional_permissions": [
-    "tabs"
+    "tabs",
+    "debugger"
   ],
   "default_locale": "en"
 }

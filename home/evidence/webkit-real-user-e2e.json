@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "tests": [
+    {
+      "step": "OPEN_PUBLIC_SAFARI_ENGINE",
+      "http": 200
+    },
+    {
+      "step": "WEBKIT_PUBLIC_SIGNUP_SUCCESS"
+    },
+    {
+      "step": "WEBKIT_SCOPED_CONSENT"
+    },
+    {
+      "step": "WEBKIT_REAL_HTTPS_RESULT",
+      "http": 200,
+      "title": "Example Domain"
+    },
+    {
+      "step": "WEBKIT_REVOKE_DENIED",
+      "http": 403
+    },
+    {
+      "step": "WEBKIT_RU_SWITCH"
+    },
+    {
+      "step": "WEBKIT_ACCOUNT_AND_RECORDS_DELETED"
+    }
+  ],
+  "real_https": true,
+  "real_model_calls": false,
+  "physical_iphone": false,
+  "users_deleted": true
+}

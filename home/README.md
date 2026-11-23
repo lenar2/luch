@@ -29,3 +29,10 @@ External: all under https://luch.lenarsalimov.ru/home/, with canonical Caddy str
 - README is disclosure, not certification. Public availability and real device behavior must be verified after deployment.
 
 Canonical website, existing public site and main README remain in place.
+
+
+## R7.1 internal LUCH routing and per-client rate limits
+
+The shared outer Caddy can be reloaded by other service owners. LUCH Home thus has a narrow fallback route in the existing LUCH website's own internal Caddy: home/deploy/inner-luch.Caddyfile. It reverse-proxies only /home/* to the independent R7 service; existing marketing paths are served from their original files. No separate domain, public host port, or altered MCP gateway is required.
+
+The canonical outer Caddy normalizes X-Forwarded-For. The internal LUCH website Caddy forwards that to the R7 application as X-LUCH-Client-IP, and the application uses the last validated address for per-client throttling. Without this, all Internet visitors would share one Docker edge IP and one registration allowance. IP addresses are not proof of user identity; actual data isolation remains by independent account sessions, CSRF and resource grants.

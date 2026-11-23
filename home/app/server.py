@@ -19,6 +19,7 @@ PUBLIC_ORIGIN = "https://luch.lenarsalimov.ru"
 MAX_BODY = 2048
 SESSION_AGE = 14 * 86400
 PBKDF_ROUNDS = 260000
+TERMS_VERSION = "2026-11-23-home-r72"
 rate_lock = threading.Lock()
 rates: dict[str, deque] = defaultdict(deque)
 db_setup_lock = threading.Lock()
@@ -69,11 +70,31 @@ def initialize():
         );
         CREATE INDEX IF NOT EXISTS activity_by_user ON activity(user_id, at DESC);
         """)
-        c.execute("DELETE FROM sessions WHERE expires < ?", (int(time.time()),))
-        # Public beta retention: bound activity and audit data to 90 days.
-        cutoff=int(time.time())-90*86400
-        c.execute("DELETE FROM checks WHERE at < ?", (cutoff,))
-        c.execute("DELETE FROM activity WHERE at < ?", (cutoff,))
+        cols={row["name"] for row in c.execute("PRAGMA table_info(users)").fetchall()}
+        if "recovery_digest" not in cols:
+            c.execute("ALTER TABLE users ADD COLUMN recovery_digest TEXT")
+        if "terms_version" not in cols:
+            c.execute("ALTER TABLE users ADD COLUMN terms_version TEXT")
+        if "terms_accepted_at" not in cols:
+            c.execute("ALTER TABLE users ADD COLUMN terms_accepted_at INTEGER")
+    prune_expired_records()
+
+RETENTION_SECONDS=90*86400
+
+def prune_expired_records(now=None):
+    now=int(time.time()) if now is None else int(now)
+    with connect_db() as c:
+        c.execute("DELETE FROM sessions WHERE expires < ?",(now,))
+        cutoff=now-RETENTION_SECONDS
+        c.execute("DELETE FROM checks WHERE at < ?",(cutoff,))
+        c.execute("DELETE FROM activity WHERE at < ?",(cutoff,))
+
+def retention_loop(stop):
+    while not stop.wait(900): # 15-minute upper bound while the server stays running
+        try:
+            prune_expired_records()
+        except Exception:
+            print(json.dumps({"service":"luch-home","event":"retention_cleanup_failed"}),flush=True)
 
 def limited(key, n, period):
     now = time.monotonic()
@@ -303,7 +324,8 @@ class Handler(BaseHTTPRequestHandler):
         if cookie:
             self.send_header("Set-Cookie", cookie)
         self.end_headers()
-        self.wfile.write(data)
+        if not getattr(self,"_head_only",False):
+            self.wfile.write(data)
 
     def json(self, code, payload, cookie=None):
         data = json.dumps(payload,ensure_ascii=False,separators=(",",":")).encode("utf-8")
@@ -356,6 +378,10 @@ class Handler(BaseHTTPRequestHandler):
     def check_origin(self):
         return self.headers.get("Origin") == PUBLIC_ORIGIN and self.headers.get("Sec-Fetch-Site","same-origin") in ("same-origin","none")
 
+    def do_HEAD(self):
+        self._head_only=True
+        return self.do_GET()
+
     def do_GET(self):
         path = urllib.parse.urlsplit(self.path).path
         if path == "/healthz":
@@ -380,8 +406,9 @@ class Handler(BaseHTTPRequestHandler):
                     return self.json(200,{"ok":True,"authenticated":False,"ai_connected":False,
                                           "public_signup":True,"workflow":"website_check"})
                 grant=c.execute("SELECT id,origin,created FROM grants WHERE user_id=? AND active=1 ORDER BY created DESC LIMIT 1",(s["uid"],)).fetchone()
-                rows=c.execute("SELECT id,origin,at,result FROM checks WHERE user_id=? ORDER BY at DESC LIMIT 12",(s["uid"],)).fetchall()
-                events=c.execute("SELECT event,detail,at FROM activity WHERE user_id=? ORDER BY at DESC LIMIT 20",(s["uid"],)).fetchall()
+                cutoff=int(time.time())-RETENTION_SECONDS
+                rows=c.execute("SELECT id,origin,at,result FROM checks WHERE user_id=? AND at>=? ORDER BY at DESC LIMIT 12",(s["uid"],cutoff)).fetchall()
+                events=c.execute("SELECT event,detail,at FROM activity WHERE user_id=? AND at>=? ORDER BY at DESC LIMIT 20",(s["uid"],cutoff)).fetchall()
                 return self.json(200,{"ok":True,"authenticated":True,"username":s["username"],"csrf":s["csrf"],
                     "grant":dict(grant) if grant else None,
                     "checks":[{"id":r["id"],"at":r["at"],"origin":r["origin"],"result":json.loads(r["result"])} for r in rows],
@@ -391,7 +418,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path=urllib.parse.urlsplit(self.path).path
-        if path not in ("/api/register","/api/login","/api/logout","/api/delete-account","/api/consent","/api/revoke","/api/check"):
+        if path not in ("/api/register","/api/login","/api/logout","/api/delete-account","/api/consent","/api/revoke","/api/check","/api/recovery/reset","/api/recovery/rotate"):
             return self.problem(404,"Not found.")
         if not self.check_origin():
             return self.problem(403,"Request origin not authorized.")
@@ -404,6 +431,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.problem(400,str(e))
         if path in ("/api/register","/api/login"):
             return self.auth(path,data,ip)
+        if path=="/api/recovery/reset":
+            return self.recovery_reset(data,ip)
         with connect_db() as c:
             s=self.session(c)
             if not s:
@@ -422,6 +451,20 @@ class Handler(BaseHTTPRequestHandler):
                     c.execute("DELETE FROM users WHERE id=?",(s["uid"],))
                 return self.json(200,{"ok":True,"deleted":True},
                     "luch_home_sid=; Path=/home; HttpOnly; Secure; SameSite=Lax; Max-Age=0")
+            if path == "/api/recovery/rotate":
+                if set(data)!={"password"} or not isinstance(data["password"],str):
+                    return self.problem(400,"Confirm your current password.")
+                user=c.execute("SELECT salt,password_hash FROM users WHERE id=?",(s["uid"],)).fetchone()
+                if not user or not hmac.compare_digest(
+                        hashlib.pbkdf2_hmac("sha256",data["password"].encode(),user["salt"],PBKDF_ROUNDS),
+                        user["password_hash"]):
+                    return self.problem(403,"Current password is incorrect.")
+                recovery_code=secrets.token_urlsafe(32)
+                with c:
+                    c.execute("UPDATE users SET recovery_digest=? WHERE id=?",
+                              (hashlib.sha256(recovery_code.encode()).hexdigest(),s["uid"]))
+                    add_event(c,s["uid"],"RECOVERY_CODE_ROTATED","Recovery code regenerated.")
+                return self.json(200,{"ok":True,"recovery_code":recovery_code})
             if path == "/api/consent":
                 if set(data)!={"origin"}:
                     return self.problem(400,"Expected a website address.")
@@ -473,9 +516,43 @@ class Handler(BaseHTTPRequestHandler):
                 return self.json(200,{"ok":True,"check_id":check_id,"result":result})
         return self.problem(404,"Not found.")
 
+    def recovery_reset(self,data,ip):
+        if set(data)!={"username","recovery_code","password"}:
+            return self.problem(400,"Username, recovery code and new password required.")
+        username=data.get("username")
+        code=data.get("recovery_code")
+        password=data.get("password")
+        if (not isinstance(username,str) or
+                not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{3,27}",username) or
+                not isinstance(code,str) or len(code)>128 or
+                not isinstance(password,str) or not 12<=len(password)<=128 or
+                len(password.encode())>300):
+            return self.problem(400,"Invalid account recovery details.")
+        username=username.lower()
+        if limited("recovery-ip:"+ip,7,3600) or limited("recovery-name:"+username,8,3600):
+            return self.problem(429,"Too many recovery attempts.")
+        with connect_db() as c:
+            user=c.execute("SELECT id,recovery_digest FROM users WHERE username=?",(username,)).fetchone()
+            expected=user["recovery_digest"] if user and user["recovery_digest"] else ("0"*64)
+            actual=hashlib.sha256(code.encode()).hexdigest()
+            if not user or not user["recovery_digest"] or not hmac.compare_digest(actual,expected):
+                return self.problem(403,"Username or recovery code is incorrect.")
+            salt=secrets.token_bytes(24)
+            digest=hashlib.pbkdf2_hmac("sha256",password.encode(),salt,PBKDF_ROUNDS)
+            with c:
+                updated=c.execute("UPDATE users SET salt=?,password_hash=?,recovery_digest=NULL WHERE id=? AND recovery_digest=?",
+                                  (salt,digest,user["id"],expected)).rowcount
+                if updated!=1:return self.problem(403,"Recovery code has been used.")
+                c.execute("DELETE FROM sessions WHERE user_id=?",(user["id"],))
+                add_event(c,user["id"],"ACCOUNT_RECOVERED","Password reset; old sessions and recovery code revoked.")
+        return self.json(200,{"ok":True,"reset":True})
+
     def auth(self,path,data,ip):
-        if set(data)!={"username","password"}:
-            return self.problem(400,"Username and password are required.")
+        expected={"username","password","accepted_terms"} if path=="/api/register" else {"username","password"}
+        if set(data)!=expected:
+            return self.problem(400,"Username, password and signup consent are required.")
+        if path=="/api/register" and data.get("accepted_terms") is not True:
+            return self.problem(400,"Please read and accept the published Home terms and privacy policy.")
         raw=data.get("username","")
         password=data.get("password","")
         if not isinstance(raw,str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{3,27}",raw):
@@ -495,10 +572,13 @@ class Handler(BaseHTTPRequestHandler):
                 salt=secrets.token_bytes(24)
                 digest=hashlib.pbkdf2_hmac("sha256",password.encode(),salt,PBKDF_ROUNDS)
                 user_id=secrets.token_hex(16)
+                recovery_code=secrets.token_urlsafe(32)
+                recovery_digest=hashlib.sha256(recovery_code.encode()).hexdigest()
                 try:
                     with c:
-                        c.execute("INSERT INTO users(id,username,salt,password_hash,created) VALUES(?,?,?,?,?)",
-                                  (user_id,username,salt,digest,int(time.time())))
+                        c.execute("""INSERT INTO users(id,username,salt,password_hash,created,recovery_digest,
+                                  terms_version,terms_accepted_at) VALUES(?,?,?,?,?,?,?,?)""",
+                                  (user_id,username,salt,digest,int(time.time()),recovery_digest,TERMS_VERSION,int(time.time())))
                         add_event(c,user_id,"ACCOUNT_CREATED","Account created without an email address.")
                 except sqlite3.IntegrityError:
                     return self.problem(409,"Username is already in use.")
@@ -515,13 +595,20 @@ class Handler(BaseHTTPRequestHandler):
                 c.execute("INSERT INTO sessions(digest,user_id,csrf,created,expires) VALUES(?,?,?,?,?)",
                           (hashlib.sha256(sid.encode()).hexdigest(),user_id,csrf,int(time.time()),int(time.time())+SESSION_AGE))
                 add_event(c,user_id,"SIGNED_IN","Session created.")
-            return self.json(200,{"ok":True,"authenticated":True,"username":username,"csrf":csrf},
+            payload={"ok":True,"authenticated":True,"username":username,"csrf":csrf}
+            if path=="/api/register":
+                payload["recovery_code"]=recovery_code # display once, never log or store plaintext
+            return self.json(200,payload,
                 f"luch_home_sid={sid}; Path=/home; HttpOnly; Secure; SameSite=Lax; Max-Age={SESSION_AGE}")
 
 if __name__=="__main__":
     initialize()
     httpd=BoundedServer(("0.0.0.0",PORT),Handler)
+    retention_stop=threading.Event()
+    retention_worker=threading.Thread(target=retention_loop,args=(retention_stop,),daemon=True,name="luch-retention")
+    retention_worker.start()
     def stop(signum,frame):
+        retention_stop.set()
         threading.Thread(target=httpd.shutdown,daemon=True).start()
     signal.signal(signal.SIGTERM,stop)
     signal.signal(signal.SIGINT,stop)

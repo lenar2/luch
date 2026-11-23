@@ -1,0 +1,222 @@
+[
+  {
+    "engine": "webkit",
+    "lang": "en",
+    "width": 320,
+    "http": 200,
+    "heading": "Your task.A result you can verify.",
+    "heroCTA": {
+      "top": 396.640625,
+      "bottom": 444.640625
+    },
+    "viewport": {
+      "w": 320,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "lang": "en",
+    "width": 390,
+    "http": 200,
+    "heading": "Your task.A result you can verify.",
+    "heroCTA": {
+      "top": 401.265625,
+      "bottom": 449.265625
+    },
+    "viewport": {
+      "w": 390,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "scenario": "RECOVERY_FIRST_LOGIN_DIALOG",
+    "pass": true
+  },
+  {
+    "engine": "webkit",
+    "lang": "en",
+    "width": 1440,
+    "http": 200,
+    "heading": "Your task.A result you can verify.",
+    "heroCTA": {
+      "top": 775.859375,
+      "bottom": 825.859375
+    },
+    "viewport": {
+      "w": 1440,
+      "h": 900
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "lang": "ru",
+    "width": 320,
+    "http": 200,
+    "heading": "Ваша задача.Результат, который можно проверить.",
+    "heroCTA": {
+      "top": 455.5,
+      "bottom": 503.5
+    },
+    "viewport": {
+      "w": 320,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "lang": "ru",
+    "width": 390,
+    "http": 200,
+    "heading": "Ваша задача.Результат, который можно проверить.",
+    "heroCTA": {
+      "top": 437.8125,
+      "bottom": 485.8125
+    },
+    "viewport": {
+      "w": 390,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "webkit",
+    "lang": "ru",
+    "width": 1440,
+    "http": 200,
+    "heading": "Ваша задача.Результат, который можно проверить.",
+    "heroCTA": {
+      "top": 924.703125,
+      "bottom": 974.703125
+    },
+    "viewport": {
+      "w": 1440,
+      "h": 900
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "lang": "en",
+    "width": 320,
+    "http": 200,
+    "heading": "Your task.A result you can verify.",
+    "heroCTA": {
+      "top": 396.640625,
+      "bottom": 444.640625
+    },
+    "viewport": {
+      "w": 320,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "lang": "en",
+    "width": 390,
+    "http": 200,
+    "heading": "Your task.A result you can verify.",
+    "heroCTA": {
+      "top": 401.765625,
+      "bottom": 449.765625
+    },
+    "viewport": {
+      "w": 390,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "lang": "en",
+    "width": 1440,
+    "http": 200,
+    "heading": "Your task.A result you can verify.",
+    "heroCTA": {
+      "top": 775.890625,
+      "bottom": 825.890625
+    },
+    "viewport": {
+      "w": 1440,
+      "h": 900
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "lang": "ru",
+    "width": 320,
+    "http": 200,
+    "heading": "Ваша задача.Результат, который можно проверить.",
+    "heroCTA": {
+      "top": 455.5,
+      "bottom": 503.5
+    },
+    "viewport": {
+      "w": 320,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "lang": "ru",
+    "width": 390,
+    "http": 200,
+    "heading": "Ваша задача.Результат, который можно проверить.",
+    "heroCTA": {
+      "top": 438.8125,
+      "bottom": 486.8125
+    },
+    "viewport": {
+      "w": 390,
+      "h": 844
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  },
+  {
+    "engine": "chromium",
+    "lang": "ru",
+    "width": 1440,
+    "http": 200,
+    "heading": "Ваша задача.Результат, который можно проверить.",
+    "heroCTA": {
+      "top": 924.78125,
+      "bottom": 974.78125
+    },
+    "viewport": {
+      "w": 1440,
+      "h": 900
+    },
+    "overflow": 0,
+    "toggleCorrect": true,
+    "errors": []
+  }
+]

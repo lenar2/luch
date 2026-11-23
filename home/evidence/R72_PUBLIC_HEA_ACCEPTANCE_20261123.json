@@ -1,0 +1,32 @@
+{
+  "release": "LUCH Home R7.2 HEA",
+  "date": "2026-11-23",
+  "production_url": "https://luch.lenarsalimov.ru/home/",
+  "merged_commit": "c007cbc0f289c7d96b0172eb70f636370983dbda",
+  "public_status": "DEPLOYED_BETA",
+  "web_engine_verified": "WebKit (Safari engine) + Chromium",
+  "public_webkit_real_e2e": "PASS 7/7",
+  "public_webkit_real_e2e_steps": [
+    "OPEN_PUBLIC_SAFARI_ENGINE",
+    "R72_PUBLIC_SIGNUP_CONSENT_AND_CODE",
+    "WEBKIT_SCOPED_CONSENT",
+    "WEBKIT_REAL_HTTPS_RESULT",
+    "WEBKIT_REVOKE_DENIED",
+    "WEBKIT_RU_SWITCH",
+    "WEBKIT_ACCOUNT_AND_RECORDS_DELETED"
+  ],
+  "real_website_get": "https://example.com (HTTP 200; Example Domain)",
+  "revoked_followup": "HTTP 403",
+  "temporary_accounts_deleted": true,
+  "production_database_accounts_after_tests": 0,
+  "public_readonly_ux_checks": 7,
+  "public_ru_direct_to_en": "PASS both engines",
+  "public_horizontal_overflow": false,
+  "privacy_terms_updated": "23 November 2026",
+  "public_get_home": "HTTP 200",
+  "public_head_home": "HTTP 200",
+  "no_paid_or_model_api": true,
+  "physical_iphone": "NOT VERIFIED (paired iPhones offline; no native Safari automation)",
+  "security_load_counsel_review": "NOT CERTIFIED; separate review recommended before broad promotion",
+  "no_luch_core_changes": true
+}

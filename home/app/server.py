@@ -325,8 +325,16 @@ class Handler(BaseHTTPRequestHandler):
         return row
 
     def ip_key(self):
-        # Overwritten by the canonical Caddy route; never accept from the open Internet directly.
-        return (self.headers.get("X-LUCH-Client-IP") or self.client_address[0])[:65]
+        # Outer Caddy normalizes X-Forwarded-For, and the inner site proxy
+        # passes it as X-LUCH-Client-IP. Use the LAST valid forwarded IP so
+        # client-supplied prefixes cannot bypass per-IP account rate limits.
+        forwarded=(self.headers.get("X-LUCH-Client-IP") or "").split(",")
+        for raw in reversed(forwarded):
+            try:
+                return str(ipaddress.ip_address(raw.strip()))
+            except ValueError:
+                continue
+        return self.client_address[0]
 
     def post_body(self):
         if self.headers.get("Transfer-Encoding"):

@@ -1,0 +1,26 @@
+{
+  "status": "PASS_ACTUAL_PUBLIC_HTTPS",
+  "full_e2e": true,
+  "real_browser": "isolated Chromium",
+  "scope": "prior to R7.1 client-IP hardening",
+  "tests": [
+    "PUBLIC_MARKETING_INTEGRATED",
+    "USER_A_SIGNUP_ACTUAL_PUBLIC",
+    "ORIGIN_SCOPED_CONSENT_ACTUAL_PUBLIC",
+    "REAL_REMOTE_HTTPS_CHECK",
+    "ISOLATED_USER_B",
+    "REVOKED_GRANT_DENIED",
+    "REAL_IPHONE_WIDTH_RU_EN_QA",
+    "USER_A_FULL_ACCOUNT_DELETE",
+    "USER_B_FULL_ACCOUNT_DELETE",
+    "REAL_PUBLIC_DESKTOP_RENDER"
+  ],
+  "test_count": 10,
+  "mocked": false,
+  "users_deleted": true,
+  "tested_iphone_viewport_width": 390,
+  "physical_iphone_test": false,
+  "ai_api_connected": false,
+  "public_url": "https://luch.lenarsalimov.ru/home/",
+  "note": "Real public HTTPS + SQLite and a genuine example.com GET. Chromium is not physical iPhone Safari."
+}

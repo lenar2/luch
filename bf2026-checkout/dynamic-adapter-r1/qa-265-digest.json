@@ -1,0 +1,9 @@
+{
+  "schema": "bf2026.qa.265.digest.r1",
+  "pricing_version": "BF2026_LOT10_CUSTOM_SET_R107",
+  "valid": 265,
+  "invalid": 503,
+  "vector_digest_sha256": "c611b927497d203622d14d76e330190f15c1267609723f569adf6912246f8136",
+  "file_sha256": "d1cdb9dcdcf8a5b8fe10326f7944878c477f9582a7ca638a71f10c7a8fabf425",
+  "status": "PRICING_FIXTURE_ONLY_NO_REAL_PROVIDER_ATTESTATION"
+}

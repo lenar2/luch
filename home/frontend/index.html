@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#143b35">
+  <meta name="description" content="LUCH Home. A real website check, clear permissions, and evidence of what happened.">
+  <meta name="robots" content="noindex,nofollow">
+  <title>LUCH Home — your workspace</title>
+  <link rel="icon" type="image/svg+xml" href="mark.svg">
+  <link rel="stylesheet" href="app.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+<div class="layout" id="layout">
+  <aside class="sidebar" aria-label="LUCH Home">
+    <div class="sidebar-head">
+      <a href="/" class="brand" aria-label="LUCH main website"><img src="mark.svg" alt="" width="40" height="40"><span>LUCH <small>Home</small></span></a>
+      <button class="lang-button mobile-lang" data-language type="button" aria-label="Switch language">РУ</button>
+    </div>
+    <div class="workspace-label" data-i18n="yourWorkspace">YOUR WORKSPACE</div>
+    <nav id="side-nav" class="side-nav" aria-label="Workspace sections" hidden>
+      <button type="button" class="nav-link active" data-go="overview"><span aria-hidden="true">⌂</span><span data-i18n="overview">Overview</span></button>
+      <button type="button" class="nav-link" data-go="check"><span aria-hidden="true">◇</span><span data-i18n="websiteCheck">Website check</span></button>
+      <button type="button" class="nav-link" data-go="permissions"><span aria-hidden="true">◈</span><span data-i18n="permissions">Permissions</span></button>
+      <button type="button" class="nav-link" data-go="activity"><span aria-hidden="true">◷</span><span data-i18n="activity">Activity</span></button>
+      <button type="button" class="nav-link" data-go="assistants"><span aria-hidden="true">✧</span><span data-i18n="assistants">Assistants</span><small data-i18n="soon">Soon</small></button>
+    </nav>
+    <div class="side-bottom">
+      <p class="side-note" data-i18n="controlLabel">Your choices. Your permissions. Verifiable results.</p>
+      <a href="/" class="site-link" data-i18n="backSite">← Explore LUCH website</a>
+    </div>
+  </aside>
+  <div class="canvas">
+    <header class="topbar">
+      <div class="breadcrumb"><span>LUCH</span> <i aria-hidden="true">/</i> <strong>Home</strong></div>
+      <div class="top-actions">
+        <span class="release-label" data-i18n="publicPreview">PUBLIC PREVIEW</span>
+        <span class="user-chip" id="user-chip" hidden></span>
+        <button class="lang-button desktop-lang" data-language type="button" aria-label="Switch language">РУ</button>
+        <button type="button" class="logout-button" id="logout" data-i18n="signOut" hidden>Sign out</button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section id="guest" class="guest-grid">
+        <div class="welcome-text">
+          <div class="hero-wordmark"><img src="brand-wordmark.svg" alt="LUCH" width="108" height="108"></div>
+          <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · YOUR FIRST REAL WORKSPACE</p>
+          <h1><span data-i18n="heroOne">Your task.</span><br><em data-i18n="heroTwo">A result you can verify.</em></h1>
+          <p class="hero-lead" data-i18n="heroLead">Start with a real, read-only website check. You decide which public site to inspect, see what happened and can revoke permission at any time.</p>
+          <div class="benefits">
+            <span data-i18n="benefit1">01 · Choose a website</span>
+            <span data-i18n="benefit2">02 · Approve one check</span>
+            <span data-i18n="benefit3">03 · Review the evidence</span>
+          </div>
+          <div class="soft-note"><span class="status-dot" aria-hidden="true"></span><p data-i18n="aiComing">AI assistants aren't connected yet. SO 6.2 can be added later without changing your workspace.</p></div>
+        </div>
+        <div class="auth-card" id="auth-card">
+          <div class="card-intro"><span class="eyebrow" data-i18n="getStarted">GET STARTED</span><span class="tiny-badge" data-i18n="publicBeta">PUBLIC BETA</span></div>
+          <div id="register-pane">
+            <h2 data-i18n="createTitle">Open your workspace.</h2>
+            <p data-i18n="createDesc">Create a private account to keep your permissions and results separate from everyone else's.</p>
+            <form id="register-form" autocomplete="on">
+              <label for="register-username" data-i18n="username">Username</label>
+              <input id="register-username" name="username" minlength="4" maxlength="28" pattern="[A-Za-z][A-Za-z0-9_-]{3,27}" autocomplete="username" placeholder="e.g. alex_home" required>
+              <label for="register-password" data-i18n="password">Password</label>
+              <input type="password" id="register-password" name="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="12 characters or more" required>
+              <p class="form-hint" data-i18n="uniquePwd">Use a unique password. Email recovery is not available in this beta.</p>
+              <button class="button primary full" type="submit"><span data-i18n="createAccount">Create workspace</span><span aria-hidden="true">↗</span></button>
+            </form>
+            <button class="text-switch" id="show-login" type="button" data-i18n="existingAccount">Already have an account? Sign in</button>
+          </div>
+          <div id="login-pane" hidden>
+            <h2 data-i18n="welcomeBack">Welcome back.</h2>
+            <p data-i18n="signInDesc">Sign in to continue with your own website permissions and results.</p>
+            <form id="login-form">
+              <label for="login-username" data-i18n="username">Username</label>
+              <input id="login-username" name="username" autocomplete="username" required>
+              <label for="login-password" data-i18n="password">Password</label>
+              <input type="password" id="login-password" name="password" autocomplete="current-password" required>
+              <button class="button primary full" type="submit"><span data-i18n="signIn">Sign in</span><span aria-hidden="true">↗</span></button>
+            </form>
+            <button class="text-switch" id="show-register" type="button" data-i18n="newAccount">Need a workspace? Create one</button>
+          </div>
+          <p class="form-feedback" id="auth-feedback" role="alert" aria-live="polite"></p>
+          <p class="auth-privacy" data-i18n="accountPrivacy">No email, credit card or AI API is required. We store your username, a protected password hash and your own website checks.</p>
+        </div>
+      </section>
+
+      <div id="workspace" hidden>
+        <section class="page" data-page="overview">
+          <div class="page-heading"><p class="eyebrow" data-i18n="yourWorkspace">YOUR WORKSPACE</p>
+          <h1><span data-i18n="hello">Good to see you,</span> <span id="hello-name"></span><span class="period">.</span></h1>
+          <p data-i18n="overviewIntro">Start with a site you choose. LUCH will show the HTTPS result and what the inspected page actually contains.</p></div>
+          <div class="primary-mission">
+            <div class="mission-copy"><p class="eyebrow" data-i18n="firstRealTask">YOUR FIRST REAL TASK</p>
+              <h2><span data-i18n="missionOne">Check a website.</span><br><em data-i18n="missionTwo">See the evidence.</em></h2>
+              <p data-i18n="missionDesc">A real, bounded HTTPS request. No passwords to your site, no changes to its files and no hidden AI actions.</p>
+              <div class="mission-actions"><button class="button cream" data-go="check" type="button"><span data-i18n="startWebsiteCheck">Open website check</span><span aria-hidden="true">↗</span></button>
+                <span id="mission-status" data-i18n="notGranted">No website permission yet</span></div>
+            </div>
+            <div class="mission-art"><img src="brand-wordmark.svg" alt="LUCH glowing logo"><small data-i18n="brandWords">YOUR AI · YOUR CONTROL · YOUR RESULTS</small></div>
+          </div>
+          <div class="summary-grid">
+            <button class="summary-card" data-go="permissions" type="button"><span data-i18n="permissionStatus">WEBSITE ACCESS</span><strong id="stat-permission" data-i18n="notGranted">Not granted</strong><small data-i18n="manageAccess">Review permissions ↗</small></button>
+            <button class="summary-card" data-go="activity" type="button"><span data-i18n="checksRecorded">RECORDED CHECKS</span><strong id="stat-checks">0</strong><small data-i18n="viewActivity">See your activity ↗</small></button>
+            <button class="summary-card" data-go="assistants" type="button"><span data-i18n="aiConnection">AI CONNECTION</span><strong data-i18n="notConnected">Not connected</strong><small data-i18n="comingLater">SO 6.2 integration later ↗</small></button>
+          </div>
+        </section>
+
+        <section class="page" data-page="check" hidden>
+          <div class="page-heading"><p class="eyebrow" data-i18n="websiteCheck">WEBSITE CHECK</p>
+            <h1><span data-i18n="checkHeadOne">What does your</span><br><em data-i18n="checkHeadTwo">website show?</em></h1>
+            <p data-i18n="checkIntro">Choose a publicly accessible HTTPS domain. LUCH will fetch its homepage, inspect bounded metadata and record what it found.</p>
+          </div>
+          <div class="check-grid">
+            <div class="surface">
+              <div class="surface-top"><span class="eyebrow" data-i18n="source">THE WEBSITE</span><span class="tiny-badge" data-i18n="readOnly">READ ONLY</span></div>
+              <div id="no-grant">
+                <form id="grant-form">
+                  <label for="website-url" data-i18n="websiteAddress">Public website address</label>
+                  <input id="website-url" type="text" spellcheck="false" inputmode="url" autocomplete="url" placeholder="https://example.com" required maxlength="260">
+                  <p class="field-note" data-i18n="originOnly">HTTPS homepage only. No passwords, private networks or redirects.</p>
+                  <label class="consent-row"><input id="consent-box" type="checkbox" required><span data-i18n="consentCopy">I allow LUCH to send a read-only request to this public website and save the result in my account.</span></label>
+                  <button class="button primary full" type="submit"><span data-i18n="grantThisWebsite">Allow this website check</span><span aria-hidden="true">↗</span></button>
+                </form>
+              </div>
+              <div id="granted" hidden>
+                <p class="label-sub" data-i18n="permissionActive">ACTIVE PERMISSION</p><p class="granted-origin" id="current-origin"></p>
+                <p class="field-note" data-i18n="scopeDisclosure">Only GET / over verified HTTPS. No sign-in, no writes, no JavaScript execution, no redirects followed.</p>
+                <button class="button primary full" id="run-check" type="button"><span data-i18n="runCheck">Run real website check</span><span aria-hidden="true">↗</span></button>
+                <button class="text-switch" type="button" data-go="permissions" data-i18n="changePermission">Change or revoke permission ↗</button>
+              </div>
+              <p id="check-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+            </div>
+            <div class="surface results-surface">
+              <div class="surface-top"><span class="eyebrow" data-i18n="evidence">OBSERVED RESULT</span><span class="result-badge" id="result-badge" data-i18n="notRun">NOT RUN</span></div>
+              <div class="empty-result" id="empty-result"><span aria-hidden="true">◇</span><h3 data-i18n="resultPlaceholder">Your result will appear here.</h3><p data-i18n="resultPlaceholderDesc">First grant access to one public website. The result comes from a fresh, real HTTPS request.</p></div>
+              <div id="site-result" hidden>
+                <h3 class="result-title" id="result-title"></h3><div class="result-stats">
+                  <div><span>HTTP</span><strong id="result-http"></strong></div>
+                  <div><span data-i18n="responseTime">TIME</span><strong id="result-time"></strong></div>
+                  <div><span data-i18n="mobileViewport">MOBILE VIEWPORT</span><strong id="result-mobile"></strong></div>
+                </div>
+                <dl class="result-details">
+                  <dt data-i18n="websiteAddress">Website</dt><dd id="result-origin"></dd>
+                  <dt data-i18n="checkedAt">Checked at</dt><dd id="result-checked"></dd>
+                  <dt data-i18n="sourceHash">Content SHA-256 prefix</dt><dd id="result-hash" class="mono"></dd>
+                </dl>
+                <h4 data-i18n="observations">Observations</h4><ul id="result-observations"></ul>
+                <p class="field-note" data-i18n="limitedCheck">This is a limited HTML and HTTPS inspection, not a full accessibility, SEO or security audit.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" data-page="permissions" hidden>
+          <div class="page-heading"><p class="eyebrow" data-i18n="permissions">PERMISSIONS</p><h1><span data-i18n="permissionHeadOne">Your tools.</span><br><em data-i18n="permissionHeadTwo">Your choice.</em></h1>
+            <p data-i18n="permissionIntro">Access is limited to a public HTTPS homepage you selected. You can stop further checks immediately.</p></div>
+          <div class="surface wide-surface">
+            <div class="surface-top"><span class="eyebrow" data-i18n="activeGrant">WEBSITE CHECK PERMISSION</span><span class="tiny-badge" id="permission-badge" data-i18n="notGranted">NOT GRANTED</span></div>
+            <h2 id="permission-title" data-i18n="noPermission">No website selected.</h2>
+            <p data-i18n="permissionScope">Allowed: one public HTTPS homepage, read-only. Not allowed: password access, local networks, internal services, files or devices.</p>
+            <div class="permission-buttons"><button class="button secondary" data-go="check" type="button"><span data-i18n="chooseWebsite">Choose a website</span> ↗</button>
+              <button class="button danger" id="revoke-grant" type="button" hidden data-i18n="revoke">Revoke access</button></div>
+            <p class="field-note" data-i18n="revokeNote">Once revoked, the previous permission cannot be used for another check.</p>
+            <p id="permission-feedback" class="form-feedback" role="status" aria-live="polite"></p>
+            <div class="account-danger-zone"><h3 data-i18n="accountControl">Your account and data</h3>
+              <p data-i18n="retention">Checks and activity are retained for up to 90 days. You can delete your account and all its data at any time.</p>
+              <button type="button" class="delete-account-link" id="delete-account" data-i18n="deleteAccount">Delete my account and data</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="page" data-page="activity" hidden>
+          <div class="page-heading"><p class="eyebrow" data-i18n="activity">ACTIVITY</p><h1><span data-i18n="activityHeadOne">What happened,</span><br><em data-i18n="activityHeadTwo">and when.</em></h1>
+            <p data-i18n="activityIntro">Only your own checks and permission changes appear here. Nothing from another user's workspace.</p></div>
+          <div class="surface wide-surface"><div class="surface-top"><span class="eyebrow" data-i18n="recordedResults">RECORDED RESULTS</span><span class="tiny-badge" data-i18n="yourAccount">YOUR ACCOUNT ONLY</span></div>
+            <div id="activity-list" class="activity-list"><p data-i18n="noActivity">No activity yet. Your first result will appear here.</p></div></div>
+        </section>
+
+        <section class="page" data-page="assistants" hidden>
+          <div class="page-heading"><p class="eyebrow" data-i18n="assistants">ASSISTANTS</p><h1><span data-i18n="assistantHeadOne">Your AI.</span><br><em data-i18n="assistantHeadTwo">With your permission.</em></h1>
+            <p data-i18n="assistantIntro">This is where AI assistants will work with the connections and permissions you choose.</p></div>
+          <div class="surface wide-surface assistant-card"><div class="assistant-top"><img src="brand-wordmark.svg" alt="LUCH"><span class="tiny-badge" data-i18n="notConnected">NOT CONNECTED</span></div>
+            <h2 data-i18n="modelComing">SO 6.2 · planned connection</h2>
+            <p data-i18n="modelExplainer">No model API is connected to this public Home. AI chat, file access and automated actions are disabled. When the model is connected, it will use your own permissions — not another person's account.</p>
+            <button type="button" class="button secondary" data-go="check"><span data-i18n="useAvailableTool">Use the available website check</span> ↗</button>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="app-footer"><span>LUCH Home R7 · <span data-i18n="publicBeta">Public beta</span></span><span><a href="/en/privacy/" data-privacy data-i18n="privacy">Privacy</a> · <a href="/en/terms/" data-terms data-i18n="terms">Terms</a> · <a href="/" data-i18n="backSite">Main site</a></span></footer>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body></html>

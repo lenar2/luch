@@ -1,0 +1,62 @@
+{
+  "status": "PASS_VISUAL_ONLY",
+  "real_backend_execution": false,
+  "cases": 14,
+  "viewports": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "languages": [
+    "en",
+    "ru"
+  ],
+  "full_width_fit": true,
+  "brand_visible": true,
+  "no_js_errors": true,
+  "no_owner_thread_link": true,
+  "mobile_navigation": [
+    {
+      "name": "check",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "permissions",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "activity",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "assistants",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "check",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "permissions",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "activity",
+      "view": 390,
+      "scroll": 390
+    },
+    {
+      "name": "assistants",
+      "view": 390,
+      "scroll": 390
+    }
+  ],
+  "note": "Browser fixture tests are not a production or provider E2E pass."
+}

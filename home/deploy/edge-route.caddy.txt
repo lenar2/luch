@@ -1,0 +1,13 @@
+# Existing luch.lenarsalimov.ru site block only; before the catch-all handle.
+handle /home {
+    redir /home/ 308
+}
+handle_path /home/* {
+    reverse_proxy luch-home-r7-public:8080 {
+        header_up X-LUCH-Client-IP {remote_host}
+        header_up -Authorization
+        lb_try_duration 3s
+    }
+    header Cache-Control "no-store"
+    header X-Content-Type-Options "nosniff"
+}

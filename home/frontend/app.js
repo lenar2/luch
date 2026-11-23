@@ -57,7 +57,20 @@ assistantIntro:'Здесь будут работать ИИ-помощники �
 modelComing:'SO 6.2 · подключение запланировано',
 modelExplainer:'В публичном Home пока нет API модели. Чат, доступ к файлам и автоматические действия выключены. Когда модель появится, она будет использовать ваши разрешения, а не чужую учётную запись.',
 useAvailableTool:'Открыть доступную проверку сайта',accountControl:'Ваш аккаунт и данные',retention:'Проверки и история хранятся до 90 дней. Вы можете удалить учётную запись вместе со всеми данными.',
-deleteAccount:'Удалить мой аккаунт и данные',privacy:'Конфиденциальность',terms:'Условия'
+deleteAccount:'Удалить мой аккаунт и данные',privacy:'Конфиденциальность',terms:'Условия',
+tryNow:'Бесплатно проверить сайт ↗',showPassword:'Показать пароль',hidePassword:'Скрыть пароль',
+acceptPolicies:'Я ознакомился с Политикой конфиденциальности и Условиями использования LUCH Home.',
+forgotPassword:'Забыли пароль? Восстановить по коду',recoveryTitle:'Восстановление аккаунта',
+recoveryDesc:'Введите резервный код, сохранённый при регистрации. Пароль изменится, остальные сеансы завершатся.',
+recoveryCode:'Резервный код',newPassword:'Новый пароль',resetPassword:'Сменить пароль',
+backToLogin:'Вернуться ко входу',saveCodeTitle:'Сохраните резервный код',
+saveCodeDesc:'Храните этот код в безопасном месте. LUCH показывает его только сейчас и не сможет восстановить. Знающий код и логин сможет сменить пароль.',
+copyCode:'Скопировать код',savedCodeConfirm:'Я надёжно сохранил резервный код.',
+continueToHome:'Продолжить в Home',recoverySettings:'Восстановление аккаунта',
+recoverySettingsDesc:'Выпустите новый резервный код. Старый сразу перестанет работать.',
+newRecoveryCode:'Выпустить новый код',
+sampleHeading:'Посмотрите пример результата до регистрации',sampleDisclosure:'Только пример: это не текущая проверка вашего аккаунта.',
+sampleDomain:'Пример сайта',sampleLimits:'LUCH проверяет метаданные публичной главной страницы и не изменяет сайт.'
 };
 const P={
 en:{
@@ -75,7 +88,11 @@ obs200:'Website responded successfully.',obs300:'Website returned a redirect; re
 obsBad:'Website returned a non-success HTTP status.',obsViewport:'No mobile viewport meta tag was found in the inspected HTML.',
 obsTitle:'No HTML title was found in the inspected content.',obsNotHTML:'Response was not HTML; page metadata was not inspected.',
 siteLimit:'Only verified public HTTPS websites are supported. Paths, private IPs and redirects cannot be inspected.',
-grantRequired:'Grant one website before running a check.',cannotConnect:'Connection unavailable. Please try again.'
+grantRequired:'Grant one website before running a check.',cannotConnect:'Connection unavailable. Please try again.',
+resetDone:'Password reset. Sign in with the new password.',copyDone:'Recovery code copied.',recoveryNotSaved:'Please save and confirm the code first.',
+errorSignup:'Please check your username, password and acceptance of the policies.',errorGrant:'Please choose a public HTTPS website.',
+errorAuth:'Credentials or recovery code are incorrect.',errorRate:'Too many attempts. Try again later.',errorAccess:'This operation is not permitted.',
+errorNetwork:'Cannot verify this website. Please try another public HTTPS site.'
 },
 ru:{
 waiting:'Проверяем соединение…',grantActive:'Разрешено',notGranted:'Не разрешено',yes:'Есть',no:'Нет',unknown:'Неизвестно',
@@ -95,9 +112,15 @@ obsTitle:'В проверенной части HTML не найден загол
 obsNotHTML:'Ответ не является HTML; метаданные страницы не изучались.',
 siteLimit:'Поддерживаются только публичные HTTPS-сайты. Пути, частные IP и редиректы не обрабатываются.',
 grantRequired:'Сначала разрешите проверку одного сайта.',
-cannotConnect:'Нет соединения. Повторите позже.'
+cannotConnect:'Нет соединения. Повторите позже.',
+resetDone:'Пароль изменён. Войдите с новым паролем.',copyDone:'Резервный код скопирован.',recoveryNotSaved:'Сначала сохраните код и подтвердите это.',
+errorSignup:'Проверьте имя, пароль и согласие с условиями.',errorGrant:'Укажите публичный HTTPS-сайт.',
+errorAuth:'Логин, пароль или резервный код неверны.',errorRate:'Слишком много попыток. Повторите позже.',
+errorAccess:'Недостаточно прав для этого действия.',errorNetwork:'Не удалось проверить сайт. Попробуйте другой публичный HTTPS-адрес.'
 }};
 const $=id=>document.getElementById(id);
+// Preserve original English DOM strings before translating an initial ?lang=ru request.
+document.querySelectorAll('[data-i18n]').forEach(n=>{n.dataset.enOriginal=n.textContent});
 const escapeText=value=>String(value??'');
 let lang=new URLSearchParams(location.search).get('lang')==='ru'?'ru':'en';
 let state={authenticated:false}, page='overview', busy=false, lastResult=null;
@@ -139,7 +162,7 @@ async function request(path,payload=null,needsCsrf=true){
  let json={};
  try{json=await response.json()}catch{}
  if(!response.ok) {
-  const e=new Error(json.error || tx('error'));e.status=response.status;throw e;
+  const e=new Error(json.error || tx('error'));e.status=response.status;e.code=json.error_code||'';throw e;
  }
  return json;
 }
@@ -149,13 +172,19 @@ function showToast(message){
  clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>{el.hidden=true},4600);
 }
 function reportError(where,error){
- const msg=error?.status===401?tx('sessionExpired'):error?.message||tx('error');
+ const status=error?.status;
+ const msg=status===401?tx('sessionExpired'):
+  lang==='en'?(error?.message||tx('error')):
+  status===429?tx('errorRate'):status===403?tx('errorAccess'):
+  status===422?tx('errorNetwork'):
+  where==='check-feedback'?tx('errorGrant'):
+  where==='auth-feedback'?tx('errorAuth'):tx('error');
  text(where,msg);
  if(error?.status===401)refresh();
 }
 function setBusy(on){
  busy=on;
- document.querySelectorAll('form button[type=submit], #run-check, #revoke-grant').forEach(x=>x.disabled=on);
+ document.querySelectorAll('form button[type=submit], #run-check, #revoke-grant, #rotate-recovery').forEach(x=>x.disabled=on);
 }
 function showPage(next){
  if(!state.authenticated)return;
@@ -241,9 +270,23 @@ async function refresh(){
  catch(e){showToast(tx('cannotConnect'))}
 }
 function toggleAuth(login){
- $('register-pane').hidden=login;$('login-pane').hidden=!login;
+ $('register-pane').hidden=login;$('login-pane').hidden=!login;$('recovery-pane').hidden=true;
  text('auth-feedback','');
 }
+function toggleRecovery(){
+ $('register-pane').hidden=true;$('login-pane').hidden=true;$('recovery-pane').hidden=false;
+ text('auth-feedback','');
+}
+let shownRecoveryCode='';
+function presentRecoveryCode(code){
+ shownRecoveryCode=code;
+ text('recovery-code-display',code);
+ $('recovery-saved').checked=false;
+ $('close-recovery').disabled=true;
+ $('recovery-dialog').showModal();
+ $('recovery-saved').focus();
+}
+
 async function authenticate(mode,e){
  e.preventDefault();if(busy)return;
  const f=e.currentTarget;
@@ -251,10 +294,14 @@ async function authenticate(mode,e){
  const pwd=f.elements.password.value;
  text('auth-feedback','');setBusy(true);
  try{
-  const v=await request(mode,{username:uname,password:pwd},false);
+  const body=mode==='register'?{username:uname,password:pwd,accepted_terms:$('terms-agreement').checked}:{username:uname,password:pwd};
+  const v=await request(mode,body,false);
   f.elements.password.value='';
   await refresh();
-  if(v.authenticated){showToast(mode==='register'?tx('signupOK'):tx('signedIn'))}
+  if(v.authenticated){
+   showToast(mode==='register'?tx('signupOK'):tx('signedIn'));
+   if(mode==='register'&&v.recovery_code)presentRecoveryCode(v.recovery_code);
+  }
  }catch(e){reportError('auth-feedback',e)}
  finally{setBusy(false)}
 }
@@ -309,10 +356,53 @@ async function deleteAccount(){
  }catch(e){reportError('permission-feedback',e)}
  finally{setBusy(false)}
 }
+async function recoverPassword(e){
+ e.preventDefault();if(busy)return;
+ const f=e.currentTarget;setBusy(true);text('auth-feedback','');
+ try{
+  await request('recovery/reset',{username:f.elements.username.value.trim(),
+    recovery_code:f.elements.recovery_code.value.trim(),password:f.elements.password.value},false);
+  f.reset();toggleAuth(true);showToast(tx('resetDone'));
+ }catch(e){reportError('auth-feedback',e)}
+ finally{setBusy(false)}
+}
+async function rotateRecovery(){
+ if(busy)return;
+ const password=$('rotate-password').value;
+ if(!password){text('permission-feedback',tx('errorAuth'));return}
+ setBusy(true);text('permission-feedback','');
+ try{
+  const result=await request('recovery/rotate',{password});
+  $('rotate-password').value='';
+  presentRecoveryCode(result.recovery_code);
+ }catch(e){reportError('permission-feedback',e)}
+ finally{setBusy(false)}
+}
 document.querySelectorAll('[data-language]').forEach(x=>x.addEventListener('click',switchLanguage));
 document.querySelectorAll('[data-go]').forEach(x=>x.addEventListener('click',()=>showPage(x.dataset.go)));
 $('show-login').addEventListener('click',()=>toggleAuth(true));
 $('show-register').addEventListener('click',()=>toggleAuth(false));
+$('show-recovery').addEventListener('click',toggleRecovery);
+$('recovery-back').addEventListener('click',()=>toggleAuth(true));
+$('recovery-form').addEventListener('submit',recoverPassword);
+$('rotate-recovery').addEventListener('click',rotateRecovery);
+document.querySelectorAll('[data-login-shortcut]').forEach(b=>b.addEventListener('click',()=>{
+ toggleAuth(true);$('auth-card').scrollIntoView({behavior:'smooth',block:'start'})
+}));
+document.querySelectorAll('[data-toggle-password]').forEach(b=>b.addEventListener('click',()=>{
+ const f=$(b.dataset.togglePassword);f.type=f.type==='password'?'text':'password';
+ b.textContent=f.type==='password'?(lang==='ru'?RU.showPassword:'Show password'):(lang==='ru'?RU.hidePassword:'Hide password')
+}));
+$('copy-recovery').addEventListener('click',async()=>{
+ try{await navigator.clipboard.writeText(shownRecoveryCode);showToast(tx('copyDone'))}
+ catch{showToast(lang==='ru'?'Скопируйте код вручную.':'Select and copy the code manually.')}
+});
+$('recovery-dialog').addEventListener('cancel',e=>e.preventDefault());
+$('recovery-saved').addEventListener('change',e=>$('close-recovery').disabled=!e.target.checked);
+$('close-recovery').addEventListener('click',()=>{
+ if(!$('recovery-saved').checked){showToast(tx('recoveryNotSaved'));return}
+ $('recovery-dialog').close();shownRecoveryCode='';text('recovery-code-display','');
+});
 $('register-form').addEventListener('submit',e=>authenticate('register',e));
 $('login-form').addEventListener('submit',e=>authenticate('login',e));
 $('grant-form').addEventListener('submit',consent);

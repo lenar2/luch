@@ -108,29 +108,29 @@ PAGE={
 ("Могу ли я пользоваться бесплатно?","Core предназначен для бесплатной работы с инструментами при ограничениях безопасности и ресурсов."),
 ("Будет ли ИИ управлять всем компьютером?","Нет. Только разрешёнными функциями поддерживаемого подключённого устройства."),
 ("Нужно держать Mac включённым?","Для изолированного серверного браузера — нет. Для доступа к самому Mac — да."),
-("Могу ли я зарегистрироваться самостоятельно?","Полный самостоятельный путь нового пользователя пока не подтверждён. Проверяйте доступ конкретного клиента.")],"Поддержка","«Не могу подключиться. Куда сообщить?»","Сообщите о проблеме через GitHub Issue без паролей и личных данных."),
+("Могу ли я зарегистрироваться самостоятельно?","В LUCH Home доступна публичная регистрация для проверки сайтов. Подключение LUCH Core, ИИ и устройств остаётся ограниченным.")],"Поддержка","«Не могу подключиться. Куда сообщить?»","Сообщите о проблеме через GitHub Issue без паролей и личных данных."),
 "en":("Understand it.<br><em>Without a manual.</em>","Answers to what matters before connecting: access, safety, devices and cost.","If access isn't ready, we say so.","Frequently asked questions","Short answers",[
 ("Is it free?","Core tools are intended to be free, subject to infrastructure and safety limits."),
 ("Will it control my whole computer?","No. Only authorized functions on a supported paired device."),
 ("Does my Mac have to stay on?","Not for the isolated server browser. Yes for operations on your Mac."),
-("Can I sign up on my own?","Independent self-service onboarding is not yet verified. Check your client and account.")],"Support","“My connection isn't working. Where do I report it?”","Open a GitHub issue without passwords or personal data.")},
+("Can I sign up on my own?","Public signup is available for LUCH Home website checks. Core, AI and device onboarding remain restricted.")],"Support","“My connection isn't working. Where do I report it?”","Open a GitHub issue without passwords or personal data.")},
 "privacy":{
-"ru":("Ваши данные.<br><em>Ваши границы.</em>","LUCH работает с ресурсами только в пределах разрешений. Полный действующий документ о конфиденциальности опубликован отдельно; здесь — понятный путь к нему.","Правовой текст важнее обещаний на главной странице.","Политика конфиденциальности","Что важно понимать",[
+"ru":("Ваши данные.<br><em>Ваши границы.</em>","Home открыт для публичной регистрации на проверку сайтов. Данные Home и ограниченного LUCH Core описаны в действующей политике отдельно.","Правовой текст важнее обещаний на главной странице.","Политика конфиденциальности","Что важно понимать",[
 ("Доступ выбирается","Файлы, браузеры, учётные записи и устройства имеют собственные границы доступа."),
 ("Действия оставляют след","Для работы могут обрабатываться идентификаторы аккаунта и устройства, запросы и результаты разрешённых действий."),
 ("Полный документ","Актуальная англоязычная политика — по ссылке ниже. Перевод здесь носит справочный характер.")],"Документ","«Что происходит с моими данными?»","Прочитайте действующую политику конфиденциальности перед подключением."),
-"en":("Your data.<br><em>Your boundaries.</em>","LUCH works within the access you approve. The complete current Privacy Policy is published separately; this is a clearer route to it.","The policy, not a slogan, defines the details.","Privacy Policy","What matters most",[
+"en":("Your data.<br><em>Your boundaries.</em>","Home is open for public website-check signup. The current Privacy Policy covers Home separately from the restricted LUCH Core.","The policy, not a slogan, defines the details.","Privacy Policy","What matters most",[
 ("Scoped access","Files, browser sessions, accounts and devices are subject to their own permissions."),
 ("Necessary processing","Work may involve account and device identifiers, authorized requests and action results."),
 ("Read the complete policy","The current effective Privacy Policy is available at the link below.")],"The document","“What happens to my data?”","Read the full effective Privacy Policy before connecting.")},
 "terms":{
-"ru":("Понятные условия.<br><em>Без мелкого шрифта.</em>","LUCH предоставляется с ограниченным доступом. Юридически значимые условия использования опубликованы отдельно; здесь — краткая навигация.","Это справочное описание, не замена действующих условий.","Полные условия","Главное перед использованием",[
+"ru":("Понятные условия.<br><em>Без мелкого шрифта.</em>","LUCH Core остаётся ограниченным. Публичный Home уже открыт для проверки сайтов; юридически значимые условия приведены по ссылке.","Это справочное описание, не замена действующих условий.","Полные условия","Главное перед использованием",[
 ("Ваши полномочия","Подключайте только те аккаунты, устройства и сервисы, которыми имеете право управлять."),
-("Ограниченная доступность","Функции зависят от разрешений, клиента и состояния сервиса; общий открытый доступ не заявлен."),
+("Ограниченная доступность","Проверка сайтов в Home доступна публично; ИИ, Core и управление устройствами требуют отдельного доступа."),
 ("Действующие условия","Полный англоязычный документ приведён ниже. Перевод этой страницы справочный.")],"Документ","«Какие правила действуют?»","Откройте действующие условия использования."),
-"en":("Clear terms.<br><em>Nothing hidden.</em>","LUCH is a limited-access service. The full effective Terms of Use are published separately; this page is a human-readable entry.","This summary doesn't replace the effective Terms.","Full terms","Before using LUCH",[
+"en":("Clear terms.<br><em>Nothing hidden.</em>","LUCH Core remains restricted. Public Home signup is available for website checks; the full effective Terms are linked below.","This summary doesn't replace the effective Terms.","Full terms","Before using LUCH",[
 ("Your authority","Only connect accounts, devices and services you have the right to control."),
-("Limited access","Capabilities depend on permission, client and service availability. General public access is not claimed."),
+("Limited access","Home website checking is public beta; AI, Core and devices require separate access."),
 ("The legal document","Read the full current Terms of Use below.")],"The document","“What rules apply?”","Open the effective Terms of Use.")}
 }
 def logo(lang):return f'<a class="logo" href="/{lang}/" aria-label="LUCH"><img src="/assets/luch-ray.svg" alt="" width="30" height="30">LUCH<span class="dot">.</span></a>'

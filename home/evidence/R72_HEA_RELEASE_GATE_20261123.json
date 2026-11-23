@@ -1,0 +1,31 @@
+{
+  "release": "R7.2 Human Experience Repair",
+  "date_utc": "2026-11-23",
+  "status": "CANDIDATE_TEST_PASS_PHYSICAL_IPHONE_HOLD",
+  "api_offline_scenarios": 30,
+  "api_real_stage": "PASS (dedicated database; recovery/terms/auth/revoke; user deleted)",
+  "web_engine_screens": 12,
+  "engines": [
+    "WebKit (iPhone-sized viewport)",
+    "Chromium"
+  ],
+  "viewport_widths": [
+    320,
+    390,
+    1440
+  ],
+  "language_roundtrips": "PASS EN↔RU, both direct query languages",
+  "main_cta_bottom_390_px": {
+    "en": 449,
+    "ru": 486
+  },
+  "recovery_modal_ack": "PASS browser fixture",
+  "recovery_reset_rotate_replay": "PASS actual isolated stage and contract tests",
+  "retention_over_90_days": "PASS DB contract without restart; 15 minute scheduled purge and read-time filter",
+  "legal": "Canonical /privacy/ and /terms/ updated to explicitly distinguish public Home from restricted Core. Human summaries EN/RU aligned. Human legal review advisable.",
+  "head_method": "PASS separate isolated server HTTP 200, no body",
+  "physical_iphone": "NOT_VERIFIED: paired iPhone companion offline; no authorized native Safari automation",
+  "so_6_2": "NOT_CONNECTED",
+  "production_release": "NOT_YET_CONFIRMED_IN_THIS_RECEIPT",
+  "source": "HEA R7.2 staged code and live read-only previous R7"
+}

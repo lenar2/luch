@@ -141,12 +141,13 @@ def head(lang,slug,title,desc,canonical=None):
 def header(lang,slug=""):
  d=LOC[lang];links=[("work",f"/{lang}/#work"),("story",f"/{lang}/case/"),("tools",f"/{lang}/platform/")]
  menu=''.join(f'<a href="{u}">{d[k]}</a>' for k,u in links)
+ menu += '<a href="/home/">'+('Home' if lang=='en' else 'Кабинет')+'</a>'
  action_href = f"/{lang}/status/" if slug=="connect" else (f"/{lang}/clients/" if slug=="status" else f"/{lang}/connect/")
  action_label = d["status"] if slug=="connect" else (("Выбрать ИИ" if lang=="ru" else "Choose AI") if slug=="status" else d["start"])
  return f'<header class="site-header"><div class="wrap header-inner">{logo(lang)}<nav class="main-nav" id="main-nav" data-main-nav aria-label="Main">{menu}</nav><div class="nav-actions"><a class="locale" href="/{d["lang"]}/{slug+"/" if slug else ""}" lang="{d["lang"]}">{d["switch"]}</a><a class="header-cta" href="{action_href}">{action_label} ↗</a><button data-menu-toggle class="nav-toggle" type="button" aria-label="Menu" aria-controls="main-nav" aria-expanded="false">☰</button></div></div></header>'
 def footer(lang):
- d=LOC[lang];l=f"/{lang}/"
- return f'<footer class="site-footer"><div class="wrap"><div class="foot-head"><div>{logo(lang)}<p>{d["footer"]}</p></div><nav class="foot-nav"><a href="{l}platform/">{d["tools"]}</a><a href="{l}clients/">AI</a><a href="{l}connect/">{d["connect"]}</a><a href="{l}help/">{d["support"]}</a></nav></div><div class="foot-bottom"><span>© 2026 LUCH · {d["rights"]}</span><nav><a href="/privacy/">{d["privacy"]}</a><a href="/terms/">{d["terms"]}</a><a href="/security/">{d["safe"]}</a><a href="/support/">{d["support"]}</a><a href="{l}status/">{d["status"]}</a><a href="{GITHUB}">GitHub ↗</a></nav></div></div></footer></body></html>'
+ d=LOC[lang];l=f"/{lang}/";home_label='Home' if lang=='en' else 'Кабинет'
+ return f'<footer class="site-footer"><div class="wrap"><div class="foot-head"><div>{logo(lang)}<p>{d["footer"]}</p></div><nav class="foot-nav"><a href="/home/">{home_label}</a><a href="{l}platform/">{d["tools"]}</a><a href="{l}clients/">AI</a><a href="{l}connect/">{d["connect"]}</a><a href="{l}help/">{d["support"]}</a></nav></div><div class="foot-bottom"><span>© 2026 LUCH · {d["rights"]}</span><nav><a href="/privacy/">{d["privacy"]}</a><a href="/terms/">{d["terms"]}</a><a href="/security/">{d["safe"]}</a><a href="/support/">{d["support"]}</a><a href="{l}status/">{d["status"]}</a><a href="{GITHUB}">GitHub ↗</a></nav></div></div></footer></body></html>'
 def cta(lang):
  ru=lang=="ru"
  title="Одна задача.<br><em>Начните с неё.</em>" if ru else "One task.<br><em>Start with that.</em>"

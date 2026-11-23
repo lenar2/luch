@@ -220,3 +220,62 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .account-danger-zone h3{font-size:17px;margin-bottom:8px;color:#783f3b}
 .account-danger-zone p{font-size:12px;line-height:1.7;color:#87736e}
 .delete-account-link{background:transparent;border:0;padding:7px 0;font-size:12px;text-decoration:underline;text-underline-offset:3px;color:#9b4c45}
+
+/* HEA R7.2: high-contrast text, clear human-first action, iPhone-first layout */
+.hero-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:22px}
+.hero-cta .text-switch{padding:7px 0;text-decoration-thickness:1px}
+.hero-cta .button{background:#17483c;color:#fff;font-weight:790;min-height:50px}
+.soft-note{color:#405c4e}
+.auth-card>div>p:not(.eyebrow),.auth-card p{color:#435f51}
+.auth-card .form-hint{color:#435f51}
+.app-footer,.app-footer a{color:#435c4d}
+.breadcrumb{color:#475f52}
+.field-note,.auth-privacy,.side-note{color:#485e52}
+.password-visibility{width:max-content;border:0;background:transparent;color:#255b47;padding:3px 0 5px;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.account-consent{padding:11px 0!important;margin:0!important;border-top:0!important;color:#375b4b!important;font-size:12px!important}
+.account-consent input{flex-shrink:0;min-height:18px!important;width:18px!important;accent-color:#1e694d}
+.account-consent a{color:#225f49;font-weight:760;text-decoration:underline;text-underline-offset:3px}
+.auth-card:target{scroll-margin-top:20px}
+.auth-card #recovery-pane h2{font-size:32px}
+.recovery-rotate{margin:20px 0 27px;padding:20px;border:1px solid #d1e3d4;border-radius:14px;background:#f3f8f1}
+.recovery-rotate h4{font-size:16px;letter-spacing:-.02em;margin:0 0 10px}
+.recovery-rotate p{font-size:12px;line-height:1.6;color:#425d50}
+.recovery-rotate input{display:block;margin:9px 0 15px}
+.recovery-dialog{border:1px solid #b1d7c0;border-radius:20px;background:#fffefa;color:#163e33;padding:clamp(22px,4vw,40px);
+ max-width:min(500px,calc(100vw - 28px));box-shadow:0 20px 90px #001c18a8}
+.recovery-dialog::backdrop{background:#0b2825ba;backdrop-filter:blur(4px)}
+.recovery-dialog h2{font-size:29px;line-height:1.14;margin:0 0 14px}
+.recovery-dialog p{font-size:13px;line-height:1.68;color:#3e5f50}
+.recovery-dialog code{display:block;overflow-wrap:anywhere;user-select:all;padding:20px 15px;background:#e8f4ea;color:#174939;
+ border-radius:11px;font-size:15px;margin:22px 0;border:1px solid #cce2d3}
+.recovery-dialog .consent-row{margin:18px 0}
+@media(max-width:760px){
+ .guest-grid{gap:19px}
+ .welcome-text .hero-wordmark{width:57px;height:57px;border-radius:13px;margin-bottom:12px}
+ .welcome-text .eyebrow{font-size:9px;margin-bottom:11px}
+ .welcome-text h1{font-size:clamp(35px,8.1vw,49px);line-height:1.03;margin-bottom:14px}
+ .welcome-text .hero-lead{font-size:13px;line-height:1.53;margin-bottom:0;max-width:450px}
+ .hero-cta{margin-top:15px;gap:11px;align-items:flex-start;flex-direction:column}
+ .hero-cta .button{width:100%;max-width:360px;min-height:48px;font-size:13px}
+ .hero-cta .text-switch{font-size:12px;padding:2px 0}
+ .welcome-text .benefits{display:none}
+ .welcome-text .soft-note{font-size:11px;line-height:1.4;margin-top:13px}
+ .auth-card{padding:22px 20px}
+ .auth-card h2{font-size:30px;margin:16px 0 9px}
+ .auth-card form{gap:10px;margin-top:15px}
+ .auth-card .form-hint{font-size:11px}
+ .account-consent{font-size:11px!important;padding:7px 0!important}
+}
+@media(max-width:355px){
+ .welcome-text h1{font-size:33px}
+ .hero-cta .button{font-size:12px}
+}
+
+.sample-result{margin-top:20px;max-width:520px;border-top:1px solid #dce8dc;padding-top:14px}
+.sample-result summary{font-weight:780;color:#235b48;font-size:13px;cursor:pointer;list-style-position:inside}
+.sample-result summary:focus-visible{outline:3px solid #438f7b;outline-offset:3px}
+.sample-result-body{padding:16px;margin-top:10px;border:1px solid #dce8da;border-radius:12px;background:#fffdf8}
+.sample-result-body p{color:#3e5d4d;font-size:12px;line-height:1.6}
+.sample-result-body dl{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:12px;color:#254d3d}
+.sample-result-body dt{color:#476b59}.sample-result-body dd{margin:0;font-weight:750}
+@media(max-width:760px){.sample-result{margin-top:11px}.sample-result summary{font-size:11px}}

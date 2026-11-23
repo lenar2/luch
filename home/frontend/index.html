@@ -50,12 +50,24 @@
           <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · YOUR FIRST REAL WORKSPACE</p>
           <h1><span data-i18n="heroOne">Your task.</span><br><em data-i18n="heroTwo">A result you can verify.</em></h1>
           <p class="hero-lead" data-i18n="heroLead">Start with a real, read-only website check. You decide which public site to inspect, see what happened and can revoke permission at any time.</p>
+          <div class="hero-cta"><a class="button primary" href="#auth-card" data-i18n="tryNow">Start free website check ↗</a>
+          <button type="button" class="text-switch" data-login-shortcut data-i18n="existingAccount">Already have an account? Sign in</button></div>
           <div class="benefits">
             <span data-i18n="benefit1">01 · Choose a website</span>
             <span data-i18n="benefit2">02 · Approve one check</span>
             <span data-i18n="benefit3">03 · Review the evidence</span>
           </div>
           <div class="soft-note"><span class="status-dot" aria-hidden="true"></span><p data-i18n="aiComing">AI assistants aren't connected yet. SO 6.2 can be added later without changing your workspace.</p></div>
+          <details class="sample-result">
+            <summary data-i18n="sampleHeading">See an example result before signing up</summary>
+            <div class="sample-result-body">
+              <p class="sample-caption" data-i18n="sampleDisclosure">Illustration only: this example is not a live result from your account.</p>
+              <dl><dt data-i18n="sampleDomain">Example site</dt><dd>example.com</dd>
+                  <dt>HTTPS</dt><dd>200 OK</dd>
+                  <dt>HTML title</dt><dd>Example Domain</dd></dl>
+              <p data-i18n="sampleLimits">LUCH checks public homepage metadata; it does not change the website.</p>
+            </div>
+          </details>
         </div>
         <div class="auth-card" id="auth-card">
           <div class="card-intro"><span class="eyebrow" data-i18n="getStarted">GET STARTED</span><span class="tiny-badge" data-i18n="publicBeta">PUBLIC BETA</span></div>
@@ -67,7 +79,11 @@
               <input id="register-username" name="username" minlength="4" maxlength="28" pattern="[A-Za-z][A-Za-z0-9_-]{3,27}" autocomplete="username" placeholder="e.g. alex_home" required>
               <label for="register-password" data-i18n="password">Password</label>
               <input type="password" id="register-password" name="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="12 characters or more" required>
-              <p class="form-hint" data-i18n="uniquePwd">Use a unique password. Email recovery is not available in this beta.</p>
+              <button class="password-visibility" type="button" data-toggle-password="register-password" data-i18n="showPassword">Show password</button>
+              <p class="form-hint" data-i18n="uniquePwd">Use a unique password. Save the recovery code after registration — email recovery is not used.</p>
+              <label class="consent-row account-consent"><input type="checkbox" id="terms-agreement" required><span><span data-i18n="acceptPolicies">I have read the Privacy Policy and Terms of Use for LUCH Home.</span>
+                <a href="/privacy/#home-r72" target="_blank" rel="noopener" data-i18n="privacy">Privacy</a> ·
+                <a href="/terms/#home-r72" target="_blank" rel="noopener" data-i18n="terms">Terms</a></span></label>
               <button class="button primary full" type="submit"><span data-i18n="createAccount">Create workspace</span><span aria-hidden="true">↗</span></button>
             </form>
             <button class="text-switch" id="show-login" type="button" data-i18n="existingAccount">Already have an account? Sign in</button>
@@ -80,9 +96,22 @@
               <input id="login-username" name="username" autocomplete="username" required>
               <label for="login-password" data-i18n="password">Password</label>
               <input type="password" id="login-password" name="password" autocomplete="current-password" required>
+              <button class="password-visibility" type="button" data-toggle-password="login-password" data-i18n="showPassword">Show password</button>
               <button class="button primary full" type="submit"><span data-i18n="signIn">Sign in</span><span aria-hidden="true">↗</span></button>
             </form>
+            <button class="text-switch" id="show-recovery" type="button" data-i18n="forgotPassword">Forgot password? Use a recovery code</button>
             <button class="text-switch" id="show-register" type="button" data-i18n="newAccount">Need a workspace? Create one</button>
+          </div>
+          <div id="recovery-pane" hidden>
+            <h2 data-i18n="recoveryTitle">Recover your account.</h2>
+            <p data-i18n="recoveryDesc">Use the recovery code you saved when you created your workspace. This resets the password and signs out other sessions.</p>
+            <form id="recovery-form">
+              <label for="recover-username" data-i18n="username">Username</label><input id="recover-username" name="username" required autocomplete="username">
+              <label for="recover-code" data-i18n="recoveryCode">Recovery code</label><input id="recover-code" name="recovery_code" required autocomplete="off">
+              <label for="recover-password" data-i18n="newPassword">New password</label><input type="password" id="recover-password" name="password" minlength="12" required autocomplete="new-password">
+              <button class="button primary full" type="submit" data-i18n="resetPassword">Reset password</button>
+            </form>
+            <button class="text-switch" id="recovery-back" type="button" data-i18n="backToLogin">Back to sign in</button>
           </div>
           <p class="form-feedback" id="auth-feedback" role="alert" aria-live="polite"></p>
           <p class="auth-privacy" data-i18n="accountPrivacy">No email, credit card or AI API is required. We store your username, a protected password hash and your own website checks.</p>
@@ -169,6 +198,13 @@
             <p id="permission-feedback" class="form-feedback" role="status" aria-live="polite"></p>
             <div class="account-danger-zone"><h3 data-i18n="accountControl">Your account and data</h3>
               <p data-i18n="retention">Checks and activity are retained for up to 90 days. You can delete your account and all its data at any time.</p>
+              <div class="recovery-rotate">
+                <h4 data-i18n="recoverySettings">Account recovery</h4>
+                <p data-i18n="recoverySettingsDesc">Generate a replacement recovery code. Any previous code stops working.</p>
+                <label for="rotate-password" data-i18n="password">Password</label>
+                <input type="password" id="rotate-password" autocomplete="current-password">
+                <button class="button secondary" type="button" id="rotate-recovery" data-i18n="newRecoveryCode">Generate replacement code</button>
+              </div>
               <button type="button" class="delete-account-link" id="delete-account" data-i18n="deleteAccount">Delete my account and data</button>
             </div>
           </div>
@@ -195,5 +231,13 @@
     <footer class="app-footer"><span>LUCH Home R7 · <span data-i18n="publicBeta">Public beta</span></span><span><a href="/en/privacy/" data-privacy data-i18n="privacy">Privacy</a> · <a href="/en/terms/" data-terms data-i18n="terms">Terms</a> · <a href="/" data-i18n="backSite">Main site</a></span></footer>
   </div>
 </div>
+<dialog id="recovery-dialog" class="recovery-dialog" aria-labelledby="recovery-dialog-title">
+ <h2 id="recovery-dialog-title" data-i18n="saveCodeTitle">Save your recovery code</h2>
+ <p data-i18n="saveCodeDesc">Keep this code somewhere private. It is shown only now, and LUCH cannot recover it later. Anyone who has it and your username can reset your password.</p>
+ <code id="recovery-code-display"></code>
+ <button class="button secondary full" id="copy-recovery" type="button" data-i18n="copyCode">Copy recovery code</button>
+ <label class="consent-row"><input type="checkbox" id="recovery-saved"><span data-i18n="savedCodeConfirm">I saved my recovery code securely.</span></label>
+ <button class="button primary full" id="close-recovery" type="button" disabled data-i18n="continueToHome">Continue to Home</button>
+ </dialog>
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 </body></html>

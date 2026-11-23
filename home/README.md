@@ -36,3 +36,17 @@ Canonical website, existing public site and main README remain in place.
 The shared outer Caddy can be reloaded by other service owners. LUCH Home thus has a narrow fallback route in the existing LUCH website's own internal Caddy: home/deploy/inner-luch.Caddyfile. It reverse-proxies only /home/* to the independent R7 service; existing marketing paths are served from their original files. No separate domain, public host port, or altered MCP gateway is required.
 
 The canonical outer Caddy normalizes X-Forwarded-For. The internal LUCH website Caddy forwards that to the R7 application as X-LUCH-Client-IP, and the application uses the last validated address for per-client throttling. Without this, all Internet visitors would share one Docker edge IP and one registration allowance. IP addresses are not proof of user identity; actual data isolation remains by independent account sessions, CSRF and resource grants.
+
+
+## R7.2 · Human Experience Repair (2026-11-23)
+
+- English remains primary. Direct \`?lang=ru\` to EN and back is fixed using original English source text captured before any translation; WebKit/Chromium roundtrips tested.
+- On 390 px iPhone-sized screens, the first actionable CTA is visible near 450–486 CSS px rather than below 1,100 px; a signed-in shortcut and clearly labeled example result are available before registration.
+- Signup has explicit current Home Privacy/Terms acknowledgement, recorded with the terms version and timestamp; canonical public Home policies distinguish it from restricted LUCH Core.
+- Password visibility is supported; account recovery uses a random one-time 256-bit recovery code shown once, stored as a digest, required to recover without email. Reset invalidates all existing sessions and consumes the code. Existing users can rotate their code after confirming their password. Losing password AND the saved recovery code remains unrecoverable by self-service.
+- Old checks/events are filtered after 90 days and deleted on a separate 15-minute service loop, not just at server startup. HEAD endpoints return header-only 200 for existing GET paths.
+- Increased small-text contrast and translated application errors. Dedicated controls remain within authenticated user boundaries.
+- Verification: 30 offline security/API contract assertions passed; actual separate staging account recovery/register-reset-rotate-delete path passed; 12 EN/RU WebKit/Chromium layout/language scenarios passed; code-dialog acknowledgement tested; original brand, no AI API changes.
+- **Physical iPhone Safari was NOT tested:** paired iPhones are offline and LUCH has no proven native Safari automation. Browser tests use headless WebKit, not a physical phone. Only mark device acceptance after user-side Safari check.
+- **Legal review recommended** for the updated factual Privacy/Terms clauses before large-scale marketing. The factual code/document consistency check is not a legal compliance certification.
+- No API, Mac, LUCH privileged tools, or SO 6.2 connection is added by R7.2.

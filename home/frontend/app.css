@@ -384,3 +384,10 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .check-attempt-notice h3{font-size:19px;line-height:1.25;margin:0 0 8px}
 .check-attempt-notice p{font-size:13px;line-height:1.55;margin:8px 0}
 #check-attempt-history{font-weight:700;border-top:1px solid #e0d5c2;padding-top:10px}
+
+/* R8.3.2: bounded before/after evidence, no health score. */
+.observation-comparison{margin:18px 0 10px;padding:15px 17px;border:1px solid #c9dfd0;border-radius:12px;background:#f4f9f4;overflow-wrap:anywhere}
+.observation-comparison h4{font-size:16px;letter-spacing:-.025em;margin:0 0 8px}
+.observation-comparison p{font-size:12px;line-height:1.6;margin:8px 0;color:#345848}
+.observation-comparison .field-note{font-size:11px;color:#4c6758}
+.comparison-change{font-weight:650}

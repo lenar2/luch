@@ -59,7 +59,7 @@ async function check(page,site){
 (async()=>{
  const source_files=['frontend/index.html','frontend/app.js','frontend/app.css','app/server.py','tests/qa_hea_r83_real_stage.cjs'];
  const source_sha256=Object.fromEntries(source_files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync('/src/'+f)).digest('hex')]));
- const report={source_sha256,schema:'luch.home.r831.real-stage-e2e.v1',status:'FAIL',tests:records,real_home_api:true,real_external_https:true,synthetic_stage_fault_test:true,production_changed:false,physical_iphone:false,model_connected:false,author_only:true,stage_network:'isolated container with unmodified Home backend and local TLS reverse proxy; browser DNS maps canonical host to loopback'};
+ const report={source_sha256,schema:'luch.home.r832.real-stage-e2e.v1',status:'FAIL',tests:records,real_home_api:true,real_external_https:true,synthetic_stage_fault_test:true,production_changed:false,physical_iphone:false,model_connected:false,author_only:true,stage_network:'isolated container with unmodified Home backend and local TLS reverse proxy; browser DNS maps canonical host to loopback'};
  try{
   execFileSync('openssl',['req','-x509','-nodes','-newkey','rsa:2048','-days','1','-subj','/CN=luch.lenarsalimov.ru','-addext','subjectAltName=DNS:luch.lenarsalimov.ru','-keyout',path.join(work,'key.pem'),'-out',path.join(work,'cert.pem')],{stdio:'ignore'});
   app=spawn('python3',['/src/app/server.py'],{env:{...process.env,PORT:'18882',LUCH_HOME_DB:db,LUCH_HOME_SELF_EDGE:''},stdio:['ignore','ignore','ignore']});
@@ -134,6 +134,17 @@ async function check(page,site){
   assert(await page.locator('#check-attempt-history').isVisible(),'failure lost after language switch');
   pass('SYNTHETIC_STAGE_FAILURE_DISTINGUISHED_FROM_REAL_HISTORICAL_RESULT',{synthetic_stage_fault:true,http:503});
   await page.screenshot({path:OUT+'/r831-failed-attempt-history.png',fullPage:false});
+  await delay(1100);
+  await page.locator('#run-check').click();
+  await page.locator('#result-comparison').waitFor({state:'visible',timeout:20000});
+  let pair=await state(page);
+  assert(pair.checks.filter(c=>c.origin==='https://example.com').length===2,'second real same-site observation missing');
+  assert((await page.locator('#result-comparison').textContent()).includes('two recorded requests only'),'comparison limits missing');
+  assert((await page.locator('#result-comparison').textContent()).includes('What changed'),'comparison not visible');
+  assert(!(await page.locator('#check-attempt-notice').isVisible()),'previous failure not cleared');
+  pass('REPEAT_REAL_SAME_SITE_COMPARISON');
+  await page.screenshot({path:OUT+'/r832-same-site-comparison.png',fullPage:true});
+
   await page.screenshot({path:OUT+'/r83-developer-handoff.png',fullPage:true});
   await page.locator('[data-go=activity]:visible').first().click();
   await page.locator('#activity-list').waitFor({state:'visible'});
@@ -152,18 +163,19 @@ async function check(page,site){
   assert(await page.locator('#no-grant').isVisible()&&await page.locator('#replace-grant-note').isVisible(),'old grant hides new selected site');
   assert(await page.locator('#website-url').inputValue()==='https://example.org','new target lost');
   assert(!(await page.locator('#run-check').isVisible())&&!(await page.locator('#site-result').isVisible()),'old task or result shown as new');
-  s=await state(page);assert(s.grant.origin==='https://example.com'&&s.checks.length===1,'login silently changed active scope or ran check');
+  s=await state(page);assert(s.grant.origin==='https://example.com'&&s.checks.length===2,'login silently changed active scope or ran check');
   pass('RETURNING_USER_NEW_TASK_REQUIRES_REPLACEMENT_CONSENT');
   await page.screenshot({path:OUT+'/r83-replacement-consent.png',fullPage:true});
   await grant(page,'https://example.org');assert(!(await page.locator('#site-result').isVisible()),'stale result after changed grant');
   result=await check(page,'https://example.org');pass('SECOND_SITE_REAL_RESULT_AFTER_EXPLICIT_REPLACEMENT',result);
+  assert(!(await page.locator('#result-comparison').isVisible()),'cross-site comparison shown');pass('NO_CROSS_SITE_COMPARISON');
   await page.locator('[data-go=permissions]:visible').first().click();
   page.once('dialog',d=>d.accept());
   await page.locator('#revoke-grant').click();await page.locator('#revoke-grant').waitFor({state:'hidden',timeout:10000});
   denied=await post(page,'check');assert(denied.status===403,'run after revoke allowed');
   assert((await state(page)).grant===null,'revocation not persisted');pass('REVOKE_THEN_REAL_API_DENY',{http:403});
   await page.locator('[data-go=activity]:visible').first().click();
-  assert(await page.locator('.saved-result').count()===2,'historical results missing after revoke');
+  assert(await page.locator('.saved-result').count()===3,'historical results missing after revoke');
   const postCount=apiLog.filter(x=>x.method==='POST'&&x.path==='/api/check').length;
   await page.locator('.saved-result').first().locator('summary').click();
   assert(await page.locator('.saved-result[open]').count()===1,'historical details not inspectable');
@@ -172,6 +184,11 @@ async function check(page,site){
   assert(await page.locator('.saved-result[open] .diagnosis-actions li').count()>0,'history lacks next steps');
   assert(apiLog.filter(x=>x.method==='POST'&&x.path==='/api/check').length===postCount,'history triggered a new check');
   pass('HISTORICAL_RESULT_DETAILS_AVAILABLE_AFTER_REVOKE');
+  assert(await page.locator('.saved-result .observation-comparison:not([hidden])').count()===1,'historical comparison not retained after revoke');
+  await page.locator('.saved-result').filter({has:page.locator('.observation-comparison:not([hidden])')}).locator('summary').click();
+  assert(await page.locator('.saved-result[open] .observation-comparison:not([hidden])').count()===1,'historical comparison inaccessible');
+  pass('HISTORICAL_COMPARISON_AFTER_REVOKE_NO_NEW_CHECK');
+
   await page.screenshot({path:OUT+'/r83-history-after-revoke.png',fullPage:true});
   const ctxB=await browser.newContext({viewport:{width:1440,height:900},ignoreHTTPSErrors:true});
   const bPage=await ctxB.newPage();bPage.on('pageerror',e=>errors.push(e.message));

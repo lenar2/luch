@@ -265,6 +265,48 @@ function diagnoseWebsite(r,locale='en'){
  return out;
 }
 // END R83 DIAGNOSIS
+// BEGIN R832 COMPARISON (pure; stored observations only).
+function compareObservations(current,checks,locale='en'){
+ const L=(en,ru)=>locale==='ru'?ru:en;
+ if(!current||!current.origin||!Number.isInteger(current.checked_at)||!Number.isInteger(current.http_status))return null;
+ const candidates=(checks||[]).map(c=>c.result).filter(r=>r&&r.origin===current.origin&&Number.isInteger(r.checked_at)&&r.checked_at<current.checked_at&&Number.isInteger(r.http_status)).sort((a,b)=>b.checked_at-a.checked_at);
+ const prior=candidates[0];
+ // An ambiguous same-second prior cannot be ordered reliably.
+ if(!prior||candidates.filter(r=>r.checked_at===prior.checked_at).length!==1)return null;
+ const changes=[];
+ const add=(key,label,before,after)=>{if(before!==after)changes.push({key,label,before,after})};
+ add('http',L('HTTP response','HTTP-ответ'),String(prior.http_status),String(current.http_status));
+ const html200=r=>r.http_status===200&&['text/html','application/xhtml+xml'].includes(String(r.content_type||'').split(';')[0].trim().toLowerCase());
+ const title=r=>typeof r.page_title==='string'?r.page_title:r.page_title===null?L('Not found','Не найден'):null;
+ const flag=x=>x===true?L('Found','Найден'):x===false?L('Not found','Не найден'):null;
+ if(html200(prior)&&html200(current)){
+  for(const [key,label,b,a] of [
+    ['title',L('Page title','Заголовок'),title(prior),title(current)],
+    ['viewport',L('Viewport tag','Тег viewport'),flag(prior.mobile_viewport),flag(current.mobile_viewport)],
+    ['description',L('Description tag','Тег description'),flag(prior.meta_description),flag(current.meta_description)]]){
+   if(b!==null&&a!==null)add(key,label,b,a);
+  }
+ }
+ const hashValid=x=>typeof x==='string'&&/^[a-f0-9]{24}$/.test(x);
+ const bytesComparable=html200(prior)&&html200(current)&&hashValid(prior.sha256_prefix)&&hashValid(current.sha256_prefix);
+ const content=bytesComparable?(prior.sha256_prefix===current.sha256_prefix?L('The recorded content hash prefixes match.','Зафиксированные префиксы хеша совпадают.'):L('The recorded content hash prefixes differ. Dynamic content may change without any repair.','Зафиксированные префиксы хеша отличаются. Динамическое содержимое может меняться без исправлений.')):'';
+ return {priorAt:prior.checked_at,currentAt:current.checked_at,title:L('What changed since the previous check?','Что изменилось с прошлой проверки?'),
+ summary:changes.length?L('The following recorded observations differ.','Следующие зафиксированные наблюдения отличаются.'):L('No differences were found in the comparable status and metadata.','В сравнимых статусе и метаданных отличий не найдено.'),changes,content,
+ limits:L('Same website, two recorded requests only. This does not prove a repair, continuous uptime, or customer journey success.','Один сайт, два зафиксированных запроса. Это не доказывает исправление, непрерывную доступность или успех клиентского сценария.')};
+}
+// END R832 COMPARISON
+function showComparison(target,r){
+ target.replaceChildren();
+ const c=compareObservations(r,state.checks,lang);
+ target.hidden=!c;if(!c)return;
+ const h=document.createElement('h4');h.textContent=c.title;
+ const dates=document.createElement('p');dates.className='field-note';dates.textContent=formatDate(c.priorAt)+' → '+formatDate(c.currentAt);
+ const summary=document.createElement('p');summary.textContent=c.summary;
+ target.append(h,dates,summary);
+ for(const change of c.changes){const p=document.createElement('p');p.className='comparison-change';p.textContent=change.label+': '+change.before+' → '+change.after;target.append(p)}
+ if(c.content){const p=document.createElement('p');p.textContent=c.content;target.append(p)}
+ const limits=document.createElement('p');limits.className='field-note';limits.textContent=c.limits;target.append(limits);
+}
 function diagnosisReport(r,d){
  const tr=(en,rs)=>lang==='ru'?rs:en;
  return [tr('LUCH website observation (not a complete audit)','Наблюдение LUCH (не полный аудит)'),
@@ -315,7 +357,7 @@ function renderAttemptNotice(){
  $('check-attempt-history').hidden=$('site-result').hidden;
 }
 function displayResult(r){
- renderDiagnosis(r);
+ renderDiagnosis(r);showComparison($('result-comparison'),r);
  if(!r){$('site-result').hidden=true;$('empty-result').hidden=false;
   ['result-title','result-http','result-time','result-mobile','result-origin','result-checked','result-hash'].forEach(id=>text(id,''));
   $('result-observations').replaceChildren();
@@ -374,7 +416,8 @@ function renderSavedResults(){
   const next=document.createElement('ol');next.className='diagnosis-actions';
   for(const a of d.actions){const li=document.createElement('li');li.textContent=a.text;next.append(li)}
   const limits=document.createElement('p');limits.className='field-note';limits.textContent=d.limits;
-  card.append(date,explanation,next,limits,dl);target.append(card);
+  const comparison=document.createElement('section');comparison.className='observation-comparison';showComparison(comparison,r);
+  card.append(date,explanation,next,limits,comparison,dl);target.append(card);
  }
 }
 function renderActivity(){

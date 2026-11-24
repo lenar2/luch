@@ -49,6 +49,28 @@ for(const status of [null,401,403,422,429,503]){
   results.push({name:'failed attempt '+status,locale,ok:true});
  }
 }
+const comparisonBlock=source.split('// BEGIN R832 COMPARISON')[1].split('// END R832 COMPARISON')[0].split('\n').slice(1).join('\n');
+vm.runInContext(comparisonBlock+'\nthis.compare=compareObservations;',context);
+const old={...standard,origin:'https://example.com',checked_at:100,sha256_prefix:'a'.repeat(24)};
+const fresh={...old,checked_at:200};
+for(const locale of ['en','ru']){
+ const compare=(a,items)=>context.compare(a,items.map(result=>({result})),locale);
+ for(const [name,actual,expected] of [
+  ['same site stable',compare(fresh,[old]),[]],
+  ['actual status changed',compare({...fresh,http_status:503},[old]),['http']],
+  ['metadata changed',compare({...fresh,page_title:'New title',mobile_viewport:false},[old]),['title','viewport']],
+  ['unknown metadata not false missing',compare({...fresh,mobile_viewport:null},[old]),[]],
+  ['different sites never compared',compare(fresh,[{...old,origin:'https://example.org'}]),null],
+  ['same timestamp not ordered',compare(fresh,[{...old,checked_at:200}]),null],
+  ['ambiguous previous timestamp',compare(fresh,[old,{...old,http_status:404}]),null],
+  ['changed content hash alone not repair',compare({...fresh,sha256_prefix:'b'.repeat(24)},[old]),[]],
+  ['non-html not compared as missing metadata',compare({...fresh,content_type:'application/json',page_title:null},[old]),[]]
+ ]){
+  if(expected===null)assert.equal(actual,null,name);
+  else{assert.ok(actual,name);assert.deepEqual(Array.from(actual.changes,x=>x.key),expected,name);assert.ok(actual.limits);}
+  results.push({name:'comparison '+name,locale,ok:true});
+ }
+}
 const report={status:'PASS',cases:results.length,synthetic_inputs:true,real_human_observations:0,source_sha256:crypto.createHash('sha256').update(source).digest('hex'),results};
 if(process.env.EVIDENCE_PATH)fs.writeFileSync(process.env.EVIDENCE_PATH,JSON.stringify(report,null,2));
 console.log(JSON.stringify({status:report.status,cases:report.cases,synthetic_inputs:true}));

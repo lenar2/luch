@@ -358,3 +358,23 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .saved-result>.field-note{margin:12px 0 0}
 .saved-result .result-details{margin:0;padding:12px 0 0;border-bottom:0}
 .history-events-heading{font-size:18px;letter-spacing:-.025em;margin:25px 0 12px}
+
+/* R8.3: plain-language interpretation before technical details. */
+.diagnosis{padding:19px 0 8px}
+.diagnosis>.eyebrow{margin:0 0 10px;font-size:10px}
+.diagnosis h3{font-size:clamp(24px,3vw,34px);line-height:1.13;letter-spacing:-.035em;margin:0 0 12px;color:#193b31}
+.diagnosis>p:not(.eyebrow):not(.field-note){font-size:14px;line-height:1.65;color:#365b4b}
+.diagnosis h4{font-size:16px;margin:23px 0 10px}
+.diagnosis-actions{padding-left:20px;display:grid;gap:10px;font-size:13px;line-height:1.6;color:#2e5443}
+.diagnosis[data-outcome="server_error"] h3,.diagnosis[data-outcome="client_response"] h3{color:#854a32}
+.handoff,.technical-evidence{margin-top:19px;border-top:1px solid #dce6dc;padding-top:16px}
+.handoff summary,.technical-evidence summary{cursor:pointer;font-weight:750;font-size:13px;color:#265c49;margin-bottom:12px}
+.handoff label{display:block;margin:10px 0}
+.handoff textarea{width:100%;font:inherit;font-size:12px;line-height:1.6;border:1px solid #cbdcce;border-radius:10px;padding:12px;resize:vertical;background:#f7faf5;color:#284b3e;min-height:100px}
+.handoff .button{margin-top:10px}
+.saved-diagnosis{font-size:13px;line-height:1.6;color:#274d3e}
+
+.diagnosis{scroll-margin-top:16px}
+.diagnosis:focus{outline:none}
+.diagnosis:focus-visible{outline:2px solid #4b8974;outline-offset:4px}
+#diagnosis-limits{margin:16px 0 10px;color:#466554}

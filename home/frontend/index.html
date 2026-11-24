@@ -49,7 +49,7 @@
           <div class="hero-wordmark"><img src="brand-wordmark.svg" alt="LUCH" width="108" height="108"></div>
           <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · AVAILABLE TODAY</p>
           <h1><span data-i18n="heroOne">Your website.</span><br><em data-i18n="heroTwo">A clear answer.</em></h1>
-          <p class="hero-lead" data-i18n="heroLead">Check whether a public website responds and what its homepage actually reports. LUCH records a real HTTPS result, with your permission and no changes to the site.</p>
+          <p class="hero-lead" data-i18n="heroLead">Find out whether your homepage responds, what deserves attention, and what to tell your developer. LUCH uses an actual HTTPS observation and never changes your website.</p>
           <form id="guest-website-intent" class="guest-website-intent">
             <label for="guest-website-url" data-i18n="guestSiteLabel">Which website would you like to check?</label>
             <div class="guest-intent-row">
@@ -60,7 +60,7 @@
             <p class="form-feedback" id="guest-intent-feedback" role="status" aria-live="polite"></p>
           </form>
           <div class="task-availability" aria-label="What LUCH Home can do">
-            <div class="task-available"><span class="task-status" data-i18n="taskNow">AVAILABLE NOW</span><strong data-i18n="taskCheckTitle">Inspect a public website</strong><p data-i18n="taskCheckDesc">See HTTPS status, page title and mobile-page signal. Keep the result and revoke access.</p></div>
+            <div class="task-available"><span class="task-status" data-i18n="taskNow">AVAILABLE NOW</span><strong data-i18n="taskCheckTitle">Inspect a public website</strong><p data-i18n="taskCheckDesc">Understand the observed response, get practical next steps and save a report for your developer.</p></div>
             <div class="task-upcoming"><span class="task-status" data-i18n="taskLater">NOT CONNECTED</span><strong data-i18n="taskAiTitle">Delegate a task to AI</strong><p data-i18n="taskAiDesc">SO 6.2, chat and AI actions are not part of this public beta.</p></div>
           </div>
           <div class="hero-login"><button type="button" class="text-switch" data-login-shortcut data-i18n="existingAccount">Already have an account? Sign in</button></div>
@@ -69,13 +69,13 @@
           <div class="sample-hero-top"><span data-i18n="samplePreviewLabel">YOUR RESULT, BEFORE YOU START</span><span class="sample-example-pill" data-i18n="sampleExampleTag">ILLUSTRATIVE EXAMPLE</span></div>
           <div class="sample-browser-frame">
             <div class="sample-browser-chrome"><span aria-hidden="true">● ● ●</span><strong>https://example.com</strong></div>
-            <div class="sample-browser-content"><div class="sample-browser-symbol" aria-hidden="true">↗</div><strong>Example Domain</strong><p data-i18n="samplePreviewCaption">A public homepage responded. This sample is illustrative, not a live check.</p></div>
+            <div class="sample-browser-content"><div class="sample-browser-symbol" aria-hidden="true">↗</div><strong>Example Domain</strong><p data-i18n="samplePreviewCaption">The homepage answered this request. Next: open it on a phone and test your important customer journey. This is an illustration, not a live check.</p></div>
           </div>
           <div class="sample-metric-row">
             <div><span data-i18n="sampleMetric1">RESPONSE</span><strong>200 OK</strong></div>
             <div><span data-i18n="sampleMetric2">PAGE TITLE</span><strong>Example Domain</strong></div>
           </div>
-          <div class="sample-hero-bottom"><span class="status-dot" aria-hidden="true"></span><p data-i18n="sampleBoundaries">A real check will show your selected site's response, page title and limited metadata. No AI, editing or automatic actions.</p></div>
+          <div class="sample-hero-bottom"><span class="status-dot" aria-hidden="true"></span><p data-i18n="sampleBoundaries">A real check explains observed findings and suggests next steps. No AI, editing or automatic actions.</p></div>
         </div>
         <div class="auth-card" id="auth-card" hidden>
           <div class="card-intro"><span class="eyebrow" data-i18n="getStarted">GET STARTED</span><span class="tiny-badge" data-i18n="publicBeta">PUBLIC BETA</span></div>
@@ -178,6 +178,20 @@
               <div class="surface-top"><span class="eyebrow" data-i18n="evidence">OBSERVED RESULT</span><span class="result-badge" id="result-badge" data-i18n="notRun">NOT RUN</span></div>
               <div class="empty-result" id="empty-result"><span aria-hidden="true">◇</span><h3 data-i18n="resultPlaceholder">Your result will appear here.</h3><p data-i18n="resultPlaceholderDesc">First grant access to one public website. The result comes from a fresh, real HTTPS request.</p></div>
               <div id="site-result" hidden>
+                <div class="diagnosis" id="result-diagnosis" tabindex="-1" aria-live="polite">
+                  <p class="eyebrow" data-i18n="diagnosisEyebrow">WHAT THIS MEANS FOR YOU</p>
+                  <h3 id="diagnosis-title"></h3><p id="diagnosis-summary"></p>
+                  <h4 data-i18n="nextSteps">What to do next</h4>
+                  <ol id="diagnosis-actions" class="diagnosis-actions"></ol><p id="diagnosis-limits" class="field-note"></p>
+                  <p class="field-note" data-i18n="rulesDisclosure">Based on the saved HTTPS response, using explicit rules — not AI. Nothing has been changed on your website.</p>
+                  <details class="handoff"><summary data-i18n="handoffLabel">Prepare a report for your developer</summary>
+                    <label for="diagnosis-report" data-i18n="handoffIntro">Copy or select this report. LUCH does not send it.</label>
+                    <textarea id="diagnosis-report" readonly rows="8"></textarea>
+                    <button class="button secondary" id="copy-diagnosis" type="button" data-i18n="copyReport">Copy report</button>
+                    <p id="copy-diagnosis-status" class="field-note" role="status"></p>
+                  </details>
+                </div>
+                <details class="technical-evidence" id="technical-evidence"><summary data-i18n="technicalDetails">Technical evidence</summary>
                 <h3 class="result-title" id="result-title"></h3><div class="result-stats">
                   <div><span>HTTP</span><strong id="result-http"></strong></div>
                   <div><span data-i18n="responseTime">TIME</span><strong id="result-time"></strong></div>
@@ -189,7 +203,7 @@
                   <dt data-i18n="sourceHash">Content SHA-256 prefix</dt><dd id="result-hash" class="mono"></dd>
                 </dl>
                 <h4 data-i18n="observations">Observations</h4><ul id="result-observations"></ul>
-                <p class="field-note" data-i18n="limitedCheck">This is a limited HTML and HTTPS inspection, not a full accessibility, SEO or security audit.</p>
+                <p class="field-note" data-i18n="limitedCheck">This is a limited HTML and HTTPS inspection, not a full accessibility, SEO or security audit.</p></details>
               </div>
             </div>
           </div>

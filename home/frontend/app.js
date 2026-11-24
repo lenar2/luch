@@ -10,21 +10,25 @@ soon:'Скоро',controlLabel:'Ваш выбор. Ваши разрешения
 backSite:'← На сайт LUCH',signOut:'Выйти',
 heroEyebrow:'LUCH HOME · ДОСТУПНО СЕГОДНЯ',heroOne:'Ваш сайт.',
 heroTwo:'Понятный результат.',
-heroLead:'Проверьте, отвечает ли публичный сайт и что сообщает его главная страница. LUCH сохранит реальный HTTPS-ответ с вашего разрешения, не изменяя сайт.',
+heroLead:'Узнайте, отвечает ли главная страница сайта, на что обратить внимание и что сообщить разработчику. LUCH использует реальный HTTPS-ответ и не изменяет сайт.',
 guestSiteLabel:'Какой сайт хотите проверить?',guestContinue:'Продолжить',
 guestIntentExplainer:'Сначала выберите сайт. Затем войдите или создайте пространство и разрешите проверку только для чтения. Пока запрос не выполняется.',
 taskNow:'ДОСТУПНО СЕЙЧАС',taskCheckTitle:'Проверить публичный сайт',
-taskCheckDesc:'Узнайте HTTPS-статус, заголовок и наличие мобильной разметки. Сохраните результат и отзовите доступ.',
+taskCheckDesc:'Поймите результат проверки, получите конкретные следующие шаги и сохраните отчёт для разработчика.',
 taskLater:'НЕ ПОДКЛЮЧЕНО',taskAiTitle:'Поручить задачу ИИ',
 taskAiDesc:'SO 6.2, чат и действия ИИ пока недоступны в публичной бете.',
 previousSite:'Сейчас разрешён:',replaceGrantNote:'Разрешение на другой сайт заменит текущее. Запрос начнётся только после нажатия кнопки проверки.',
 keepGrant:'Оставить текущий сайт',chooseOtherSite:'Выбрать другой сайт',
 historyNotice:'Сохранённые наблюдения относятся к прошлым проверкам, а не к текущему состоянию сайта. Они доступны и после отзыва разрешения.',
 historyEvents:'Журнал действий',
+diagnosisEyebrow:'ЧТО ЭТО ЗНАЧИТ ДЛЯ ВАС',nextSteps:'Что делать дальше',
+rulesDisclosure:'Вывод основан на сохранённом HTTPS-ответе и явных правилах, а не на ИИ. На сайте ничего не изменено.',
+handoffLabel:'Подготовить отчёт для разработчика',handoffIntro:'Скопируйте или выделите отчёт. LUCH никуда его не отправляет.',
+copyReport:'Скопировать отчёт',technicalDetails:'Технические доказательства',
 samplePreviewLabel:'ЧТО ПОКАЖЕТ ПРОВЕРКА',sampleExampleTag:'ИЛЛЮСТРАТИВНЫЙ ПРИМЕР',
-samplePreviewCaption:'Публичная страница ответила. Это пример, а не текущая проверка.',
+samplePreviewCaption:'Главная страница ответила на запрос. Далее откройте её на телефоне и проверьте важный сценарий клиента. Это пример, а не текущая проверка.',
 sampleMetric1:'ОТВЕТ',sampleMetric2:'ЗАГОЛОВОК',
-sampleBoundaries:'Настоящая проверка покажет ответ выбранного сайта, заголовок и ограниченные метаданные. Без ИИ, редактирования и автоматических действий.',
+sampleBoundaries:'Настоящая проверка объяснит наблюдаемые факты и предложит следующие шаги. Без ИИ, редактирования и автоматических действий.',
 benefit1:'01 · Выберите сайт',benefit2:'02 · Разрешите проверку',benefit3:'03 · Посмотрите доказательства',
 aiComing:'ИИ-помощники пока не подключены. Позже сюда можно добавить SO 6.2, сохранив ваше пространство.',
 getStarted:'НАЧАТЬ',publicBeta:'ПУБЛИЧНАЯ БЕТА',createTitle:'Сохраните свои проверки.',
@@ -216,7 +220,76 @@ function showPage(next){
 function formatDate(n){
  return new Intl.DateTimeFormat(lang==='ru'?'ru-RU':'en-US',{dateStyle:'medium',timeStyle:'short'}).format(new Date(n*1000))
 }
+// BEGIN R83 DIAGNOSIS (pure; no I/O or model calls).
+function diagnoseWebsite(r,locale='en'){
+ const ru=locale==='ru', L=(en,rs)=>ru?rs:en;
+ const status=Number.isInteger(r?.http_status)?r.http_status:null;
+ const html=['text/html','application/xhtml+xml'].includes(String(r?.content_type||'').split(';')[0].trim().toLowerCase());
+ const out={code:'unknown',title:'',summary:'',actions:[],limits:L('One HTTPS GET of the homepage; at most 96 KiB, no redirects or JavaScript. Not a full uptime, security, mobile, SEO or checkout test.','Один HTTPS GET главной страницы, до 96 КиБ, без переходов и JavaScript. Это не полная проверка доступности, безопасности, мобильной версии, SEO или оплаты.')};
+ const add=(code,en,rs,ev)=>out.actions.push({code,text:L(en,rs),evidence:ev});
+ const set=(code,en,rs,es,ss)=>Object.assign(out,{code,title:L(en,rs),summary:L(es,ss)});
+ if(status>=200&&status<300){
+  set('responded','Your homepage answered this request.','Главная страница ответила на запрос.','The HTTPS server returned HTTP '+status+'. This confirms a response at the recorded time, not that the whole website works.','HTTPS-сервер вернул HTTP '+status+'. Это подтверждает ответ в момент проверки, но не работу всего сайта.');
+  if(html&&status!==204&&status!==205&&status!==206){
+   if(r.page_title===null||r.page_title==='')add('title','No title was found in the inspected HTML. Ask your developer to check the homepage HTML title. A missing title can make the page harder to identify in browser tabs and search previews.','В проверенной части HTML не найден заголовок. Попросите разработчика проверить HTML-заголовок главной страницы. Без него страницу труднее распознать во вкладках и поисковых превью.','title_not_found_in_examined_html');
+   if(r.mobile_viewport===false)add('viewport','No viewport tag was found in the inspected HTML. Ask your developer to verify the viewport meta tag and test the page on a real phone. This tag alone does not establish mobile usability.','В проверенной части HTML не найден тег viewport. Попросите разработчика проверить тег viewport и протестировать страницу на настоящем телефоне. Сам тег не доказывает удобство мобильной версии.','viewport_not_found_in_examined_html');
+   if(r.meta_description===false)add('description','No meta description was found in the inspected HTML. If this is a public landing page, ask whether a descriptive meta description is useful. It may help communicate the page topic; search engines may use other text.','В проверенной части HTML не найден meta description. Если это публичный лендинг, уточните, нужен ли описательный meta description. Он может помочь передать тему страницы; поисковики могут выбрать другой текст.','description_not_found_in_examined_html');
+  }else if(!html||status===204||status===205||status===206)add('content','Open the intended customer-facing page in a browser and ask the developer whether this response or content type is expected.','Откройте нужную клиентскую страницу в браузере и уточните у разработчика, ожидается ли такой ответ или тип содержимого.','content_not_fully_inspectable');
+  add('journey','On a phone and desktop, open the site and try one important customer action (for example, find contact details or start an order). LUCH has not tested that action.','Откройте сайт на телефоне и компьютере и попробуйте важное действие клиента (например, найти контакты или начать оформление заказа). LUCH это действие не проверял.','customer_journey_not_tested');
+ }else if(status===304){
+  set('not_modified','The server returned Not Modified.','Сервер вернул Not Modified.','HTTP 304 was observed. A fresh page body was not established; this is not a successful inspection of its content.','Получен HTTP 304. Свежий HTML не подтверждён; это не успешная проверка содержимого.');
+  add('verify','Open the homepage in a regular browser and verify the expected content.','Откройте главную страницу в обычном браузере и проверьте ожидаемое содержимое.','observed_304');
+ }else if(status>=300&&status<400){
+  set('redirect','The homepage returned a redirect.','Главная страница вернула перенаправление.','HTTP '+status+' was observed. LUCH did not follow it; the destination and final page are unknown.','Получен HTTP '+status+'. LUCH не переходил по перенаправлению; конечная страница неизвестна.');
+  add('redirect_target','Open the address in your browser. Verify it ends at the intended public page, not a login screen, error or redirect loop.','Откройте адрес в браузере. Убедитесь, что он ведёт на нужную публичную страницу, а не на вход, ошибку или цикл перенаправлений.','redirect_not_followed');
+ }else if(status>=500&&status<600){
+  set('server_error','The server returned an error.','Сервер вернул ошибку.','HTTP '+status+' indicates a server-side or upstream error for this request. The cause and impact on other visitors are not established.','HTTP '+status+' указывает на ошибку сервера или вышестоящего сервиса для этого запроса. Причина и влияние на других посетителей не установлены.');
+  add('retry','Try the homepage in a normal browser and repeat the check later if you have permission. If the error persists, send this report to the site operator.','Откройте главную страницу в обычном браузере и повторите проверку позже при наличии разрешения. Если ошибка сохраняется, передайте отчёт оператору сайта.','observed_5xx');
+  add('operator','If you manage the site, ask your developer to compare server or hosting logs around the recorded time.','Если вы управляете сайтом, попросите разработчика сверить журналы сервера или хостинга на указанное время.','cause_not_verified');
+ }else if(status>=400&&status<500){
+  set('client_response','The server did not return a successful page.','Сервер не вернул успешную страницу.','HTTP '+status+' was observed. It can reflect access policy, a missing page or request filtering; it is not proof that the website is down.','Получен HTTP '+status+'. Возможны правила доступа, отсутствующая страница или фильтрация запросов; это не доказательство недоступности всего сайта.');
+  if(status===401||status===403)add('access','Check the public address in a normal browser. If it is supposed to be public, ask the owner whether automated requests are intentionally restricted. Do not bypass access controls.','Проверьте публичный адрес в обычном браузере. Если страница должна быть публичной, уточните у владельца, не ограничены ли автоматические запросы. Не обходите ограничения доступа.','observed_access_status');
+  else if(status===404||status===410)add('missing','Confirm that the intended homepage address still exists. If you manage it, send the observed status and URL to your developer.','Уточните, существует ли нужный адрес главной страницы. Если вы управляете сайтом, отправьте статус и адрес разработчику.','observed_missing_status');
+  else if(status===429)add('rate','Wait before trying again; the server may be rate limiting requests. Do not repeatedly retry.','Подождите перед повторной проверкой: сервер может ограничивать частоту запросов. Не повторяйте запросы многократно.','observed_rate_status');
+  else add('check_address','Verify the address in a normal browser. Ask the site operator to investigate the recorded HTTP status if unexpected.','Проверьте адрес в обычном браузере. Если статус неожиданен, попросите оператора сайта разобраться.','observed_4xx');
+ }else{
+  set('unknown','The response cannot be interpreted reliably.','Ответ нельзя надёжно интерпретировать.','No supported final HTTP status was recorded. Do not infer website health or a cause.','Нет поддерживаемого итогового HTTP-статуса. Нельзя делать вывод о состоянии сайта или причине.');
+  add('verify','Check the intended address manually and ask the operator if the unexpected response persists.','Проверьте нужный адрес вручную и обратитесь к оператору, если необычный ответ сохраняется.','unsupported_status');
+ }
+ // Practical customer-journey verification precedes optional search metadata.
+ if(out.code==='responded'){
+  const priorities={content:0,title:1,viewport:2,journey:3,description:4};
+  out.actions.sort((a,b)=>(priorities[a.code]??9)-(priorities[b.code]??9));
+ }
+ return out;
+}
+// END R83 DIAGNOSIS
+function diagnosisReport(r,d){
+ const tr=(en,rs)=>lang==='ru'?rs:en;
+ return [tr('LUCH website observation (not a complete audit)','Наблюдение LUCH (не полный аудит)'),
+ r.origin,formatDate(r.checked_at),'HTTP '+r.http_status,
+ tr('Page title: ','Заголовок страницы: ')+String(r.page_title??'—'),
+ tr('Content type: ','Тип содержимого: ')+String(r.content_type??'—'),
+ tr('Observed response time: ','Наблюдаемое время ответа: ')+String(r.elapsed_ms??'—')+' ms',
+ tr('Examined bytes: ','Проверено байт: ')+String(r.bytes_examined??'—'),
+ 'SHA-256: '+String(r.sha256_prefix||'—'),'',d.title,d.summary,'',
+ tr('Suggested next steps:','Предлагаемые следующие шаги:'),
+ ...d.actions.map((a,i)=>(i+1)+'. '+a.text),'',d.limits,
+ tr('Rule-based explanation. No AI or website changes.','Объяснение по правилам. Без ИИ и изменений сайта.')].join('\n');
+}
+function renderDiagnosis(r){
+ const actions=$('diagnosis-actions');actions.replaceChildren();
+ text('copy-diagnosis-status','');
+ if(!r){delete $('result-diagnosis').dataset.outcome;text('diagnosis-title','');text('diagnosis-summary','');text('diagnosis-limits','');$('diagnosis-report').value='';return}
+ const d=diagnoseWebsite(r,lang);
+ text('diagnosis-title',d.title);text('diagnosis-summary',d.summary+' '+(lang==='ru'?'Последнее сохранённое наблюдение: ':'Last saved observation: ')+formatDate(r.checked_at)+'.');
+ text('diagnosis-limits',d.limits);
+ $('result-diagnosis').dataset.outcome=d.code;
+ for(const a of d.actions){const li=document.createElement('li');li.dataset.action=a.code;li.textContent=a.text;actions.append(li)}
+ $('diagnosis-report').value=diagnosisReport(r,d);
+}
 function displayResult(r){
+ renderDiagnosis(r);
  if(!r){$('site-result').hidden=true;$('empty-result').hidden=false;
   ['result-title','result-http','result-time','result-mobile','result-origin','result-checked','result-hash'].forEach(id=>text(id,''));
   $('result-observations').replaceChildren();
@@ -244,7 +317,10 @@ function displayResult(r){
   'No HTML title was found in the inspected content.':'obsTitle',
   'Response was not HTML; page metadata was not inspected.':'obsNotHTML'
  };
- for(let v of r.observations||[]){const li=document.createElement('li');li.textContent=tx(obs[v]||v);list.append(li)}
+ for(let v of r.observations||[]){const li=document.createElement('li');
+  if(r.http_status===304&&v==='Website returned a redirect; redirects were not followed.')li.textContent=lang==='ru'?'Сервер вернул HTTP 304, свежий HTML не подтверждён.':'The server returned HTTP 304; a fresh HTML body was not established.';
+  else li.textContent=tx(obs[v]||v);list.append(li)}
+
 }
 function renderSavedResults(){
  const target=$('saved-results');target.replaceChildren();
@@ -267,7 +343,12 @@ function renderSavedResults(){
    const dt=document.createElement('dt'),dd=document.createElement('dd');
    dt.textContent=name;dd.textContent=String(value);dl.append(dt,dd);
   }
-  card.append(date,dl);target.append(card);
+  const d=diagnoseWebsite(r,lang);
+  const explanation=document.createElement('p');explanation.className='saved-diagnosis';explanation.textContent=d.title+' '+d.summary;
+  const next=document.createElement('ol');next.className='diagnosis-actions';
+  for(const a of d.actions){const li=document.createElement('li');li.textContent=a.text;next.append(li)}
+  const limits=document.createElement('p');limits.className='field-note';limits.textContent=d.limits;
+  card.append(date,explanation,next,limits,dl);target.append(card);
  }
 }
 function renderActivity(){
@@ -416,6 +497,11 @@ async function runCheck(){
   const response=await request('check',{});
   lastResult=response.result;
   await refresh();showPage('check');showToast(tx('checked'));text('check-feedback','');
+  if(!$('site-result').hidden){
+   const result=$('result-diagnosis');
+   result.scrollIntoView({behavior:'instant',block:'start'});
+   result.focus({preventScroll:true});
+  }
  }catch(e){reportError('check-feedback',e)}
  finally{setBusy(false)}
 }
@@ -506,6 +592,12 @@ $('choose-other-site').addEventListener('click',()=>{
 });
 $('keep-grant').addEventListener('click',()=>{
  selectingOtherSite=false;$('consent-box').checked=false;render();
+});
+$('copy-diagnosis').addEventListener('click',async()=>{
+ const field=$('diagnosis-report');
+ if(!state.authenticated||!field.value)return;
+ try{await navigator.clipboard.writeText(field.value);text('copy-diagnosis-status',lang==='ru'?'Отчёт скопирован.':'Report copied.')}
+ catch{field.focus();field.select();text('copy-diagnosis-status',lang==='ru'?'Выделите и скопируйте отчёт вручную.':'Select and copy the report manually.')}
 });
 $('run-check').addEventListener('click',runCheck);
 $('revoke-grant').addEventListener('click',revoke);

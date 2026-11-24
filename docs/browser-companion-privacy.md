@@ -1,11 +1,11 @@
 # LUCH Browser Companion — Privacy Policy
 
 **Publisher:** LUCH (Lenar Salimov)  
-**Last updated:** 21 November 2026
+**Last updated:** 24 November 2026
 
-## Cloud pilot addendum — Browser Companion 0.7.0 (NOT publicly released)
+## Browser Companion 0.7.0 — cloud-connected update (awaiting Chrome Web Store review)
 
-**This addendum describes a separately authorized engineering pilot of version 0.7.0. It supersedes any conflicting local-only / 15-minute-grant statements below for that pilot. The historical privacy policy farther down this page describes earlier locally paired versions, not the 0.7.0 cloud pilot.**
+**This section describes data practices of the cloud-connected 0.7.0 update and replaces any conflicting local-broker statements for 0.7.0. The historical section farther down this page applies only to earlier versions (including the currently published 0.4.0), not to 0.7.0.**
 
 Version 0.7.0 is an MV3 extension that connects approved tabs to the LUCH cloud relay at `https://api.lenarsalimov.ru/luch/browser` and to the user's existing, separately connected AI via OAuth-protected remote MCP. It **does not require a local desktop broker or a personal OpenAI/Anthropic API key**. Installing the extension alone does not provide access to every ChatGPT plan or workspace.
 
@@ -17,7 +17,23 @@ The account signs in through Supabase OAuth. A one-time eight-digit code pairs t
 
 **Cloud data retention:** A scheduled database cleanup runs every five minutes. Job payloads, which can include requested content or typed field data, are removed approximately 15 minutes after creation. Expired or used pairing-code records are removed after approximately 24 hours, stale overview metadata and idle-device grants after 24 hours, and limited audit metadata after 30 days. Revoked devices are purged after 30 days. Other platform logs, backups and AI-host records can have separate retention schedules. A device's authorization token persists until the user disconnects or it is revoked.
 
-**Pilot limitations:** The full interaction/pointer and Opera runtime, fresh-user self-service enrollment and independent security audit remain unapproved. No public release or store review approval of 0.7.0 is claimed.
+### Data categories, sharing and controls for 0.7.0
+
+The user authenticates via LUCH OAuth. The identity service may process an account identifier and, depending on the identity provider, an email address. The relay sees the device identifier, a **hash** of the separate device token, approved tab origin/title and redacted address, permission scopes, tool/action type, and limited operational result/status metadata. HTTPS requests may contain an IP address, used for fraud prevention and pairing rate limiting. The extension may process activity such as clicks, typing and scrolling **only as explicitly requested within an approved tab**. It does not log every keyboard event, track unrelated browsing in the background or sell browsing data.
+
+The content **you approve and request** may include messages, identifying details or sensitive content (for example health or financial information visible on the approved page). Page content, form values and screenshots can leave your device **through the LUCH relay to your authorized AI host**. Avoid approving sensitive pages unless you understand that transfer. The AI provider is a separate data recipient with its own privacy/retention terms. No general advertising, targeted marketing, credit evaluation or unrelated data sale is performed using page contents.
+
+LUCH does not use Google API-derived user data for advertising, unrelated profiling or onward transfer except as needed to provide the requested browser-to-AI functionality, as required by law, or to secure its services. **Use of information received from Google APIs adheres to the Chrome Web Store User Data Policy, including its Limited Use requirements.**
+
+You may turn off all-tabs metadata sharing, decline debugger authorization, revoke a specific tab, or disconnect the browser. Revocation stops local access immediately. If the device is offline, cloud revocation may need to synchronize after reconnecting; use the authorized AI host to revoke the device as an additional safeguard if needed.
+
+### Availability
+
+LUCH Browser Companion 0.7.0 is a candidate for review and is **not yet confirmed publicly available**. The older Chrome Web Store release may still be 0.4.0, which uses a different local-broker architecture. Access to custom remote MCP and interaction tools depends on the AI provider's plan and workspace; installing the extension alone does not enable those features. Independent full cross-account/security acceptance is still pending.
+
+### Privacy contact
+
+For questions, corrections, deletion requests or incident reports, use [LUCH GitHub Issues](https://github.com/lenar2/luch/issues) without posting private content, tokens or credentials.
 
 ## Historical local-broker versions (earlier builds only)
 

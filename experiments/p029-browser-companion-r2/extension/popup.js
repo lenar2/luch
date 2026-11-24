@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 const strings={
  en:{
   eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Connect Chrome to your AI.',
+  headline:'Connect Opera to your AI.',
   intro:'Let your supported AI understand a page only after you approve it here. Clicks and typing need a second permission.',
   headlineConnected:'Your tab. Your choice.',introConnected:'Share this page with your AI, or keep it private. Other tabs stay closed.',
   offline:'Waiting for cloud connection',offlineScope:'RECONNECTING',offlineTab:'Your tab approval is saved. Actions will resume after reconnection.',
@@ -43,19 +43,19 @@ const strings={
   interactSuccess:'Interaction access granted for this tab.',
   revokeSuccess:'Access revoked for this tab.',
   disconnectSuccess:'Browser disconnected from LUCH.',
-  tabsHeading:'Open tabs overview',tabsExplain:'Optional: Chrome will ask permission to read the titles and addresses of all open tabs. Their contents remain private until you separately approve a tab.',
+  tabsHeading:'Open tabs overview',tabsExplain:'Optional: Opera will ask permission to read the titles and addresses of all open tabs. Their contents remain private until you separately approve a tab.',
   listTabs:'Show my open tabs',tabSwitch:'Switch to tab',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
   unshareTabs:'Stop sharing the tab overview',tabsShared:'Tab titles and addresses are shared with your authorized LUCH AI. Page contents are not.',
   tabsPrivate:'Only you can see this list until you choose to share it with LUCH.',
-  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome requests the optional debugger permission only if you enable this feature. Interaction and pointer access are separate choices for this tab. This is not your computer’s physical mouse.',
+  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Opera requests the optional debugger permission only if you enable this feature. Interaction and pointer access are separate choices for this tab. This is not your computer’s physical mouse.',
   enableCursor:'Enable precise pointer for this tab',disableCursor:'Disable precise pointer',
   cursorNotReady:'Approve interactions on this tab first.',
-  permissionDenied:'Chrome permission was not granted.',
+  permissionDenied:'Opera permission was not granted.',
   error:'Something went wrong.',codePlaceholder:'••••••••'
  },
  ru:{
   eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Подключите Chrome к своему ИИ.',
+  headline:'Подключите Opera к своему ИИ.',
   intro:'Совместимый ИИ сможет понимать выбранную страницу только после вашего разрешения. Нажатия и ввод текста разрешаются отдельно.',
   headlineConnected:'Вы решаете, что видит ИИ.',introConnected:'Разрешите эту вкладку для чтения или оставьте её закрытой. Остальные вкладки не затрагиваются.',
   offline:'Ожидание подключения к облаку',offlineScope:'НЕТ СВЯЗИ',offlineTab:'Разрешения сохранены. Действия возобновятся после восстановления связи.',
@@ -95,14 +95,14 @@ const strings={
   interactSuccess:'Взаимодействие с этой вкладкой разрешено.',
   revokeSuccess:'Доступ к этой вкладке отозван.',
   disconnectSuccess:'Браузер отключён от LUCH.',
-  tabsHeading:'Все открытые вкладки',tabsExplain:'Необязательно. Chrome отдельно запросит разрешение видеть названия и адреса всех вкладок. Содержимое страниц останется закрытым, пока вы не разрешите доступ к конкретной вкладке.',
+  tabsHeading:'Все открытые вкладки',tabsExplain:'Необязательно. Opera отдельно запросит разрешение видеть названия и адреса всех вкладок. Содержимое страниц останется закрытым, пока вы не разрешите доступ к конкретной вкладке.',
   listTabs:'Показать мои вкладки',tabSwitch:'Перейти к вкладке',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
   unshareTabs:'Перестать передавать обзор вкладок',tabsShared:'Названия и адреса вкладок доступны авторизованному ИИ через LUCH. Содержимое страниц не передаётся.',
   tabsPrivate:'Пока это список только для вас. ИИ не получит его без отдельного разрешения.',
-  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Только при его включении Chrome запросит дополнительное разрешение отладчика. Действия на вкладке разрешаются отдельно. Это не физическая мышь компьютера.',
+  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Только при его включении Opera запросит дополнительное разрешение отладчика. Действия на вкладке разрешаются отдельно. Это не физическая мышь компьютера.',
   enableCursor:'Включить точный курсор на этой вкладке',disableCursor:'Выключить точный курсор',
   cursorNotReady:'Сначала разрешите действия на этой вкладке.',
-  permissionDenied:'Разрешение Chrome не предоставлено.',
+  permissionDenied:'Разрешение Opera не предоставлено.',
   error:'Произошла ошибка.',codePlaceholder:'••••••••'
  }
 };

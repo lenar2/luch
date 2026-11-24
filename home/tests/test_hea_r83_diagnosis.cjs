@@ -38,6 +38,17 @@ for(const [name,input,code,must,forbidden] of cases){
   results.push({name,locale,code,actions:Array.from(ids),ok:true});
  }
 }
+const failureBlock=source.split('// BEGIN R83 ATTEMPT STATUS')[1].split('// END R83 ATTEMPT STATUS')[0].split('\n').slice(1).join('\n');
+vm.runInContext(failureBlock+'\nthis.failure=describeCheckFailure;',context);
+for(const status of [null,401,403,422,429,503]){
+ for(const locale of ['en','ru']){
+  const f=context.failure(status,locale);
+  assert.ok(f.title&&f.detail&&f.next);
+  assert.ok(locale==='en'?f.title.includes('No new result'):f.title.includes('не подтверждён'));
+  if(status===403)assert.ok(locale==='en'?f.detail.includes('not an HTTP status returned by the website'):f.detail.includes('не HTTP-статус'));
+  results.push({name:'failed attempt '+status,locale,ok:true});
+ }
+}
 const report={status:'PASS',cases:results.length,synthetic_inputs:true,real_human_observations:0,source_sha256:crypto.createHash('sha256').update(source).digest('hex'),results};
 if(process.env.EVIDENCE_PATH)fs.writeFileSync(process.env.EVIDENCE_PATH,JSON.stringify(report,null,2));
 console.log(JSON.stringify({status:report.status,cases:report.cases,synthetic_inputs:true}));

@@ -21,6 +21,7 @@ previousSite:'Сейчас разрешён:',replaceGrantNote:'Разрешен
 keepGrant:'Оставить текущий сайт',chooseOtherSite:'Выбрать другой сайт',
 historyNotice:'Сохранённые наблюдения относятся к прошлым проверкам, а не к текущему состоянию сайта. Они доступны и после отзыва разрешения.',
 historyEvents:'Журнал действий',
+attemptHistory:'Ниже — наблюдение предыдущей проверки. Оно не подтверждает успех последней попытки.',
 diagnosisEyebrow:'ЧТО ЭТО ЗНАЧИТ ДЛЯ ВАС',nextSteps:'Что делать дальше',
 rulesDisclosure:'Вывод основан на сохранённом HTTPS-ответе и явных правилах, а не на ИИ. На сайте ничего не изменено.',
 handoffLabel:'Подготовить отчёт для разработчика',handoffIntro:'Скопируйте или выделите отчёт. LUCH никуда его не отправляет.',
@@ -141,7 +142,7 @@ const $=id=>document.getElementById(id);
 document.querySelectorAll('[data-i18n]').forEach(n=>{n.dataset.enOriginal=n.textContent});
 const escapeText=value=>String(value??'');
 let lang=new URLSearchParams(location.search).get('lang')==='ru'?'ru':'en';
-let state={authenticated:false}, page='overview', busy=false, lastResult=null, pendingGuestSite='', selectingOtherSite=false;
+let state={authenticated:false}, page='overview', busy=false, lastResult=null, pendingGuestSite='', selectingOtherSite=false, failedAttempt=null;
 function tx(key){return P[lang][key]||key}
 function translate(){
  document.documentElement.lang=lang;
@@ -288,6 +289,31 @@ function renderDiagnosis(r){
  for(const a of d.actions){const li=document.createElement('li');li.dataset.action=a.code;li.textContent=a.text;actions.append(li)}
  $('diagnosis-report').value=diagnosisReport(r,d);
 }
+// BEGIN R83 ATTEMPT STATUS (not a site diagnosis).
+function describeCheckFailure(status,locale='en'){
+ const L=(en,ru)=>locale==='ru'?ru:en;
+ const title=L('No new result was confirmed.','Новый результат не подтверждён.');
+ if(status===422)return {title,detail:L('LUCH could not establish a verified HTTPS response. This does not establish that the website is down.','LUCH не удалось получить подтверждённый HTTPS-ответ. Это не доказывает, что сайт недоступен.'),next:L('Open the address in a normal browser. If the issue persists, ask the site operator to check DNS, TLS and hosting; the cause is not established.','Откройте адрес в обычном браузере. Если проблема сохраняется, попросите оператора сайта проверить DNS, TLS и хостинг; причина не установлена.')};
+ if(status===403||status===401)return {title,detail:L('The check was not authorized by LUCH. This is not an HTTP status returned by the website.','LUCH не разрешил проверку. Это не HTTP-статус самого сайта.'),next:L('Review your session and current permission before starting another check.','Проверьте состояние входа и текущее разрешение перед новой проверкой.')};
+ if(status===429)return {title,detail:L('LUCH limited this request. No new website observation was confirmed.','LUCH ограничил частоту запросов. Новое наблюдение сайта не подтверждено.'),next:L('Wait before trying again; do not repeatedly retry.','Подождите перед повторной попыткой; не повторяйте запросы многократно.')};
+ return {title,detail:L('The check could not be completed or confirmed by LUCH. No conclusion about current website health follows.','LUCH не смог завершить или подтвердить проверку. Делать вывод о текущем состоянии сайта нельзя.'),next:L('Check your connection and try again later if needed; you can also open the address in a normal browser.','Проверьте соединение и при необходимости повторите позже; можно также открыть адрес в обычном браузере.')};
+}
+// END R83 ATTEMPT STATUS
+function renderAttemptNotice(){
+ const note=$('check-attempt-notice');
+ const visible=Boolean(failedAttempt&&state.authenticated&&state.grant?.origin===failedAttempt.origin&&!selectingOtherSite);
+ note.hidden=!visible;
+ if(!visible){
+  ['check-attempt-title','check-attempt-detail','check-attempt-next'].forEach(id=>text(id,''));
+  $('check-attempt-history').hidden=true;
+  return;
+ }
+ const d=describeCheckFailure(failedAttempt.status,lang);
+ text('check-attempt-title',d.title);
+ text('check-attempt-detail',d.detail);
+ text('check-attempt-next',d.next);
+ $('check-attempt-history').hidden=$('site-result').hidden;
+}
 function displayResult(r){
  renderDiagnosis(r);
  if(!r){$('site-result').hidden=true;$('empty-result').hidden=false;
@@ -377,7 +403,7 @@ function render(){
   $('activity-list').replaceChildren();$('saved-results').replaceChildren();
   ['user-chip','hello-name','current-origin','permission-title','permission-badge','stat-permission','mission-status','previous-origin','stat-checks'].forEach(id=>text(id,''));
   $('rotate-password').value='';
-  displayResult(null);lastResult=null;
+  failedAttempt=null;displayResult(null);lastResult=null;renderAttemptNotice();
   return;
  }
  text('user-chip',state.username);text('hello-name',state.username);
@@ -397,13 +423,13 @@ function render(){
  const activeOrigin=grant?.origin;
  const ownChecks=state.checks||[];
  const matchingResult=activeOrigin&&!choosing?ownChecks.find(c=>c.origin===activeOrigin)?.result:null;
- displayResult(matchingResult||null);
+ displayResult(matchingResult||null);renderAttemptNotice();
  showPage(page);
 }
 async function refresh(){
  try{
   const next=await request('state');
-  if(!next.authenticated||state.username!==next.username){lastResult=null;selectingOtherSite=false;}
+  if(!next.authenticated||state.username!==next.username){lastResult=null;selectingOtherSite=false;failedAttempt=null;}
   state=next;render();
  }
  catch(e){showToast(tx('cannotConnect'))}
@@ -485,24 +511,33 @@ async function consent(e){
  text('check-feedback','');setBusy(true);
  try{
   await request('consent',{origin:addr});$('consent-box').checked=false;
-  selectingOtherSite=false;lastResult=null;
+  selectingOtherSite=false;lastResult=null;failedAttempt=null;
   await refresh();showPage('check');showToast(tx('permissionGranted'));
  }catch(e){reportError('check-feedback',e)}
  finally{setBusy(false)}
 }
 async function runCheck(){
  if(busy)return;
+ const attemptedOrigin=state.grant?.origin;
  text('check-feedback',tx('busy'));setBusy(true);
  try{
   const response=await request('check',{});
-  lastResult=response.result;
+  lastResult=response.result;failedAttempt=null;
   await refresh();showPage('check');showToast(tx('checked'));text('check-feedback','');
   if(!$('site-result').hidden){
    const result=$('result-diagnosis');
    result.scrollIntoView({behavior:'instant',block:'start'});
    result.focus({preventScroll:true});
   }
- }catch(e){reportError('check-feedback',e)}
+ }catch(e){
+  failedAttempt={origin:attemptedOrigin,status:e?.status||null};
+  reportError('check-feedback',e);
+  renderAttemptNotice();
+  if(!$('check-attempt-notice').hidden){
+   $('check-attempt-notice').scrollIntoView({behavior:'instant',block:'start'});
+   $('check-attempt-notice').focus({preventScroll:true});
+  }
+ }
  finally{setBusy(false)}
 }
 async function revoke(){

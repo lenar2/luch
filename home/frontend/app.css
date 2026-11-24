@@ -378,3 +378,9 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .diagnosis:focus{outline:none}
 .diagnosis:focus-visible{outline:2px solid #4b8974;outline-offset:4px}
 #diagnosis-limits{margin:16px 0 10px;color:#466554}
+
+/* R8.3.1: a failed attempt cannot visually imply a new successful observation. */
+.check-attempt-notice{border:1px solid #dbcdb3;background:#faf6ec;border-radius:14px;padding:18px 20px;margin:15px 0;color:#55452e;scroll-margin-top:14px}
+.check-attempt-notice h3{font-size:19px;line-height:1.25;margin:0 0 8px}
+.check-attempt-notice p{font-size:13px;line-height:1.55;margin:8px 0}
+#check-attempt-history{font-weight:700;border-top:1px solid #e0d5c2;padding-top:10px}

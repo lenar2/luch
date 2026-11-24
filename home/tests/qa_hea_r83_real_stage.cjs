@@ -8,7 +8,7 @@ const fs=require('fs'),os=require('os'),path=require('path'),http=require('http'
 const OUT='/out', BASE='https://luch.lenarsalimov.ru/home/';
 const work=fs.mkdtempSync(path.join(os.tmpdir(),'luch-r83-'));
 const db=path.join(work,'test.sqlite'), records=[], apiLog=[], errors=[];
-let app,edge,browser;
+let app,edge,browser,injectFailure=false;
 const assert=(condition,msg)=>{if(!condition)throw Error(msg)};
 const pass=(step,extra={})=>{records.push({step,ok:true,...extra});console.log('PASS '+step)};
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
@@ -59,7 +59,7 @@ async function check(page,site){
 (async()=>{
  const source_files=['frontend/index.html','frontend/app.js','frontend/app.css','app/server.py','tests/qa_hea_r83_real_stage.cjs'];
  const source_sha256=Object.fromEntries(source_files.map(f=>[f,crypto.createHash('sha256').update(fs.readFileSync('/src/'+f)).digest('hex')]));
- const report={source_sha256,schema:'luch.home.r83.real-stage-e2e.v1',status:'FAIL',tests:records,real_home_api:true,real_external_https:true,production_changed:false,physical_iphone:false,model_connected:false,author_only:true,stage_network:'isolated container with unmodified Home backend and local TLS reverse proxy; browser DNS maps canonical host to loopback'};
+ const report={source_sha256,schema:'luch.home.r831.real-stage-e2e.v1',status:'FAIL',tests:records,real_home_api:true,real_external_https:true,synthetic_stage_fault_test:true,production_changed:false,physical_iphone:false,model_connected:false,author_only:true,stage_network:'isolated container with unmodified Home backend and local TLS reverse proxy; browser DNS maps canonical host to loopback'};
  try{
   execFileSync('openssl',['req','-x509','-nodes','-newkey','rsa:2048','-days','1','-subj','/CN=luch.lenarsalimov.ru','-addext','subjectAltName=DNS:luch.lenarsalimov.ru','-keyout',path.join(work,'key.pem'),'-out',path.join(work,'cert.pem')],{stdio:'ignore'});
   app=spawn('python3',['/src/app/server.py'],{env:{...process.env,PORT:'18882',LUCH_HOME_DB:db,LUCH_HOME_SELF_EDGE:''},stdio:['ignore','ignore','ignore']});
@@ -68,6 +68,11 @@ async function check(page,site){
   edge=https.createServer({key:fs.readFileSync(path.join(work,'key.pem')),cert:fs.readFileSync(path.join(work,'cert.pem'))},(req,res)=>{
    if(!req.url.startsWith('/home/')||req.headers.host!=='luch.lenarsalimov.ru'){res.writeHead(404);res.end();return}
    const target=req.url.replace(/^\/home/,'')||'/';
+   // Deliberately injected stage transport failure, not a real website status.
+   if(injectFailure&&req.method==='POST'&&target==='/api/check'){
+    injectFailure=false;apiLog.push({method:'POST',path:'/api/check',status:503,synthetic_stage_fault:true});
+    res.writeHead(503,{'Content-Type':'application/json'});res.end(JSON.stringify({ok:false,error:'Synthetic stage transport failure'}));return;
+   }
    const upstream=http.request({hostname:'127.0.0.1',port:18882,path:target,method:req.method,headers:req.headers},r=>{
     if(target.startsWith('/api/'))apiLog.push({method:req.method,path:target.split('?')[0],status:r.statusCode});
     res.writeHead(r.statusCode,r.headers);r.pipe(res)
@@ -116,6 +121,19 @@ async function check(page,site){
   assert(reportText.includes('https://example.com')&&reportText.includes('HTTP 200')&&reportText.includes(result.sha256_prefix)&&reportText.includes('No AI')&&reportText.includes('not a complete audit'),'handoff lacks source or limits');
   assert(apiLog.filter(x=>x.method==='POST').length===beforeReport,'report generation caused external action');
   pass('SOURCE_LINKED_DEVELOPER_HANDOFF_WITHOUT_SEND');
+  injectFailure=true;
+  await page.locator('#run-check').click();
+  await page.locator('#check-attempt-notice').waitFor({state:'visible',timeout:10000});
+  assert((await page.locator('#check-attempt-title').textContent()).includes('No new result'),'failed attempt not clearly labelled');
+  assert(await page.locator('#check-attempt-history').isVisible(),'historical observation distinction missing');
+  assert((await state(page)).checks.length===1,'synthetic fault created a new result');
+  assert((await page.locator('#check-attempt-next').textContent()).includes('try again later'),'failed attempt no next action');
+  await page.locator('[data-language]:visible').first().click();
+  assert((await page.locator('#check-attempt-title').textContent()).includes('не подтверждён'),'failure untranslated');
+  await page.locator('[data-language]:visible').first().click();
+  assert(await page.locator('#check-attempt-history').isVisible(),'failure lost after language switch');
+  pass('SYNTHETIC_STAGE_FAILURE_DISTINGUISHED_FROM_REAL_HISTORICAL_RESULT',{synthetic_stage_fault:true,http:503});
+  await page.screenshot({path:OUT+'/r831-failed-attempt-history.png',fullPage:false});
   await page.screenshot({path:OUT+'/r83-developer-handoff.png',fullPage:true});
   await page.locator('[data-go=activity]:visible').first().click();
   await page.locator('#activity-list').waitFor({state:'visible'});

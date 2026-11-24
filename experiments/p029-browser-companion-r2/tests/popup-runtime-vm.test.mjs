@@ -91,5 +91,5 @@ test('debugger is NOT requested during onboarding, only after optional pointer c
  assert.equal(typeof item('enable-cursor').listeners.click,'function');
  await item('enable-cursor').listeners.click();
  assert.equal(requested,1,'one user-click-driven permission request');
- assert.match(item('feedback').textContent,/Разрешение Chrome не предоставлено/);
+ assert.match(item('feedback').textContent,/Разрешение Opera не предоставлено/);
 });

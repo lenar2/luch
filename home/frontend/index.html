@@ -64,18 +64,20 @@
             <div class="task-upcoming"><span class="task-status" data-i18n="taskLater">NOT CONNECTED</span><strong data-i18n="taskAiTitle">Delegate a task to AI</strong><p data-i18n="taskAiDesc">SO 6.2, chat and AI actions are not part of this public beta.</p></div>
           </div>
           <div class="hero-login"><button type="button" class="text-switch" data-login-shortcut data-i18n="existingAccount">Already have an account? Sign in</button></div>
-          <details class="sample-result">
-            <summary data-i18n="sampleHeading">See an example result before signing up</summary>
-            <div class="sample-result-body">
-              <p class="sample-caption" data-i18n="sampleDisclosure">Illustration only: this example is not a live result from your account.</p>
-              <dl><dt data-i18n="sampleDomain">Example site</dt><dd>example.com</dd>
-                  <dt>HTTPS</dt><dd>200 OK</dd>
-                  <dt>HTML title</dt><dd>Example Domain</dd></dl>
-              <p data-i18n="sampleLimits">LUCH checks public homepage metadata; it does not change the website.</p>
-            </div>
-          </details>
         </div>
-        <div class="auth-card" id="auth-card">
+        <div class="sample-hero-card" id="pre-auth-panel" aria-label="Illustrative website check result">
+          <div class="sample-hero-top"><span data-i18n="samplePreviewLabel">YOUR RESULT, BEFORE YOU START</span><span class="sample-example-pill" data-i18n="sampleExampleTag">ILLUSTRATIVE EXAMPLE</span></div>
+          <div class="sample-browser-frame">
+            <div class="sample-browser-chrome"><span aria-hidden="true">● ● ●</span><strong>https://example.com</strong></div>
+            <div class="sample-browser-content"><div class="sample-browser-symbol" aria-hidden="true">↗</div><strong>Example Domain</strong><p data-i18n="samplePreviewCaption">A public homepage responded. This sample is illustrative, not a live check.</p></div>
+          </div>
+          <div class="sample-metric-row">
+            <div><span data-i18n="sampleMetric1">RESPONSE</span><strong>200 OK</strong></div>
+            <div><span data-i18n="sampleMetric2">PAGE TITLE</span><strong>Example Domain</strong></div>
+          </div>
+          <div class="sample-hero-bottom"><span class="status-dot" aria-hidden="true"></span><p data-i18n="sampleBoundaries">A real check will show your selected site's response, page title and limited metadata. No AI, editing or automatic actions.</p></div>
+        </div>
+        <div class="auth-card" id="auth-card" hidden>
           <div class="card-intro"><span class="eyebrow" data-i18n="getStarted">GET STARTED</span><span class="tiny-badge" data-i18n="publicBeta">PUBLIC BETA</span></div>
           <div id="register-pane">
             <h2 data-i18n="createTitle">Save your checks.</h2>

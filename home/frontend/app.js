@@ -17,6 +17,10 @@ taskNow:'ДОСТУПНО СЕЙЧАС',taskCheckTitle:'Проверить пу�
 taskCheckDesc:'Узнайте HTTPS-статус, заголовок и наличие мобильной разметки. Сохраните результат и отзовите доступ.',
 taskLater:'НЕ ПОДКЛЮЧЕНО',taskAiTitle:'Поручить задачу ИИ',
 taskAiDesc:'SO 6.2, чат и действия ИИ пока недоступны в публичной бете.',
+samplePreviewLabel:'ЧТО ПОКАЖЕТ ПРОВЕРКА',sampleExampleTag:'ИЛЛЮСТРАТИВНЫЙ ПРИМЕР',
+samplePreviewCaption:'Публичная страница ответила. Это пример, а не текущая проверка.',
+sampleMetric1:'ОТВЕТ',sampleMetric2:'ЗАГОЛОВОК',
+sampleBoundaries:'Настоящая проверка покажет ответ выбранного сайта, заголовок и ограниченные метаданные. Без ИИ, редактирования и автоматических действий.',
 benefit1:'01 · Выберите сайт',benefit2:'02 · Разрешите проверку',benefit3:'03 · Посмотрите доказательства',
 aiComing:'ИИ-помощники пока не подключены. Позже сюда можно добавить SO 6.2, сохранив ваше пространство.',
 getStarted:'НАЧАТЬ',publicBeta:'ПУБЛИЧНАЯ БЕТА',createTitle:'Сохраните свои проверки.',
@@ -275,6 +279,12 @@ async function refresh(){
  try{state=await request('state');render()}
  catch(e){showToast(tx('cannotConnect'))}
 }
+function revealAuth(preferLogin=false){
+ $('pre-auth-panel').hidden=true;
+ $('auth-card').hidden=false;
+ toggleAuth(preferLogin);
+ $('auth-card').scrollIntoView({behavior:'smooth',block:'start'});
+}
 function prepareGuestWebsite(e){
  e.preventDefault();
  const value=$('guest-website-url').value.trim();
@@ -292,8 +302,8 @@ function prepareGuestWebsite(e){
  $('website-url').value=value;
  text('guest-intent-feedback','');
  if(state.authenticated){pendingGuestSite='';showPage('check');return}
- $('auth-card').scrollIntoView({behavior:'smooth',block:'start'});
- const target=$('register-pane').hidden?$('login-username'):$('register-username');
+ revealAuth(false);
+ const target=$('register-username');
  target.focus({preventScroll:true});
 }
 function toggleAuth(login){
@@ -420,7 +430,7 @@ $('recovery-back').addEventListener('click',()=>toggleAuth(true));
 $('recovery-form').addEventListener('submit',recoverPassword);
 $('rotate-recovery').addEventListener('click',rotateRecovery);
 document.querySelectorAll('[data-login-shortcut]').forEach(b=>b.addEventListener('click',()=>{
- toggleAuth(true);$('auth-card').scrollIntoView({behavior:'smooth',block:'start'})
+ revealAuth(true);$('login-username').focus({preventScroll:true})
 }));
 document.querySelectorAll('[data-toggle-password]').forEach(b=>b.addEventListener('click',()=>{
  const f=$(b.dataset.togglePassword);f.type=f.type==='password'?'text':'password';

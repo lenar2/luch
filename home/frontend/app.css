@@ -312,3 +312,31 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
  .guest-intent-row .button{width:100%}
  .task-availability{grid-template-columns:1fr}
 }
+
+/* R8 human-experience correction: use the desktop right-hand space for an honest
+   result example, reveal authentication only after a user's actual task choice. */
+.sample-hero-card{padding:clamp(25px,3vw,43px);background:#fffefa;border:1px solid #cfdfd1;border-radius:21px;box-shadow:0 20px 55px #18392d13;align-self:center}
+.sample-hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:10px;letter-spacing:.1em;font-weight:820;color:#4e7664;margin-bottom:28px}
+.sample-example-pill{color:#786e56;background:#f2f1e9;padding:8px;border-radius:7px;font-size:9px}
+.sample-browser-frame{border:1px solid #dbe4da;border-radius:14px;overflow:hidden;background:#fafcf8}
+.sample-browser-chrome{background:#e5efe8;display:flex;gap:18px;padding:13px 18px;color:#719180;font-size:11px;align-items:center;border-bottom:1px solid #d5e3d7}
+.sample-browser-chrome strong{color:#365f4f;font-size:12px;font-weight:680}
+.sample-browser-content{text-align:center;padding:40px 18px 43px;color:#234b3c}
+.sample-browser-symbol{height:50px;width:50px;display:grid;place-items:center;border-radius:15px;background:#d9ede2;font-size:29px;margin:0 auto 18px}
+.sample-browser-content strong{font-size:29px;letter-spacing:-.04em;font-weight:680}
+.sample-browser-content p{font-size:13px;color:#708879;line-height:1.6;margin:10px auto 0;max-width:280px}
+.sample-metric-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0 20px}
+.sample-metric-row>div{border:1px solid #d8e4d9;border-radius:12px;padding:17px;background:#ecf4ed}
+.sample-metric-row span{display:block;color:#5f816e;font-size:9px;letter-spacing:.1em;font-weight:800;margin-bottom:8px}
+.sample-metric-row strong{font-size:16px;color:#1a4939}
+.sample-hero-bottom{display:flex;gap:12px;align-items:flex-start;color:#507261;font-size:12px;line-height:1.6}
+.sample-hero-bottom p{margin:0}
+@media(max-width:760px){
+ .sample-hero-card{padding:19px 18px;border-radius:16px}
+ .sample-hero-top{margin-bottom:14px}
+ .sample-browser-content{padding:19px 12px 23px}
+ .sample-browser-content strong{font-size:21px}
+ .sample-browser-symbol{display:none}
+ .sample-metric-row{margin:10px 0}
+ .sample-metric-row>div{padding:11px}
+}

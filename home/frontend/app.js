@@ -17,6 +17,10 @@ taskNow:'ДОСТУПНО СЕЙЧАС',taskCheckTitle:'Проверить пу�
 taskCheckDesc:'Узнайте HTTPS-статус, заголовок и наличие мобильной разметки. Сохраните результат и отзовите доступ.',
 taskLater:'НЕ ПОДКЛЮЧЕНО',taskAiTitle:'Поручить задачу ИИ',
 taskAiDesc:'SO 6.2, чат и действия ИИ пока недоступны в публичной бете.',
+previousSite:'Сейчас разрешён:',replaceGrantNote:'Разрешение на другой сайт заменит текущее. Запрос начнётся только после нажатия кнопки проверки.',
+keepGrant:'Оставить текущий сайт',chooseOtherSite:'Выбрать другой сайт',
+historyNotice:'Сохранённые наблюдения относятся к прошлым проверкам, а не к текущему состоянию сайта. Они доступны и после отзыва разрешения.',
+historyEvents:'Журнал действий',
 samplePreviewLabel:'ЧТО ПОКАЖЕТ ПРОВЕРКА',sampleExampleTag:'ИЛЛЮСТРАТИВНЫЙ ПРИМЕР',
 samplePreviewCaption:'Публичная страница ответила. Это пример, а не текущая проверка.',
 sampleMetric1:'ОТВЕТ',sampleMetric2:'ЗАГОЛОВОК',
@@ -133,7 +137,7 @@ const $=id=>document.getElementById(id);
 document.querySelectorAll('[data-i18n]').forEach(n=>{n.dataset.enOriginal=n.textContent});
 const escapeText=value=>String(value??'');
 let lang=new URLSearchParams(location.search).get('lang')==='ru'?'ru':'en';
-let state={authenticated:false}, page='overview', busy=false, lastResult=null, pendingGuestSite='';
+let state={authenticated:false}, page='overview', busy=false, lastResult=null, pendingGuestSite='', selectingOtherSite=false;
 function tx(key){return P[lang][key]||key}
 function translate(){
  document.documentElement.lang=lang;
@@ -214,6 +218,8 @@ function formatDate(n){
 }
 function displayResult(r){
  if(!r){$('site-result').hidden=true;$('empty-result').hidden=false;
+  ['result-title','result-http','result-time','result-mobile','result-origin','result-checked','result-hash'].forEach(id=>text(id,''));
+  $('result-observations').replaceChildren();
   text('result-badge',lang==='ru'?'НЕ ЗАПУЩЕНО':'NOT RUN');
   $('result-badge').className='result-badge';return;
  }
@@ -240,6 +246,30 @@ function displayResult(r){
  };
  for(let v of r.observations||[]){const li=document.createElement('li');li.textContent=tx(obs[v]||v);list.append(li)}
 }
+function renderSavedResults(){
+ const target=$('saved-results');target.replaceChildren();
+ const checks=state.checks||[];
+ if(!checks.length){const p=document.createElement('p');p.className='field-note';p.textContent=tx('noResult');target.append(p);return}
+ for(const check of checks){
+  const r=check.result||{};
+  const card=document.createElement('details');card.className='saved-result';
+  const summary=document.createElement('summary');
+  const label=document.createElement('strong');label.textContent=r.origin||check.origin||'';
+  const status=document.createElement('span');status.textContent='HTTP '+String(r.http_status??tx('unknown'));
+  summary.append(label,status);card.append(summary);
+  const date=document.createElement('p');date.className='field-note';date.textContent=formatDate(r.checked_at||check.at);
+  const dl=document.createElement('dl');dl.className='result-details';
+  for(const [name,value] of [
+    [lang==='ru'?'Заголовок страницы':'Page title',r.page_title||tx('noTitle')],
+    [lang==='ru'?'Время ответа':'Response time',r.elapsed_ms+' ms'],
+    [lang==='ru'?'Мобильная разметка':'Mobile viewport',r.mobile_viewport===null?tx('unknown'):r.mobile_viewport?tx('yes'):tx('no')],
+    ['SHA-256',r.sha256_prefix||'—']]){
+   const dt=document.createElement('dt'),dd=document.createElement('dd');
+   dt.textContent=name;dd.textContent=String(value);dl.append(dt,dd);
+  }
+  card.append(date,dl);target.append(card);
+ }
+}
 function renderActivity(){
  const el=$('activity-list');el.replaceChildren();
  const recent=(state.events||[]);
@@ -260,10 +290,21 @@ function render(){
  $('guest').hidden=signed;$('workspace').hidden=!signed;
  $('side-nav').hidden=!signed;$('user-chip').hidden=!signed;$('logout').hidden=!signed;
  document.body.classList.toggle('signed-in',signed);
- if(!signed){$('guest').hidden=false;return}
+ if(!signed){
+  $('guest').hidden=false;
+  $('pre-auth-panel').hidden=false;$('auth-card').hidden=true;
+  $('activity-list').replaceChildren();$('saved-results').replaceChildren();
+  ['user-chip','hello-name','current-origin','permission-title','permission-badge','stat-permission','mission-status','previous-origin','stat-checks'].forEach(id=>text(id,''));
+  $('rotate-password').value='';
+  displayResult(null);lastResult=null;
+  return;
+ }
  text('user-chip',state.username);text('hello-name',state.username);
  const grant=state.grant;
- $('no-grant').hidden=Boolean(grant);$('granted').hidden=!grant;
+ const choosing=Boolean(grant)&&selectingOtherSite;
+ $('no-grant').hidden=Boolean(grant)&&!choosing;$('granted').hidden=!grant||choosing;
+ $('replace-grant-note').hidden=!choosing;
+ text('previous-origin',choosing?grant.origin:'');
  $('revoke-grant').hidden=!grant;
  text('current-origin',grant?.origin||'');
  text('permission-title',grant?.origin||(lang==='ru'?RU.noPermission:'No website selected.'));
@@ -271,12 +312,19 @@ function render(){
  text('stat-permission',grant?tx('grantActive'):tx('notGranted'));
  text('mission-status',grant?grant.origin:tx('notGranted'));
  text('stat-checks',(state.checks||[]).length);
- renderActivity();
- displayResult(lastResult||(state.checks?.[0]?.result||null));
+ renderActivity();renderSavedResults();
+ const activeOrigin=grant?.origin;
+ const ownChecks=state.checks||[];
+ const matchingResult=activeOrigin&&!choosing?ownChecks.find(c=>c.origin===activeOrigin)?.result:null;
+ displayResult(matchingResult||null);
  showPage(page);
 }
 async function refresh(){
- try{state=await request('state');render()}
+ try{
+  const next=await request('state');
+  if(!next.authenticated||state.username!==next.username){lastResult=null;selectingOtherSite=false;}
+  state=next;render();
+ }
  catch(e){showToast(tx('cannotConnect'))}
 }
 function revealAuth(preferLogin=false){
@@ -287,15 +335,16 @@ function revealAuth(preferLogin=false){
 }
 function prepareGuestWebsite(e){
  e.preventDefault();
- const value=$('guest-website-url').value.trim();
- let valid=false;
+ const raw=$('guest-website-url').value.trim();
+ let value='',valid=false;
  try{
-  const u=new URL(value);
-  valid=u.protocol==='https:' && Boolean(u.hostname) && !u.username && !u.password &&
+  const u=new URL(raw.includes('://')?raw:'https://'+raw);
+  valid=u.protocol==='https:' && Boolean(u.hostname) && u.hostname.includes('.') && !u.username && !u.password &&
     (u.pathname==='/' || u.pathname==='') && !u.search && !u.hash && !u.port;
+  value='https://'+u.hostname.toLowerCase().replace(/\.$/,'');
  }catch{}
  if(!valid){
-  text('guest-intent-feedback',lang==='ru'?'Укажите только публичный HTTPS-домен без пути, порта и параметров.':'Enter a public HTTPS website address without a path, port or query.');
+  text('guest-intent-feedback',lang==='ru'?'Укажите публичный HTTPS-домен без пути, порта и параметров.':'Enter a public HTTPS website address without a path, port or query.');
   return;
  }
  pendingGuestSite=value;
@@ -338,8 +387,9 @@ async function authenticate(mode,e){
   if(v.authenticated){
    if(pendingGuestSite){
     $('website-url').value=pendingGuestSite;
+    selectingOtherSite=Boolean(state.grant&&state.grant.origin!==pendingGuestSite);
     pendingGuestSite='';
-    showPage('check');
+    render();showPage('check');
    }
    showToast(mode==='register'?tx('signupOK'):tx('signedIn'));
    if(mode==='register'&&v.recovery_code)presentRecoveryCode(v.recovery_code);
@@ -354,6 +404,7 @@ async function consent(e){
  text('check-feedback','');setBusy(true);
  try{
   await request('consent',{origin:addr});$('consent-box').checked=false;
+  selectingOtherSite=false;lastResult=null;
   await refresh();showPage('check');showToast(tx('permissionGranted'));
  }catch(e){reportError('check-feedback',e)}
  finally{setBusy(false)}
@@ -380,7 +431,7 @@ async function revoke(){
 }
 async function logout(){
  if(busy)return;setBusy(true);
- try{await request('logout',{});state={authenticated:false};page='overview';lastResult=null;render();showToast(tx('signedOut'))}
+ try{await request('logout',{});state={authenticated:false};page='overview';lastResult=null;pendingGuestSite='';selectingOtherSite=false;$('guest-website-url').value='';$('website-url').value='';$('consent-box').checked=false;render();showToast(tx('signedOut'))}
  catch(e){showToast(tx('error'))}
  finally{setBusy(false)}
 }
@@ -393,7 +444,7 @@ async function deleteAccount(){
  setBusy(true);
  try{
   await request('delete-account',{username:state.username});
-  state={authenticated:false};lastResult=null;page='overview';render();
+  state={authenticated:false};lastResult=null;page='overview';pendingGuestSite='';selectingOtherSite=false;$('guest-website-url').value='';$('website-url').value='';$('consent-box').checked=false;render();
   showToast(lang==='ru'?'Аккаунт и данные удалены.':'Account and data deleted.');
  }catch(e){reportError('permission-feedback',e)}
  finally{setBusy(false)}
@@ -449,6 +500,13 @@ $('close-recovery').addEventListener('click',()=>{
 $('register-form').addEventListener('submit',e=>authenticate('register',e));
 $('login-form').addEventListener('submit',e=>authenticate('login',e));
 $('grant-form').addEventListener('submit',consent);
+$('choose-other-site').addEventListener('click',()=>{
+ if(!state.authenticated||busy)return;
+ selectingOtherSite=true;$('website-url').value='';$('consent-box').checked=false;render();$('website-url').focus();
+});
+$('keep-grant').addEventListener('click',()=>{
+ selectingOtherSite=false;$('consent-box').checked=false;render();
+});
 $('run-check').addEventListener('click',runCheck);
 $('revoke-grant').addEventListener('click',revoke);
 $('delete-account').addEventListener('click',deleteAccount);

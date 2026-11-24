@@ -53,7 +53,7 @@
           <form id="guest-website-intent" class="guest-website-intent">
             <label for="guest-website-url" data-i18n="guestSiteLabel">Which website would you like to check?</label>
             <div class="guest-intent-row">
-              <input id="guest-website-url" type="url" inputmode="url" spellcheck="false" autocomplete="url" placeholder="https://example.com" aria-describedby="guest-intent-explainer" required maxlength="260">
+              <input id="guest-website-url" type="text" inputmode="url" spellcheck="false" autocomplete="url" placeholder="https://example.com" aria-describedby="guest-intent-explainer" required maxlength="260">
               <button class="button primary" type="submit"><span data-i18n="guestContinue">Continue</span><span aria-hidden="true">↗</span></button>
             </div>
             <p id="guest-intent-explainer" data-i18n="guestIntentExplainer">First choose a site. Next, create or open a workspace and approve a read-only check. Nothing is checked yet.</p>
@@ -156,6 +156,7 @@
             <div class="surface">
               <div class="surface-top"><span class="eyebrow" data-i18n="source">THE WEBSITE</span><span class="tiny-badge" data-i18n="readOnly">READ ONLY</span></div>
               <div id="no-grant">
+                <div id="replace-grant-note" class="replace-grant-note" hidden><p><span data-i18n="previousSite">Currently allowed:</span> <strong id="previous-origin"></strong></p><p data-i18n="replaceGrantNote">Approving a different website replaces this permission. No request will run until you choose Run check.</p><button class="text-switch" id="keep-grant" type="button" data-i18n="keepGrant">Keep the current website instead</button></div>
                 <form id="grant-form">
                   <label for="website-url" data-i18n="websiteAddress">Public website address</label>
                   <input id="website-url" type="text" spellcheck="false" inputmode="url" autocomplete="url" placeholder="https://example.com" required maxlength="260">
@@ -168,6 +169,7 @@
                 <p class="label-sub" data-i18n="permissionActive">ACTIVE PERMISSION</p><p class="granted-origin" id="current-origin"></p>
                 <p class="field-note" data-i18n="scopeDisclosure">Only GET / over verified HTTPS. No sign-in, no writes, no JavaScript execution, no redirects followed.</p>
                 <button class="button primary full" id="run-check" type="button"><span data-i18n="runCheck">Run real website check</span><span aria-hidden="true">↗</span></button>
+                <button class="text-switch" type="button" id="choose-other-site" data-i18n="chooseOtherSite">Choose another website</button>
                 <button class="text-switch" type="button" data-go="permissions" data-i18n="changePermission">Change or revoke permission ↗</button>
               </div>
               <p id="check-feedback" class="form-feedback" role="status" aria-live="polite"></p>
@@ -222,6 +224,9 @@
           <div class="page-heading"><p class="eyebrow" data-i18n="activity">ACTIVITY</p><h1><span data-i18n="activityHeadOne">What happened,</span><br><em data-i18n="activityHeadTwo">and when.</em></h1>
             <p data-i18n="activityIntro">Only your own checks and permission changes appear here. Nothing from another user's workspace.</p></div>
           <div class="surface wide-surface"><div class="surface-top"><span class="eyebrow" data-i18n="recordedResults">RECORDED RESULTS</span><span class="tiny-badge" data-i18n="yourAccount">YOUR ACCOUNT ONLY</span></div>
+            <p class="field-note" data-i18n="historyNotice">Saved observations are historical evidence, not a new website check. They remain readable after you revoke access.</p>
+            <div id="saved-results" class="saved-results"></div>
+            <h3 class="history-events-heading" data-i18n="historyEvents">Activity log</h3>
             <div id="activity-list" class="activity-list"><p data-i18n="noActivity">No activity yet. Your first result will appear here.</p></div></div>
         </section>
 

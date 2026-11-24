@@ -279,3 +279,36 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .sample-result-body dl{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:12px;color:#254d3d}
 .sample-result-body dt{color:#476b59}.sample-result-body dd{margin:0;font-weight:750}
 @media(max-width:760px){.sample-result{margin-top:11px}.sample-result summary{font-size:11px}}
+
+/* HEA R8 candidate: user task before account setup; no network call until scoped consent. */
+.guest-website-intent{margin:27px 0 20px;padding:20px;background:#fffefa;border:1px solid #cadecf;border-radius:17px;box-shadow:0 12px 30px #1242350b}
+.guest-website-intent label{display:block;font-size:14px;font-weight:750;color:#224e3c;margin-bottom:12px}
+.guest-intent-row{display:flex;gap:8px}
+.guest-intent-row input{min-width:0;flex:1;font-size:15px}
+.guest-intent-row .button{flex:0 0 auto;min-width:131px}
+.guest-website-intent>p{font-size:11px;line-height:1.55;color:#466b58;margin:10px 1px 0}
+.guest-website-intent .form-feedback{color:#934943;margin-top:3px}
+.task-availability{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.task-availability>div{border-radius:13px;padding:15px 16px;border:1px solid #d5e3d8}
+.task-available{background:#eaf5ec}.task-upcoming{background:#f2f3ef}
+.task-status{display:block;font-size:9px;letter-spacing:.09em;font-weight:850;color:#43715b;margin-bottom:9px}
+.task-upcoming .task-status{color:#706f62}
+.task-availability strong{font-size:14px;line-height:1.3;display:block;margin-bottom:7px}
+.task-availability p{font-size:11px;line-height:1.58;color:#4d6a58;margin:0}
+.hero-login{margin-top:9px}
+.hero-login .text-switch{font-size:12px;padding:8px 0}
+@media(max-width:760px){
+ .guest-website-intent{padding:14px;margin:17px 0 12px}
+ .guest-intent-row input{min-height:46px}
+ .guest-intent-row .button{min-width:108px;padding:10px 13px;min-height:46px}
+ .task-availability{grid-template-columns:1fr 1fr;gap:7px}
+ .task-availability>div{padding:10px;border-radius:11px}
+ .task-availability strong{font-size:12px}
+ .task-availability p{font-size:10px;line-height:1.4}
+ .hero-login{margin-top:3px}
+}
+@media(max-width:365px){
+ .guest-intent-row{flex-direction:column}
+ .guest-intent-row .button{width:100%}
+ .task-availability{grid-template-columns:1fr}
+}

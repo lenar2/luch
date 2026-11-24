@@ -47,17 +47,23 @@
       <section id="guest" class="guest-grid">
         <div class="welcome-text">
           <div class="hero-wordmark"><img src="brand-wordmark.svg" alt="LUCH" width="108" height="108"></div>
-          <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · YOUR FIRST REAL WORKSPACE</p>
-          <h1><span data-i18n="heroOne">Your task.</span><br><em data-i18n="heroTwo">A result you can verify.</em></h1>
-          <p class="hero-lead" data-i18n="heroLead">Start with a real, read-only website check. You decide which public site to inspect, see what happened and can revoke permission at any time.</p>
-          <div class="hero-cta"><a class="button primary" href="#auth-card" data-i18n="tryNow">Start free website check ↗</a>
-          <button type="button" class="text-switch" data-login-shortcut data-i18n="existingAccount">Already have an account? Sign in</button></div>
-          <div class="benefits">
-            <span data-i18n="benefit1">01 · Choose a website</span>
-            <span data-i18n="benefit2">02 · Approve one check</span>
-            <span data-i18n="benefit3">03 · Review the evidence</span>
+          <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · AVAILABLE TODAY</p>
+          <h1><span data-i18n="heroOne">Your website.</span><br><em data-i18n="heroTwo">A clear answer.</em></h1>
+          <p class="hero-lead" data-i18n="heroLead">Check whether a public website responds and what its homepage actually reports. LUCH records a real HTTPS result, with your permission and no changes to the site.</p>
+          <form id="guest-website-intent" class="guest-website-intent">
+            <label for="guest-website-url" data-i18n="guestSiteLabel">Which website would you like to check?</label>
+            <div class="guest-intent-row">
+              <input id="guest-website-url" type="url" inputmode="url" spellcheck="false" autocomplete="url" placeholder="https://example.com" aria-describedby="guest-intent-explainer" required maxlength="260">
+              <button class="button primary" type="submit"><span data-i18n="guestContinue">Continue</span><span aria-hidden="true">↗</span></button>
+            </div>
+            <p id="guest-intent-explainer" data-i18n="guestIntentExplainer">First choose a site. Next, create or open a workspace and approve a read-only check. Nothing is checked yet.</p>
+            <p class="form-feedback" id="guest-intent-feedback" role="status" aria-live="polite"></p>
+          </form>
+          <div class="task-availability" aria-label="What LUCH Home can do">
+            <div class="task-available"><span class="task-status" data-i18n="taskNow">AVAILABLE NOW</span><strong data-i18n="taskCheckTitle">Inspect a public website</strong><p data-i18n="taskCheckDesc">See HTTPS status, page title and mobile-page signal. Keep the result and revoke access.</p></div>
+            <div class="task-upcoming"><span class="task-status" data-i18n="taskLater">NOT CONNECTED</span><strong data-i18n="taskAiTitle">Delegate a task to AI</strong><p data-i18n="taskAiDesc">SO 6.2, chat and AI actions are not part of this public beta.</p></div>
           </div>
-          <div class="soft-note"><span class="status-dot" aria-hidden="true"></span><p data-i18n="aiComing">AI assistants aren't connected yet. SO 6.2 can be added later without changing your workspace.</p></div>
+          <div class="hero-login"><button type="button" class="text-switch" data-login-shortcut data-i18n="existingAccount">Already have an account? Sign in</button></div>
           <details class="sample-result">
             <summary data-i18n="sampleHeading">See an example result before signing up</summary>
             <div class="sample-result-body">
@@ -72,8 +78,8 @@
         <div class="auth-card" id="auth-card">
           <div class="card-intro"><span class="eyebrow" data-i18n="getStarted">GET STARTED</span><span class="tiny-badge" data-i18n="publicBeta">PUBLIC BETA</span></div>
           <div id="register-pane">
-            <h2 data-i18n="createTitle">Open your workspace.</h2>
-            <p data-i18n="createDesc">Create a private account to keep your permissions and results separate from everyone else's.</p>
+            <h2 data-i18n="createTitle">Save your checks.</h2>
+            <p data-i18n="createDesc">A private workspace keeps your website permission, results and recovery details separate from everyone else.</p>
             <form id="register-form" autocomplete="on">
               <label for="register-username" data-i18n="username">Username</label>
               <input id="register-username" name="username" minlength="4" maxlength="28" pattern="[A-Za-z][A-Za-z0-9_-]{3,27}" autocomplete="username" placeholder="e.g. alex_home" required>

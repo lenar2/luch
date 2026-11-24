@@ -8,13 +8,19 @@ skip:'Перейти к содержимому',yourWorkspace:'ВАШЕ ПРОС
 websiteCheck:'Проверка сайта',permissions:'Разрешения',activity:'История',assistants:'Помощники',
 soon:'Скоро',controlLabel:'Ваш выбор. Ваши разрешения. Проверяемые результаты.',
 backSite:'← На сайт LUCH',signOut:'Выйти',
-heroEyebrow:'LUCH HOME · ПЕРВОЕ РАБОЧЕЕ ПРОСТРАНСТВО',heroOne:'Ваша задача.',
-heroTwo:'Результат, который можно проверить.',
-heroLead:'Начните с настоящей проверки сайта. Вы выбираете публичный адрес, видите результат и в любой момент можете отозвать разрешение.',
+heroEyebrow:'LUCH HOME · ДОСТУПНО СЕГОДНЯ',heroOne:'Ваш сайт.',
+heroTwo:'Понятный результат.',
+heroLead:'Проверьте, отвечает ли публичный сайт и что сообщает его главная страница. LUCH сохранит реальный HTTPS-ответ с вашего разрешения, не изменяя сайт.',
+guestSiteLabel:'Какой сайт хотите проверить?',guestContinue:'Продолжить',
+guestIntentExplainer:'Сначала выберите сайт. Затем войдите или создайте пространство и разрешите проверку только для чтения. Пока запрос не выполняется.',
+taskNow:'ДОСТУПНО СЕЙЧАС',taskCheckTitle:'Проверить публичный сайт',
+taskCheckDesc:'Узнайте HTTPS-статус, заголовок и наличие мобильной разметки. Сохраните результат и отзовите доступ.',
+taskLater:'НЕ ПОДКЛЮЧЕНО',taskAiTitle:'Поручить задачу ИИ',
+taskAiDesc:'SO 6.2, чат и действия ИИ пока недоступны в публичной бете.',
 benefit1:'01 · Выберите сайт',benefit2:'02 · Разрешите проверку',benefit3:'03 · Посмотрите доказательства',
 aiComing:'ИИ-помощники пока не подключены. Позже сюда можно добавить SO 6.2, сохранив ваше пространство.',
-getStarted:'НАЧАТЬ',publicBeta:'ПУБЛИЧНАЯ БЕТА',createTitle:'Откройте своё пространство.',
-createDesc:'Создайте личную учётную запись: ваши разрешения и результаты будут отделены от данных других людей.',
+getStarted:'НАЧАТЬ',publicBeta:'ПУБЛИЧНАЯ БЕТА',createTitle:'Сохраните свои проверки.',
+createDesc:'Личное пространство хранит разрешения, результаты и данные восстановления отдельно от других пользователей.',
 username:'Имя пользователя',password:'Пароль',
 uniquePwd:'Используйте уникальный пароль. В бета-версии восстановление через email пока недоступно.',
 createAccount:'Создать пространство',existingAccount:'Уже есть аккаунт? Войти',welcomeBack:'С возвращением.',
@@ -123,7 +129,7 @@ const $=id=>document.getElementById(id);
 document.querySelectorAll('[data-i18n]').forEach(n=>{n.dataset.enOriginal=n.textContent});
 const escapeText=value=>String(value??'');
 let lang=new URLSearchParams(location.search).get('lang')==='ru'?'ru':'en';
-let state={authenticated:false}, page='overview', busy=false, lastResult=null;
+let state={authenticated:false}, page='overview', busy=false, lastResult=null, pendingGuestSite='';
 function tx(key){return P[lang][key]||key}
 function translate(){
  document.documentElement.lang=lang;
@@ -269,6 +275,27 @@ async function refresh(){
  try{state=await request('state');render()}
  catch(e){showToast(tx('cannotConnect'))}
 }
+function prepareGuestWebsite(e){
+ e.preventDefault();
+ const value=$('guest-website-url').value.trim();
+ let valid=false;
+ try{
+  const u=new URL(value);
+  valid=u.protocol==='https:' && Boolean(u.hostname) && !u.username && !u.password &&
+    (u.pathname==='/' || u.pathname==='') && !u.search && !u.hash && !u.port;
+ }catch{}
+ if(!valid){
+  text('guest-intent-feedback',lang==='ru'?'Укажите только публичный HTTPS-домен без пути, порта и параметров.':'Enter a public HTTPS website address without a path, port or query.');
+  return;
+ }
+ pendingGuestSite=value;
+ $('website-url').value=value;
+ text('guest-intent-feedback','');
+ if(state.authenticated){pendingGuestSite='';showPage('check');return}
+ $('auth-card').scrollIntoView({behavior:'smooth',block:'start'});
+ const target=$('register-pane').hidden?$('login-username'):$('register-username');
+ target.focus({preventScroll:true});
+}
 function toggleAuth(login){
  $('register-pane').hidden=login;$('login-pane').hidden=!login;$('recovery-pane').hidden=true;
  text('auth-feedback','');
@@ -299,6 +326,11 @@ async function authenticate(mode,e){
   f.elements.password.value='';
   await refresh();
   if(v.authenticated){
+   if(pendingGuestSite){
+    $('website-url').value=pendingGuestSite;
+    pendingGuestSite='';
+    showPage('check');
+   }
    showToast(mode==='register'?tx('signupOK'):tx('signedIn'));
    if(mode==='register'&&v.recovery_code)presentRecoveryCode(v.recovery_code);
   }
@@ -378,6 +410,7 @@ async function rotateRecovery(){
  }catch(e){reportError('permission-feedback',e)}
  finally{setBusy(false)}
 }
+$('guest-website-intent').addEventListener('submit',prepareGuestWebsite);
 document.querySelectorAll('[data-language]').forEach(x=>x.addEventListener('click',switchLanguage));
 document.querySelectorAll('[data-go]').forEach(x=>x.addEventListener('click',()=>showPage(x.dataset.go)));
 $('show-login').addEventListener('click',()=>toggleAuth(true));

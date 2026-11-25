@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import json
+import base64
+import hashlib
+import shlex
 import pathlib
 import sys
 import tempfile
@@ -150,6 +153,31 @@ class Route53Tests(unittest.TestCase):
             fn=pathlib.Path(d)/'bad.json'
             fn.write_text(json.dumps({'schema':'different'}))
             with self.assertRaises(cf.Hold):cf.restore_dns(fn)
+
+    def test_ssm_payload_split_with_verified_source_no_network(self):
+        saved=[]
+        def fakeaws(*argv):
+            if argv[:2]==('ssm','send-command'):
+                p=pathlib.Path(argv[argv.index('--parameters')+1].removeprefix('file://'))
+                saved.append(json.loads(p.read_text()))
+                return {'Command':{'CommandId':'C-MOCK'}}
+            if argv[:2]==('ssm','get-command-invocation'):
+                return {'Status':'Success','StandardOutputContent':'P029_EC2_PREFLIGHT_OK'}
+            raise AssertionError('unexpected AWS API call '+repr(argv))
+        with tempfile.TemporaryDirectory() as d,\
+             patch.object(cf,'ROOT',pathlib.Path(d)),\
+             patch.object(cf,'aws',side_effect=fakeaws),\
+             patch.object(cf,'run'):
+            result=cf.ssm_patch('inspect')
+        self.assertIn('P029_EC2_PREFLIGHT_OK',result)
+        lines=saved[0]['commands']
+        self.assertLess(max(map(len,lines)),3301)
+        chunks=[shlex.split(x)[2] for x in lines if x.startswith('printf %s ')]
+        decoded=base64.b64decode(''.join(chunks))
+        original=(pathlib.Path(__file__).resolve().parent/'aws_remote_patch.py').read_bytes()
+        self.assertEqual(hashlib.sha256(decoded).hexdigest(),hashlib.sha256(original).hexdigest())
+        self.assertTrue(any('sha256sum -c' in x for x in lines))
+        self.assertTrue(any('base64 --decode' in x for x in lines))
 
     def test_no_route53_mutation_in_inspect(self):
         with patch.object(cf,'aws_identity',return_value={'account':'123','ip':cf.AWS_IP}),\

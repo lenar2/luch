@@ -92,8 +92,9 @@ def patch_caddy(text):
         if re.search(needle, site):
             raise ValueError('existing route requires manual reconciliation: ' + path)
     # Place within the site before existing main MCP; Caddy path handles take precedence.
-    at = site.find('    handle /luch/mcp {')
-    if at < 0: raise ValueError('canonical handle indentation does not match expected Caddy layout')
+    match = re.search(r'(?m)^[ \t]*handle[ \t]+/luch/mcp[ \t]*\{', site)
+    if not match: raise ValueError('canonical handle missing in AWS Caddy site')
+    at = match.start()
     new_site = site[:at] + render_routes() + site[at:]
     result = text[:start] + new_site + text[end:]
     # Require unrelated api host bytes untouched (stronger than a string count).

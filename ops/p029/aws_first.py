@@ -191,7 +191,7 @@ def ssm_patch(mode,backup=None):
     remote_path='/tmp/p029-r11-'+nonce+'.py'
     encoded=base64.b64encode(src.encode('utf8')).decode('ascii')
     pieces=[encoded[i:i+2700] for i in range(0,len(encoded),2700)]
-    commands=['set -Eeuo pipefail', 'umask 077',
+    commands=['set -eu', 'umask 077',
               "trap 'rm -f "+remote_path+" "+remote_path+".b64' EXIT"]
     for i,piece in enumerate(pieces):
         commands.append("printf %s "+shlex.quote(piece)+(' > ' if i==0 else ' >> ')+remote_path+'.b64')

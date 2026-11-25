@@ -14,7 +14,7 @@ branch. From authenticated AWS CloudShell in **us-east-1**:
 
 ```bash
 # Pin <REVIEWED_SHA> to the published git commit containing this reviewed kit.
-git clone https://github.com/lenar2/luch.git ~/luch-p029-r11
+git clone --depth 1 --branch p029/r11-aws-first-ingress-20261125 https://github.com/lenar2/luch.git ~/luch-p029-r11
 cd ~/luch-p029-r11
 git checkout --detach <REVIEWED_SHA>
 python3 ops/p029/aws_first.py inspect

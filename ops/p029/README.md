@@ -105,7 +105,7 @@ python3 ops/p029/test_offline.py
 python3 -m py_compile ops/p029/aws_first.py ops/p029/aws_remote_patch.py
 ```
 
-All offline tests are non-destructive mocks and cannot replace AWS IAM/SSM,
+The current R11 suite has 16 offline tests, including integrity-checked, bounded\nAWS SSM script transfer without requiring EC2 access to GitHub.\n\nAll offline tests are non-destructive mocks and cannot replace AWS IAM/SSM,
 Caddy-on-EC2, OAuth or real multi-host tests. The AWS source and CloudShell
 bundle contain no private `.env`, certificate keys, S3 transfer URL or JWT.
 

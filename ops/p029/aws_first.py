@@ -16,6 +16,7 @@ Usage:
 """
 from __future__ import annotations
 import argparse
+import base64
 import datetime as dt
 import hashlib
 import json
@@ -183,9 +184,24 @@ def batch_change(zid,old,new,reason):
 def ssm_patch(mode,backup=None):
     src=(HERE/'aws_remote_patch.py').read_text()
     if len(src)>14500:halt('EC2 patch payload unexpectedly large for SSM')
-    cmd='python3 -c '+shlex.quote(src)+' '+shlex.quote(mode)
-    if backup:cmd+=' --backup '+shlex.quote(backup)
-    payload={'commands':[cmd],'executionTimeout':['180']}
+    # Do not rely on EC2 outbound GitHub access or oversized single SSM command.
+    # AWS-RunShellScript accepts a StringList of sequential shell lines; split the
+    # base64 transfer into bounded command entries, each below 3,100 characters.
+    nonce=uuid.uuid4().hex
+    remote_path='/tmp/p029-r11-'+nonce+'.py'
+    encoded=base64.b64encode(src.encode('utf8')).decode('ascii')
+    pieces=[encoded[i:i+2700] for i in range(0,len(encoded),2700)]
+    commands=['set -Eeuo pipefail', 'umask 077',
+              "trap 'rm -f "+remote_path+" "+remote_path+".b64' EXIT"]
+    for i,piece in enumerate(pieces):
+        commands.append("printf %s "+shlex.quote(piece)+(' > ' if i==0 else ' >> ')+remote_path+'.b64')
+    sha=hashlib.sha256(src.encode('utf8')).hexdigest()
+    commands += ['base64 --decode '+remote_path+'.b64 > '+remote_path,
+                 'echo '+sha+'  '+remote_path+' | sha256sum -c -',
+                 'python3 '+remote_path+' '+shlex.quote(mode)]
+    if backup:commands[-1]+=' --backup '+shlex.quote(backup)
+    if max(map(len,commands))>3300:halt('SSM transfer line exceeds conservative limit')
+    payload={'commands':commands,'executionTimeout':['180']}
     path=write_private('ssm-'+uuid.uuid4().hex+'.json',json.dumps(payload).encode())
     try:
         send=aws('ssm','send-command','--region',REGION,'--instance-ids',AWS_INSTANCE,

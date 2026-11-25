@@ -1,0 +1,60 @@
+{
+  "tests": [
+    {
+      "engine": "firefox",
+      "test": "task-first visible",
+      "ok": true
+    },
+    {
+      "engine": "firefox",
+      "test": "intent preserved without remote check",
+      "ok": true
+    },
+    {
+      "engine": "firefox",
+      "test": "mock signup routes to permission UI",
+      "ok": true
+    },
+    {
+      "engine": "firefox",
+      "test": "no JS exceptions",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "engine": "firefox",
+      "test": "no horizontal overflow",
+      "ok": true
+    },
+    {
+      "engine": "chromium",
+      "test": "task-first visible",
+      "ok": true
+    },
+    {
+      "engine": "chromium",
+      "test": "intent preserved without remote check",
+      "ok": true
+    },
+    {
+      "engine": "chromium",
+      "test": "no JS exceptions",
+      "ok": true,
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "test": "no horizontal overflow",
+      "ok": true
+    }
+  ],
+  "screenshots": [
+    "/out/hea-r8-firefox-390-guest.png",
+    "/out/hea-r8-firefox-after-mock-signup.png",
+    "/out/hea-r8-chromium-1440-guest.png"
+  ],
+  "mock_api": true,
+  "network": "isolated_loopback",
+  "production_changed": false,
+  "status": "PASS"
+}

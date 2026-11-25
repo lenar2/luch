@@ -1,0 +1,409 @@
+{
+  "status": "PASS",
+  "cases": 48,
+  "synthetic_inputs": true,
+  "real_human_observations": 0,
+  "source_sha256": "c79cee5454b8969abb8dd1a29b9b975cf5114a12bc1be39fe86ad38b03f3f181",
+  "results": [
+    {
+      "name": "healthy response not full health",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "healthy response not full health",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "missing title",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "title",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "missing title",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "title",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "missing viewport",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "viewport",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "missing viewport",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "viewport",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "missing description",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "journey",
+        "description"
+      ],
+      "ok": true
+    },
+    {
+      "name": "missing description",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "journey",
+        "description"
+      ],
+      "ok": true
+    },
+    {
+      "name": "unknown metadata no false missing",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "unknown metadata no false missing",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "non HTML no false metadata flags",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "content",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "non HTML no false metadata flags",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "content",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "204 no page body",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "content",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "204 no page body",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "content",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "206 partial response",
+      "locale": "en",
+      "code": "responded",
+      "actions": [
+        "content",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "206 partial response",
+      "locale": "ru",
+      "code": "responded",
+      "actions": [
+        "content",
+        "journey"
+      ],
+      "ok": true
+    },
+    {
+      "name": "301 redirect",
+      "locale": "en",
+      "code": "redirect",
+      "actions": [
+        "redirect_target"
+      ],
+      "ok": true
+    },
+    {
+      "name": "301 redirect",
+      "locale": "ru",
+      "code": "redirect",
+      "actions": [
+        "redirect_target"
+      ],
+      "ok": true
+    },
+    {
+      "name": "304 not modified",
+      "locale": "en",
+      "code": "not_modified",
+      "actions": [
+        "verify"
+      ],
+      "ok": true
+    },
+    {
+      "name": "304 not modified",
+      "locale": "ru",
+      "code": "not_modified",
+      "actions": [
+        "verify"
+      ],
+      "ok": true
+    },
+    {
+      "name": "401 access denied",
+      "locale": "en",
+      "code": "client_response",
+      "actions": [
+        "access"
+      ],
+      "ok": true
+    },
+    {
+      "name": "401 access denied",
+      "locale": "ru",
+      "code": "client_response",
+      "actions": [
+        "access"
+      ],
+      "ok": true
+    },
+    {
+      "name": "403 forbidden",
+      "locale": "en",
+      "code": "client_response",
+      "actions": [
+        "access"
+      ],
+      "ok": true
+    },
+    {
+      "name": "403 forbidden",
+      "locale": "ru",
+      "code": "client_response",
+      "actions": [
+        "access"
+      ],
+      "ok": true
+    },
+    {
+      "name": "404 missing homepage",
+      "locale": "en",
+      "code": "client_response",
+      "actions": [
+        "missing"
+      ],
+      "ok": true
+    },
+    {
+      "name": "404 missing homepage",
+      "locale": "ru",
+      "code": "client_response",
+      "actions": [
+        "missing"
+      ],
+      "ok": true
+    },
+    {
+      "name": "429 throttling",
+      "locale": "en",
+      "code": "client_response",
+      "actions": [
+        "rate"
+      ],
+      "ok": true
+    },
+    {
+      "name": "429 throttling",
+      "locale": "ru",
+      "code": "client_response",
+      "actions": [
+        "rate"
+      ],
+      "ok": true
+    },
+    {
+      "name": "500 server error",
+      "locale": "en",
+      "code": "server_error",
+      "actions": [
+        "retry",
+        "operator"
+      ],
+      "ok": true
+    },
+    {
+      "name": "500 server error",
+      "locale": "ru",
+      "code": "server_error",
+      "actions": [
+        "retry",
+        "operator"
+      ],
+      "ok": true
+    },
+    {
+      "name": "503 server error",
+      "locale": "en",
+      "code": "server_error",
+      "actions": [
+        "retry",
+        "operator"
+      ],
+      "ok": true
+    },
+    {
+      "name": "503 server error",
+      "locale": "ru",
+      "code": "server_error",
+      "actions": [
+        "retry",
+        "operator"
+      ],
+      "ok": true
+    },
+    {
+      "name": "unknown status",
+      "locale": "en",
+      "code": "unknown",
+      "actions": [
+        "verify"
+      ],
+      "ok": true
+    },
+    {
+      "name": "unknown status",
+      "locale": "ru",
+      "code": "unknown",
+      "actions": [
+        "verify"
+      ],
+      "ok": true
+    },
+    {
+      "name": "malformed status string",
+      "locale": "en",
+      "code": "unknown",
+      "actions": [
+        "verify"
+      ],
+      "ok": true
+    },
+    {
+      "name": "malformed status string",
+      "locale": "ru",
+      "code": "unknown",
+      "actions": [
+        "verify"
+      ],
+      "ok": true
+    },
+    {
+      "name": "failed attempt null",
+      "locale": "en",
+      "ok": true
+    },
+    {
+      "name": "failed attempt null",
+      "locale": "ru",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 401",
+      "locale": "en",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 401",
+      "locale": "ru",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 403",
+      "locale": "en",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 403",
+      "locale": "ru",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 422",
+      "locale": "en",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 422",
+      "locale": "ru",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 429",
+      "locale": "en",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 429",
+      "locale": "ru",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 503",
+      "locale": "en",
+      "ok": true
+    },
+    {
+      "name": "failed attempt 503",
+      "locale": "ru",
+      "ok": true
+    }
+  ]
+}

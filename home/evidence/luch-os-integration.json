@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "tests": [
+    "10_EXISTING_AND_NEW_PLATFORM_ROUTES",
+    "MARKETING_TO_AGENT_FIRST_HOME",
+    "REAL_WORKSPACE_REGISTRATION",
+    "AGENT_SCREEN_NO_PRIVATE_RELAY_OR_FAKE_SEND",
+    "EXISTING_REAL_TOOL_PRESERVED",
+    "MOBILE_AND_RUSSIAN_AGENT",
+    "MOBILE_SITE_AND_HOME_NO_JS_ERRORS"
+  ],
+  "errors": [],
+  "real_home_api": true,
+  "actual_public_https": true,
+  "live_agent_connected": false,
+  "production_changed": false,
+  "author_only": true,
+  "temporary_stage_removed": true,
+  "source_sha256": {
+    "home/frontend/index.html": "62fb3181dbc7dfaf1f4a73df4b926d36f721d63928219b3a38b08adf41f4232b",
+    "home/frontend/app.js": "43cf5a6ef8efa5ae7bb855d611248d240d9232c83a7c41cb9f047a7a0db47b16",
+    "home/frontend/app.css": "0bfa0cf67597e1a24f7d29671a6f5baeddb50867e74822c1b50b89cdb1cb77e2",
+    "home/app/server.py": "fe216dcd133a2f8bebaad86157a0800b55162c598482c4534a0c24ca0db2b306",
+    "home/tests/qa_hea_os_integration.cjs": "dfb24b77f718f07ebd728cd0b1e0a7fe47efd919c1efab4b3041db23d265d14b",
+    "website/index.html": "4380325fce5b9f752a9ce461fc5c6b4eb50da0228b11bc8a64540b772225c21c",
+    "website/assets/editorial.css": "2d180fdcf2b50ce7e47336d41d0679376f4d8b2974f8b485374185d3f6600895",
+    "website/en/studio/index.html": "8a9ebc3d8512d2d0311f648fd08e07a80a4a84f70b3c3aea428721427bf93cb5",
+    "website/en/apps/index.html": "f03305ebfaaa6cea0cc19ab261e8451c4f1bd71dbfc2e01da7980a654fffe9e1"
+  }
+}

@@ -279,3 +279,161 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .sample-result-body dl{display:grid;grid-template-columns:110px 1fr;gap:8px;font-size:12px;color:#254d3d}
 .sample-result-body dt{color:#476b59}.sample-result-body dd{margin:0;font-weight:750}
 @media(max-width:760px){.sample-result{margin-top:11px}.sample-result summary{font-size:11px}}
+
+/* HEA R8 candidate: user task before account setup; no network call until scoped consent. */
+.guest-website-intent{margin:27px 0 20px;padding:20px;background:#fffefa;border:1px solid #cadecf;border-radius:17px;box-shadow:0 12px 30px #1242350b}
+.guest-website-intent label{display:block;font-size:14px;font-weight:750;color:#224e3c;margin-bottom:12px}
+.guest-intent-row{display:flex;gap:8px}
+.guest-intent-row input{min-width:0;flex:1;font-size:15px}
+.guest-intent-row .button{flex:0 0 auto;min-width:131px}
+.guest-website-intent>p{font-size:11px;line-height:1.55;color:#466b58;margin:10px 1px 0}
+.guest-website-intent .form-feedback{color:#934943;margin-top:3px}
+.task-availability{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.task-availability>div{border-radius:13px;padding:15px 16px;border:1px solid #d5e3d8}
+.task-available{background:#eaf5ec}.task-upcoming{background:#f2f3ef}
+.task-status{display:block;font-size:9px;letter-spacing:.09em;font-weight:850;color:#43715b;margin-bottom:9px}
+.task-upcoming .task-status{color:#706f62}
+.task-availability strong{font-size:14px;line-height:1.3;display:block;margin-bottom:7px}
+.task-availability p{font-size:11px;line-height:1.58;color:#4d6a58;margin:0}
+.hero-login{margin-top:9px}
+.hero-login .text-switch{font-size:12px;padding:8px 0}
+@media(max-width:760px){
+ .guest-website-intent{padding:14px;margin:17px 0 12px}
+ .guest-intent-row input{min-height:46px}
+ .guest-intent-row .button{min-width:108px;padding:10px 13px;min-height:46px}
+ .task-availability{grid-template-columns:1fr 1fr;gap:7px}
+ .task-availability>div{padding:10px;border-radius:11px}
+ .task-availability strong{font-size:12px}
+ .task-availability p{font-size:10px;line-height:1.4}
+ .hero-login{margin-top:3px}
+}
+@media(max-width:365px){
+ .guest-intent-row{flex-direction:column}
+ .guest-intent-row .button{width:100%}
+ .task-availability{grid-template-columns:1fr}
+}
+
+/* R8 human-experience correction: use the desktop right-hand space for an honest
+   result example, reveal authentication only after a user's actual task choice. */
+.sample-hero-card{padding:clamp(25px,3vw,43px);background:#fffefa;border:1px solid #cfdfd1;border-radius:21px;box-shadow:0 20px 55px #18392d13;align-self:center}
+.sample-hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:10px;letter-spacing:.1em;font-weight:820;color:#4e7664;margin-bottom:28px}
+.sample-example-pill{color:#786e56;background:#f2f1e9;padding:8px;border-radius:7px;font-size:9px}
+.sample-browser-frame{border:1px solid #dbe4da;border-radius:14px;overflow:hidden;background:#fafcf8}
+.sample-browser-chrome{background:#e5efe8;display:flex;gap:18px;padding:13px 18px;color:#719180;font-size:11px;align-items:center;border-bottom:1px solid #d5e3d7}
+.sample-browser-chrome strong{color:#365f4f;font-size:12px;font-weight:680}
+.sample-browser-content{text-align:center;padding:40px 18px 43px;color:#234b3c}
+.sample-browser-symbol{height:50px;width:50px;display:grid;place-items:center;border-radius:15px;background:#d9ede2;font-size:29px;margin:0 auto 18px}
+.sample-browser-content strong{font-size:29px;letter-spacing:-.04em;font-weight:680}
+.sample-browser-content p{font-size:13px;color:#708879;line-height:1.6;margin:10px auto 0;max-width:280px}
+.sample-metric-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0 20px}
+.sample-metric-row>div{border:1px solid #d8e4d9;border-radius:12px;padding:17px;background:#ecf4ed}
+.sample-metric-row span{display:block;color:#5f816e;font-size:9px;letter-spacing:.1em;font-weight:800;margin-bottom:8px}
+.sample-metric-row strong{font-size:16px;color:#1a4939}
+.sample-hero-bottom{display:flex;gap:12px;align-items:flex-start;color:#507261;font-size:12px;line-height:1.6}
+.sample-hero-bottom p{margin:0}
+@media(max-width:760px){
+ .sample-hero-card{padding:19px 18px;border-radius:16px}
+ .sample-hero-top{margin-bottom:14px}
+ .sample-browser-content{padding:19px 12px 23px}
+ .sample-browser-content strong{font-size:21px}
+ .sample-browser-symbol{display:none}
+ .sample-metric-row{margin:10px 0}
+ .sample-metric-row>div{padding:11px}
+}
+
+/* R8.2: explicit consent when changing the chosen task's website. */
+.replace-grant-note{border:1px solid #d4e3d5;background:#f1f6ef;border-radius:12px;padding:13px 15px;margin-bottom:16px}
+.replace-grant-note p{font-size:12px;line-height:1.55;color:#325b49;margin:0 0 8px;overflow-wrap:anywhere}
+.replace-grant-note .text-switch{padding:4px 0}
+#choose-other-site{display:block}
+
+/* Historical results remain inspectable without a current permission or network action. */
+.saved-results{display:grid;gap:10px;margin:16px 0 24px}
+.saved-result{background:#f7faf5;border:1px solid #d7e3d8;border-radius:12px;padding:12px 14px}
+.saved-result summary{display:flex;justify-content:space-between;gap:12px;align-items:center;cursor:pointer;overflow-wrap:anywhere;color:#254c3e}
+.saved-result summary:before{content:'+';color:#4b7661}
+.saved-result[open] summary:before{content:'−'}
+.saved-result summary strong{flex:1;min-width:0;font-size:13px}
+.saved-result summary span{font-size:11px;white-space:nowrap;font-weight:750}
+.saved-result>.field-note{margin:12px 0 0}
+.saved-result .result-details{margin:0;padding:12px 0 0;border-bottom:0}
+.history-events-heading{font-size:18px;letter-spacing:-.025em;margin:25px 0 12px}
+
+/* R8.3: plain-language interpretation before technical details. */
+.diagnosis{padding:19px 0 8px}
+.diagnosis>.eyebrow{margin:0 0 10px;font-size:10px}
+.diagnosis h3{font-size:clamp(24px,3vw,34px);line-height:1.13;letter-spacing:-.035em;margin:0 0 12px;color:#193b31}
+.diagnosis>p:not(.eyebrow):not(.field-note){font-size:14px;line-height:1.65;color:#365b4b}
+.diagnosis h4{font-size:16px;margin:23px 0 10px}
+.diagnosis-actions{padding-left:20px;display:grid;gap:10px;font-size:13px;line-height:1.6;color:#2e5443}
+.diagnosis[data-outcome="server_error"] h3,.diagnosis[data-outcome="client_response"] h3{color:#854a32}
+.handoff,.technical-evidence{margin-top:19px;border-top:1px solid #dce6dc;padding-top:16px}
+.handoff summary,.technical-evidence summary{cursor:pointer;font-weight:750;font-size:13px;color:#265c49;margin-bottom:12px}
+.handoff label{display:block;margin:10px 0}
+.handoff textarea{width:100%;font:inherit;font-size:12px;line-height:1.6;border:1px solid #cbdcce;border-radius:10px;padding:12px;resize:vertical;background:#f7faf5;color:#284b3e;min-height:100px}
+.handoff .button{margin-top:10px}
+.saved-diagnosis{font-size:13px;line-height:1.6;color:#274d3e}
+
+.diagnosis{scroll-margin-top:16px}
+.diagnosis:focus{outline:none}
+.diagnosis:focus-visible{outline:2px solid #4b8974;outline-offset:4px}
+#diagnosis-limits{margin:16px 0 10px;color:#466554}
+
+/* R8.3.1: a failed attempt cannot visually imply a new successful observation. */
+.check-attempt-notice{border:1px solid #dbcdb3;background:#faf6ec;border-radius:14px;padding:18px 20px;margin:15px 0;color:#55452e;scroll-margin-top:14px}
+.check-attempt-notice h3{font-size:19px;line-height:1.25;margin:0 0 8px}
+.check-attempt-notice p{font-size:13px;line-height:1.55;margin:8px 0}
+#check-attempt-history{font-weight:700;border-top:1px solid #e0d5c2;padding-top:10px}
+
+/* R8.3.2: bounded before/after evidence, no health score. */
+.observation-comparison{margin:18px 0 10px;padding:15px 17px;border:1px solid #c9dfd0;border-radius:12px;background:#f4f9f4;overflow-wrap:anywhere}
+.observation-comparison h4{font-size:16px;letter-spacing:-.025em;margin:0 0 8px}
+.observation-comparison p{font-size:12px;line-height:1.6;margin:8px 0;color:#345848}
+.observation-comparison .field-note{font-size:11px;color:#4c6758}
+.comparison-change{font-weight:650}
+
+/* Unified LUCH Home: reuse R6 agent-thread / info hierarchy and original luminous identity. */
+.platform-side-nav{display:grid;gap:10px;margin:14px 0 18px}
+.platform-side-nav p{margin:0;font-size:10px;letter-spacing:.12em;color:#819f90;font-weight:700}
+.platform-side-nav a{font-size:12px;color:inherit;text-decoration:none}
+.platform-side-nav a:hover{text-decoration:underline}
+.home-start-actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+.quick-tool{margin:16px 0;border:1px solid #d6e4d6;border-radius:12px;padding:12px 14px}
+.quick-tool summary{font-size:13px;font-weight:700;cursor:pointer;color:#305b48}
+.quick-tool form{margin-top:14px}
+.platform-preview{padding:24px;align-self:start}
+.workspace-preview-agent,.workspace-preview-row,.agent-topline{display:flex;gap:13px;align-items:center}
+.workspace-preview-agent{padding:18px 0;border-bottom:1px solid #d8e3d8}
+.workspace-agent-icon{width:44px;height:44px;min-width:44px;border-radius:13px;display:grid;place-items:center;background:#164639;color:#f4fff1;font-size:26px}
+.workspace-preview-agent p,.agent-topline p{margin:3px 0;color:#60796a;font-size:12px}
+.workspace-preview-agent>small{margin-left:auto;text-align:right;font-size:11px;color:#597063}
+.workspace-preview-copy{padding:18px 0;border-bottom:1px solid #d8e3d8}
+.workspace-preview-copy h3{font-size:17px;margin:0 0 8px;letter-spacing:-.025em}
+.workspace-preview-copy p{font-size:13px;color:#496455;line-height:1.65;margin:0 0 10px}
+.workspace-preview-copy a{font-size:12px;font-weight:700}
+.workspace-preview-row{padding:14px 0;border-bottom:1px solid #e2e9df}
+.workspace-preview-row:last-child{border-bottom:0}
+.workspace-preview-row>span{font-size:21px;color:#427660;width:30px;text-align:center}
+.workspace-preview-row strong,.workspace-preview-row small{display:block}
+.workspace-preview-row strong{font-size:13px}
+.workspace-preview-row small{margin-top:4px;font-size:11px;color:#647d6c}
+.workspace-agent-banner{display:flex;gap:16px;align-items:center;padding:21px;border-radius:13px;border:1px solid #c9dcd0;background:#f7faf3;margin:0 0 19px}
+.workspace-agent-banner h2{font-size:22px;margin:5px 0 8px}.workspace-agent-banner p{font-size:13px;line-height:1.55;margin:0;color:#4a6558}
+.workspace-agent-banner>div:nth-child(2){flex:1;min-width:0}
+.public-agent-shell{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+.public-agent-shell .agent-topline{padding-bottom:16px;border-bottom:1px solid #d7e3d6}
+.public-agent-shell h2{font-size:22px;margin:0}
+.public-agent-shell .agent-dialogue{padding:25px 0;min-height:180px}
+.public-agent-shell .agent-dialogue h3{font-size:19px;letter-spacing:-.03em}
+.public-agent-shell p{font-size:14px;color:#4d6a5a;line-height:1.65}
+.public-agent-shell textarea{width:100%;box-sizing:border-box;border:1px solid #d7e0d7;border-radius:9px;padding:12px;background:#f2f4ee;color:#667c6d;resize:none;font:inherit;margin:9px 0}
+.public-agent-shell button:disabled{opacity:.55;cursor:not-allowed}
+.public-agent-shell .agent-info h3{margin:20px 0 8px;font-size:18px}
+.public-agent-shell .agent-info .button{margin-bottom:8px}
+@media(max-width:850px){.public-agent-shell{grid-template-columns:1fr}.workspace-agent-banner{align-items:flex-start;flex-wrap:wrap}.platform-preview{max-width:none}}
+@media(max-width:600px){.platform-side-nav{display:none}.home-start-actions{flex-direction:column;align-items:stretch}.workspace-agent-banner>button{width:100%}.platform-preview{padding:17px}}
+
+.footer-platform{display:flex;flex-wrap:wrap;gap:15px;margin:0 0 10px}
+.footer-platform a{font-weight:650}
+.side-note{color:#a5c6b5!important}
+@media(max-width:600px){.app-footer{display:block}.footer-platform{margin-bottom:12px}}

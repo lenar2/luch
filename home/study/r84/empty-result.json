@@ -1,0 +1,33 @@
+{
+  "candidate": "4c6c0cdc55b1f7fcbd7aa3e319110d1cc528a44a",
+  "mode": "observer_claimed_human",
+  "metrics": {
+    "assigned": 0,
+    "both_completed": 0,
+    "full": {
+      "browser": 0,
+      "luch": 0
+    },
+    "paired_wins": 0,
+    "paired_losses": 0,
+    "net": 0,
+    "luch_critical": 0,
+    "luch_preferred": 0,
+    "median_seconds": {
+      "browser": null,
+      "luch": null
+    }
+  },
+  "thresholds": {
+    "complete_cohort": false,
+    "luch_full_at_least_9": false,
+    "net_at_least_3": false,
+    "no_luch_critical": false,
+    "preference_at_least_8": false,
+    "time_ratio_at_most_1_25": false
+  },
+  "disposition": "INCONCLUSIVE",
+  "human_identity_verified_by_script": false,
+  "independent_approval_verified_by_script": false,
+  "product_ready": false
+}

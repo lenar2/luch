@@ -11,6 +11,10 @@ from contextlib import contextmanager
 from html.parser import HTMLParser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+import importlib.util
+_agent_spec=importlib.util.spec_from_file_location('owner_agent',pathlib.Path(__file__).with_name('owner_agent.py'))
+agent=importlib.util.module_from_spec(_agent_spec)
+_agent_spec.loader.exec_module(agent)
 HERE = pathlib.Path(__file__).resolve().parent.parent
 WWW = HERE / "frontend"
 DB = pathlib.Path(os.environ.get("LUCH_HOME_DB", "/state/home.sqlite"))
@@ -70,6 +74,7 @@ def initialize():
         );
         CREATE INDEX IF NOT EXISTS activity_by_user ON activity(user_id, at DESC);
         """)
+        agent.initialize(c)
         cols={row["name"] for row in c.execute("PRAGMA table_info(users)").fetchall()}
         if "recovery_digest" not in cols:
             c.execute("ALTER TABLE users ADD COLUMN recovery_digest TEXT")
@@ -88,6 +93,7 @@ def prune_expired_records(now=None):
         cutoff=now-RETENTION_SECONDS
         c.execute("DELETE FROM checks WHERE at < ?",(cutoff,))
         c.execute("DELETE FROM activity WHERE at < ?",(cutoff,))
+        c.execute("DELETE FROM agent_jobs WHERE created < ? AND state != 'pending'",(cutoff,))
 
 def retention_loop(stop):
     while not stop.wait(900): # 15-minute upper bound while the server stays running
@@ -399,6 +405,11 @@ class Handler(BaseHTTPRequestHandler):
                   "js":"application/javascript; charset=utf-8","svg":"image/svg+xml"}
             data=f.read_bytes()
             return self.send_payload(200,mime[name.split(".")[-1]],data)
+        if path == "/api/agent":
+            with connect_db() as c:
+                s=self.session(c)
+                if not s:return self.problem(401,"Sign in to continue.")
+                return self.json(200,agent.view(c,s["uid"]))
         if path == "/api/state":
             with connect_db() as c:
                 s=self.session(c)
@@ -418,7 +429,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path=urllib.parse.urlsplit(self.path).path
-        if path not in ("/api/register","/api/login","/api/logout","/api/delete-account","/api/consent","/api/revoke","/api/check","/api/recovery/reset","/api/recovery/rotate"):
+        if path not in ("/api/register","/api/login","/api/logout","/api/delete-account","/api/consent","/api/revoke","/api/check","/api/recovery/reset","/api/recovery/rotate","/api/agent/grant","/api/agent/revoke","/api/agent/send"):
             return self.problem(404,"Not found.")
         if not self.check_origin():
             return self.problem(403,"Request origin not authorized.")
@@ -439,6 +450,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self.problem(401,"Sign in to continue.")
             if not hmac.compare_digest(self.headers.get("X-LUCH-CSRF",""),s["csrf"]):
                 return self.problem(403,"Session validation failed. Refresh and try again.")
+            if path.startswith("/api/agent/"):
+                status,payload=agent.post(c,s["uid"],path,data,connect_db,limited)
+                return self.json(status,payload)
             if path == "/api/logout":
                 with c:
                     c.execute("DELETE FROM sessions WHERE digest=?",(s["digest"],))

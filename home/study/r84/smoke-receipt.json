@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "mode": "automated_facilitator_smoke_only",
+  "human_observations": 0,
+  "real_backend": true,
+  "actual_redirect": 301,
+  "origin": "https://iana.org",
+  "local_legal_page": true,
+  "private_loopback": true,
+  "production_changed": false,
+  "product_candidate": "4c6c0cdc55b1f7fcbd7aa3e319110d1cc528a44a",
+  "source_sha256": {
+    "home/frontend/index.html": "61c0a99e98e7987b416c33ab3841ed22efb7a7054d9fde748f0ee7555e45b6c1",
+    "home/frontend/app.js": "2fd18cc5c82492f29f0f6aabced46fa39c0462bc2da5bcbb9ce7c3aed13be65b",
+    "home/frontend/app.css": "a8345a6f59884be1f8789e6d11a52ca0c19d7391a66ef6da7d97cefe7fb728c7",
+    "home/app/server.py": "fe216dcd133a2f8bebaad86157a0800b55162c598482c4534a0c24ca0db2b306",
+    "home/study/r84/run_trial.cjs": "282cab2e5fc099ae66ba3125669f44e6b6a9906dc6993cb552360b926b650c0e",
+    "home/study/r84/score.py": "a5d2c29b690387c81fd4febf8d133e7a44ce4fa81127c9af3bdb1cd40bb28fac",
+    "home/study/r84/PROTOCOL.md": "db3542aadb172c5effb6d254a7424bbab928f9c309afecb882263059f76adc6e"
+  },
+  "scorer_unit_tests": 10,
+  "headed_human_trial_executed": false,
+  "backend_bind": "127.0.0.1"
+}

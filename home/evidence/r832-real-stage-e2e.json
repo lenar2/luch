@@ -1,0 +1,337 @@
+{
+  "source_sha256": {
+    "frontend/index.html": "61c0a99e98e7987b416c33ab3841ed22efb7a7054d9fde748f0ee7555e45b6c1",
+    "frontend/app.js": "2fd18cc5c82492f29f0f6aabced46fa39c0462bc2da5bcbb9ce7c3aed13be65b",
+    "frontend/app.css": "a8345a6f59884be1f8789e6d11a52ca0c19d7391a66ef6da7d97cefe7fb728c7",
+    "app/server.py": "fe216dcd133a2f8bebaad86157a0800b55162c598482c4534a0c24ca0db2b306",
+    "tests/qa_hea_r83_real_stage.cjs": "378fef6964dfc6a0a229aa37fbb8795047b8c96027c3d21e65f190d80fc34cd7"
+  },
+  "schema": "luch.home.r832.real-stage-e2e.v1",
+  "status": "PASS",
+  "tests": [
+    {
+      "step": "GUEST_TASK_BARE_DOMAIN_NO_NETWORK_ACTION",
+      "ok": true
+    },
+    {
+      "step": "REAL_REGISTRATION_RECOVERY_AND_TASK_CONTINUITY",
+      "ok": true
+    },
+    {
+      "step": "PRE_CONSENT_REAL_API_DENY",
+      "ok": true,
+      "http": 403
+    },
+    {
+      "step": "EXPLICIT_SCOPED_CONSENT_NO_AUTO_CHECK",
+      "ok": true
+    },
+    {
+      "step": "REAL_PUBLIC_TLS_RESULT",
+      "ok": true,
+      "origin": "https://example.com",
+      "http_status": 200,
+      "page_title": "Example Domain",
+      "sha256_prefix": "25ddf2c883e0d1958ea971d2",
+      "bytes_examined": 577,
+      "elapsed_ms": 130
+    },
+    {
+      "step": "HUMAN_FIRST_RULE_BASED_REAL_RESULT",
+      "ok": true
+    },
+    {
+      "step": "SOURCE_LINKED_DEVELOPER_HANDOFF_WITHOUT_SEND",
+      "ok": true
+    },
+    {
+      "step": "SYNTHETIC_STAGE_FAILURE_DISTINGUISHED_FROM_REAL_HISTORICAL_RESULT",
+      "ok": true,
+      "synthetic_stage_fault": true,
+      "http": 503
+    },
+    {
+      "step": "REPEAT_REAL_SAME_SITE_COMPARISON",
+      "ok": true
+    },
+    {
+      "step": "USER_VISIBLE_PERSISTED_HISTORY",
+      "ok": true
+    },
+    {
+      "step": "SIGNOUT_CLEARS_PRIVATE_RESULT_DOM",
+      "ok": true
+    },
+    {
+      "step": "RETURNING_USER_NEW_TASK_REQUIRES_REPLACEMENT_CONSENT",
+      "ok": true
+    },
+    {
+      "step": "SECOND_SITE_REAL_RESULT_AFTER_EXPLICIT_REPLACEMENT",
+      "ok": true,
+      "origin": "https://example.org",
+      "http_status": 200,
+      "page_title": "Example Domain",
+      "sha256_prefix": "25ddf2c883e0d1958ea971d2",
+      "bytes_examined": 577,
+      "elapsed_ms": 135
+    },
+    {
+      "step": "NO_CROSS_SITE_COMPARISON",
+      "ok": true
+    },
+    {
+      "step": "REVOKE_THEN_REAL_API_DENY",
+      "ok": true,
+      "http": 403
+    },
+    {
+      "step": "HISTORICAL_RESULT_DETAILS_AVAILABLE_AFTER_REVOKE",
+      "ok": true
+    },
+    {
+      "step": "HISTORICAL_COMPARISON_AFTER_REVOKE_NO_NEW_CHECK",
+      "ok": true
+    },
+    {
+      "step": "TWO_REAL_ACCOUNTS_ISOLATED",
+      "ok": true
+    },
+    {
+      "step": "BILINGUAL_AND_MOBILE_NO_JS_ERRORS",
+      "ok": true
+    },
+    {
+      "step": "TEST_ACCOUNTS_DELETED",
+      "ok": true
+    },
+    {
+      "step": "ZERO_RESIDUAL_TEST_RECORDS",
+      "ok": true
+    }
+  ],
+  "real_home_api": true,
+  "real_external_https": true,
+  "synthetic_stage_fault_test": true,
+  "production_changed": false,
+  "physical_iphone": false,
+  "model_connected": false,
+  "author_only": true,
+  "stage_network": "isolated container with unmodified Home backend and local TLS reverse proxy; browser DNS maps canonical host to loopback",
+  "residual_db_rows": {
+    "users": 0,
+    "sessions": 0,
+    "grants": 0,
+    "checks": 0,
+    "activity": 0
+  },
+  "api_request_summary": [
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/register",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/check",
+      "status": 403
+    },
+    {
+      "method": "POST",
+      "path": "/api/consent",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/check",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/check",
+      "status": 503,
+      "synthetic_stage_fault": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/check",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/logout",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/consent",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/check",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/revoke",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/check",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/register",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/delete-account",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/delete-account",
+      "status": 200
+    }
+  ],
+  "js_errors": []
+}

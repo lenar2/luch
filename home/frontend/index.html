@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#143b35">
-  <meta name="description" content="LUCH Home. A real website check, clear permissions, and evidence of what happened.">
+  <meta name="description" content="LUCH Home. Personal workspace for assistants, tasks, permissions and results.">
   <meta name="robots" content="noindex,nofollow">
   <title>LUCH Home — your workspace</title>
   <link rel="icon" type="image/svg+xml" href="mark.svg">
@@ -22,12 +22,12 @@
     <div class="workspace-label" data-i18n="yourWorkspace">YOUR WORKSPACE</div>
     <nav id="side-nav" class="side-nav" aria-label="Workspace sections" hidden>
       <button type="button" class="nav-link active" data-go="overview"><span aria-hidden="true">⌂</span><span data-i18n="overview">Overview</span></button>
+      <button type="button" class="nav-link" data-go="assistants"><span aria-hidden="true">✧</span><span data-i18n="assistants">Assistants</span></button>
       <button type="button" class="nav-link" data-go="check"><span aria-hidden="true">◇</span><span data-i18n="websiteCheck">Website check</span></button>
       <button type="button" class="nav-link" data-go="permissions"><span aria-hidden="true">◈</span><span data-i18n="permissions">Permissions</span></button>
       <button type="button" class="nav-link" data-go="activity"><span aria-hidden="true">◷</span><span data-i18n="activity">Activity</span></button>
-      <button type="button" class="nav-link" data-go="assistants"><span aria-hidden="true">✧</span><span data-i18n="assistants">Assistants</span><small data-i18n="soon">Soon</small></button>
     </nav>
-    <div class="side-bottom">
+    <div class="side-bottom"><div class="platform-side-nav"><p data-i18n="platformNav">LUCH PLATFORM</p><a data-platform-path="platform" href="/en/platform/">LUCH Core ↗</a><a data-platform-path="studio" href="/en/studio/">Developer Studio ↗</a><a data-platform-path="apps" href="/en/apps/">LUCH Apps ↗</a></div>
       <p class="side-note" data-i18n="controlLabel">Your choices. Your permissions. Verifiable results.</p>
       <a href="/" class="site-link" data-i18n="backSite">← Explore LUCH website</a>
     </div>
@@ -47,9 +47,11 @@
       <section id="guest" class="guest-grid">
         <div class="welcome-text">
           <div class="hero-wordmark"><img src="brand-wordmark.svg" alt="LUCH" width="108" height="108"></div>
-          <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · AVAILABLE TODAY</p>
-          <h1><span data-i18n="heroOne">Your website.</span><br><em data-i18n="heroTwo">A clear answer.</em></h1>
-          <p class="hero-lead" data-i18n="heroLead">Find out whether your homepage responds, what deserves attention, and what to tell your developer. LUCH uses an actual HTTPS observation and never changes your website.</p>
+          <p class="eyebrow" data-i18n="heroEyebrow">LUCH HOME · YOUR WORKSPACE</p>
+          <h1><span data-i18n="heroOne">Your AI.</span><br><em data-i18n="heroTwo">Your work.</em></h1>
+          <p class="hero-lead" data-i18n="heroLead">One place for assistants, tasks, tools and verifiable results. Connect the AI you already use through LUCH Core; use the public workspace for the tools currently available here.</p>
+          <div class="home-start-actions"><button type="button" class="button primary" data-create-shortcut><span data-i18n="openWorkspace">Open my workspace</span><span aria-hidden="true">↗</span></button><a class="button secondary" data-platform-path="connect" href="/en/connect/" data-i18n="connectExisting">Connect existing AI ↗</a></div>
+          <details class="quick-tool"><summary data-i18n="quickWebsite">Use a public website check</summary>
           <form id="guest-website-intent" class="guest-website-intent">
             <label for="guest-website-url" data-i18n="guestSiteLabel">Which website would you like to check?</label>
             <div class="guest-intent-row">
@@ -58,24 +60,20 @@
             </div>
             <p id="guest-intent-explainer" data-i18n="guestIntentExplainer">First choose a site. Next, create or open a workspace and approve a read-only check. Nothing is checked yet.</p>
             <p class="form-feedback" id="guest-intent-feedback" role="status" aria-live="polite"></p>
-          </form>
+          </form></details>
           <div class="task-availability" aria-label="What LUCH Home can do">
             <div class="task-available"><span class="task-status" data-i18n="taskNow">AVAILABLE NOW</span><strong data-i18n="taskCheckTitle">Inspect a public website</strong><p data-i18n="taskCheckDesc">Understand the observed response, get practical next steps and save a report for your developer.</p></div>
-            <div class="task-upcoming"><span class="task-status" data-i18n="taskLater">NOT CONNECTED</span><strong data-i18n="taskAiTitle">Delegate a task to AI</strong><p data-i18n="taskAiDesc">SO 6.2, chat and AI actions are not part of this public beta.</p></div>
+            <div class="task-upcoming"><span class="task-status" data-i18n="taskLater">NOT CONNECTED</span><strong data-i18n="taskAiTitle">Delegate a task to AI</strong><p data-i18n="taskAiDesc">Agent 001 previously answered through ChatGPT in a private test. Personal agent chat and SO 6.2 are not connected to this public workspace.</p></div>
           </div>
           <div class="hero-login"><button type="button" class="text-switch" data-login-shortcut data-i18n="existingAccount">Already have an account? Sign in</button></div>
         </div>
-        <div class="sample-hero-card" id="pre-auth-panel" aria-label="Illustrative website check result">
-          <div class="sample-hero-top"><span data-i18n="samplePreviewLabel">YOUR RESULT, BEFORE YOU START</span><span class="sample-example-pill" data-i18n="sampleExampleTag">ILLUSTRATIVE EXAMPLE</span></div>
-          <div class="sample-browser-frame">
-            <div class="sample-browser-chrome"><span aria-hidden="true">● ● ●</span><strong>https://example.com</strong></div>
-            <div class="sample-browser-content"><div class="sample-browser-symbol" aria-hidden="true">↗</div><strong>Example Domain</strong><p data-i18n="samplePreviewCaption">The homepage answered this request. Next: open it on a phone and test your important customer journey. This is an illustration, not a live check.</p></div>
-          </div>
-          <div class="sample-metric-row">
-            <div><span data-i18n="sampleMetric1">RESPONSE</span><strong>200 OK</strong></div>
-            <div><span data-i18n="sampleMetric2">PAGE TITLE</span><strong>Example Domain</strong></div>
-          </div>
-          <div class="sample-hero-bottom"><span class="status-dot" aria-hidden="true"></span><p data-i18n="sampleBoundaries">A real check explains observed findings and suggests next steps. No AI, editing or automatic actions.</p></div>
+        <div class="sample-hero-card platform-preview" id="pre-auth-panel" aria-label="Workspace feature availability">
+          <div class="sample-hero-top"><span data-i18n="workspacePreview">YOUR WORKSPACE</span><span class="sample-example-pill" data-i18n="publicBeta">PUBLIC BETA</span></div>
+          <div class="workspace-preview-agent"><div class="workspace-agent-icon">✧</div><div><strong>LUCH Agent 001</strong><p>ChatGPT</p></div><small data-i18n="notConnected">Not connected</small></div>
+          <div class="workspace-preview-copy"><h3 data-i18n="agentPrivateProof">Previously verified in private testing</h3><p data-i18n="agentPrivateExplanation">This assistant received a real ChatGPT response in an earlier private test. That personal relay is not available in this public workspace. No simulated replies.</p><a data-platform-path="agents" href="/en/agents/" data-i18n="agentLearn">Explore agents ↗</a></div>
+          <div class="workspace-preview-row"><span>◇</span><div><strong data-i18n="websiteCheck">Website check</strong><small data-i18n="taskNow">AVAILABLE NOW</small></div></div>
+          <div class="workspace-preview-row"><span>◈</span><div><strong data-i18n="permissions">Permissions</strong><small data-i18n="workspacePermission">Your website permission and activity</small></div></div>
+          <div class="workspace-preview-row"><span>◷</span><div><strong data-i18n="activity">Activity</strong><small data-i18n="workspaceHistory">Your own saved results</small></div></div>
         </div>
         <div class="auth-card" id="auth-card" hidden>
           <div class="card-intro"><span class="eyebrow" data-i18n="getStarted">GET STARTED</span><span class="tiny-badge" data-i18n="publicBeta">PUBLIC BETA</span></div>
@@ -130,7 +128,8 @@
         <section class="page" data-page="overview">
           <div class="page-heading"><p class="eyebrow" data-i18n="yourWorkspace">YOUR WORKSPACE</p>
           <h1><span data-i18n="hello">Good to see you,</span> <span id="hello-name"></span><span class="period">.</span></h1>
-          <p data-i18n="overviewIntro">Start with a site you choose. LUCH will show the HTTPS result and what the inspected page actually contains.</p></div>
+          <p data-i18n="overviewIntro">Your assistants, available tools and saved results live here. Use only the connections and permissions that belong to your workspace.</p></div>
+          <section class="workspace-agent-banner"><div class="workspace-agent-icon">✧</div><div><p class="eyebrow" data-i18n="assistants">ASSISTANTS</p><h2>LUCH Agent 001</h2><p data-i18n="agentPrivateExplanation">This assistant received a real ChatGPT response in an earlier private test. That personal relay is not available in this public workspace. No simulated replies.</p></div><button class="button secondary" data-go="assistants" type="button" data-i18n="openAssistants">Open assistants ↗</button></section>
           <div class="primary-mission">
             <div class="mission-copy"><p class="eyebrow" data-i18n="firstRealTask">YOUR FIRST REAL TASK</p>
               <h2><span data-i18n="missionOne">Check a website.</span><br><em data-i18n="missionTwo">See the evidence.</em></h2>
@@ -248,15 +247,17 @@
         <section class="page" data-page="assistants" hidden>
           <div class="page-heading"><p class="eyebrow" data-i18n="assistants">ASSISTANTS</p><h1><span data-i18n="assistantHeadOne">Your AI.</span><br><em data-i18n="assistantHeadTwo">With your permission.</em></h1>
             <p data-i18n="assistantIntro">This is where AI assistants will work with the connections and permissions you choose.</p></div>
-          <div class="surface wide-surface assistant-card"><div class="assistant-top"><img src="brand-wordmark.svg" alt="LUCH"><span class="tiny-badge" data-i18n="notConnected">NOT CONNECTED</span></div>
-            <h2 data-i18n="modelComing">SO 6.2 · planned connection</h2>
-            <p data-i18n="modelExplainer">No model API is connected to this public Home. AI chat, file access and automated actions are disabled. When the model is connected, it will use your own permissions — not another person's account.</p>
-            <button type="button" class="button secondary" data-go="check"><span data-i18n="useAvailableTool">Use the available website check</span> ↗</button>
+          <div class="agent-shell public-agent-shell">
+            <section class="surface agent-thread"><div class="agent-topline"><div class="workspace-agent-icon">✧</div><div><h2>LUCH Agent 001</h2><p>ChatGPT · <span data-i18n="notConnected">Not connected</span></p></div></div>
+              <div class="agent-dialogue"><h3 data-i18n="agentPrivateProof">Previously verified in private testing</h3><p data-i18n="agentPrivateExplanation">This assistant received a real ChatGPT response in an earlier private test. That personal relay is not available in this public workspace. No simulated replies.</p><p data-i18n="agentUnavailable">To send messages here, a personal model connection must be established. The owner’s private ChatGPT conversation is never shared with public accounts.</p></div>
+              <div class="agent-compose"><label for="agent-input" data-i18n="agentMessage">Message your assistant</label><textarea id="agent-input" rows="3" disabled aria-describedby="agent-blocked" placeholder="Chat unavailable"></textarea><button class="button primary" type="button" disabled data-i18n="agentSend">Send</button><p class="field-note" id="agent-blocked" data-i18n="agentUnavailableShort">Sending disabled until a personal connection is available.</p></div>
+            </section>
+            <aside class="surface agent-info"><p class="eyebrow" data-i18n="agentConnections">CONNECTIONS & PERMISSIONS</p><h3>LUCH Core</h3><p data-i18n="agentCoreDescription">You can connect compatible AI clients separately through Core, with your own authorization. This does not automatically connect the Home chat.</p><a class="button secondary" data-platform-path="connect" href="/en/connect/" data-i18n="connectExisting">Connect existing AI ↗</a><h3>SO 6.2</h3><p data-i18n="soPlanned">Planned model integration. Not connected.</p><button class="button secondary" data-go="check" type="button" data-i18n="useAvailableTool">Use the available website check</button></aside>
           </div>
         </section>
       </div>
     </main>
-    <footer class="app-footer"><span>LUCH Home R7 · <span data-i18n="publicBeta">Public beta</span></span><span><a href="/en/privacy/" data-privacy data-i18n="privacy">Privacy</a> · <a href="/en/terms/" data-terms data-i18n="terms">Terms</a> · <a href="/" data-i18n="backSite">Main site</a></span></footer>
+    <footer class="app-footer"><nav class="footer-platform" aria-label="LUCH platform"><a href="/en/platform/" data-platform-path="platform">Core</a><a href="/en/studio/" data-platform-path="studio">Studio</a><a href="/en/apps/" data-platform-path="apps">Apps</a><a href="/" data-i18n="backSite">Main site</a></nav><span>LUCH Home · <span data-i18n="publicBeta">Public beta</span></span><span><a href="/en/privacy/" data-privacy data-i18n="privacy">Privacy</a> · <a href="/en/terms/" data-terms data-i18n="terms">Terms</a> · <a href="/" data-i18n="backSite">Main site</a></span></footer>
   </div>
 </div>
 <dialog id="recovery-dialog" class="recovery-dialog" aria-labelledby="recovery-dialog-title">

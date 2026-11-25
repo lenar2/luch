@@ -8,15 +8,21 @@ skip:'Перейти к содержимому',yourWorkspace:'ВАШЕ ПРОС
 websiteCheck:'Проверка сайта',permissions:'Разрешения',activity:'История',assistants:'Помощники',
 soon:'Скоро',controlLabel:'Ваш выбор. Ваши разрешения. Проверяемые результаты.',
 backSite:'← На сайт LUCH',signOut:'Выйти',
-heroEyebrow:'LUCH HOME · ДОСТУПНО СЕГОДНЯ',heroOne:'Ваш сайт.',
-heroTwo:'Понятный результат.',
-heroLead:'Узнайте, отвечает ли главная страница сайта, на что обратить внимание и что сообщить разработчику. LUCH использует реальный HTTPS-ответ и не изменяет сайт.',
+heroEyebrow:'LUCH HOME · ВАШЕ ПРОСТРАНСТВО',heroOne:'Ваш ИИ.',
+heroTwo:'Ваша работа.',
+heroLead:'Одно пространство для помощников, задач, инструментов и проверяемых результатов. Подключайте привычный ИИ через LUCH Core и используйте доступные инструменты Home.',
 guestSiteLabel:'Какой сайт хотите проверить?',guestContinue:'Продолжить',
 guestIntentExplainer:'Сначала выберите сайт. Затем войдите или создайте пространство и разрешите проверку только для чтения. Пока запрос не выполняется.',
 taskNow:'ДОСТУПНО СЕЙЧАС',taskCheckTitle:'Проверить публичный сайт',
 taskCheckDesc:'Поймите результат проверки, получите конкретные следующие шаги и сохраните отчёт для разработчика.',
 taskLater:'НЕ ПОДКЛЮЧЕНО',taskAiTitle:'Поручить задачу ИИ',
-taskAiDesc:'SO 6.2, чат и действия ИИ пока недоступны в публичной бете.',
+taskAiDesc:'Agent 001 ранее отвечал через ChatGPT в закрытом тесте. Личный чат и SO 6.2 не подключены к публичному Home.',
+platformNav:'ПЛАТФОРМА LUCH',openWorkspace:'Открыть пространство',connectExisting:'Подключить свой ИИ ↗',quickWebsite:'Проверить публичный сайт',
+workspacePreview:'ВАШЕ ПРОСТРАНСТВО',agentPrivateProof:'Ранее проверено в закрытом тесте',agentPrivateExplanation:'В предыдущем закрытом тесте помощник получил настоящий ответ ChatGPT. Этот личный маршрут недоступен в публичном пространстве. Ответы не имитируются.',
+agentLearn:'О помощниках ↗',workspacePermission:'Ваши разрешения и действия',workspaceHistory:'Ваши сохранённые результаты',
+openAssistants:'Открыть помощников ↗',agentUnavailable:'Чтобы отправлять сообщения, требуется личное подключение модели. Частная беседа владельца не передаётся публичным аккаунтам.',
+agentMessage:'Сообщение помощнику',agentSend:'Отправить',agentUnavailableShort:'Отправка выключена до личного подключения.',
+agentConnections:'ПОДКЛЮЧЕНИЯ И РАЗРЕШЕНИЯ',agentCoreDescription:'Совместимые ИИ-клиенты можно подключить отдельно через Core со своей авторизацией. Чат Home при этом не подключается автоматически.',soPlanned:'Подключение модели запланировано. Не подключена.',
 previousSite:'Сейчас разрешён:',replaceGrantNote:'Разрешение на другой сайт заменит текущее. Запрос начнётся только после нажатия кнопки проверки.',
 keepGrant:'Оставить текущий сайт',chooseOtherSite:'Выбрать другой сайт',
 historyNotice:'Сохранённые наблюдения относятся к прошлым проверкам, а не к текущему состоянию сайта. Они доступны и после отзыва разрешения.',
@@ -40,7 +46,7 @@ createAccount:'Создать пространство',existingAccount:'Уже 
 signInDesc:'Войдите, чтобы продолжить работу со своими разрешениями и проверками.',
 signIn:'Войти',newAccount:'Нет аккаунта? Создать',
 accountPrivacy:'Не нужны email, банковская карта или API. Храним имя пользователя, защищённый хеш пароля и ваши проверки.',
-hello:'Рады видеть вас,',overviewIntro:'Начните с выбранного сайта. LUCH покажет ответ HTTPS-сервера и сведения, которые действительно удалось прочитать.',
+hello:'Рады видеть вас,',overviewIntro:'Здесь ваши помощники, доступные инструменты и сохранённые результаты. Используйте только подключения и разрешения своего пространства.',
 firstRealTask:'ВАША ПЕРВАЯ РЕАЛЬНАЯ ЗАДАЧА',missionOne:'Проверьте сайт.',missionTwo:'Увидьте доказательства.',
 missionDesc:'Настоящий ограниченный HTTPS-запрос. Без паролей от сайта, изменений файлов и скрытых действий ИИ.',
 startWebsiteCheck:'Открыть проверку сайта',notGranted:'Разрешение не выдано',
@@ -156,6 +162,8 @@ function translate(){
   b.textContent=lang==='en'?'РУ':'EN';
   b.setAttribute('aria-label',lang==='en'?'Switch to Russian':'Переключить на английский');
  });
+ document.querySelectorAll('[data-platform-path]').forEach(a=>a.href='/'+lang+'/'+a.dataset.platformPath+'/');
+ $('agent-input').placeholder=lang==='ru'?'Чат недоступен':'Chat unavailable';
  document.querySelector('[data-privacy]').href=lang==='ru'?'/ru/privacy/':'/en/privacy/';
  document.querySelector('[data-terms]').href=lang==='ru'?'/ru/terms/':'/en/terms/';
  if(state.authenticated)render();
@@ -644,6 +652,7 @@ $('show-recovery').addEventListener('click',toggleRecovery);
 $('recovery-back').addEventListener('click',()=>toggleAuth(true));
 $('recovery-form').addEventListener('submit',recoverPassword);
 $('rotate-recovery').addEventListener('click',rotateRecovery);
+document.querySelectorAll('[data-create-shortcut]').forEach(b=>b.addEventListener('click',()=>{revealAuth(false);$('register-username').focus({preventScroll:true})}));
 document.querySelectorAll('[data-login-shortcut]').forEach(b=>b.addEventListener('click',()=>{
  revealAuth(true);$('login-username').focus({preventScroll:true})
 }));

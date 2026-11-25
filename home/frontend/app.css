@@ -391,3 +391,49 @@ main{flex:1;max-width:1510px;width:100%;margin:0 auto;padding:clamp(25px,4vw,61p
 .observation-comparison p{font-size:12px;line-height:1.6;margin:8px 0;color:#345848}
 .observation-comparison .field-note{font-size:11px;color:#4c6758}
 .comparison-change{font-weight:650}
+
+/* Unified LUCH Home: reuse R6 agent-thread / info hierarchy and original luminous identity. */
+.platform-side-nav{display:grid;gap:10px;margin:14px 0 18px}
+.platform-side-nav p{margin:0;font-size:10px;letter-spacing:.12em;color:#819f90;font-weight:700}
+.platform-side-nav a{font-size:12px;color:inherit;text-decoration:none}
+.platform-side-nav a:hover{text-decoration:underline}
+.home-start-actions{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0}
+.quick-tool{margin:16px 0;border:1px solid #d6e4d6;border-radius:12px;padding:12px 14px}
+.quick-tool summary{font-size:13px;font-weight:700;cursor:pointer;color:#305b48}
+.quick-tool form{margin-top:14px}
+.platform-preview{padding:24px;align-self:start}
+.workspace-preview-agent,.workspace-preview-row,.agent-topline{display:flex;gap:13px;align-items:center}
+.workspace-preview-agent{padding:18px 0;border-bottom:1px solid #d8e3d8}
+.workspace-agent-icon{width:44px;height:44px;min-width:44px;border-radius:13px;display:grid;place-items:center;background:#164639;color:#f4fff1;font-size:26px}
+.workspace-preview-agent p,.agent-topline p{margin:3px 0;color:#60796a;font-size:12px}
+.workspace-preview-agent>small{margin-left:auto;text-align:right;font-size:11px;color:#597063}
+.workspace-preview-copy{padding:18px 0;border-bottom:1px solid #d8e3d8}
+.workspace-preview-copy h3{font-size:17px;margin:0 0 8px;letter-spacing:-.025em}
+.workspace-preview-copy p{font-size:13px;color:#496455;line-height:1.65;margin:0 0 10px}
+.workspace-preview-copy a{font-size:12px;font-weight:700}
+.workspace-preview-row{padding:14px 0;border-bottom:1px solid #e2e9df}
+.workspace-preview-row:last-child{border-bottom:0}
+.workspace-preview-row>span{font-size:21px;color:#427660;width:30px;text-align:center}
+.workspace-preview-row strong,.workspace-preview-row small{display:block}
+.workspace-preview-row strong{font-size:13px}
+.workspace-preview-row small{margin-top:4px;font-size:11px;color:#647d6c}
+.workspace-agent-banner{display:flex;gap:16px;align-items:center;padding:21px;border-radius:13px;border:1px solid #c9dcd0;background:#f7faf3;margin:0 0 19px}
+.workspace-agent-banner h2{font-size:22px;margin:5px 0 8px}.workspace-agent-banner p{font-size:13px;line-height:1.55;margin:0;color:#4a6558}
+.workspace-agent-banner>div:nth-child(2){flex:1;min-width:0}
+.public-agent-shell{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+.public-agent-shell .agent-topline{padding-bottom:16px;border-bottom:1px solid #d7e3d6}
+.public-agent-shell h2{font-size:22px;margin:0}
+.public-agent-shell .agent-dialogue{padding:25px 0;min-height:180px}
+.public-agent-shell .agent-dialogue h3{font-size:19px;letter-spacing:-.03em}
+.public-agent-shell p{font-size:14px;color:#4d6a5a;line-height:1.65}
+.public-agent-shell textarea{width:100%;box-sizing:border-box;border:1px solid #d7e0d7;border-radius:9px;padding:12px;background:#f2f4ee;color:#667c6d;resize:none;font:inherit;margin:9px 0}
+.public-agent-shell button:disabled{opacity:.55;cursor:not-allowed}
+.public-agent-shell .agent-info h3{margin:20px 0 8px;font-size:18px}
+.public-agent-shell .agent-info .button{margin-bottom:8px}
+@media(max-width:850px){.public-agent-shell{grid-template-columns:1fr}.workspace-agent-banner{align-items:flex-start;flex-wrap:wrap}.platform-preview{max-width:none}}
+@media(max-width:600px){.platform-side-nav{display:none}.home-start-actions{flex-direction:column;align-items:stretch}.workspace-agent-banner>button{width:100%}.platform-preview{padding:17px}}
+
+.footer-platform{display:flex;flex-wrap:wrap;gap:15px;margin:0 0 10px}
+.footer-platform a{font-weight:650}
+.side-note{color:#a5c6b5!important}
+@media(max-width:600px){.app-footer{display:block}.footer-platform{margin-bottom:12px}}

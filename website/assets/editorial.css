@@ -137,3 +137,23 @@
  .ed-hero h1{font-size:41px}
 }
 @media(prefers-reduced-motion:reduce){.ed-actions a{transition:none;transform:none!important}}
+
+/* LUCH OS shared product architecture — existing editorial palette. */
+.platform-spaces{background:#f7f7ef;padding:76px 0;border-top:1px solid #d4e1d6}
+.platform-intro{display:grid;grid-template-columns:160px minmax(0,1fr);gap:12px 32px;margin-bottom:36px}
+.platform-intro>span{font-size:11px;letter-spacing:.14em;font-weight:750;color:#517560;padding-top:12px}
+.platform-intro h2{font-size:clamp(36px,4.5vw,66px);line-height:1.08;letter-spacing:-.045em;font-weight:550;margin:0;color:#143d34}
+.platform-intro p{grid-column:2;margin:0;font-size:17px;line-height:1.65;color:#4a6558;max-width:720px}
+.platform-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.platform-card{border:1px solid #d4dfd3;background:#fffefa;border-radius:12px;padding:25px;display:flex;flex-direction:column;min-width:0}
+.platform-card:first-child{background:#123c34;color:#fffef6;border-color:#123c34}
+.platform-index{font-size:12px;letter-spacing:.12em;color:#74917c}
+.platform-card:first-child .platform-index{color:#a5c9b1}
+.platform-card h3{font-size:clamp(22px,2.2vw,30px);letter-spacing:-.04em;margin:24px 0 8px}
+.platform-card strong{font-size:13px;line-height:1.35}
+.platform-card p{font-size:14px;line-height:1.65;margin:13px 0 24px;color:#4a6558}
+.platform-card:first-child p{color:#d9e7dd}
+.platform-card a{font-weight:700;font-size:13px;margin-top:auto;overflow-wrap:anywhere}
+.platform-card:first-child a{color:#f8faef}
+@media(max-width:1000px){.platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.platform-spaces{padding:54px 0}.platform-intro{grid-template-columns:1fr;gap:12px}.platform-intro p{grid-column:1}.platform-grid{grid-template-columns:1fr}.platform-card{padding:23px}}

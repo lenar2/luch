@@ -62,6 +62,12 @@ class RemotePatchTests(unittest.TestCase):
         after2,changed2=rp.patch_caddy(after)
         self.assertFalse(changed2)
         self.assertEqual(after,after2)
+    def test_existing_aws_caddy_nonstandard_indentation(self):
+        source=AWS_CADDY.replace('    handle /luch/mcp {', '\thandle /luch/mcp {')
+        after,changed=rp.patch_caddy(source)
+        self.assertTrue(changed)
+        self.assertIn('P029_AWS_FIRST_INGRESS_R11',after)
+        self.assertIn('\thandle /luch/mcp {',after)
     def test_existing_route_conflict_halts(self):
         src=AWS_CADDY.replace('    handle /luch/mcp {', '    handle /luch/browser/* { respond 404 }\n    handle /luch/mcp {')
         with self.assertRaisesRegex(ValueError,'existing route'):

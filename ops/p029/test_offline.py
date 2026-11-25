@@ -171,6 +171,7 @@ class Route53Tests(unittest.TestCase):
             result=cf.ssm_patch('inspect')
         self.assertIn('P029_EC2_PREFLIGHT_OK',result)
         lines=saved[0]['commands']
+        self.assertEqual(lines[0], 'set -eu')  # AWS-RunShellScript defaults to /bin/sh, not bash
         self.assertLess(max(map(len,lines)),3301)
         chunks=[shlex.split(x)[2] for x in lines if x.startswith('printf %s ')]
         decoded=base64.b64decode(''.join(chunks))

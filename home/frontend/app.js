@@ -443,12 +443,63 @@ function renderActivity(){
   wrap.append(title,detail,time);row.append(icon,wrap);el.append(row);
  }
 }
+let agentEpoch=0,agentTimer=null,agentBusy=false,agentRetry=null;
+function al(en,ru){return lang==='ru'?ru:en}
+function clearAgent(){
+ agentEpoch++;clearTimeout(agentTimer);agentRetry=null;agentBusy=false;
+ $('agent-dialogue').replaceChildren();$('agent-input').value='';$('agent-input').disabled=true;
+ $('agent-send').disabled=true;$('agent-grant').hidden=true;$('agent-revoke').hidden=true;
+}
+async function refreshAgent(){
+ const epoch=++agentEpoch;clearTimeout(agentTimer);
+ if(!state.authenticated){clearAgent();return;}
+ const user=state.username;
+ let a;
+ try{a=await request('agent')}catch{a={configured:false,authorized:false,jobs:[]}}
+ if(epoch!==agentEpoch||!state.authenticated||state.username!==user)return;
+ const pending=a.jobs.some(j=>j.state==='pending'),ready=a.configured&&a.authorized;
+ $('agent-input').disabled=!ready||pending||agentBusy;$('agent-send').disabled=$('agent-input').disabled;
+ $('agent-grant').hidden=!a.configured||a.authorized;$('agent-revoke').hidden=!a.authorized;
+ text('agent-grant',al('Authorize private chat','Разрешить личный чат'));
+ text('agent-revoke',al('Revoke private chat','Отозвать доступ'));
+ text('agent-state-label',ready?al('Private route authorized','Личный маршрут разрешён'):al('Not connected','Не подключён'));
+ text('agent-blocked',ready?al('Real replies only. No automatic resend. Core tools not connected.','Только настоящие ответы. Без автоматического повтора. Инструменты Core не подключены.'):al('Personal connection required.','Требуется личное подключение.'));
+ $('agent-input').placeholder=ready?al('Message Agent 001','Сообщение Agent 001'):al('Chat unavailable','Чат недоступен');
+ const panel=$('agent-dialogue');panel.replaceChildren();
+ if(!ready){const p=document.createElement('p');p.textContent=al('Private conversation is not available to public accounts.','Личный чат недоступен публичным аккаунтам.');panel.append(p);}
+ for(const j of a.jobs){
+  const u=document.createElement('p');u.textContent=al('You: ','Вы: ')+j.message;panel.append(u);
+  const r=document.createElement('p');r.textContent=j.state==='done'?'ChatGPT: '+j.reply:j.state==='pending'?al('Awaiting real response…','Ожидается настоящий ответ…'):al('No verified reply. Check before sending again.','Нет подтверждённого ответа. Проверьте перед новой отправкой.');panel.append(r);
+ }
+ if(pending)agentTimer=setTimeout(refreshAgent,2000);
+}
+$('agent-grant').addEventListener('click',async()=>{
+ if(!confirm(al('Allow this workspace to send messages to your bound private ChatGPT conversation?','Разрешить отправку сообщений в привязанный личный чат ChatGPT?')))return;
+ try{await request('agent/grant',{consent:true});await refreshAgent()}catch(e){showToast(e.message)}
+});
+$('agent-revoke').addEventListener('click',async()=>{
+ try{await request('agent/revoke',{});clearAgent();await refreshAgent()}catch(e){showToast(e.message)}
+});
+$('agent-send').addEventListener('click',async()=>{
+ if(agentBusy||$('agent-send').disabled)return;
+ const message=$('agent-input').value.trim();
+ if(!message||message.length>450)return;
+ if(agentRetry&&agentRetry.message!==message){showToast(al('Check the previous send first.','Сначала проверьте предыдущую отправку.'));return;}
+ const id=agentRetry?.id||Array.from(crypto.getRandomValues(new Uint8Array(16)),n=>n.toString(16).padStart(2,'0')).join('');
+ const user=state.username;const csrf=state.csrf;
+ agentRetry={id,message};agentBusy=true;$('agent-send').disabled=true;
+ try{await request('agent/send',{id,message});if(state.username===user&&state.csrf===csrf&&state.authenticated){$('agent-input').value='';agentRetry=null;}}
+ catch(e){showToast(e.message)}
+ finally{if(state.username===user&&state.csrf===csrf&&state.authenticated){agentBusy=false;await refreshAgent()}}
+});
+
 function render(){
  const signed=Boolean(state.authenticated);
  $('guest').hidden=signed;$('workspace').hidden=!signed;
  $('side-nav').hidden=!signed;$('user-chip').hidden=!signed;$('logout').hidden=!signed;
  document.body.classList.toggle('signed-in',signed);
  if(!signed){
+  clearAgent();
   $('guest').hidden=false;
   $('pre-auth-panel').hidden=false;$('auth-card').hidden=true;
   $('activity-list').replaceChildren();$('saved-results').replaceChildren();
@@ -476,11 +527,12 @@ function render(){
  const matchingResult=activeOrigin&&!choosing?ownChecks.find(c=>c.origin===activeOrigin)?.result:null;
  displayResult(matchingResult||null);renderAttemptNotice();
  showPage(page);
+ refreshAgent();
 }
 async function refresh(){
  try{
   const next=await request('state');
-  if(!next.authenticated||state.username!==next.username){lastResult=null;selectingOtherSite=false;failedAttempt=null;}
+  if(!next.authenticated||state.username!==next.username||state.csrf!==next.csrf){clearAgent();lastResult=null;selectingOtherSite=false;failedAttempt=null;}
   state=next;render();
  }
  catch(e){showToast(tx('cannotConnect'))}

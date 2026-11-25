@@ -34,8 +34,12 @@ luch.lenarsalimov.ru {
 # api hostname is a completely separate service and MUST remain unchanged
 api.lenarsalimov.ru {
     tls /some/existing/cert.pem /some/existing/key.pem
-    handle /luch/core/mcp { reverse_proxy 127.0.0.1:9254 }
-    handle { respond "Not migrated to AWS" 404 }
+    handle /luch/core/mcp {
+        reverse_proxy 127.0.0.1:9254
+    }
+    handle {
+        respond "Not migrated to AWS" 404
+    }
 }
 '''
 

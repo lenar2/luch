@@ -1,0 +1,13 @@
+<svg width="440" height="280" viewBox="0 0 440 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="440" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#153A47"/><stop offset="1" stop-color="#061B26"/></linearGradient>
+ <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(340 70) rotate(140) scale(260 180)"><stop stop-color="#789EA4" stop-opacity=".55"/><stop offset="1" stop-color="#789EA4" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="440" height="280" fill="url(#bg)"/><rect width="440" height="280" fill="url(#glow)"/>
+<image href="luch-app-mark.svg" x="30" y="50" width="112" height="112"/>
+<text x="164" y="73" fill="#D6AD73" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2">LUCH / BROWSER COMPANION</text>
+<text x="164" y="119" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="31" font-weight="700">Share a tab.</text>
+<text x="164" y="157" fill="#FFFDF5" font-family="Arial, sans-serif" font-size="31" font-weight="700">Keep control.</text>
+<path d="M30 198H410" stroke="#789EA4" stroke-opacity=".45"/>
+<text x="30" y="239" fill="#E5ECE8" font-family="Arial, sans-serif" font-size="16">Only the page you approve.</text>
+</svg>

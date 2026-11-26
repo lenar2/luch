@@ -54,7 +54,7 @@ test('connected/read-granted HEA view prioritizes approved tab and hides advance
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(item('status').textContent,'Browser paired');
  assert.equal(item('currentTab').textContent,'Example Domain');
- assert.equal(item('headline').textContent,'Your tab. Your choice.');
+ assert.equal(item('headline').textContent,'LUCH controls your browser.');
  assert.equal(item('pairing').hidden,true);
  assert.equal(item('controls').hidden,false);
  assert.equal(item('grant').hidden,true);
@@ -65,13 +65,13 @@ test('connected/read-granted HEA view prioritizes approved tab and hides advance
 });
 
 test('temporary cloud outage never implies user has unpaired or that remote actions work',async()=>{
- const {item}=popup('ru-RU',{connected:true,online:false,granted:true,scope:'read',
+ const {item}=popup('ru-RU',{connected:true,online:false,granted:true,scope:'interact',fullMode:true,
   tab:{title:'Тестовая страница',url:'https://example.com/'}});
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(item('status').textContent,'Ожидание подключения к облаку');
  assert.equal(item('pairing').hidden,true);
  assert.equal(item('controls').hidden,false);
- assert.equal(item('interact').disabled,true);
+ assert.equal(item('interact').hidden,true);
  assert.equal(item('list-tabs').disabled,true);
  assert.equal(item('revoke').hidden,false,'local revoke must remain available');
  assert.equal(item('disconnect').disabled,false,'local disconnect must remain available');

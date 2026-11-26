@@ -5,6 +5,7 @@ node --test tests/*.test.mjs >/dev/null
 node security-qa.mjs >/dev/null
 node --check extension/background.js
 node --check extension/dom-ops.js
+node --check extension/extended-dom-ops.js
 node --check extension/popup.js
 node --check broker/server.mjs
 node --check bridge-integration/integrate.mjs
@@ -19,10 +20,10 @@ from zipfile import ZipFile,ZipInfo,ZIP_DEFLATED,ZIP_STORED
 import sys
 root=Path('extension')
 dst=Path('dist')/sys.argv[1]
-files=['manifest.json','background.js','dom-ops.js','popup.html','popup.css','popup.js']
+files=['manifest.json','background.js','dom-ops.js','extended-dom-ops.js','popup.html','popup.css','popup.js']
 files+=['assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png']
 files+=['_locales/en/messages.json','_locales/ru/messages.json']
-stamp=(2026,11,16,0,0,0)
+stamp=(2026,11,27,0,0,0)
 with ZipFile(dst,'w') as z:
  info=ZipInfo('assets/',date_time=stamp);info.create_system=3;info.external_attr=(0o755 << 16)|0x10;info.compress_type=ZIP_STORED;z.writestr(info,b'')
  for name in sorted(files):
@@ -36,14 +37,14 @@ target=Path('dist')/sys.argv[1]
 with zipfile.ZipFile(target) as z:
     manifest=json.loads(z.read('manifest.json'))
     assert manifest['name']=='LUCH Browser Companion'
-    assert manifest['version']=='0.7.0'
+    assert manifest['version']=='0.8.1'
     assert manifest['default_locale']=='en'
     assert manifest['description']=='__MSG_appDescription__'
     assert 'debugger' not in manifest['permissions']
     assert 'debugger' in manifest['optional_permissions']
-    assert sorted(manifest.get('optional_permissions',[]))==['debugger','tabs']
+    assert sorted(manifest.get('optional_permissions',[]))==['debugger','downloads','tabs']
     assert z.testzip() is None
-    assert sorted(z.namelist())==sorted(['manifest.json','background.js','dom-ops.js','popup.html','popup.css','popup.js','assets/','assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png','_locales/en/messages.json','_locales/ru/messages.json'])
+    assert sorted(z.namelist())==sorted(['manifest.json','background.js','dom-ops.js','extended-dom-ops.js','popup.html','popup.css','popup.js','assets/','assets/icon-16.png','assets/icon-32.png','assets/icon-48.png','assets/icon-128.png','_locales/en/messages.json','_locales/ru/messages.json'])
 PY
 sha256sum "dist/$name" > "dist/$name.sha256"
 printf 'PACKAGE=%s\n' "$PWD/dist/$name"

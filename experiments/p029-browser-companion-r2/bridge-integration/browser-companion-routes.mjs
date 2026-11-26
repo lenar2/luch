@@ -25,14 +25,16 @@ const GENERIC_ACTION='/v1/companion/action';
 const EXT_READ=new Set([
  'read_text','inspect_page','get_links','get_headings','get_forms','get_tables',
  'get_selection','query_elements','find_text','accessibility_snapshot','hit_test',
- 'get_element','scroll_position','screenshot','tab_info','window_info','list_open_tabs'
+ 'get_element','scroll_position','screenshot','tab_info','window_info','list_open_tabs',
+ 'get_document_info','get_viewport','get_images','get_media','get_buttons','get_inputs','get_labels','get_attributes','get_computed_style','get_rect','get_visibility','get_form_values','get_element_state','get_ancestors','get_descendants','get_shadow_elements','get_iframes','get_dom_statistics','get_selected_html','get_performance','get_resources','get_active_element','list_windows','get_zoom','get_tab_language','get_tab_details','get_browser_capabilities','downloads_list','wait_for_url','wait_for_load'
 ]);
 const EXT_INTERACT=new Set([
  'focus','hover','scroll_into_view','scroll','scroll_to','fill','insert_text',
  'type_text','select_option','check_element','click','click_at','double_click',
  'click_accessible','navigate','reload','back','forward','activate_tab',
  'close_tab','new_tab','new_window','window_set',
- 'pointer_move','pointer_click','pointer_double_click','pointer_drag','pointer_wheel'
+ 'pointer_move','pointer_click','pointer_double_click','pointer_drag','pointer_wheel',
+ 'blur','clear_field','append_text','insert_at_cursor','select_text','set_selection_range','toggle_details','open_details','close_details','submit_form','reset_form','scroll_element','scroll_element_to','set_range_value','duplicate_tab','pin_tab','unpin_tab','mute_tab','unmute_tab','move_tab','discard_tab','set_zoom','press_key','key_chord','download_url'
 ]);
 export const EXTENSION_ACTIONS=Object.freeze({read:[...EXT_READ],interact:[...EXT_INTERACT]});
 const SAFE=new Set([...Object.keys(MAPPING),GENERIC_ACTION]);

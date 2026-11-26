@@ -24,13 +24,15 @@ const admin = createClient(SUPABASE_URL, SERVICE_KEY, {
 const READ_OPS = new Set([
   "read_text","inspect_page","get_links","get_headings","get_forms","get_tables",
   "get_selection","query_elements","find_text","accessibility_snapshot","hit_test",
-  "get_element","scroll_position","screenshot","tab_info","window_info","list_open_tabs",
+  "get_element","scroll_position","screenshot","tab_info","window_info","list_open_tabs",,
+ "get_document_info","get_viewport","get_images","get_media","get_buttons","get_inputs","get_labels","get_attributes","get_computed_style","get_rect","get_visibility","get_form_values","get_element_state","get_ancestors","get_descendants","get_shadow_elements","get_iframes","get_dom_statistics","get_selected_html","get_performance","get_resources","get_active_element","list_windows","get_zoom","get_tab_language","get_tab_details","get_browser_capabilities","downloads_list","wait_for_url","wait_for_load"
 ]);
 const INTERACT_OPS = new Set([
   "focus","hover","scroll_into_view","scroll","scroll_to","fill","insert_text",
   "type_text","select_option","check_element","click","click_at","double_click",
   "click_accessible","navigate","reload","back","forward","activate_tab","close_tab",
-  "new_tab","new_window","window_set",
+  "new_tab","new_window","window_set",,
+ "blur","clear_field","append_text","insert_at_cursor","select_text","set_selection_range","toggle_details","open_details","close_details","submit_form","reset_form","scroll_element","scroll_element_to","set_range_value","duplicate_tab","pin_tab","unpin_tab","mute_tab","unmute_tab","move_tab","discard_tab","set_zoom","press_key","key_chord","download_url"
 ]);
 const POINTER_OPS = new Set(["pointer_move","pointer_click","pointer_double_click","pointer_drag","pointer_wheel"]);
 const ALL_OPS = new Set([...READ_OPS, ...INTERACT_OPS, ...POINTER_OPS]);
@@ -71,10 +73,22 @@ const field = {
   toY: z.number().finite(),
   deltaX: z.number().finite(),
   deltaY: z.number().finite(),
-  left: z.number().int().min(-5000).max(5000),
-  top: z.number().int().min(-5000).max(5000),
-  width: z.number().int().min(200).max(5000),
-  height: z.number().int().min(200).max(5000),
+  left: z.number().int().min(-100000).max(100000),
+  top: z.number().int().min(-100000).max(100000),
+  width: z.number().int().min(100).max(100000),
+  height: z.number().int().min(100).max(100000),
+  key: z.string().min(1).max(30),
+  modifiers: z.number().int().min(0).max(15),
+  filename: z.string().min(1).max(160),
+  index: z.number().int().min(0).max(10000),
+  windowId: z.number().int().min(0),
+  factor: z.number().min(0.25).max(5),
+  timeoutMs: z.number().int().min(50).max(40000),
+  start: z.number().int().min(0).max(1000000),
+  end: z.number().int().min(0).max(1000000),
+  query: z.string().min(1).max(200),
+  properties: z.array(z.string().max(80)).max(40),
+
 };
 
 function schemaFor(op:string) {
@@ -83,7 +97,7 @@ function schemaFor(op:string) {
   const add=(name:keyof typeof field, required=false)=>{ shape[name]=required?field[name]:field[name].optional(); };
   switch(op) {
     case "read_text": case "get_element": case "focus": case "hover": case "scroll_into_view":
-    case "query_elements": case "select_option": case "check_element": case "click": case "double_click": case "click_accessible":
+    case "query_elements": case "click": case "double_click": case "click_accessible":
       add("selector", true); break;
     case "fill": case "insert_text": case "type_text":
       add("selector", true); add("text", true); break;
@@ -91,11 +105,30 @@ function schemaFor(op:string) {
     case "hit_test": case "click_at": add("x", true); add("y", true); break;
     case "scroll": add("dx"); add("dy"); break;
     case "scroll_to": add("x"); add("y"); break;
-    case "select_option": add("value", true); break;
-    case "check_element": add("checked", true); break;
+    case "select_option": add("selector",true);add("value",true);break;
+    case "check_element": add("selector",true);add("checked",true);break;
     case "navigate": add("url", true); break;
     case "new_tab": case "new_window": add("url", true); break;
     case "window_set": add("left"); add("top"); add("width"); add("height"); break;
+    case "get_attributes": case "get_rect": case "get_visibility":
+    case "get_form_values": case "get_element_state": case "get_ancestors": case "get_descendants":
+    case "blur": case "clear_field": case "select_text": case "toggle_details":
+    case "open_details": case "close_details": case "submit_form": case "reset_form":
+      add("selector", true); break;
+    case "append_text": case "insert_at_cursor":
+      add("selector",true);add("text",true);break;
+    case "set_selection_range":
+      add("selector",true);add("start",true);add("end",true);break;
+    case "scroll_element": case "scroll_element_to":
+      add("selector",true);add("dx");add("dy");add("x");add("y");break;
+    case "get_computed_style":add("selector",true);add("properties");break;
+    case "get_shadow_elements": add("query");break;
+    case "wait_for_url": case "download_url": add("url",true);add("timeoutMs");add("filename");break;
+    case "wait_for_load":add("timeoutMs");break;
+    case "press_key": case "key_chord":add("key",true);add("modifiers");break;
+    case "move_tab":add("index",true);add("windowId");break;
+    case "set_zoom":add("factor",true);break;
+    case "set_range_value":add("selector",true);add("value",true);break;
     case "pointer_move": case "pointer_click": case "pointer_double_click": add("x", true); add("y", true); break;
     case "pointer_drag": add("x", true); add("y", true); add("toX", true); add("toY", true); break;
     case "pointer_wheel": add("x", true); add("y", true); add("deltaX"); add("deltaY"); break;
@@ -308,7 +341,7 @@ function userMcpServer(userId:string) {
     const device=await chooseDevice(userId,deviceId,true);
     const {data,error}=await admin.from("p029_browser_grants")
       .select("tab_id,grant_id,origin,url_redacted,title,scope,precise_cursor,updated_at")
-      .eq("user_id",userId).eq("device_id",device.id).order("updated_at",{ascending:false}).limit(80);
+      .eq("user_id",userId).eq("device_id",device.id).order("updated_at",{ascending:false}).limit(500);
     if(error) throw new Error("APPROVED_TABS_LOOKUP_FAILED");
     const tabs=(data||[]).filter((g:any)=>g.origin&&["read","interact"].includes(g.scope))
       .map((g:any)=>({
@@ -392,7 +425,7 @@ async function extensionHandler(req:Request) {
   if(path.endsWith("/extension/grants")) {
     const body=await req.json().catch(()=>null);
     const grants=Array.isArray(body?.grants)?body.grants:[];
-    if(grants.length>80) return json({ok:false,error:"TOO_MANY_GRANTS"},400);
+    if(grants.length>500) return json({ok:false,error:"TOO_MANY_GRANTS"},400);
     const rows=grants.map((g:any)=>({
       user_id:device.user_id,device_id:device.id,tab_id:Number(g.tabId),grant_id:String(g.grantId||"").slice(0,120),
       origin:origin(g.url)||String(g.origin||"").slice(0,255),url_redacted:redactedUrl(g.url),title:String(g.title||"").slice(0,180),
@@ -416,7 +449,8 @@ async function extensionHandler(req:Request) {
   }
   if(path.endsWith("/extension/tab-overview")) {
     const body=await req.json().catch(()=>null);
-    const tabs=Array.isArray(body?.tabs)?body.tabs.slice(0,80).map((t:any)=>({
+    if(Array.isArray(body?.tabs)&&body.tabs.length>500)return json({ok:false,error:"TOO_MANY_TABS"},400);
+    const tabs=Array.isArray(body?.tabs)?body.tabs.map((t:any)=>({
       id:Number(t.id),title:String(t.title||"").slice(0,180),url:redactedUrl(t.url),windowId:Number(t.windowId)||0,active:!!t.active
     })).filter((t:any)=>Number.isSafeInteger(t.id)&&t.id>=0&&t.url):[];
     const {error}=await admin.from("p029_browser_tab_overviews").upsert({

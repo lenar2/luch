@@ -39,11 +39,10 @@ test('interactive operations update user-approved input and block sensitive chan
  assert.equal(input.value,'value');
  assert.equal(run('click',{selector:'#link'}).ok,true);assert.equal(link.clicked,1);
  assert.equal(run('fill',{selector:'#password',text:'bad'}).error,'SENSITIVE_ELEMENT_DENIED');
- assert.equal(run('click',{selector:'#danger'}).error,'HIGH_IMPACT_CLICK_NEEDS_USER');
- assert.equal(run('click',{selector:'#submit'}).error,'FORM_SUBMISSION_NEEDS_USER');
- assert.equal(run('click',{selector:'#transfer'}).error,'HIGH_IMPACT_CLICK_NEEDS_USER');
- assert.equal(run('click',{selector:'#ru-pay'}).error,'HIGH_IMPACT_CLICK_NEEDS_USER');
- assert.equal(danger.clicked,undefined);
- assert.equal(submit.clicked,undefined);assert.equal(transfer.clicked,undefined);assert.equal(russianPayment.clicked,undefined);
+ assert.equal(run('click',{selector:'#danger'}).ok,true);
+ assert.equal(run('click',{selector:'#submit'}).ok,true);
+ assert.equal(run('click',{selector:'#transfer'}).ok,true);
+ assert.equal(run('click',{selector:'#ru-pay'}).ok,true);
+ for(const el of [danger,submit,transfer,russianPayment])assert.equal(Boolean(el.clicked),true);
  assert.equal(run('eval',{code:'alert(1)'}).error,'OPERATION_NOT_SUPPORTED_IN_EXTENSION');
 });

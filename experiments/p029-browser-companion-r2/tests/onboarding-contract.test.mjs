@@ -41,10 +41,10 @@ test('tab permissions remain separate, session-scoped and fail closed',()=>{
  assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
  assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
  for(const forbidden of ['cookies','history','webRequest','<all_urls>'])assert.ok(!JSON.stringify(manifest).includes(forbidden));
- assert.deepEqual([...manifest.optional_permissions].sort(),['tabs','debugger'].sort());
+ assert.deepEqual([...manifest.optional_permissions].sort(),['tabs','debugger','downloads'].sort());
  assert.match(js,/Allow reading on this tab/);
- assert.match(js,/Allow interaction on this tab/);
- assert.match(js,/Revoke access to this tab/);
+ assert.match(js,/Enable full browser control/);
+ assert.match(js,/Pause browser control/);
  assert.match(worker,/INTERACTION_APPROVAL_REQUIRED/);
  assert.match(worker,/TAB_ORIGIN_CHANGED/);
  assert.match(worker,/chrome\.storage\.session/);

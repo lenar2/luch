@@ -12,6 +12,7 @@ const strings={
   disconnectPending:'Access ended on this device. When online, also revoke this browser in your AI to invalidate the cloud token.',
   caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
   paired:'Browser paired',notPaired:'Browser not paired',statusScope:'SECURE LUCH CLOUD',
+  tabCapacityError:'Browser has more than 500 web tabs. Close some tabs to resume automatic coverage. Existing grants are still active.',
   setupTitle:'Connect in three steps',
   setupSteps:[
    'Connect LUCH in your existing supported AI using the setup link below.',
@@ -64,6 +65,7 @@ const strings={
   disconnectPending:'На устройстве доступ отключён. Когда появится связь, дополнительно отзовите это устройство в своём ИИ.',
   caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Снимки и проверка'],
   paired:'Браузер подключён',notPaired:'Браузер не подключён',statusScope:'ЗАЩИЩЁННЫЙ LUCH CLOUD',
+  tabCapacityError:'В браузере больше 500 веб-вкладок. Закройте часть вкладок для возобновления полного покрытия. Ранее разрешённые вкладки остаются активными.',
   setupTitle:'Подключение за три шага',
   setupSteps:[
    'Подключите LUCH в привычном совместимом ИИ по инструкции ниже.',
@@ -164,6 +166,8 @@ async function refresh(){
   $('currentTab').textContent=r.tab?.title||t('noTab');
   $('currentUrl').textContent=r.tab?.url||'';
   $('shareStatus').textContent=!online&&connected?t('offlineTab'):(r.fullMode?t('interacting'):t('expired'));
+  if(r.fullModeError) $('feedback').textContent=t('tabCapacityError');
+  else if($('feedback').textContent===t('tabCapacityError'))$('feedback').textContent='';
   $('grant').hidden=true;
   $('interact').hidden=!!r.fullMode;$('interact').disabled=!online;
   $('revoke').hidden=!r.fullMode;

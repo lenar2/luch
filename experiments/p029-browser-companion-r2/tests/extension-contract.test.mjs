@@ -14,7 +14,7 @@ const html=fs.readFileSync(path.join(ext,'popup.html'),'utf8');
 const popup=fs.readFileSync(path.join(ext,'popup.js'),'utf8');
 
 test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
- assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.8.0');
+ assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.8.1');
  assert.equal(man.manifest_version,3);
  assert.ok(!JSON.stringify({manifest:man,html}).includes('QA'));
  assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"')&&html.includes('id="interact"'));

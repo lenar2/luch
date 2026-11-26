@@ -4,6 +4,8 @@
 // session ends, or the tab changes origin. No arbitrary 15-minute cutoff.
 importScripts('dom-ops.js','extended-dom-ops.js');
 const BASE='https://api.lenarsalimov.ru/luch/browser';
+// Bound request memory, not browser permissions. Never truncate the owner's tabs silently.
+const MAX_TRANSPORT_TABS=500;
 const READ_OPS=Object.freeze([
  'read_text','inspect_page','get_links','get_headings','get_forms','get_tables',
  'get_selection','query_elements','find_text','accessibility_snapshot',
@@ -44,7 +46,9 @@ const cleanTabUrl=value=>{
 const tabOverview=async()=>{
  if(!await chrome.permissions.contains({permissions:['tabs']}))throw new Error('ALL_TABS_PERMISSION_REQUIRED');
  const all=await chrome.tabs.query({});
- return all.map(tabSummary).filter(Boolean).slice(0,80);
+ const tabs=all.map(tabSummary).filter(Boolean);
+ if(tabs.length>MAX_TRANSPORT_TABS)throw new Error('BROWSER_TAB_CAPACITY_EXCEEDED');
+ return tabs;
 };
 async function publishTabOverview(auth){
  const session=(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true;
@@ -193,7 +197,13 @@ async function refreshFullGrants(){
  if(!await chrome.permissions.contains({permissions:['tabs']}))return false;
  const s=await state();if(!s.auth?.token)return false;
  const active=await chrome.tabs.query({}),grants={},cursor=await chrome.permissions.contains({permissions:['debugger']});
- for(const t of active.filter(t=>originOf(t.url)&&Number.isSafeInteger(t.id)).slice(0,80)){
+ const eligible=active.filter(t=>originOf(t.url)&&Number.isSafeInteger(t.id));
+ if(eligible.length>MAX_TRANSPORT_TABS){
+  await chrome.storage.session.set({fullModeError:'BROWSER_TAB_CAPACITY_EXCEEDED'});
+  throw new Error('BROWSER_TAB_CAPACITY_EXCEEDED');
+ }
+ await chrome.storage.session.remove('fullModeError');
+ for(const t of eligible){
   const current=s.grants[t.id];
   const same=current&&current.origin===originOf(t.url);
   grants[t.id]={tabId:t.id,grantId:same?current.grantId:makeNonce(),url:t.url,
@@ -209,6 +219,7 @@ async function disableFullMode(){
  await chrome.storage.local.remove('fullMode');
  const s=await state();
  await chrome.storage.session.remove('tabOverviewSharing');
+ await chrome.storage.session.remove('fullModeError');
  await setGrants({});
  try{await Promise.all([publishGrants(s.auth,{}),publishTabOverview(s.auth)])}
  catch{return {message:'Full browser automation stopped locally; cloud sync pending',pendingSync:true}}
@@ -296,7 +307,7 @@ async function performJob(job){
   if(op==='list_windows'){
    if(!await chrome.permissions.contains({permissions:['tabs']}))throw Error('ALL_TABS_PERMISSION_REQUIRED');
    const ws=await chrome.windows.getAll({populate:false});
-   return {ok:true,data:ws.slice(0,40).map(w=>({id:w.id,focused:w.focused,state:w.state,type:w.type,left:w.left,top:w.top,width:w.width,height:w.height}))};
+   return {ok:true,data:ws.map(w=>({id:w.id,focused:w.focused,state:w.state,type:w.type,left:w.left,top:w.top,width:w.width,height:w.height}))};
   }
   if(op==='get_zoom')return {ok:true,data:{factor:await chrome.tabs.getZoom(g.tabId)}};
   if(op==='get_tab_language')return {ok:true,data:{language:await chrome.tabs.detectLanguage(g.tabId)}};
@@ -332,7 +343,8 @@ async function performJob(job){
    return {ok:true,data:{downloadId:id,started:true}};
   }
   if(op==='wait_for_url'||op==='wait_for_load'){
-   const timeout=Math.min(Math.max(Number(args.timeoutMs)||5000,50),20000);
+   // Leave time for the 55s cloud job reply and 48s local broker reply.
+   const timeout=Math.min(Math.max(Number(args.timeoutMs)||5000,50),40000);
    const started=Date.now(),expected=op==='wait_for_url'?cleanUrl(args.url):null;
    while(Date.now()-started<timeout){
     const live=await chrome.tabs.get(g.tabId);
@@ -344,10 +356,22 @@ async function performJob(job){
   }
   if(op==='press_key'||op==='key_chord'){
    if(!await chrome.permissions.contains({permissions:['debugger']}))throw Error('KEYBOARD_PERMISSION_REQUIRED');
-   const key=String(args.key||'');if(!/^(?:[a-zA-Z0-9]|Enter|Tab|Escape|Backspace|Delete|Space|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Home|End|PageUp|PageDown|F[1-9]|F1[0-2])$/.test(key))throw Error('INVALID_KEY');
-   const mapping={Enter:13,Tab:9,Escape:27,Backspace:8,Delete:46,Space:32,ArrowUp:38,ArrowDown:40,ArrowLeft:37,ArrowRight:39,Home:36,End:35,PageUp:33,PageDown:34};
-   const code=/^[a-zA-Z0-9]$/.test(key)?'Key'+key.toUpperCase():key;
-   const virtualKey=mapping[key]||(/^[a-zA-Z0-9]$/.test(key)?key.toUpperCase().charCodeAt(0):0);
+   const key=String(args.key||'');
+   const namedKeys={Enter:13,Tab:9,Escape:27,Backspace:8,Delete:46,Space:32,
+    ArrowUp:38,ArrowDown:40,ArrowLeft:37,ArrowRight:39,Home:36,End:35,
+    PageUp:33,PageDown:34,Insert:45,CapsLock:20,NumLock:144,
+    ScrollLock:145,Pause:19,PrintScreen:44};
+   const punctuation={'-':189,'=':187,'[':219,']':221,'\\':220,';':186,"'":222,
+    ',':188,'.':190,'/':191,'`':192};
+   const functionKey=/^F([1-9]|1[0-9]|2[0-4])$/.exec(key);
+   const numpadKey=/^Numpad([0-9])$/.exec(key);
+   const single=/^[a-zA-Z0-9]$/.test(key);
+   if(!single&&!functionKey&&!numpadKey&&!(key in namedKeys)&&!(key in punctuation))throw Error('INVALID_KEY');
+   const code=single?(/[0-9]/.test(key)?'Digit'+key:'Key'+key.toUpperCase()):key;
+   const virtualKey=functionKey?111+Number(functionKey[1]):
+    numpadKey?96+Number(numpadKey[1]):
+    (key in namedKeys)?namedKeys[key]:(key in punctuation)?punctuation[key]:
+    key.toUpperCase().charCodeAt(0);
    const mods=op==='key_chord'?Number(args.modifiers)||0:0;
    if(!Number.isInteger(mods)||mods<0||mods>15)throw Error('INVALID_KEY_MODIFIERS');
    const debuggerTab={tabId:g.tabId};let attached=false;
@@ -384,7 +408,7 @@ async function performJob(job){
   }
   if(op==='window_set'){
    const values={};for(const k of ['width','height','left','top']){if(args[k]!==undefined){
-    const v=Number(args[k]);if(!Number.isInteger(v)||Math.abs(v)>5000||(k==='width'||k==='height')&&v<200)throw new Error('INVALID_WINDOW_RECT');values[k]=v;
+    const v=Number(args[k]);if(!Number.isSafeInteger(v)||(k==='width'||k==='height')&&v<100)throw new Error('INVALID_WINDOW_RECT');values[k]=v;
    }}if(!Object.keys(values).length)throw new Error('WINDOW_RECT_REQUIRED');
    await chrome.windows.update(t.windowId,values);return {ok:true,data:{updated:true}};
   }
@@ -447,7 +471,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
    const hasTabs=await chrome.permissions.contains({permissions:['tabs']});
    const hasDebugger=await chrome.permissions.contains({permissions:['debugger']});
    const sharing=connected&&(await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true&&hasTabs;
-   return {ok:true,connected,online,fullMode:connected&&await fullModeEnabled(),tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,
+   return {ok:true,connected,online,fullMode:connected&&await fullModeEnabled(),fullModeError:(await chrome.storage.session.get('fullModeError')).fullModeError||null,tab:t&&{title:safeTitle(t.title),url:t.url},granted:!!g,scope:g?.scope||null,
     preciseCursor:!!g?.preciseCursor&&hasDebugger,tabOverviewPermission:hasTabs,tabOverviewSharing:sharing,
     grantedCount:connected?Object.keys(s.grants).length:0,sessionScoped:true};
   }

@@ -73,17 +73,17 @@ const field = {
   toY: z.number().finite(),
   deltaX: z.number().finite(),
   deltaY: z.number().finite(),
-  left: z.number().int().min(-5000).max(5000),
-  top: z.number().int().min(-5000).max(5000),
-  width: z.number().int().min(200).max(5000),
-  height: z.number().int().min(200).max(5000),
+  left: z.number().int().min(-100000).max(100000),
+  top: z.number().int().min(-100000).max(100000),
+  width: z.number().int().min(100).max(100000),
+  height: z.number().int().min(100).max(100000),
   key: z.string().min(1).max(30),
   modifiers: z.number().int().min(0).max(15),
   filename: z.string().min(1).max(160),
   index: z.number().int().min(0).max(10000),
   windowId: z.number().int().min(0),
   factor: z.number().min(0.25).max(5),
-  timeoutMs: z.number().int().min(50).max(20000),
+  timeoutMs: z.number().int().min(50).max(40000),
   start: z.number().int().min(0).max(1000000),
   end: z.number().int().min(0).max(1000000),
   query: z.string().min(1).max(200),
@@ -341,7 +341,7 @@ function userMcpServer(userId:string) {
     const device=await chooseDevice(userId,deviceId,true);
     const {data,error}=await admin.from("p029_browser_grants")
       .select("tab_id,grant_id,origin,url_redacted,title,scope,precise_cursor,updated_at")
-      .eq("user_id",userId).eq("device_id",device.id).order("updated_at",{ascending:false}).limit(80);
+      .eq("user_id",userId).eq("device_id",device.id).order("updated_at",{ascending:false}).limit(500);
     if(error) throw new Error("APPROVED_TABS_LOOKUP_FAILED");
     const tabs=(data||[]).filter((g:any)=>g.origin&&["read","interact"].includes(g.scope))
       .map((g:any)=>({
@@ -425,7 +425,7 @@ async function extensionHandler(req:Request) {
   if(path.endsWith("/extension/grants")) {
     const body=await req.json().catch(()=>null);
     const grants=Array.isArray(body?.grants)?body.grants:[];
-    if(grants.length>80) return json({ok:false,error:"TOO_MANY_GRANTS"},400);
+    if(grants.length>500) return json({ok:false,error:"TOO_MANY_GRANTS"},400);
     const rows=grants.map((g:any)=>({
       user_id:device.user_id,device_id:device.id,tab_id:Number(g.tabId),grant_id:String(g.grantId||"").slice(0,120),
       origin:origin(g.url)||String(g.origin||"").slice(0,255),url_redacted:redactedUrl(g.url),title:String(g.title||"").slice(0,180),
@@ -449,7 +449,8 @@ async function extensionHandler(req:Request) {
   }
   if(path.endsWith("/extension/tab-overview")) {
     const body=await req.json().catch(()=>null);
-    const tabs=Array.isArray(body?.tabs)?body.tabs.slice(0,80).map((t:any)=>({
+    if(Array.isArray(body?.tabs)&&body.tabs.length>500)return json({ok:false,error:"TOO_MANY_TABS"},400);
+    const tabs=Array.isArray(body?.tabs)?body.tabs.map((t:any)=>({
       id:Number(t.id),title:String(t.title||"").slice(0,180),url:redactedUrl(t.url),windowId:Number(t.windowId)||0,active:!!t.active
     })).filter((t:any)=>Number.isSafeInteger(t.id)&&t.id>=0&&t.url):[];
     const {error}=await admin.from("p029_browser_tab_overviews").upsert({

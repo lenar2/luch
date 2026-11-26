@@ -16,7 +16,7 @@ Source: authenticated tool inventory: 41 browser_* + 13 server_browser_* methods
 | browser_window_set | implemented | Approved tab's window only |
 | browser_close_tab | restricted | Extension-created tabs only |
 | browser_navigate | implemented | Origin changes revoke |
-| browser_click | implemented | DOM click, high-impact restricted |
+| browser_click | implemented | DOM click on the approved tab, including submit and labeled actions |
 | browser_mouse_move | partial | DOM hover, not native pointer |
 | browser_click_at | implemented | DOM hit testing |
 | browser_drag_at | not implemented | Trusted/native drag outside this channel |

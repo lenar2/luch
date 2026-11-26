@@ -31,7 +31,7 @@ Pairing connects this browser to the local Companion only. It does not authorize
 4. If the task requires clicks, typing or other page changes, grant **Allow interaction on this tab** separately.
 5. Revoke access when the task is complete, or disconnect the browser entirely.
 
-Reading and interaction are separate permissions. Password and file inputs are protected; form submissions and some consequential controls are refused. Review the target page and action before granting interaction.
+Reading and interaction are separate permissions. Password and file inputs stay protected. After interaction is granted, the AI can click buttons, including form submit and other labeled actions, without an extra confirmation. Review the target page before granting interaction.
 
 ## When access ends
 
@@ -69,7 +69,7 @@ Use a normal HTTP(S) webpage. Open the extension on the exact tab and grant read
 
 **A click or text entry is refused**
 
-Interaction permission is separate from reading permission. Some high-impact actions and protected form controls are intentionally blocked. Do not try to bypass those safeguards.
+Interaction permission is separate from reading permission. Password and file fields are still blocked. Button clicks, including submit and payment-style labels, are allowed once interaction is granted.
 
 **The extension says the Companion is unavailable**
 

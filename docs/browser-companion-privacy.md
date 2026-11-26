@@ -39,7 +39,7 @@ Retention periods above refer to the active P029 database cleanup; separate AI-h
 
 You can deny initial pairing, grant read without interaction, decline all-tabs metadata sharing, disable cursor control, revoke a specific tab's grant, or disconnect the whole browser. The authorized AI host may also let you revoke the remote MCP connection.
 
-Do not approve sensitive financial, identity, administrative or medical pages unless you understand the data exposure and the requested actions. Password/file fields and some high-impact operations are blocked, but those safeguards are not an absolute guarantee of safety.
+Do not approve sensitive financial, identity, administrative or medical pages unless you understand the data exposure and the requested actions. Password and file fields are blocked. Clicks on submit and other high-impact buttons are not blocked once interaction is granted.
 
 LUCH does not sell approved browser page contents or use them to target ads. No advertising is embedded in the extension.
 

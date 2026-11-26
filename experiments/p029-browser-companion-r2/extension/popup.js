@@ -4,8 +4,8 @@ const strings={
  en:{
   eyebrow:'LUCH / BROWSER COMPANION',
   headline:'Connect Chrome to your AI.',
-  intro:'Let your supported AI understand a page only after you approve it here. Clicks and typing need a second permission.',
-  headlineConnected:'Your tab. Your choice.',introConnected:'Share this page with your AI, or keep it private. Other tabs stay closed.',
+  intro:'Let your supported AI understand a page only after you approve it here. Full control requires one Chrome permission grant.',
+  headlineConnected:'LUCH controls your browser.',introConnected:'Enable full browser access once. After Chrome grants access, AI commands run without per-action popup clicks.',
   offline:'Waiting for cloud connection',offlineScope:'RECONNECTING',offlineTab:'Your tab approval is saved. Actions will resume after reconnection.',
   advancedTitle:'More options · tab overview & precise pointer',
   revokePending:'Access to this tab is stopped on your device. Cloud sync will retry when online.',
@@ -23,10 +23,10 @@ const strings={
   pairHint:'The code comes from your own AI chat. Never share it in messages to others.',
   localSetup:'How to connect LUCH to your existing AI',help:'Check account & setup requirements',
   tabLabel:'Current tab',grant:'Allow reading on this tab',
-  interact:'Allow interaction on this tab',revoke:'Revoke access to this tab',
+  interact:'Enable full browser control',revoke:'Pause browser control',
   disconnect:'Disconnect browser',expired:'No tab access granted',
   read:'LUCH can read this tab',interacting:'LUCH can read and interact with this tab',
-  sessionNote:'Access ends when you revoke it, close this tab or the browser session, or navigate to another website origin.',
+  sessionNote:'Full control remains active until you pause or disconnect it. Chrome permissions can also be revoked in browser settings.',
   hostNote:'In your connected AI chat, ask: “Read my approved tab.” If LUCH is not connected to your AI yet, follow the setup guide.',
   footer:'Only approved tabs are shared. No cookie or browsing-history access. Page content you request may be sent to your authorized AI host.',
   learn:'How browser access works',noTab:'Open a regular website to begin',
@@ -40,8 +40,8 @@ const strings={
   tabPermissionRequired:'Approve this exact tab before using it.',
   pairSuccess:'Browser paired securely with LUCH Cloud.',
   readSuccess:'Read access granted for this tab.',
-  interactSuccess:'Interaction access granted for this tab.',
-  revokeSuccess:'Access revoked for this tab.',
+  interactSuccess:'Full browser automation enabled.',
+  revokeSuccess:'Browser automation paused.',
   disconnectSuccess:'Browser disconnected from LUCH.',
   tabsHeading:'Open tabs overview',tabsExplain:'Optional: Chrome will ask permission to read the titles and addresses of all open tabs. Their contents remain private until you separately approve a tab.',
   listTabs:'Show my open tabs',tabSwitch:'Switch to tab',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
@@ -56,8 +56,8 @@ const strings={
  ru:{
   eyebrow:'LUCH / BROWSER COMPANION',
   headline:'Подключите Chrome к своему ИИ.',
-  intro:'Совместимый ИИ сможет понимать выбранную страницу только после вашего разрешения. Нажатия и ввод текста разрешаются отдельно.',
-  headlineConnected:'Вы решаете, что видит ИИ.',introConnected:'Разрешите эту вкладку для чтения или оставьте её закрытой. Остальные вкладки не затрагиваются.',
+  intro:'Совместимый ИИ сможет понимать выбранную страницу только после вашего разрешения. Для полного управления нужно однократное разрешение Chrome.',
+  headlineConnected:'LUCH управляет браузером.',introConnected:'Один раз разрешите доступ ко всему браузеру. После разрешения Chrome команды ИИ выполняются без нажатий в расширении.',
   offline:'Ожидание подключения к облаку',offlineScope:'НЕТ СВЯЗИ',offlineTab:'Разрешения сохранены. Действия возобновятся после восстановления связи.',
   advancedTitle:'Дополнительно · вкладки и точный курсор',
   revokePending:'На этом устройстве доступ к вкладке закрыт. Синхронизация с облаком повторится после восстановления связи.',
@@ -75,10 +75,10 @@ const strings={
   pairHint:'Код появится в вашем чате с ИИ. Не отправляйте его другим людям.',
   localSetup:'Как подключить LUCH к существующему ИИ',help:'Проверить требования к аккаунту и подключению',
   tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
-  interact:'Разрешить действия в этой вкладке',revoke:'Отозвать доступ к вкладке',
+  interact:'Включить полное управление браузером',revoke:'Приостановить управление',
   disconnect:'Отключить браузер',expired:'Доступ к вкладке не предоставлен',
   read:'LUCH может читать эту вкладку',interacting:'LUCH может читать и взаимодействовать с вкладкой',
-  sessionNote:'Доступ прекращается после отзыва, закрытия вкладки или сеанса браузера либо перехода на другой сайт.',
+  sessionNote:'Полное управление работает до приостановки или отключения. Разрешения Chrome можно отозвать в настройках браузера.',
   hostNote:'В подключённом ИИ напишите: «Прочитай разрешённую вкладку». Если LUCH ещё не добавлен в ИИ, сначала откройте инструкцию подключения.',
   footer:'Передаются только разрешённые вкладки. Нет доступа к cookie и истории браузера. Запрошенное содержимое страницы может быть передано авторизованному ИИ-клиенту.',
   learn:'Как работает доступ к браузеру',noTab:'Откройте обычный сайт',
@@ -92,8 +92,8 @@ const strings={
   tabPermissionRequired:'Сначала разрешите доступ именно к этой вкладке.',
   pairSuccess:'Браузер безопасно подключён к LUCH Cloud.',
   readSuccess:'Чтение этой вкладки разрешено.',
-  interactSuccess:'Взаимодействие с этой вкладкой разрешено.',
-  revokeSuccess:'Доступ к этой вкладке отозван.',
+  interactSuccess:'Полное управление браузером включено.',
+  revokeSuccess:'Автоматическое управление приостановлено.',
   disconnectSuccess:'Браузер отключён от LUCH.',
   tabsHeading:'Все открытые вкладки',tabsExplain:'Необязательно. Chrome отдельно запросит разрешение видеть названия и адреса всех вкладок. Содержимое страниц останется закрытым, пока вы не разрешите доступ к конкретной вкладке.',
   listTabs:'Показать мои вкладки',tabSwitch:'Перейти к вкладке',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
@@ -163,10 +163,10 @@ async function refresh(){
   $('connection').classList.toggle('offline',connected&&!online);
   $('currentTab').textContent=r.tab?.title||t('noTab');
   $('currentUrl').textContent=r.tab?.url||'';
-  $('shareStatus').textContent=!online&&connected?t('offlineTab'):(!r.granted?t('expired'):(r.scope==='interact'?t('interacting'):t('read')));
-  $('grant').hidden=!!r.granted;$('grant').disabled=!r.tab||!online;
-  $('interact').hidden=!r.granted||r.scope==='interact';$('interact').disabled=!online;
-  $('revoke').hidden=!r.granted;
+  $('shareStatus').textContent=!online&&connected?t('offlineTab'):(r.fullMode?t('interacting'):t('expired'));
+  $('grant').hidden=true;
+  $('interact').hidden=!!r.fullMode;$('interact').disabled=!online;
+  $('revoke').hidden=!r.fullMode;
   $('pair').disabled=$('pairCode').value.length!==8;
   $('enable-cursor').hidden=!!r.preciseCursor;
   $('enable-cursor').disabled=!online||!(r.granted&&r.scope==='interact');
@@ -214,8 +214,22 @@ $('pairCode').addEventListener('keydown',event=>{
 });
 act('pair',()=>({op:'pair',code:$('pairCode').value.trim()}));
 act('grant',()=>({op:'grant-active'}));
-act('interact',()=>({op:'allow-interaction'}));
-act('revoke',()=>({op:'revoke-active'}));
+$('interact').addEventListener('click',async()=>{
+ $('interact').disabled=true;
+ try{
+  // Exactly one owner gesture for Chrome's site, debugger and download grants.
+  // Never simulate or circumvent the browser's own permission UI.
+  const allowed=await chrome.permissions.request({
+   permissions:['tabs','debugger','downloads'],
+   origins:['http://*/*','https://*/*']
+  });
+  if(!allowed)throw Error(t('permissionDenied'));
+  await call({op:'enable-full'});
+  $('feedback').textContent=t('interactSuccess');
+ }catch(e){$('feedback').textContent=friendlyError(e.message)}
+ finally{await refresh()}
+});
+act('revoke',()=>({op:'disable-full'}));
 act('disconnect',()=>({op:'disconnect'}));
 const showTabList=tabs=>{
  const list=$('tab-list');list.replaceChildren();

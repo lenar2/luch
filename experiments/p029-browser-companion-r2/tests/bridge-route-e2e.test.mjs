@@ -56,21 +56,21 @@ test('real browser bridge route converts authorized tab AI click to a delivered 
  }finally{await broker.close()}
 });
 
-test('generic consented-tab API exposes the 45 operations implemented in the candidate, not arbitrary evaluation',async()=>{
+test('generic consented-tab API exposes the 100 operations implemented in the candidate, not arbitrary evaluation',async()=>{
  const targetId='ext:19:abcdef012345abcdef012345';
  const seen=[];
  const adapter={runAuthorizedAction:async request=>{
   seen.push(request);
   return {data:{operation:request.op}};
  }};
- assert.equal(EXTENSION_ACTIONS.read.length,17);
- assert.equal(EXTENSION_ACTIONS.interact.length,28);
+ assert.equal(EXTENSION_ACTIONS.read.length,47);
+ assert.equal(EXTENSION_ACTIONS.interact.length,53);
  for(const op of [...EXTENSION_ACTIONS.read,...EXTENSION_ACTIONS.interact]){
   const r=await routeCompanionRequest('/v1/companion/action',{browser:'chrome',targetId,op,args:{}},adapter);
   assert.equal(r.status,200,op);
   assert.equal(r.body.result.operation,op);
  }
- assert.equal(seen.length,45);
+ assert.equal(seen.length,100);
  for(const op of ['evaluate','eval','execute_javascript','read_cookies','run_shell','native_mouse_without_permission']){
   const r=await routeCompanionRequest('/v1/companion/action',{browser:'chrome',targetId,op,args:{}},adapter);
   assert.equal(r.status,409,op);

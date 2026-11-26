@@ -15,10 +15,10 @@ function names(source,setName) {
   assert.ok(match,'Missing '+setName);
   return [...match[1].matchAll(/"([a-z_]+)"/g)].map(x=>x[1]);
 }
-test('exact 45 named Chrome/Opera actions are mapped from authenticated MCP',()=>{
+test('exact 100 named Chrome/Opera actions are mapped from authenticated MCP',()=>{
  const op=[...names(edge,'READ_OPS'),...names(edge,'INTERACT_OPS'),...names(edge,'POINTER_OPS')];
- assert.equal(op.length,45);
- assert.equal(new Set(op).size,45);
+ assert.equal(op.length,100);
+ assert.equal(new Set(op).size,100);
  assert.match(edge,/const browserToolOps=\[\.\.\.ALL_OPS\]\.filter\(\(x\)=>x!=="list_open_tabs"\)/);
  assert.match(edge,/server\.registerTool\("browser_list_open_tabs"/);
 });
@@ -40,7 +40,7 @@ test('cloud OAuth bearer and device bearer remain distinct',()=>{
  assert.match(edge,/sha256Hex\(token\)/);
  assert.match(edge,/\.eq\("user_id",device\.user_id\)/);
  assert.match(edge,/validateTarget\(userId,device,op,args\)/);
- assert.equal(manifest.version,'0.7.0');
+ assert.equal(manifest.version,'0.8.0');
  assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
 });
 test('pairing instructions match the 10-minute code expiry',()=>{

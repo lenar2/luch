@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
   "description": "__MSG_appDescription__",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "minimum_chrome_version": "116",
   "permissions": [
     "activeTab",
@@ -40,7 +40,12 @@
   },
   "optional_permissions": [
     "tabs",
-    "debugger"
+    "debugger",
+    "downloads"
   ],
-  "default_locale": "en"
+  "default_locale": "en",
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ]
 }

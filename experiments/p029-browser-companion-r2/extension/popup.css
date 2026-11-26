@@ -96,3 +96,8 @@ body.is-connected .access-status{font-size:12px;margin:0 0 11px;color:#26714b}
 
 /* R19 HEA: first-run form must be visible without scrolling; marketing tiles belong in the store listing. */
 #capabilities{display:none}
+
+/* R13: Three operational controls maximum. Tab/cursor setup is subsumed
+   into one browser-wide Chrome permission gesture, not separate buttons. */
+#grant,#advanced{display:none!important}
+#controls #interact,#controls #revoke,#controls #disconnect{max-width:100%}

@@ -1,6 +1,6 @@
 # P029 LUCH Browser Companion R13 · 100-operation candidate
 
-**Candidate:** 0.8.2, branched from `feat/p029-browser-companion-r3-expanded-20261116`. **Not deployed to the browser or production cloud.**
+**Candidate:** 0.8.3, branched from `feat/p029-browser-companion-r3-expanded-20261116`. **Not deployed to the browser or production cloud.**
 
 ## Precisely 100 named operations
 
@@ -9,7 +9,7 @@
 - 5 pointer operations retained.
 - All operation names are enumerated consistently in the MV3 worker, private browser bridge route, local broker and Supabase MCP function; no remote eval or arbitrary downloaded executable scripts.
 
-The new DOM executor is `extension/extended-dom-ops.js`. Bundled in deterministic ZIP `dist/LUCH-Browser-Companion-v0.8.2.zip`.
+The new DOM executor is `extension/extended-dom-ops.js`. Bundled in deterministic ZIP `dist/LUCH-Browser-Companion-v0.8.3.zip`.
 
 ## No per-operation popup confirmations after one-time browser authorization
 

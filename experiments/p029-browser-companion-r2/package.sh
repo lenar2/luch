@@ -37,7 +37,7 @@ target=Path('dist')/sys.argv[1]
 with zipfile.ZipFile(target) as z:
     manifest=json.loads(z.read('manifest.json'))
     assert manifest['name']=='LUCH Browser Companion'
-    assert manifest['version']=='0.8.2'
+    assert manifest['version']=='0.8.3'
     assert manifest['default_locale']=='en'
     assert manifest['description']=='__MSG_appDescription__'
     assert 'debugger' not in manifest['permissions']

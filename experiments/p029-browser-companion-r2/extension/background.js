@@ -144,12 +144,19 @@ async function state(){
  return {auth:auth.auth||null,grants:record.grants||{},owned:owned.ownedTabs||[]};
 }
 async function setGrants(grants){
- await chrome.storage.session.set({grants});
- const active=new Set(Object.keys(grants).map(Number));
- const all=await chrome.tabs.query({});
- for(const t of all){if(!Number.isSafeInteger(t.id))continue;
-  await chrome.action.setBadgeText({tabId:t.id,text:active.has(t.id)?(grants[t.id].scope==='interact'?'AI':'ON'):''});
-  if(active.has(t.id))await chrome.action.setBadgeBackgroundColor({tabId:t.id,color:grants[t.id].scope==='interact'?'#b7794b':'#317a54'});
+ // Update badges ONLY for changed grants, not for all open browser tabs.
+ const oldScopes=(await chrome.storage.session.get('badgeScopes')).badgeScopes||{};
+ const nextScopes=Object.fromEntries(Object.entries(grants).map(([id,g])=>[id,g.scope]));
+ await chrome.storage.session.set({grants,badgeScopes:nextScopes});
+ const keys=new Set([...Object.keys(oldScopes),...Object.keys(nextScopes)]);
+ for(const key of keys){
+  const before=oldScopes[key]||null,after=nextScopes[key]||null;
+  if(before===after)continue;
+  const tabId=Number(key);if(!Number.isSafeInteger(tabId))continue;
+  try{
+   await chrome.action.setBadgeText({tabId,text:after?(after==='interact'?'AI':'ON'):''});
+   if(after)await chrome.action.setBadgeBackgroundColor({tabId,color:after==='interact'?'#b7794b':'#317a54'});
+  }catch{/* Tab may have closed between the grant change and badge update. */}
  }
 }
 async function api(path,{method='GET',data,token}={}){
@@ -210,19 +217,98 @@ async function refreshFullGrants(){
    origin:originOf(t.url),title:safeTitle(t.title),scope:'interact',preciseCursor:cursor};
  }
  await setGrants(grants);
- await publishGrants(s.auth,grants);
- await chrome.storage.session.set({tabOverviewSharing:true});
- await publishTabOverview(s.auth);
+ // Mark local initialization BEFORE external network calls. Temporary outages
+ // must not cause another full 500-tab scan on every lightweight job poll.
+ await chrome.storage.session.set({fullModeInitialized:true,tabOverviewSharing:true});
+ try{
+  await publishGrants(s.auth,grants);
+  await publishTabOverview(s.auth);
+  await chrome.storage.session.remove('syncPending');
+ }catch(e){await chrome.storage.session.set({syncPending:true});throw e}
  return true;
 }
+// One full reconciliation is needed on explicit enable / browser startup.
+ // MV3 worker restarts do not clear chrome.storage.session, so regular wakes
+ // simply reuse grants; an actual browser restart restores them once.
+let initializationPromise=null;
+async function ensureFullModeInitialized(){
+ if(!await fullModeEnabled())return false;
+ if((await chrome.storage.session.get('fullModeInitialized')).fullModeInitialized===true)return true;
+ if(!initializationPromise)initializationPromise=refreshFullGrants().finally(()=>{initializationPromise=null});
+ return initializationPromise;
+}
+
+// Chrome tab events (rather than a 5-second global crawl) update only changed
+// tabs. Briefly batch tab bursts: many restored tabs produce one broker sync.
+const pendingTabIds=new Set();
+let fullTabEventTimer=null,fullTabQueue=Promise.resolve();
+async function reconcileChangedTabs(ids){
+ if(!await fullModeEnabled())return;
+ const record=await chrome.storage.session.get('fullModeInitialized');
+ if(!record.fullModeInitialized){await ensureFullModeInitialized();return}
+ const s=await state();if(!s.auth?.token)return;
+ const cursor=await chrome.permissions.contains({permissions:['debugger']});
+ let changed=false;
+ for(const id of ids){
+  const current=s.grants[id];let tab=null;
+  try{tab=await chrome.tabs.get(id)}catch{}
+  const origin=originOf(tab?.url);
+  if(!tab||!origin){
+   if(current){delete s.grants[id];changed=true}
+   continue;
+  }
+  const next={tabId:id,grantId:current?.origin===origin?current.grantId:makeNonce(),
+   url:tab.url,origin,title:safeTitle(tab.title),scope:'interact',preciseCursor:cursor};
+  if(!current||Object.keys(next).some(key=>next[key]!==current[key])){
+   s.grants[id]=next;changed=true
+  }
+ }
+ if(!await fullModeEnabled())return;
+ if(changed){
+  if(Object.keys(s.grants).length>MAX_TRANSPORT_TABS){
+   await chrome.storage.session.set({fullModeError:'BROWSER_TAB_CAPACITY_EXCEEDED'});return;
+  }
+  await setGrants(s.grants);
+ }
+ // Tab overview is a snapshot only on actual browser change, not per job poll.
+ if(!changed&&!ids.length)return;
+ if(changed||ids.length)try{
+  if(changed)await publishGrants(s.auth,s.grants);
+  if((await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true)
+   await publishTabOverview(s.auth);
+  await chrome.storage.session.remove('syncPending');
+ }catch{await chrome.storage.session.set({syncPending:true})}
+}
+function scheduleChangedTab(id){
+ if(!Number.isSafeInteger(id))return;
+ pendingTabIds.add(id);
+ if(fullTabEventTimer!==null)return;
+ fullTabEventTimer=setTimeout(()=>{
+  fullTabEventTimer=null;
+  const ids=[...pendingTabIds];pendingTabIds.clear();
+  fullTabQueue=fullTabQueue.catch(()=>{}).then(()=>reconcileChangedTabs(ids)).catch(()=>{});
+ },180);
+}
+async function publishOverviewOnChange(){
+ if(!await fullModeEnabled())return;
+ if((await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing!==true)return;
+ const s=await state();
+ try{await publishTabOverview(s.auth)}catch{await chrome.storage.session.set({syncPending:true})}
+}
+
 async function disableFullMode(){
  await chrome.storage.local.remove('fullMode');
+ // Prevent a queued tab event from restoring grants after the owner pauses.
+ if(fullTabEventTimer!==null){clearTimeout(fullTabEventTimer);fullTabEventTimer=null}
+ pendingTabIds.clear();
+ await fullTabQueue.catch(()=>{});
  const s=await state();
  await chrome.storage.session.remove('tabOverviewSharing');
  await chrome.storage.session.remove('fullModeError');
+ await chrome.storage.session.remove('fullModeInitialized');
  await setGrants({});
  try{await Promise.all([publishGrants(s.auth,{}),publishTabOverview(s.auth)])}
- catch{return {message:'Full browser automation stopped locally; cloud sync pending',pendingSync:true}}
+ catch{await chrome.storage.session.set({syncPending:true});return {message:'Full browser automation stopped locally; cloud sync pending',pendingSync:true}}
  return {message:'Full browser automation stopped',pendingSync:false};
 }
 
@@ -252,7 +338,7 @@ async function revokeActive(){
  delete s.grants[t.id];
  await setGrants(s.grants);
  try{await publishGrants(s.auth,s.grants)}
- catch{return {message:'Local tab access revoked; cloud sync pending',pendingSync:true}}
+ catch{await chrome.storage.session.set({syncPending:true});return {message:'Local tab access revoked; cloud sync pending',pendingSync:true}}
  return {message:'Sharing stopped for this tab',pendingSync:false};
 }
 async function disconnect(){
@@ -452,12 +538,18 @@ async function performJob(job){
 async function poll(){
  if(working)return;working=true;
  try{const s=await state();if(!s.auth?.token)return;
-  if(await fullModeEnabled())await refreshFullGrants();
-  const grants=await prune((await state()).grants);
-  // Also heartbeat grants; browser close/restart ends them, no arbitrary TTL.
-  await publishGrants(s.auth,grants);
-  await publishTabOverview(s.auth);
+  // Only the FIRST poll after an actual browser-session restart rebuilds tab
+  // grants. Subsequent 2s job polls never enumerate tabs or upload snapshots.
+  if(await fullModeEnabled())await ensureFullModeInitialized();
   const tasks=await api('/extension/jobs',{token:s.auth.token});
+  if((await chrome.storage.session.get('syncPending')).syncPending===true){
+   try{
+    await publishGrants(s.auth);
+    if((await chrome.storage.session.get('tabOverviewSharing')).tabOverviewSharing===true)
+     await publishTabOverview(s.auth);
+    await chrome.storage.session.remove('syncPending');
+   }catch{}
+  }
   for(const job of (tasks.jobs||[]).slice(0,3)){
    let result;try{result=await performJob(job)}catch(e){result={ok:false,error:String(e.message||e).slice(0,100)}}
    await api('/extension/result',{method:'POST',token:s.auth.token,data:{jobId:job.id,result}});
@@ -473,12 +565,12 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
    if(!await chrome.permissions.contains({origins:FULL_ORIGINS}))throw Error('BROWSER_WIDE_PERMISSION_REQUIRED');
    if(!await chrome.permissions.contains({permissions:['tabs','debugger','downloads']}))throw Error('BROWSER_CAPABILITIES_PERMISSION_REQUIRED');
    await chrome.storage.local.set({fullMode:true});
-   try{await refreshFullGrants()}catch(e){await disableFullMode();throw e}
+   try{await ensureFullModeInitialized()}catch(e){await disableFullMode();throw e}
    return {ok:true,enabled:true,message:'Full browser access enabled'};
   }
   if(msg.op==='disable-full')return {ok:true,...await disableFullMode()};
   if(msg.op==='status'){
-   const s=await state(),t=await activeTab();await prune(s.grants);
+   const s=await state(),t=await activeTab();
    let connected=!!s.auth,online=false;
    if(connected){
     try{
@@ -561,22 +653,39 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   throw new Error('UNKNOWN_COMMAND');
  })().then(respond,e=>respond({ok:false,error:String(e.message||e).slice(0,160)}));return true;
 });
+// Event-driven tab state sync: no global tab scans or grants uploads on the
+// steady-state polling timer. Tab changes are individually queued and batched.
 chrome.tabs.onUpdated.addListener(async(id,change)=>{
- if(!change.url)return;
+ if(!change.url&&!change.title)return;
+ if(await fullModeEnabled()){scheduleChangedTab(id);return}
  const s=await state(),g=s.grants[id];if(!g)return;
- if(originOf(change.url)!==g.origin)delete s.grants[id];else g.url=change.url;
- if(await fullModeEnabled())try{await refreshFullGrants()}catch{}
- else {await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}}
+ const tab=await chrome.tabs.get(id).catch(()=>null);
+ if(!tab||originOf(tab.url)!==g.origin)delete s.grants[id];
+ else {g.url=tab.url;g.title=safeTitle(tab.title)}
+ await setGrants(s.grants);
+ try{await publishGrants(s.auth,s.grants)}catch{await chrome.storage.session.set({syncPending:true})}
 });
-chrome.tabs.onCreated?.addListener?.(async()=>{if(await fullModeEnabled())try{await refreshFullGrants()}catch{}});
+chrome.tabs.onCreated?.addListener?.(tab=>scheduleChangedTab(tab.id));
 chrome.tabs.onRemoved.addListener(async id=>{
- const s=await state();if(s.grants[id]){delete s.grants[id];await setGrants(s.grants);try{await publishGrants(s.auth,s.grants)}catch{}}
+ if(await fullModeEnabled())scheduleChangedTab(id);
+ else{
+  const s=await state();if(s.grants[id]){
+   delete s.grants[id];await setGrants(s.grants);
+   try{await publishGrants(s.auth,s.grants)}catch{await chrome.storage.session.set({syncPending:true})}
+  }
+ }
+ const s=await state();
  if(s.owned.includes(id))await chrome.storage.session.set({ownedTabs:s.owned.filter(x=>x!==id)});
- if(await fullModeEnabled())try{await refreshFullGrants()}catch{}
 });
+chrome.tabs.onActivated?.addListener?.(()=>{publishOverviewOnChange().catch(()=>{})});
+chrome.tabs.onAttached?.addListener?.(id=>scheduleChangedTab(id));
+chrome.tabs.onDetached?.addListener?.(id=>scheduleChangedTab(id));
+chrome.tabs.onMoved?.addListener?.(id=>scheduleChangedTab(id));
+chrome.windows?.onFocusChanged?.addListener?.(()=>{publishOverviewOnChange().catch(()=>{})});
+chrome.runtime.onStartup?.addListener?.(()=>{ensureFullModeInitialized().catch(()=>{})});
 chrome.alarms.create('luch-poll',{periodInMinutes:0.5});
 chrome.alarms.onAlarm.addListener(a=>{if(a.name==='luch-poll')poll()});
-setInterval(poll,5000);
+setInterval(poll,2000);
 
 chrome.permissions.onRemoved.addListener(async permissions=>{
  if(await fullModeEnabled())try{if(!await chrome.permissions.contains({origins:FULL_ORIGINS})||!await chrome.permissions.contains({permissions:['tabs']}))await disableFullMode();else await refreshFullGrants()}catch{}

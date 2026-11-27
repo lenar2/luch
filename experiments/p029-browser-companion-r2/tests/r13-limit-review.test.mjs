@@ -23,7 +23,7 @@ function createWorker(tabCount=125){
   async remove(key){for(const k of (Array.isArray(key)?key:[key]))delete storage[scope][k]}
  });
  const chrome={
-  runtime:{id:'local-extension',getManifest:()=>({version:'0.8.2'}),onMessage:{addListener:cb=>handlers.msg=cb}},
+  runtime:{id:'local-extension',getManifest:()=>({version:'0.8.3'}),onMessage:{addListener:cb=>handlers.msg=cb}},
   storage:{local:persistence('local'),session:persistence('session')},
   permissions:{contains:async()=>true,onRemoved:{addListener:cb=>handlers.permissions=cb}},
   tabs:{
@@ -54,7 +54,7 @@ function createWorker(tabCount=125){
   const timer=setTimeout(()=>reject(new Error('Timed out: '+op)),4000);
   handlers.msg({op,...rest},{id:chrome.runtime.id},result=>{clearTimeout(timer);resolve(result)});
  });
- return {tabs,handlers,storage,apiCalls,sends,context,message};
+ return {tabs,handlers,storage,apiCalls,sends,context,message,chrome};
 }
 
 test('full browser mode publishes all 125 tabs without the former silent 80-tab cutoff',async()=>{
@@ -110,4 +110,72 @@ test('transport bounds are consistent, justified, and do not silently omit tabs'
  assert.match(worker,/timeout=Math\.min\(Math\.max\(Number\(args\.timeoutMs\)\|\|5000,50\),40000\)/);
  assert.match(cloud,/timeoutMs: z\.number\(\)\.int\(\)\.min\(50\)\.max\(40000\)/);
  assert.match(broker,/waitMs=\(op==='wait_for_url'\|\|op==='wait_for_load'\)\?48000:11000/);
+});
+
+
+test('steady-state job poll reads ZERO browser tabs and uploads ZERO tab inventories',async()=>{
+ const env=createWorker(125);
+ assert.equal((await env.message('enable-full')).ok,true);
+ let queries=0,gets=0,badges=0;
+ const oldQuery=env.chrome.tabs.query,oldGet=env.chrome.tabs.get;
+ env.chrome.tabs.query=async q=>{queries++;return oldQuery(q)};
+ env.chrome.tabs.get=async id=>{gets++;return oldGet(id)};
+ env.chrome.action.setBadgeText=async()=>{badges++};
+ env.apiCalls.length=0;
+ await vm.runInContext('poll()',env.context);
+ await vm.runInContext('poll()',env.context);
+ const routes=env.apiCalls.map(x=>x.suffix);
+ assert.equal(queries,0,'steady jobs polling must never query all tabs');
+ assert.equal(gets,0,'steady jobs polling must not inspect each tab');
+ assert.equal(badges,0,'steady jobs polling must not update badges');
+ assert.deepEqual(routes,['jobs','jobs'],'no duplicate grants/tab-overview uploads');
+ console.log('EVENT_MODE_STEADY_POLL',JSON.stringify({tabs:125,queries,gets,badges,routes}));
+});
+
+test('one new tab receives a grant via event, without global re-grant or badge storm',async()=>{
+ const env=createWorker(125);
+ assert.equal((await env.message('enable-full')).ok,true);
+ const previous=Object.keys(env.storage.session.grants).length;
+ let reads=0,badges=0;
+ const oldGet=env.chrome.tabs.get;
+ env.chrome.tabs.get=async id=>{reads++;return oldGet(id)};
+ env.chrome.action.setBadgeText=async()=>{badges++};
+ env.apiCalls.length=0;
+ const t={id:1001,url:'https://example.org/new',title:'New Tab',windowId:1,status:'complete',active:false,index:125};
+ env.tabs.set(t.id,t);
+ env.handlers.created(t);
+ await new Promise(resolve=>setTimeout(resolve,300));
+ assert.equal(Object.keys(env.storage.session.grants).length,previous+1);
+ assert.equal(env.storage.session.grants[t.id].origin,'https://example.org');
+ assert.equal(reads,1,'event should inspect only new tab');
+ assert.equal(badges,1,'only new tab gets a badge');
+ assert.deepEqual(env.apiCalls.map(x=>x.suffix),['grants','tab-overview'],'one batched metadata update per event');
+ console.log('EVENT_MODE_NEW_TAB',JSON.stringify({reads,badges,routes:env.apiCalls.map(x=>x.suffix)}));
+});
+
+test('automatic restoration runs ONCE after real browser restart, not every poll',async()=>{
+ const env=createWorker(125);
+ env.storage.local.fullMode=true; // Owner consent persists across actual browser restart.
+ let queries=0;
+ const oldQuery=env.chrome.tabs.query;
+ env.chrome.tabs.query=async q=>{queries++;return oldQuery(q)};
+ await vm.runInContext('poll()',env.context);
+ assert.equal(Object.keys(env.storage.session.grants).length,125);
+ assert.equal(env.storage.session.fullModeInitialized,true);
+ const initialQueries=queries;
+ assert.equal(initialQueries>0,true);
+ for(let i=0;i<3;i++)await vm.runInContext('poll()',env.context);
+ assert.equal(queries,initialQueries,'subsequent light polls must not scan tabs');
+});
+
+test('pause cancels pending tab-event flush and does not recreate grants',async()=>{
+ const env=createWorker(2);
+ assert.equal((await env.message('enable-full')).ok,true);
+ env.tabs.set(1001,{id:1001,url:'https://example.org/new',title:'Burst',windowId:1,status:'complete',active:false,index:2});
+ env.handlers.created({id:1001});
+ const paused=await env.message('disable-full');
+ assert.equal(paused.ok,true);
+ await new Promise(resolve=>setTimeout(resolve,260));
+ assert.equal((await env.message('status')).fullMode,false);
+ assert.equal(Object.keys(env.storage.session.grants).length,0);
 });

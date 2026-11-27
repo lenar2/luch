@@ -1,8 +1,8 @@
 {
   "scenario": "R13 one-click enable/pause after host/debugger/download permissions already approved at installation",
-  "start": "2026-11-27T07:47:44.060Z",
+  "start": "2026-11-27T09:40:40.336Z",
   "workerLoaded": true,
-  "extVersion": "0.8.2",
+  "extVersion": "0.8.3",
   "before": {
     "permissions": {
       "origins": [
@@ -61,5 +61,5 @@
     "fullMode": false,
     "grantCount": 0
   },
-  "end": "2026-11-27T07:47:56.186Z"
+  "end": "2026-11-27T09:40:52.859Z"
 }

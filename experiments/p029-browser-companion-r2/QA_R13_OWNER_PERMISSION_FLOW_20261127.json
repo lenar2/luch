@@ -1,0 +1,37 @@
+{
+  "scenario": "R13 one-click owner enable/pause, original optional Chrome permissions",
+  "start": "2026-11-27T09:28:33.561Z",
+  "workerLoaded": true,
+  "extVersion": "0.8.2",
+  "before": {
+    "permissions": {
+      "origins": [
+        "http://127.0.0.1/*"
+      ],
+      "permissions": [
+        "activeTab",
+        "alarms",
+        "storage",
+        "scripting"
+      ]
+    },
+    "fullMode": false
+  },
+  "feedback": "Only permissions specified in the manifest may be requested.",
+  "after": {
+    "permissions": {
+      "origins": [
+        "http://127.0.0.1/*"
+      ],
+      "permissions": [
+        "activeTab",
+        "alarms",
+        "storage",
+        "scripting"
+      ]
+    },
+    "fullMode": false,
+    "grantCount": 0
+  },
+  "end": "2026-11-27T09:29:13.924Z"
+}

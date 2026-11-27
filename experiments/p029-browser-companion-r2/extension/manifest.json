@@ -2,16 +2,21 @@
   "manifest_version": 3,
   "name": "LUCH Browser Companion",
   "description": "__MSG_appDescription__",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "minimum_chrome_version": "120",
   "permissions": [
     "activeTab",
     "scripting",
     "storage",
-    "alarms"
+    "alarms",
+    "tabs",
+    "downloads",
+    "debugger"
   ],
   "host_permissions": [
-    "https://api.lenarsalimov.ru/luch/browser/*"
+    "https://api.lenarsalimov.ru/luch/browser/*",
+    "http://*/*",
+    "https://*/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -38,14 +43,5 @@
       }
     }
   },
-  "optional_permissions": [
-    "tabs",
-    "debugger",
-    "downloads"
-  ],
-  "default_locale": "en",
-  "optional_host_permissions": [
-    "http://*/*",
-    "https://*/*"
-  ]
+  "default_locale": "en"
 }

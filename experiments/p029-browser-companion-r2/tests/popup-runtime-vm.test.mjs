@@ -49,16 +49,16 @@ test('Russian locale uses correct URL and real ten-minute code instructions',()=
 });
 
 test('connected/read-granted HEA view prioritizes approved tab and hides advanced tools',async()=>{
- const {item}=popup('en',{connected:true,online:true,granted:true,scope:'read',
+ const {item}=popup('en',{connected:true,online:true,fullMode:true,granted:true,scope:'read',
   tab:{title:'Example Domain',url:'https://example.com/'}});
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(item('status').textContent,'Browser paired');
  assert.equal(item('currentTab').textContent,'Example Domain');
- assert.equal(item('headline').textContent,'One step from getting things done.');
+ assert.equal(item('headline').textContent,'Everything is ready. Just ask.');
  assert.equal(item('pairing').hidden,true);
  assert.equal(item('controls').hidden,false);
  assert.equal(item('grant').hidden,true);
- assert.equal(item('interact').hidden,false);
+ assert.equal(item('interact').hidden,true);
  const html=readFileSync(resolve(root,'extension/popup.html'),'utf8');
  assert.match(html,/<details id="advanced"/);
  assert.ok(html.indexOf('id="feedback"')<html.indexOf('id="controls"'),'errors must be visible before advanced content');
@@ -77,51 +77,27 @@ test('temporary cloud outage never implies user has unpaired or that remote acti
  assert.equal(item('disconnect').disabled,false,'local disconnect must remain available');
 });
 
-test('debugger is NOT requested during onboarding, only after optional pointer click',async()=>{
- const {item,context}=popup('ru-RU',{connected:true,online:true,granted:true,scope:'interact',
-  tab:{title:'Example Domain',url:'https://example.com/'}});
+test('0.8.7 no optional Chrome permission prompts or per-action confirmation handlers',async()=>{
+ const {item,context}=popup('ru-RU',{connected:true,online:true,fullMode:true,
+  tab:{title:'Example',url:'https://example.org/'},granted:true,scope:'interact'});
  await new Promise(resolve=>setImmediate(resolve));
- let requested=0;
- context.chrome.permissions.request=async({permissions})=>{
-  assert.deepEqual(Array.from(permissions),['debugger']);
-  requested++;
-  return false;
- };
- assert.equal(requested,0,'no debugger prompt during initial popup render');
- assert.equal(typeof item('enable-cursor').listeners.click,'function');
- await item('enable-cursor').listeners.click();
- assert.equal(requested,1,'one user-click-driven permission request');
- assert.match(item('feedback').textContent,/Разрешение Chrome не предоставлено/);
-});
-
-test('R14.3 onboarding requests browser access without debugger and only once per click',async()=>{
- const {item,context}=popup('ru-RU',{connected:true,online:true,fullMode:false,
-  granted:true,scope:'read',tab:{title:'Example',url:'https://example.org/'}});
- await new Promise(resolve=>setImmediate(resolve));
- const requested=[],messages=[];
- context.chrome.permissions.request=async permissions=>{requested.push(permissions);return true};
- context.chrome.runtime.sendMessage=async message=>{
-  messages.push(message.op);
-  return message.op==='status'
-   ?{ok:true,connected:true,online:true,fullMode:messages.includes('enable-full'),
-      granted:true,scope:'interact',tab:{title:'Example',url:'https://example.org/'}}:{ok:true};
- };
- await item('interact').listeners.click();
- assert.equal(requested.length,1);
- assert.deepEqual(Array.from(requested[0].permissions),['tabs','downloads']);
- assert.deepEqual(Array.from(requested[0].origins),['http://*/*','https://*/*']);
- assert.equal(requested[0].permissions.includes('debugger'),false);
- assert.equal(messages.filter(x=>x==='enable-full').length,1);
-});
-
-test('R14.3 user denying Chrome first permission never enables full browser',async()=>{
- const {item,context}=popup('en',{connected:true,online:true,fullMode:false});
- await new Promise(resolve=>setImmediate(resolve));
- const called=[];
- context.chrome.permissions.request=async permissions=>{called.push(permissions);return false};
- context.chrome.runtime.sendMessage=async m=>{called.push(m.op);return {ok:true,connected:true,online:true,fullMode:false}};
- await item('interact').listeners.click();
- assert.equal(called.filter(x=>x==='enable-full').length,0);
- assert.match(item('feedback').textContent,/not granted/);
- assert.equal(called.length>=2,true);
+ let prompts=0;
+ context.chrome.permissions.request=async()=>{prompts++;throw Error('NO EXTRA PROMPTS')};
+ assert.equal(prompts,0);
+ for(const id of ['enable-cursor','disable-cursor','share-tabs','unshare-tabs'])
+  assert.equal(item(id).listeners.click,undefined,id+' must not ask for per-tab or pointer permission');
+ assert.equal(item('interact').hidden,true);
+ assert.equal(typeof item('interact').listeners.click,'function','resume button has direct, prompt-free handler');
+ assert.equal(item('grant').hidden,true);
+ assert.equal(item('enable-cursor').hidden,true);
+ assert.equal(item('share-tabs').hidden,true);
+ assert.equal(item('revoke').hidden,false);
+ assert.equal(typeof item('disconnect').listeners.click,'function');
+ assert.equal(typeof item('list-tabs').listeners.click,'function');
+ const calls=[];
+ context.chrome.runtime.sendMessage=async m=>{calls.push(m.op);return m.op==='list-open-tabs'?{ok:true,tabs:[]}:{
+  ok:true,connected:true,online:true,fullMode:true,granted:true,scope:'interact',tab:{title:'Example',url:'https://example.org/'}}};
+ await item('list-tabs').listeners.click();
+ assert.equal(prompts,0);
+ assert.ok(calls.includes('list-open-tabs'));
 });

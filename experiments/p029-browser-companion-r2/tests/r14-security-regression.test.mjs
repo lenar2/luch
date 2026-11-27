@@ -94,38 +94,29 @@ test('REGRESSION: pause blocks pin_tab after revocation',async()=>{
 });
 
 
-test('R14.3 permission gate: optional debugger is not mandatory for ordinary control',async()=>{
+test('R14.5 Chrome debugger is required once at install; all ordinary tabs have native pointer after pairing',async()=>{
  const e=createWorker(2);
  e.chrome.permissions.contains=async req=>!req.permissions?.includes('debugger');
+ const denied=await e.message('enable-full');
+ assert.equal(denied.ok,false);
+ assert.match(denied.error,/BROWSER_CAPABILITIES_PERMISSION_REQUIRED/);
+ assert.equal(e.storage.local.fullMode,undefined);
+ e.chrome.permissions.contains=async()=>true;
  const enabled=await e.message('enable-full');
  assert.equal(enabled.ok,true,JSON.stringify(enabled));
  const grants=e.storage.session.grants;
- assert.equal(grants[10].preciseCursor,false);
- assert.equal(grants[11].preciseCursor,false);
- e.context.task={targetId:'ext:10:'+grants[10].grantId,op:'pointer_move',args:{x:12,y:12}};
- const refused=await vm.runInContext('performJob(task)',e.context);
- assert.equal(refused.ok,false);
- assert.match(refused.error,/PRECISE_CURSOR_APPROVAL_REQUIRED/);
- // Permission alone does not elevate other tabs.
- e.chrome.permissions.contains=async()=>true;
- const approved=await e.message('precise-cursor',{enabled:true});
- assert.equal(approved.ok,true,JSON.stringify(approved));
- assert.equal(e.storage.session.grants[10].preciseCursor,true);
- assert.equal(e.storage.session.grants[11].preciseCursor,false);
- // Event-driven synchronization preserves that exact-tab opt-in.
+ assert.equal(grants[10].preciseCursor,true);
+ assert.equal(grants[11].preciseCursor,true,'no per-tab native pointer confirmation');
+ const oldGrantId=grants[10].grantId;
  e.tabs.get(11).title='Changed';
  await e.handlers.updated(11,{title:'Changed'});
  await new Promise(r=>setTimeout(r,290));
- assert.equal(e.storage.session.grants[11].preciseCursor,false);
- e.tabs.get(10).title='Changed active';
- await e.handlers.updated(10,{title:'Changed active'});
- await new Promise(r=>setTimeout(r,290));
- assert.equal(e.storage.session.grants[10].preciseCursor,true);
- // Cross-origin navigation discards the previous tab's cursor grant.
+ assert.equal(e.storage.session.grants[11].preciseCursor,true);
  e.tabs.get(10).url='https://other.example.net/';
  await e.handlers.updated(10,{url:'https://other.example.net/'});
  await new Promise(r=>setTimeout(r,290));
- assert.equal(e.storage.session.grants[10].preciseCursor,false);
+ assert.equal(e.storage.session.grants[10].preciseCursor,true,'new origin auto-covered');
+ assert.notEqual(e.storage.session.grants[10].grantId,oldGrantId,'old origin target must not be reused');
 });
 
 test('R14.3 denied mandatory downloads permission does not persist full mode',async()=>{

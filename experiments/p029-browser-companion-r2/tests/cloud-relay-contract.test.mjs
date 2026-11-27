@@ -40,8 +40,8 @@ test('cloud OAuth bearer and device bearer remain distinct',()=>{
  assert.match(edge,/sha256Hex\(token\)/);
  assert.match(edge,/\.eq\("user_id",device\.user_id\)/);
  assert.match(edge,/validateTarget\(userId,device,op,args\)/);
- assert.equal(manifest.version,'0.8.6');
- assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
+ assert.equal(manifest.version,'0.8.7');
+ assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*','http://*/*','https://*/*']);
 });
 test('pairing instructions match the 10-minute code expiry',()=>{
  assert.match(popup,/ten minutes/);

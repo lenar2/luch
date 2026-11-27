@@ -1,7 +1,8 @@
 'use strict';
-// LUCH Browser Companion v0.5: one-click read access, separately approved
-// interactive access. Both last until the user revokes, tab is closed, browser
-// session ends, or the tab changes origin. No arbitrary 15-minute cutoff.
+// LUCH Browser Companion 0.8.7: global HTTP(S) Chrome permissions are
+// granted once at installation. Pairing enables complete browser-wide
+// read, interaction, precise pointer and keyboard capabilities without
+// extension-level permission prompts for individual tabs or actions.
 importScripts('dom-ops.js','extended-dom-ops.js');
 const BASE='https://api.lenarsalimov.ru/luch/browser';
 // Bound request memory, not browser permissions. Never truncate the owner's tabs silently.
@@ -194,14 +195,23 @@ function publishGrants(auth,_grants){
  grantPublishQueue=grantPublishQueue.catch(()=>{}).then(send);
  return grantPublishQueue;
 }
-// Owner explicitly enables browser-wide scope once in the popup. This does
-// not bypass Chrome's optional host/extension permission dialog.
+// Chrome grants broad HTTP(S), tabs, downloads and debugger permissions at
+// installation. Pairing activates global browser access without per-tab UI.
 const FULL_ORIGINS=['http://*/*','https://*/*'];
-async function fullModeEnabled(){return (await chrome.storage.local.get('fullMode')).fullMode===true}
+async function fullModeEnabled(){
+ const mode=(await chrome.storage.local.get('fullMode')).fullMode;
+ if(mode===true)return true;
+ if(mode===false)return false; // Explicit Pause persists.
+ // Existing paired users upgrade without seeing another LUCH permission button.
+ const auth=(await chrome.storage.local.get('auth')).auth;
+ if(!auth?.token)return false;
+ await chrome.storage.local.set({fullMode:true});
+ return true;
+}
 async function refreshFullGrants(){
  if(!await fullModeEnabled())return false;
  if(!await chrome.permissions.contains({origins:FULL_ORIGINS}))return false;
- if(!await chrome.permissions.contains({permissions:['tabs']}))return false;
+ if(!await chrome.permissions.contains({permissions:['tabs','downloads','debugger']}))return false;
  const s=await state();if(!s.auth?.token)return false;
  const active=await chrome.tabs.query({}),grants={};
  const eligible=active.filter(t=>originOf(t.url)&&Number.isSafeInteger(t.id));
@@ -214,7 +224,7 @@ async function refreshFullGrants(){
   const current=s.grants[t.id];
   const same=current&&current.origin===originOf(t.url);
   grants[t.id]={tabId:t.id,grantId:same?current.grantId:makeNonce(),url:t.url,
-   origin:originOf(t.url),title:safeTitle(t.title),scope:'interact',preciseCursor:!!(same&&current.preciseCursor===true)};
+   origin:originOf(t.url),title:safeTitle(t.title),scope:'interact',preciseCursor:true};
  }
  await setGrants(grants);
  // Mark local initialization BEFORE external network calls. Temporary outages
@@ -258,7 +268,7 @@ async function reconcileChangedTabs(ids){
   }
   const next={tabId:id,grantId:current?.origin===origin?current.grantId:makeNonce(),
    url:tab.url,origin,title:safeTitle(tab.title),scope:'interact',
-   preciseCursor:!!(current?.origin===origin&&current.preciseCursor===true)};
+   preciseCursor:true};
   if(!current||Object.keys(next).some(key=>next[key]!==current[key])){
    s.grants[id]=next;changed=true
   }
@@ -298,7 +308,7 @@ async function publishOverviewOnChange(){
 
 async function disableFullMode(){
  revocationSerial++; // Synchronously invalidate in-flight commands BEFORE awaits.
- await chrome.storage.local.remove('fullMode');
+ await chrome.storage.local.set({fullMode:false});
  // Prevent a queued tab event from restoring grants after the owner pauses.
  if(fullTabEventTimer!==null){clearTimeout(fullTabEventTimer);fullTabEventTimer=null}
  pendingTabIds.clear();
@@ -576,7 +586,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   if(msg.op==='enable-full'){
    const s=await state();if(!s.auth?.token)throw Error('PAIR_LUCH_FIRST');
    if(!await chrome.permissions.contains({origins:FULL_ORIGINS}))throw Error('BROWSER_WIDE_PERMISSION_REQUIRED');
-   if(!await chrome.permissions.contains({permissions:['tabs','downloads']}))throw Error('BROWSER_CAPABILITIES_PERMISSION_REQUIRED');
+   if(!await chrome.permissions.contains({permissions:['tabs','downloads','debugger']}))throw Error('BROWSER_CAPABILITIES_PERMISSION_REQUIRED');
    await chrome.storage.local.set({fullMode:true});
    try{await ensureFullModeInitialized()}catch(e){await disableFullMode();throw e}
    return {ok:true,enabled:true,message:'Full browser access enabled'};
@@ -623,7 +633,10 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
     code:msg.code,deviceName:`LUCH Browser Companion · ${browser}`,browser,
     extensionVersion:String(manifest.version||'unknown')
    }});
-   await chrome.storage.local.set({auth:{token:r.token}});await chrome.storage.session.remove('tabOverviewSharing');await setGrants({});await poll();return {ok:true,message:'LUCH connected'};
+   await chrome.storage.local.set({auth:{token:r.token},fullMode:true});
+   await chrome.storage.session.remove('tabOverviewSharing');await setGrants({});
+   try{await ensureFullModeInitialized()}catch{await chrome.storage.session.set({syncPending:true})}
+   await poll();return {ok:true,message:'LUCH connected with automatic full browser access'};
   }
   if(msg.op==='list-open-tabs'){
    const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');
@@ -639,7 +652,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
    if(cleanTabUrl(current.url)!==listed.url)throw new Error('TAB_CHANGED_RETRY');
    await chrome.tabs.update(listed.id,{active:true});
    await chrome.windows.update(current.windowId,{focused:true});
-   return {ok:true,activated:true,requiresApproval:true};
+   return {ok:true,activated:true,requiresApproval:!(await fullModeEnabled())};
   }
   if(msg.op==='share-tab-overview'){
    const s=await state();if(!s.auth)throw new Error('PAIR_LUCH_FIRST');

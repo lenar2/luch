@@ -175,3 +175,6 @@ body.is-connected footer{margin-top:13px}
 /* Popup stays readable in browser windows narrower than the normal 390px. */
 body{max-width:100vw}
 @media (max-width:380px){body{width:100vw}main{padding:14px}.hero h1{font-size:23px}.hero-illustration{height:100px}#pair{padding:0 10px}.brand strong{font-size:20px}}
+
+/* Full browser mode is automatic after secure pairing; no per-tab or pointer approvals. */
+#grant,#share-tabs,#unshare-tabs,#enable-cursor,#disable-cursor,#cursor-heading,#cursor-explain,#permission-explainer{display:none!important}

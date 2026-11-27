@@ -14,18 +14,18 @@ const html=fs.readFileSync(path.join(ext,'popup.html'),'utf8');
 const popup=fs.readFileSync(path.join(ext,'popup.js'),'utf8');
 
 test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
- assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.8.6');
+ assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.8.7');
  assert.equal(man.manifest_version,3);
  assert.ok(!JSON.stringify({manifest:man,html}).includes('QA'));
  assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"')&&html.includes('id="interact"'));
  assert.ok(popup.includes('luch_locale'));
 });
 test('minimized scoped permissions, cloud relay only, no remotely supplied scripts',()=>{
- assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
- assert.deepEqual(man.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
+ assert.deepEqual([...man.permissions].sort(),['activeTab','alarms','scripting','storage','tabs','downloads','debugger'].sort());
+ assert.deepEqual([...man.host_permissions].sort(),['https://api.lenarsalimov.ru/luch/browser/*','http://*/*','https://*/*'].sort());
  for(const flag of ['cookies','history','webRequest','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(flag));
- assert.deepEqual([...man.optional_permissions].sort(),['tabs','debugger','downloads'].sort());
- assert.ok(!man.permissions.includes('debugger')&&man.optional_permissions.includes('debugger')&&!man.permissions.includes('tabs'));
+ assert.ok(!man.optional_permissions?.length&&!man.optional_host_permissions?.length);
+ assert.ok(!popup.includes('chrome.permissions.request('));
  assert.ok(code.includes("const BASE='https://api.lenarsalimov.ru/luch/browser'"));
  assert.ok(code.includes('const READ_OPS'));assert.ok(code.includes('const INTERACT_OPS'));
  assert.ok(code.includes("TAB_ORIGIN_CHANGED"));
@@ -89,6 +89,9 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
   });
  }
  const pair=await send('pair',{code:'12345678'});assert.equal(pair.ok,true);
+ // This one contract specifically exercises the historical manual grant API
+ // while explicitly paused; the standard 0.8.7 path is automatic/global.
+ assert.equal((await send('disable-full')).ok,true);
  const overview=await send('list-open-tabs');
  assert.equal(overview.ok,true);assert.equal(overview.tabs.length,2);
  assert.ok(overview.tabs[0].url.startsWith('https://example.org/one'));

@@ -3,9 +3,9 @@
     "message": "LUCH Browser Companion"
   },
   "appDescription": {
-    "message": "Подключайте разрешённые вкладки Chrome к совместимому ИИ. Чтение и действия — с отдельного согласия."
+    "message": "Подключайте все обычные вкладки Chrome к своему ИИ: чтение, клики и ввод текста без повторных разрешений LUCH."
   },
   "actionTitle": {
-    "message": "LUCH Browser Companion — разрешить вкладку"
+    "message": "LUCH Browser Companion — управление браузером"
   }
 }

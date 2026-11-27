@@ -1,0 +1,159 @@
+{
+  "browser": "Opera Chromium / isolated Mac profile",
+  "version": "0.8.2",
+  "base": "candidate-v0.8.2",
+  "tests": [
+    {
+      "op": "get_browser_capabilities",
+      "status": "PASS",
+      "durationMs": 60,
+      "dataSummary": "{\"version\":\"0.8.2\",\"permissions\":{\"tabs\":true,\"debugger\":true,\"downloads\":true},\"operations\":100}"
+    },
+    {
+      "op": "list_windows",
+      "status": "PASS",
+      "durationMs": 14,
+      "dataSummary": "[{\"id\":196491835,\"focused\":true,\"state\":\"normal\",\"type\":\"normal\",\"left\":0,\"top\":0,\"width\":440,\"height\":325}]"
+    },
+    {
+      "op": "get_tab_details",
+      "status": "PASS",
+      "durationMs": 4,
+      "dataSummary": "{\"id\":196491839,\"title\":\"LUCH R13 Test\",\"url\":\"http://127.0.0.1:19498/page\",\"status\":\"complete\",\"pinned\":false,\"muted\":false,\"audible\":false,\"discarded\":false,\"index\":1,\"windowId\":196491835,\"groupId\":-1}"
+    },
+    {
+      "op": "get_tab_language",
+      "status": "PASS",
+      "durationMs": 175,
+      "dataSummary": "{\"language\":\"en\",\"source\":\"document.lang\"}"
+    },
+    {
+      "op": "get_zoom",
+      "status": "PASS",
+      "durationMs": 7,
+      "dataSummary": "{\"factor\":1}"
+    },
+    {
+      "op": "set_zoom",
+      "status": "PASS",
+      "durationMs": 46,
+      "dataSummary": "{\"factor\":1.25}"
+    },
+    {
+      "op": "duplicate_tab",
+      "status": "PASS",
+      "durationMs": 244,
+      "dataSummary": "{\"tabId\":196491840,\"duplicated\":true,\"requiresApproval\":true}"
+    },
+    {
+      "op": "pin_tab",
+      "status": "PASS",
+      "durationMs": 54,
+      "dataSummary": "{\"pinned\":true}"
+    },
+    {
+      "op": "unpin_tab",
+      "status": "PASS",
+      "durationMs": 8,
+      "dataSummary": "{\"pinned\":false}"
+    },
+    {
+      "op": "mute_tab",
+      "status": "PASS",
+      "durationMs": 7,
+      "dataSummary": "{\"muted\":true}"
+    },
+    {
+      "op": "unmute_tab",
+      "status": "PASS",
+      "durationMs": 11,
+      "dataSummary": "{\"muted\":false}"
+    },
+    {
+      "op": "move_tab",
+      "status": "PASS",
+      "durationMs": 6,
+      "dataSummary": "{\"index\":1,\"windowId\":196491835}"
+    },
+    {
+      "op": "wait_for_load",
+      "status": "PASS",
+      "durationMs": 3,
+      "dataSummary": "{\"loaded\":true,\"url\":\"http://127.0.0.1:19498/page\"}"
+    },
+    {
+      "op": "wait_for_url",
+      "status": "PASS",
+      "durationMs": 4,
+      "dataSummary": "{\"matched\":true,\"url\":\"http://127.0.0.1:19498/page\"}"
+    },
+    {
+      "op": "downloads_list",
+      "status": "PASS",
+      "durationMs": 10,
+      "dataSummary": "[]"
+    },
+    {
+      "op": "download_url",
+      "status": "PASS",
+      "durationMs": 245,
+      "dataSummary": "{\"downloadId\":1,\"started\":true}"
+    },
+    {
+      "op": "press_key",
+      "status": "PASS",
+      "durationMs": 25,
+      "dataSummary": "{\"key\":\"a\",\"modifiers\":0,\"sent\":true}"
+    },
+    {
+      "op": "key_chord",
+      "status": "PASS",
+      "durationMs": 34,
+      "dataSummary": "{\"key\":\"a\",\"modifiers\":4,\"sent\":true}"
+    },
+    {
+      "op": "discard_tab",
+      "status": "PASS",
+      "durationMs": 67,
+      "dataSummary": "{\"discarded\":true,\"tabId\":196491843,\"replaced\":true,\"targetId\":null,\"requiresReapproval\":true,\"grantSyncPending\":false}"
+    }
+  ],
+  "startedAt": "2026-11-27T07:47:31.687Z",
+  "isolation": "isolated temp profile + local HTTP fixture + fake local broker; extension loaded and actual Chrome API used; Chrome permission prompt not exercised",
+  "browserVersion": "Chrome/157.0.8103.79",
+  "extensionId": "bdhephpjkcbfehecdmijameakjmdkdba",
+  "downloadFilename": {
+    "requested": "luch-r13-e2e-34866.txt",
+    "actual": "file.txt",
+    "honored": false
+  },
+  "fieldAfterPressKey": "a",
+  "chordObserved": {
+    "key": "a",
+    "meta": true,
+    "ctrl": false
+  },
+  "chordSelection": {
+    "start": 1,
+    "end": 1
+  },
+  "fieldAfterChord": "a",
+  "discardTabState": {
+    "originalId": 196491842,
+    "returnedId": 196491843,
+    "remaining": [
+      {
+        "id": 196491843,
+        "discarded": true,
+        "status": "loading"
+      }
+    ]
+  },
+  "summary": {
+    "pass": 19,
+    "fail": 0,
+    "total": 19
+  },
+  "finishedAt": "2026-11-27T07:47:43.256Z",
+  "durationMs": 11569
+}

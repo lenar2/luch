@@ -1,6 +1,6 @@
 # P029 LUCH Browser Companion R13 · 100-operation candidate
 
-**Candidate:** 0.8.1, branched from `feat/p029-browser-companion-r3-expanded-20261116`. **Not deployed to the browser or production cloud.**
+**Candidate:** 0.8.2, branched from `feat/p029-browser-companion-r3-expanded-20261116`. **Not deployed to the browser or production cloud.**
 
 ## Precisely 100 named operations
 
@@ -9,7 +9,7 @@
 - 5 pointer operations retained.
 - All operation names are enumerated consistently in the MV3 worker, private browser bridge route, local broker and Supabase MCP function; no remote eval or arbitrary downloaded executable scripts.
 
-The new DOM executor is `extension/extended-dom-ops.js`. Bundled in deterministic ZIP `dist/LUCH-Browser-Companion-v0.8.1.zip`.
+The new DOM executor is `extension/extended-dom-ops.js`. Bundled in deterministic ZIP `dist/LUCH-Browser-Companion-v0.8.2.zip`.
 
 ## No per-operation popup confirmations after one-time browser authorization
 
@@ -58,3 +58,15 @@ Chrome itself requires permission on first activation and may block privileged p
 | Result-size/DOM read bounds | **Keep pending separate pagination design** | Prevent oversized broker/MCP responses and memory spikes; full-data pagination is a distinct capability enhancement |
 
 No production deployment and no installation occurred in this review.
+
+
+## R13.2 — Real Mac browser E2E (2026-11-27)
+
+- Browser: separate headless **Opera Chromium** profile on the connected Mac, not the owner's browsing session. No change to production AWS, real browser profiles, Xcode or factory dispatchers.
+- Test code: tests/real-companion-19-ops-r13.cjs and tests/real-companion-owner-flow-r13.cjs. To run on the connected Mac, set LUCH_TEST_PUPPETEER_CORE to the installed puppeteer-core module path, and optionally LUCH_TEST_BROWSER_BIN.
+- Functional coverage: **19/19 additional Chrome/Opera API operations** executed through the real MV3 extension worker with local fixture and fake local broker. This is not a cloud end-to-end test.
+- Real assertions: 100-operation capability registry, correct tab metadata and language fallback, actual zoom/pin/mute changes, live duplication/movement, completed local download bytes, actual text input, Meta+A keydown reaching the page, real discard state, real load/URL waits.
+- Corrections from failures: language detection now falls back to document lang on short pages; printable CDP key press now inserts actual text; discard verifies the returned discarded tab and reports a new tab ID if Opera replaces it. With full owner authorization, replaced tab grants are automatically refreshed.
+- Chromium compatibility notes: In this isolated Opera version, the requested download filename may be ignored and the file stored under a different basename (the download content is correct and verified; QA-created file is deleted). A Meta+A key event reaches the page with metaKey=true, though selecting text in headless Opera was not proven (baseline Puppeteer Meta+A in headless Opera did not select either). Discard may replace the tab ID; the response reports the actual new ID.
+- Owner enable/pause test **PASS with permissions already granted** in the isolated test extension (one popup button; command executed; pause removes grant). Initial optional Chrome/Opera permission dialog **NOT ACCEPTED in headless test**: the browser returned 'Only permissions specified in the manifest may be requested.' This remains a mandatory real-user Chrome UI acceptance gate. Do not claim production-ready or a no-gesture installation.
+- All test fixtures are local HTTP-only and copied into isolated temporary profiles. Testing never transmits the QA token or pages to public AWS.

@@ -57,7 +57,7 @@ test('browser extension cannot trigger prohibited remote code or permissions',as
  const man=JSON.parse(readFileSync(new URL('manifest.json',path),'utf8'));
  const worker=readFileSync(new URL('background.js',path),'utf8');
  const broker=readFileSync(new URL('../broker/server.mjs',import.meta.url),'utf8');
- assert.equal(man.version,'0.8.1');
+ assert.equal(man.version,'0.8.2');
  assert.ok(!worker.includes('const TTL_MS'));
  assert.ok(!broker.includes('TTL=15*60_000'));
  for(const key of ['cookies','history','nativeMessaging','<all_urls>'])assert.ok(!JSON.stringify(man).includes(key));

@@ -310,7 +310,18 @@ async function performJob(job){
    return {ok:true,data:ws.map(w=>({id:w.id,focused:w.focused,state:w.state,type:w.type,left:w.left,top:w.top,width:w.width,height:w.height}))};
   }
   if(op==='get_zoom')return {ok:true,data:{factor:await chrome.tabs.getZoom(g.tabId)}};
-  if(op==='get_tab_language')return {ok:true,data:{language:await chrome.tabs.detectLanguage(g.tabId)}};
+  if(op==='get_tab_language'){
+   try{
+    const language=await chrome.tabs.detectLanguage(g.tabId);
+    if(language&&language!=='und')return {ok:true,data:{language,source:'chrome.tabs.detectLanguage'}};
+   }catch{}
+   // Short pages cannot always be language-detected. Fall back to the
+   // document's declared lang, never report an arbitrary language guess.
+   const result=await chrome.scripting.executeScript({target:{tabId:g.tabId},
+    func:()=>document.documentElement.lang||null});
+   const language=String(result?.[0]?.result||'und').slice(0,35);
+   return {ok:true,data:{language,source:'document.lang'}};
+  }
   if(op==='get_tab_details')return {ok:true,data:{id:t.id,title:safeTitle(t.title),url:cleanTabUrl(t.url),status:t.status,pinned:!!t.pinned,muted:!!t.mutedInfo?.muted,audible:!!t.audible,discarded:!!t.discarded,index:t.index,windowId:t.windowId,groupId:t.groupId}};
   if(['duplicate_tab','pin_tab','unpin_tab','mute_tab','unmute_tab','move_tab','discard_tab','set_zoom'].includes(op)){
    if(op==='duplicate_tab'){
@@ -325,7 +336,23 @@ async function performJob(job){
     const config={index};if(args.windowId!==undefined){const id=Number(args.windowId);if(!Number.isSafeInteger(id)||id<0)throw Error('INVALID_WINDOW_ID');config.windowId=id}
     const moved=await chrome.tabs.move(g.tabId,config);return {ok:true,data:{index:moved.index,windowId:moved.windowId}};
    }
-   if(op==='discard_tab'){const discarded=await chrome.tabs.discard(g.tabId);return {ok:true,data:{discarded:!!discarded}}}
+   if(op==='discard_tab'){
+    const discarded=await chrome.tabs.discard(g.tabId);
+    if(!discarded?.discarded)throw Error('TAB_DISCARD_NOT_CONFIRMED');
+    const replaced=discarded.id!==g.tabId;
+    // Opera and Chromium may replace tab IDs while discarding. In owner-wide
+    // mode, rebuild the authorized target mapping without any new popup click.
+    let targetId=null,grantSyncPending=false;
+    if(replaced&&await fullModeEnabled()){
+     try{
+      await refreshFullGrants();
+      const current=(await state()).grants[discarded.id];
+      if(current)targetId='ext:'+discarded.id+':'+current.grantId;
+     }catch{grantSyncPending=true}
+    }
+    return {ok:true,data:{discarded:true,tabId:discarded.id,replaced,
+     targetId,requiresReapproval:replaced&&!await fullModeEnabled(),grantSyncPending}};
+   }
    if(op==='set_zoom'){
     const factor=Number(args.factor);if(!Number.isFinite(factor)||factor<0.25||factor>5)throw Error('INVALID_ZOOM_FACTOR');
     await chrome.tabs.setZoom(g.tabId,factor);return {ok:true,data:{factor}};
@@ -380,7 +407,14 @@ async function performJob(job){
     for(const type of ['keyDown','keyUp']){
      const live=await chrome.tabs.get(g.tabId),s=await state(),grant=s.grants[g.tabId];
      if(originOf(live.url)!==g.origin||grant?.grantId!==g.grantId||grant?.scope!=='interact')throw Error('TAB_PERMISSION_REVOKED');
-     await chrome.debugger.sendCommand(debuggerTab,'Input.dispatchKeyEvent',{type,key,code,windowsVirtualKeyCode:virtualKey,modifiers:mods});
+     // A CDP keyDown without the text field only emits a key event. On
+     // ordinary editable inputs it does NOT insert printable characters.
+     const printable=single||(key in punctuation)||key==='Space';
+     const text=printable&&!(mods&7)?(key==='Space'?' ':key):undefined;
+     await chrome.debugger.sendCommand(debuggerTab,'Input.dispatchKeyEvent',{
+      type,key,code,windowsVirtualKeyCode:virtualKey,modifiers:mods,
+      ...(type==='keyDown'&&text!==undefined?{text,unmodifiedText:text}:{})
+     });
     }
     return {ok:true,data:{key,modifiers:mods,sent:true}};
    }finally{if(attached)try{await chrome.debugger.detach(debuggerTab)}catch{}}

@@ -3,6 +3,21 @@
 **Publisher:** LUCH (Lenar Salimov)  
 **Last updated:** 24 November 2026
 
+
+## Browser Companion 0.8.6 — upcoming browser-wide mode (27 November 2026)
+
+**Version-specific disclosure:** The features in this section describe the 0.8.6 candidate uploaded for Chrome Web Store review. The currently published 0.7.0 release may use a narrower access model. For 0.8.6 and later, this section overrides older per-tab-only and no-download statements below.
+
+After a one-time eight-digit pairing code, the owner can explicitly enable **full browser control** in the extension. Chrome then requests optional access to HTTP(S) sites, open tabs (`tabs`) and downloads (`downloads`). If the owner accepts, the paired AI can read and interact with **all ordinary HTTP(S) tabs in that browser profile**, including tabs opened later. This access resumes across browser restarts and lasts until the owner pauses or disconnects. The extension cannot access protected browser-internal pages or other browser profiles. The current implementation has a 500 eligible-tab capacity limit, with an explicit error above that limit.
+
+The powerful optional `debugger` permission is **not part of the initial full-control request**. It is requested separately when the owner enables precise pointer for the active tab; per-tab pointer approval is revoked when the tab changes origin. Advanced keyboard actions also depend on debugger permission. Password, file, hidden and other sensitive form controls have protective checks, but visible webpage content can itself be sensitive. The connected AI host may impose additional authorization rules.
+
+Browser actions can process webpage text, ordinary form fields, page titles and URLs, screenshots, tab overview metadata, actions and results. With explicit authorization, that information may pass from the computer through HTTPS to the LUCH cloud relay and the AI provider connected by the owner. The downloads permission can reveal recent download metadata and initiate requested HTTP(S) downloads; the extension does not read arbitrary local files or upload downloaded file contents. The system also processes account/device identifiers, token hashes, network IPs and limited audit information for service operation. LUCH does not sell personal data or use page content for ads. See the retention and deletion windows below; separate AI-provider data policies apply.
+
+The available inventory is 100 named browser operations (47 read, 48 interaction, 5 pointer). Functions remain subject to the actual Chrome permission model and the connected AI host. Chrome user permission prompts cannot be bypassed. The owner can Pause, Disconnect, revoke browser permissions in Chrome and revoke connected AI access.
+
+---
+
 ## Browser Companion 0.7.0 — cloud-connected update (awaiting Chrome Web Store review)
 
 **This section describes data practices of the cloud-connected 0.7.0 update and replaces any conflicting local-broker statements for 0.7.0. The historical section farther down this page applies only to earlier versions (including the currently published 0.4.0), not to 0.7.0.**

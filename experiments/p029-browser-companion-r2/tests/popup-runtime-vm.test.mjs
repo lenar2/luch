@@ -93,3 +93,35 @@ test('debugger is NOT requested during onboarding, only after optional pointer c
  assert.equal(requested,1,'one user-click-driven permission request');
  assert.match(item('feedback').textContent,/Разрешение Chrome не предоставлено/);
 });
+
+test('R14.3 onboarding requests browser access without debugger and only once per click',async()=>{
+ const {item,context}=popup('ru-RU',{connected:true,online:true,fullMode:false,
+  granted:true,scope:'read',tab:{title:'Example',url:'https://example.org/'}});
+ await new Promise(resolve=>setImmediate(resolve));
+ const requested=[],messages=[];
+ context.chrome.permissions.request=async permissions=>{requested.push(permissions);return true};
+ context.chrome.runtime.sendMessage=async message=>{
+  messages.push(message.op);
+  return message.op==='status'
+   ?{ok:true,connected:true,online:true,fullMode:messages.includes('enable-full'),
+      granted:true,scope:'interact',tab:{title:'Example',url:'https://example.org/'}}:{ok:true};
+ };
+ await item('interact').listeners.click();
+ assert.equal(requested.length,1);
+ assert.deepEqual(Array.from(requested[0].permissions),['tabs','downloads']);
+ assert.deepEqual(Array.from(requested[0].origins),['http://*/*','https://*/*']);
+ assert.equal(requested[0].permissions.includes('debugger'),false);
+ assert.equal(messages.filter(x=>x==='enable-full').length,1);
+});
+
+test('R14.3 user denying Chrome first permission never enables full browser',async()=>{
+ const {item,context}=popup('en',{connected:true,online:true,fullMode:false});
+ await new Promise(resolve=>setImmediate(resolve));
+ const called=[];
+ context.chrome.permissions.request=async permissions=>{called.push(permissions);return false};
+ context.chrome.runtime.sendMessage=async m=>{called.push(m.op);return {ok:true,connected:true,online:true,fullMode:false}};
+ await item('interact').listeners.click();
+ assert.equal(called.filter(x=>x==='enable-full').length,0);
+ assert.match(item('feedback').textContent,/not granted/);
+ assert.equal(called.length>=2,true);
+});

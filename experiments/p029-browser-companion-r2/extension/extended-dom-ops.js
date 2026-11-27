@@ -1,7 +1,7 @@
 'use strict';
 // Self-contained function injected into an explicitly authorized website tab.
 // No eval, remote JS, cookie access or reading password/file input values.
-function luchExtendedDomExecutor({op,args={}}){
+function luchExtendedDomExecutor({op,args={},expectedOrigin}){
  const short=(v,n=250)=>String(v??'').slice(0,n);
  const maxItems=80, result=data=>({ok:true,url:location.href,data});
  const selector=short(args.selector,500);
@@ -38,6 +38,9 @@ function luchExtendedDomExecutor({op,args={}}){
  const safeUrl=v=>{try{const u=new URL(v,location.href);u.search='';u.hash='';return short(u.href,1024)}catch{return ''}};
  const num=(v,limit)=>{const n=Number(v);if(!Number.isFinite(n)||Math.abs(n)>limit)throw Error('INVALID_NUMBER');return n};
  try{
+  // Recheck inside the actual webpage immediately before any DOM operation.
+  // The target may have navigated after the worker inspected the tab.
+  if(expectedOrigin&&location.origin!==expectedOrigin)throw Error('TAB_ORIGIN_CHANGED_BEFORE_ACTION');
   if(op==='get_document_info')return result({url:location.href,title:short(document.title),readyState:document.readyState,lang:document.documentElement.lang,charset:document.characterSet,contentType:document.contentType,doctype:document.doctype?.name||null});
   if(op==='get_viewport')return result({width:innerWidth,height:innerHeight,devicePixelRatio:devicePixelRatio,scrollX,scrollY,screenWidth:screen.width,screenHeight:screen.height});
   if(op==='get_images')return result(limited(document.images).map(el=>({src:safeUrl(el.currentSrc||el.src),alt:short(el.alt),width:el.naturalWidth,height:el.naturalHeight,loading:el.loading})));

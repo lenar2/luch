@@ -20,9 +20,9 @@ function app(){
  const transfer={...base,tagName:'BUTTON',innerText:'Transfer funds',click:()=>{transfer.clicked=true}};
  const russianPayment={...base,tagName:'BUTTON',innerText:'Оплатить счёт',click:()=>{russianPayment.clicked=true}};
  const selectors={'#q':input,'#password':password,'#danger':danger,'#submit':submit,'#link':link,'#transfer':transfer,'#ru-pay':russianPayment};
- const ctx=vm.createContext({document,window:{scrollX:0,scrollY:0,scrollBy(){},scrollTo(){},getSelection(){return{toString:()=>''}}},location:{href:'https://example.org/news'},Event:class{constructor(type){this.type=type}},MouseEvent:class{constructor(type){this.type=type}},InputEvent:class{},HTMLTextAreaElement:class{},HTMLInputElement:class{}});
+ const ctx=vm.createContext({document,window:{scrollX:0,scrollY:0,scrollBy(){},scrollTo(){},getSelection(){return{toString:()=>''}}},location:{href:'https://example.org/news',origin:'https://example.org'},Event:class{constructor(type){this.type=type}},MouseEvent:class{constructor(type){this.type=type}},InputEvent:class{},HTMLTextAreaElement:class{},HTMLInputElement:class{}});
  ctx.self=ctx;vm.runInContext(source,ctx);
- return {run:(op,args)=>ctx.luchDomExecutor({op,args}),input,link,danger,submit,transfer,russianPayment};
+ return {run:(op,args,expectedOrigin)=>ctx.luchDomExecutor({op,args,expectedOrigin}),input,link,danger,submit,transfer,russianPayment};
 }
 test('DOM operations inspect visible content and bounded forms without password values',()=>{
  const {run}=app();
@@ -45,4 +45,17 @@ test('interactive operations update user-approved input and block sensitive chan
  assert.equal(run('click',{selector:'#ru-pay'}).ok,true);
  for(const el of [danger,submit,transfer,russianPayment])assert.equal(Boolean(el.clicked),true);
  assert.equal(run('eval',{code:'alert(1)'}).error,'OPERATION_NOT_SUPPORTED_IN_EXTENSION');
+});
+
+test('R14.3 cross-origin DOM navigation race cannot mutate a new origin',()=>{
+ const {run,input,link}=app();
+ const deniedClick=run('click',{selector:'#link'},'https://phishing.example.net');
+ const deniedWrite=run('fill',{selector:'#q',text:'nope'},'https://phishing.example.net');
+ assert.equal(deniedClick.ok,false);
+ assert.equal(deniedWrite.ok,false);
+ assert.equal(deniedClick.error,'TAB_ORIGIN_CHANGED_BEFORE_ACTION');
+ assert.equal(deniedWrite.error,'TAB_ORIGIN_CHANGED_BEFORE_ACTION');
+ assert.equal(link.clicked,undefined);
+ assert.equal(input.value,'');
+ assert.equal(run('click',{selector:'#link'},'https://example.org').ok,true);
 });

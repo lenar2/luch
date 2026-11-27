@@ -63,7 +63,7 @@ test('full browser mode publishes all 125 tabs without the former silent 80-tab 
  assert.equal(enabled.ok,true,JSON.stringify(enabled));
  const grants=testEnv.storage.session.grants;
  assert.equal(Object.keys(grants).length,125);
- assert.ok(Object.values(grants).every(x=>x.scope==='interact'&&x.preciseCursor===true));
+ assert.ok(Object.values(grants).every(x=>x.scope==='interact'&&x.preciseCursor===false));
  const published=testEnv.apiCalls.filter(x=>x.suffix==='grants').at(-1).data.grants;
  assert.equal(published.length,125);
  const overview=testEnv.apiCalls.filter(x=>x.suffix==='tab-overview').at(-1).data.tabs;

@@ -203,7 +203,7 @@ async function refreshFullGrants(){
  if(!await chrome.permissions.contains({origins:FULL_ORIGINS}))return false;
  if(!await chrome.permissions.contains({permissions:['tabs']}))return false;
  const s=await state();if(!s.auth?.token)return false;
- const active=await chrome.tabs.query({}),grants={},cursor=await chrome.permissions.contains({permissions:['debugger']});
+ const active=await chrome.tabs.query({}),grants={};
  const eligible=active.filter(t=>originOf(t.url)&&Number.isSafeInteger(t.id));
  if(eligible.length>MAX_TRANSPORT_TABS){
   await chrome.storage.session.set({fullModeError:'BROWSER_TAB_CAPACITY_EXCEEDED'});
@@ -214,7 +214,7 @@ async function refreshFullGrants(){
   const current=s.grants[t.id];
   const same=current&&current.origin===originOf(t.url);
   grants[t.id]={tabId:t.id,grantId:same?current.grantId:makeNonce(),url:t.url,
-   origin:originOf(t.url),title:safeTitle(t.title),scope:'interact',preciseCursor:cursor};
+   origin:originOf(t.url),title:safeTitle(t.title),scope:'interact',preciseCursor:!!(same&&current.preciseCursor===true)};
  }
  await setGrants(grants);
  // Mark local initialization BEFORE external network calls. Temporary outages
@@ -247,7 +247,6 @@ async function reconcileChangedTabs(ids){
  const record=await chrome.storage.session.get('fullModeInitialized');
  if(!record.fullModeInitialized){await ensureFullModeInitialized();return}
  const s=await state();if(!s.auth?.token)return;
- const cursor=await chrome.permissions.contains({permissions:['debugger']});
  let changed=false;
  for(const id of ids){
   const current=s.grants[id];let tab=null;
@@ -258,7 +257,8 @@ async function reconcileChangedTabs(ids){
    continue;
   }
   const next={tabId:id,grantId:current?.origin===origin?current.grantId:makeNonce(),
-   url:tab.url,origin,title:safeTitle(tab.title),scope:'interact',preciseCursor:cursor};
+   url:tab.url,origin,title:safeTitle(tab.title),scope:'interact',
+   preciseCursor:!!(current?.origin===origin&&current.preciseCursor===true)};
   if(!current||Object.keys(next).some(key=>next[key]!==current[key])){
    s.grants[id]=next;changed=true
   }
@@ -383,7 +383,7 @@ async function performJob(job){
       (INTERACT.has(op)&&latest.scope!=='interact'))
     return {ok:false,error:'USER_TAB_PERMISSION_REVOKED'};
    await ensureLive();
-   const r=await chrome.scripting.executeScript({target:{tabId:g.tabId},func:EXTENDED_DOM.has(op)?self.luchExtendedDomExecutor:self.luchDomExecutor,args:[{op,args}]});
+   const r=await chrome.scripting.executeScript({target:{tabId:g.tabId},func:EXTENDED_DOM.has(op)?self.luchExtendedDomExecutor:self.luchDomExecutor,args:[{op,args,expectedOrigin:g.origin}]});
    const result=r?.[0]?.result;
    if(!result||!result.ok)return {ok:false,error:result?.error||'NO_SCRIPT_RESULT'};
    if(originOf(result.url)!==g.origin)return {ok:false,error:'TAB_CONTENT_MISMATCH'};
@@ -576,7 +576,7 @@ chrome.runtime.onMessage.addListener((msg,sender,respond)=>{
   if(msg.op==='enable-full'){
    const s=await state();if(!s.auth?.token)throw Error('PAIR_LUCH_FIRST');
    if(!await chrome.permissions.contains({origins:FULL_ORIGINS}))throw Error('BROWSER_WIDE_PERMISSION_REQUIRED');
-   if(!await chrome.permissions.contains({permissions:['tabs','debugger','downloads']}))throw Error('BROWSER_CAPABILITIES_PERMISSION_REQUIRED');
+   if(!await chrome.permissions.contains({permissions:['tabs','downloads']}))throw Error('BROWSER_CAPABILITIES_PERMISSION_REQUIRED');
    await chrome.storage.local.set({fullMode:true});
    try{await ensureFullModeInitialized()}catch(e){await disableFullMode();throw e}
    return {ok:true,enabled:true,message:'Full browser access enabled'};

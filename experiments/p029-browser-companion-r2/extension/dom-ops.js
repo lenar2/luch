@@ -1,7 +1,7 @@
 'use strict';
 // Deliberately self-contained: Chrome serializes this function into the ONE
 // user-approved tab; no remote code or string evaluation is executed.
-function luchDomExecutor({op,args={}}){
+function luchDomExecutor({op,args={},expectedOrigin}){
  const MAX_TEXT=65536, MAX_ITEMS=80;
  const clean=s=>String(s??'').slice(0,400);
  const snippet=s=>String(s??'').replace(/\s+/g,' ').trim().slice(0,280);
@@ -35,6 +35,9 @@ function luchDomExecutor({op,args={}}){
  const result=(data)=>({ok:true,source:'USER_CONSENTED_TAB',url:url(),data});
  const scrollReturn=()=>({scrollX:Math.round(window.scrollX),scrollY:Math.round(window.scrollY)});
  try{
+  // Recheck inside the actual webpage immediately before any DOM operation.
+  // The target may have navigated after the worker inspected the tab.
+  if(expectedOrigin&&location.origin!==expectedOrigin)throw Error('TAB_ORIGIN_CHANGED_BEFORE_ACTION');
  if(op==='read_text'){
    const el=selector?target():document.body;allowedElement(el);
    return result({text:String(el?.innerText||'').slice(0,MAX_TEXT),title:safe(document.title,180)});

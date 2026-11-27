@@ -63,7 +63,7 @@ test('full browser mode publishes all 125 tabs without the former silent 80-tab 
  assert.equal(enabled.ok,true,JSON.stringify(enabled));
  const grants=testEnv.storage.session.grants;
  assert.equal(Object.keys(grants).length,125);
- assert.ok(Object.values(grants).every(x=>x.scope==='interact'&&x.preciseCursor===false));
+ assert.ok(Object.values(grants).every(x=>x.scope==='interact'&&x.preciseCursor===true));
  const published=testEnv.apiCalls.filter(x=>x.suffix==='grants').at(-1).data.grants;
  assert.equal(published.length,125);
  const overview=testEnv.apiCalls.filter(x=>x.suffix==='tab-overview').at(-1).data.tabs;
@@ -81,7 +81,7 @@ test('out-of-capacity browser is explicitly rejected rather than silently trunca
  const result=await env.message('enable-full');
  assert.equal(result.ok,false);
  assert.match(result.error,/BROWSER_TAB_CAPACITY_EXCEEDED/);
- assert.equal(env.storage.local.fullMode,undefined);
+ assert.equal(env.storage.local.fullMode,false);
  assert.ok(!env.apiCalls.some(x=>x.suffix==='grants'&&x.data.grants?.length===500));
 });
 

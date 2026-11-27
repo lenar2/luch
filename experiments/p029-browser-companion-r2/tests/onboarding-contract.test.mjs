@@ -34,16 +34,18 @@ test('first-run pairing explains cloud MCP and ten-minute one-time code',()=>{
  assert.doesNotMatch(js,/localhost|local setup on this computer|five minutes/i);
 });
 
-test('tab permissions remain separate, session-scoped and fail closed',()=>{
+test('global Chrome permissions are installed once and the paired browser remains revocable',()=>{
  const manifest=JSON.parse(read('extension/manifest.json'));
  const js=read('extension/popup.js');
  const worker=read('extension/background.js');
- assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage'].sort());
- assert.deepEqual(manifest.host_permissions,['https://api.lenarsalimov.ru/luch/browser/*']);
+ assert.deepEqual([...manifest.permissions].sort(),['activeTab','alarms','scripting','storage','tabs','downloads','debugger'].sort());
+ assert.ok(['http://*/*','https://*/*'].every(p=>manifest.host_permissions.includes(p)));
  for(const forbidden of ['cookies','history','webRequest','<all_urls>'])assert.ok(!JSON.stringify(manifest).includes(forbidden));
- assert.deepEqual([...manifest.optional_permissions].sort(),['tabs','debugger','downloads'].sort());
+ assert.equal(manifest.optional_permissions,undefined);
+ assert.equal(manifest.optional_host_permissions,undefined);
+ assert.doesNotMatch(js,/chrome\.permissions\.request/);
  assert.match(js,/Allow reading on this tab/);
- assert.match(js,/Enable full browser control/);
+ assert.match(js,/Resume browser control/);
  assert.match(js,/Pause browser control/);
  assert.match(worker,/INTERACTION_APPROVAL_REQUIRED/);
  assert.match(worker,/TAB_ORIGIN_CHANGED/);

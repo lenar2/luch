@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 import crypto from 'node:crypto';
 
-test('precise on-page pointer uses a genuine Chrome debugger input command only after separate tab approval',async()=>{
+test('global paired pointer uses Chrome debugger without extra tab approval, and still stops on Pause',async()=>{
  const folder=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../extension');
  const code=fs.readFileSync(path.join(folder,'background.js'),'utf8');
  const messages={},storage={local:{},session:{}},debuggerCalls=[];
@@ -18,7 +18,7 @@ test('precise on-page pointer uses a genuine Chrome debugger input command only 
    local:{get:async k=>({[k]:storage.local[k]}),set:async o=>Object.assign(storage.local,o),remove:async k=>delete storage.local[k]},
    session:{get:async k=>({[k]:storage.session[k]}),set:async o=>Object.assign(storage.session,o),remove:async k=>delete storage.session[k]}
   },
-  permissions:{contains:async({permissions})=>permissions.every(p=>p==='tabs'||p==='debugger'),
+  permissions:{contains:async({permissions,origins})=>!!origins||permissions.every(p=>['tabs','downloads','debugger'].includes(p)),
    onRemoved:{addListener:cb=>messages.permissionRemoved=cb}},
   tabs:{
    query:async q=>q?.active?[activeTab]:[activeTab],
@@ -58,11 +58,9 @@ test('precise on-page pointer uses a genuine Chrome debugger input command only 
  vm.runInContext(code,ctx);
  const send=async(op,extra={})=>new Promise(resolve=>{const sent=messages.receive({op,...extra},{id:'self-test'},resolve);assert.equal(sent,true)});
  const login=await send('pair',{code:'12345678'});assert.equal(login.ok,true);
- const read=await send('grant-active');assert.equal(read.ok,true);
- const blocked=await send('precise-cursor',{enabled:true});assert.equal(blocked.ok,false);
- const interact=await send('allow-interaction');assert.equal(interact.ok,true);
- const enabled=await send('precise-cursor',{enabled:true});assert.equal(enabled.ok,true);
- assert.equal(grants[0].preciseCursor,true);
+ assert.equal(grants.length,1,'paired browser publishes global grant automatically');
+ assert.equal(grants[0].scope,'interact');
+ assert.equal(grants[0].preciseCursor,true,'native pointer works without additional popup approval');
  jobs.push({id:'first',targetId:'ext:42:'+grants[0].grantId,op:'pointer_click',args:{x:65,y:90}});
  await new Promise(resolve=>{messages.alarm({name:'luch-poll'});setTimeout(resolve,65)});
  for(let i=0;i<15&&!results.length;i++)await new Promise(r=>setTimeout(r,20));
@@ -80,12 +78,13 @@ test('precise on-page pointer uses a genuine Chrome debugger input command only 
  assert.equal(debuggerCalls.filter(x=>x==='mousePressed').length,eventsBefore,'no click after origin change');
  assert.equal(debuggerCalls.at(-1),'detach');
  activeTab.url='https://example.org/allowed';switchOriginOnAttach=false;
- const stop=await send('precise-cursor',{enabled:false});assert.equal(stop.ok,true);
+ const previousGrant=grants[0].grantId;
+ const stop=await send('disable-full');assert.equal(stop.ok,true);
  const before=debuggerCalls.length;
- jobs.push({id:'second',targetId:'ext:42:'+grants[0].grantId,op:'pointer_click',args:{x:65,y:90}});
+ jobs.push({id:'second',targetId:'ext:42:'+previousGrant,op:'pointer_click',args:{x:65,y:90}});
  messages.alarm({name:'luch-poll'});
  for(let i=0;i<15&&results.length<3;i++)await new Promise(r=>setTimeout(r,20));
  assert.equal(results.length,3);
- assert.equal(results[2].result.error,'PRECISE_CURSOR_APPROVAL_REQUIRED');
+ assert.equal(results[2].result.error,'USER_TAB_PERMISSION_REQUIRED');
  assert.equal(debuggerCalls.length,before);
 });

@@ -2,15 +2,15 @@
 const $=id=>document.getElementById(id);
 const strings={
  en:{
-  eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Your AI can do more in the browser.',
-  intro:'Give your AI access to work with pages, find what matters, and help you finish tasks. You decide when it can act.',
+  brandName:'LUCH',brandSubtitle:'BROWSER COMPANION',eyebrow:'YOUR AI · YOUR BROWSER',
+  headline:'Let your AI work in Chrome.',
+  intro:'Go beyond answers. LUCH lets your AI navigate pages, fill forms, use tabs and handle downloads.',
   headlineConnected:'One step from getting things done.',introConnected:'All ordinary browser tabs are available after pairing. No per-tab or per-action confirmations in LUCH.',
   offline:'Waiting for cloud connection',offlineScope:'RECONNECTING',offlineTab:'Your tab approval is saved. Actions will resume after reconnection.',
   advancedTitle:'More options · tab overview & precise pointer',
   revokePending:'Access to this tab is stopped on your device. Cloud sync will retry when online.',
   disconnectPending:'Access ended on this device. When online, also revoke this browser in your AI to invalidate the cloud token.',
-  caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
+  caps:['Read & analyze pages','Click, type & fill forms','Tabs & navigation','Files & downloads'],featureCaption:'BROWSER OPERATIONS',
   paired:'Browser paired',notPaired:'Browser not paired',statusScope:'SECURE LUCH CLOUD',
   tabCapacityError:'Browser has more than 500 web tabs. Close some tabs to resume automatic coverage. Existing grants are still active.',
   setupTitle:'Connect LUCH to your AI',
@@ -57,29 +57,29 @@ const strings={
   permissionBenefits:['Read open webpages','Click, type and navigate','Work with downloads'],
   permissionFootnote:'Access covers ordinary HTTP(S) tabs until you pause or disconnect. Chrome keeps its own permission controls.',
   readyKicker:'READY TO GO',
-  readyHeading:'Your browser is connected',
-  readyDescription:'Go back to your AI chat and try your first request:',
+  readyHeading:'Connected. Ready to work.',
+  readyDescription:'Tell your AI what to do. LUCH will operate your browser.',
   readyPrompt:'Read the open webpage and tell me what matters most.',
   offlineHeading:'Your connection is coming back',
   offlineDescription:'Your browser pairing is saved. LUCH will reconnect automatically when the cloud is available.',
-  connectedReadyHeadline:'Everything is ready. Just ask.',
+  connectedReadyHeadline:'Ready for your next task.',
   offlineHeadline:'Connection interrupted. Your setup is safe.',
   offlineIntro:'LUCH is reconnecting. You do not need to connect your account again.',
-  connectedReadyIntro:'LUCH is connected. Keep working in the AI chat you already know.',
-  fullFooter:'LUCH can access ordinary browser webpages until you pause it. Page information requested by your AI may be shared with that AI.',
+  connectedReadyIntro:'Your AI can work in ordinary browser tabs without repeated approvals in LUCH.',
+  fullFooter:'LUCH works in ordinary browser tabs until you pause or disconnect. Your AI can receive information from the pages it accesses.',
   permissionDenied:'Chrome permission was not granted.',
   error:'Something went wrong.',codePlaceholder:'••••••••'
  },
  ru:{
-  eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Ваш ИИ может больше в браузере.',
-  intro:'Дайте своему ИИ возможность работать со страницами, находить нужное и помогать с задачами. Вы решаете, когда он может действовать.',
+  brandName:'LUCH',brandSubtitle:'БРАУЗЕР-КОМПАНЬОН',eyebrow:'ВАШ ИИ · ВАШ БРАУЗЕР',
+  headline:'Пусть ваш ИИ работает в Chrome.',
+  intro:'Не только ответы: ИИ сможет читать страницы, заполнять формы, управлять вкладками и работать с загрузками.',
   headlineConnected:'Один шаг — и можно поручать дела.',introConnected:'После подключения ИИ доступен весь обычный браузер: без подтверждений для каждой вкладки и действия.',
   offline:'Ожидание подключения к облаку',offlineScope:'НЕТ СВЯЗИ',offlineTab:'Разрешения сохранены. Действия возобновятся после восстановления связи.',
   advancedTitle:'Дополнительно · вкладки и точный курсор',
   revokePending:'На этом устройстве доступ к вкладке закрыт. Синхронизация с облаком повторится после восстановления связи.',
   disconnectPending:'На устройстве доступ отключён. Когда появится связь, дополнительно отзовите это устройство в своём ИИ.',
-  caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Снимки и проверка'],
+  caps:['Чтение и анализ страниц','Клики, текст и формы','Вкладки и навигация','Файлы и загрузки'],featureCaption:'ОПЕРАЦИЙ В БРАУЗЕРЕ',
   paired:'Браузер подключён',notPaired:'Браузер не подключён',statusScope:'ЗАЩИЩЁННЫЙ LUCH CLOUD',
   tabCapacityError:'В браузере больше 500 веб-вкладок. Закройте часть вкладок для возобновления полного покрытия. Ранее разрешённые вкладки остаются активными.',
   setupTitle:'Соедините LUCH с вашим ИИ',
@@ -126,26 +126,28 @@ const strings={
   permissionBenefits:['Читать веб-страницы','Нажимать, вводить текст и переходить','Работать со скачиваниями'],
   permissionFootnote:'Доступ ко всем обычным веб-вкладкам сохранится до «Приостановить» или «Отключить». Разрешения всегда можно изменить в Chrome.',
   readyKicker:'ВСЁ ГОТОВО',
-  readyHeading:'Браузер подключён',
-  readyDescription:'Вернитесь в привычный чат с ИИ и попробуйте первое поручение:',
+  readyHeading:'Подключено. Можно работать.',
+  readyDescription:'Поручите задачу своему ИИ — ЛУЧ выполнит действия в браузере.',
   readyPrompt:'Прочитай открытую страницу и расскажи самое важное.',
   offlineHeading:'Восстанавливаем связь',
   offlineDescription:'Подключение браузера сохранено. LUCH продолжит работу автоматически, когда соединение восстановится.',
-  connectedReadyHeadline:'Всё готово. Просто поручайте.',
+  connectedReadyHeadline:'Готов к вашим поручениям.',
   offlineHeadline:'Связь прервалась. Настройки сохранены.',
   offlineIntro:'LUCH восстанавливает соединение. Подключать аккаунт заново не нужно.',
-  connectedReadyIntro:'LUCH подключён. Продолжайте работу в своём привычном чате с ИИ.',
-  fullFooter:'LUCH может работать с обычными веб-вкладками до приостановки доступа. Запрошенные данные страницы могут передаваться вашему ИИ.',
+  connectedReadyIntro:'ИИ работает с обычными вкладками, кнопками и полями — без запросов на каждое действие.',
+  fullFooter:'ЛУЧ работает с обычными вкладками до приостановки или отключения. Данные открытых ИИ страниц могут передаваться этому ИИ.',
   permissionDenied:'Разрешение Chrome не предоставлено.',
   error:'Произошла ошибка.',codePlaceholder:'••••••••'
  }
 };
-let lang=(localStorage.getItem('luch_locale')||((navigator.language||'en').toLowerCase().startsWith('ru')?'ru':'en'));
+// English is the product default; explicit user selections are persisted.
+let lang=localStorage.getItem('luch_locale')||'en';
 if(!strings[lang])lang='en';
 const t=key=>strings[lang][key];
 function setTexts(){
  document.documentElement.lang=lang;
  const map={
+  'brand-name':'brandName','brand-subtitle':'brandSubtitle','feature-caption':'featureCaption',
   'eyebrow':'eyebrow','headline':'headline','intro':'intro',
   'setup-title':'setupTitle','setup-boundary':'setupBoundary',
   'pair-label':'pairLabel','pair':'pairButton','pair-hint':'pairHint',

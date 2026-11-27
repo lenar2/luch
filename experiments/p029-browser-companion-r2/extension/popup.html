@@ -3,16 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f7f6f0">
+  <meta name="theme-color" content="#143c43">
   <title>LUCH · Browser Companion</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-<main>
-  <header class="heading">
+<main class="app">
+  <header class="heading" aria-label="LUCH Browser Companion">
     <div class="brand">
-      <img src="assets/luch-brand-r22.svg" alt="" width="46" height="46">
-      <div><strong>LUCH</strong><span>Browser Companion</span></div>
+      <img class="brand-logo" src="assets/luch-brand-r22.svg" alt="LUCH brand logo" width="83" height="83">
+      <div class="brand-type">
+        <strong id="brand-name">LUCH</strong>
+        <span id="brand-subtitle">BROWSER COMPANION</span>
+      </div>
     </div>
     <select id="locale" aria-label="Language">
       <option value="en">EN</option>
@@ -20,29 +23,38 @@
     </select>
   </header>
 
+  <div class="brand-rule" aria-hidden="true"><span></span></div>
+
   <section class="hero">
-    <span id="eyebrow"></span>
+    <span id="eyebrow" class="eyebrow"></span>
     <h1 id="headline"></h1>
     <p id="intro"></p>
-    <div class="hero-illustration" aria-hidden="true"><img src="assets/connection-journey.svg" alt="" width="360" height="130"></div>
-    <div id="capabilities" class="capability-grid">
-      <div><span>01</span><b id="cap-read"></b></div>
-      <div><span>02</span><b id="cap-navigate"></b></div>
-      <div><span>03</span><b id="cap-interact"></b></div>
-      <div><span>04</span><b id="cap-capture"></b></div>
+    <div id="capabilities" class="capabilities" aria-label="Browser operations">
+      <div class="capabilities-count">
+        <strong id="feature-count">100</strong>
+        <span id="feature-caption">BROWSER OPERATIONS</span>
+      </div>
+      <ul class="capability-list">
+        <li><span aria-hidden="true">01</span><b id="cap-read"></b></li>
+        <li><span aria-hidden="true">02</span><b id="cap-navigate"></b></li>
+        <li><span aria-hidden="true">03</span><b id="cap-interact"></b></li>
+        <li><span aria-hidden="true">04</span><b id="cap-capture"></b></li>
+      </ul>
     </div>
   </section>
 
   <div class="connection" id="connection">
-    <span id="dot" class="dot"></span>
+    <span id="dot" class="dot" aria-hidden="true"></span>
     <b id="status" role="status" aria-live="polite"></b>
     <small id="scope"></small>
   </div>
   <p id="feedback" role="alert" aria-live="polite"></p>
 
   <section id="pairing">
-    <label id="pair-label" for="pairCode"></label>
-    <p id="pair-hint" class="hint pair-leading-hint"></p>
+    <div class="pairing-heading">
+      <label id="pair-label" for="pairCode"></label>
+      <p id="pair-hint" class="hint pair-leading-hint"></p>
+    </div>
     <div class="actions">
       <input id="pairCode" type="text" inputmode="numeric" pattern="[0-9]{8}"
         autocomplete="off" maxlength="8" spellcheck="false" placeholder="••••••••">
@@ -66,53 +78,51 @@
       <small id="currentUrl" class="truncate"></small>
     </div>
     <div id="shareStatus" class="access-status" role="status" aria-live="polite"></div>
-    <div id="permission-explainer" class="journey-step" hidden>
-      <span class="step-kicker" id="permission-kicker"></span>
-      <h2 id="permission-heading"></h2>
+
+    <div id="permission-explainer" hidden>
+      <span id="permission-kicker"></span><h2 id="permission-heading"></h2>
       <p id="permission-description"></p>
-      <div class="permission-benefits">
-        <span id="permission-benefit-read"></span>
-        <span id="permission-benefit-action"></span>
-        <span id="permission-benefit-files"></span>
-      </div>
-      <p id="permission-footnote" class="permission-footnote"></p>
+      <div id="permission-benefit-read"></div><div id="permission-benefit-action"></div><div id="permission-benefit-files"></div>
+      <p id="permission-footnote"></p>
     </div>
-    <div id="ready-card" class="journey-step ready-step" hidden>
-      <span class="step-kicker" id="ready-kicker"></span>
+
+    <div id="ready-card" class="ready-step" hidden>
+      <span id="ready-kicker" class="section-kicker"></span>
       <h2 id="ready-heading"></h2>
       <p id="ready-description"></p>
-      <div class="prompt-suggestion" id="ready-prompt" role="note"></div>
+      <div id="ready-prompt" class="prompt-suggestion" role="note"></div>
     </div>
-    <div id="offline-card" class="journey-step offline-step" hidden>
-      <h2 id="offline-heading"></h2>
-      <p id="offline-description"></p>
+    <div id="offline-card" class="offline-step" hidden>
+      <h2 id="offline-heading"></h2><p id="offline-description"></p>
     </div>
+
     <div class="control-stack">
       <button id="grant" type="button" hidden></button>
       <button id="interact" type="button" class="interact" hidden></button>
       <button id="revoke" type="button" class="secondary"></button>
     </div>
-    <details id="advanced" class="advanced-browser">
+
+    <details id="advanced" class="advanced-browser" hidden>
       <summary id="advanced-title"></summary>
       <div class="advanced-content">
-      <h2 id="tabs-heading"></h2>
-      <p id="tabs-explain" class="hint"></p>
-      <button id="list-tabs" type="button" class="secondary"></button>
-      <div id="tab-list-wrap" hidden>
-        <ol id="tab-list"></ol>
-        <button id="share-tabs" type="button" class="interact" hidden></button>
-        <button id="unshare-tabs" type="button" class="secondary" hidden></button>
-      </div>
-      <div id="tabs-sharing-state" class="hint" role="status"></div>
-      <h2 id="cursor-heading" hidden></h2>
-      <p id="cursor-explain" class="hint" hidden></p>
-      <button id="enable-cursor" type="button" class="interact" hidden></button>
-      <button id="disable-cursor" type="button" class="secondary" hidden></button>
+        <h2 id="tabs-heading"></h2>
+        <p id="tabs-explain" class="hint"></p>
+        <button id="list-tabs" type="button" class="secondary"></button>
+        <div id="tab-list-wrap" hidden>
+          <ol id="tab-list"></ol>
+          <button id="share-tabs" type="button" hidden></button>
+          <button id="unshare-tabs" type="button" hidden></button>
+        </div>
+        <div id="tabs-sharing-state" class="hint" role="status"></div>
+        <h2 id="cursor-heading" hidden></h2>
+        <p id="cursor-explain" hidden></p>
+        <button id="enable-cursor" type="button" hidden></button>
+        <button id="disable-cursor" type="button" hidden></button>
       </div>
     </details>
+
     <p id="session-note" class="hint"></p>
     <p id="host-note" class="host-note"></p>
-    <div class="separation"></div>
     <button id="disconnect" type="button" class="danger"></button>
   </section>
 

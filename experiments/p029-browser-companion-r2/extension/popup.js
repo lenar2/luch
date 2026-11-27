@@ -3,9 +3,9 @@ const $=id=>document.getElementById(id);
 const strings={
  en:{
   eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Connect Chrome to your AI.',
-  intro:'Let your supported AI understand a page only after you approve it here. Full control requires one Chrome permission grant.',
-  headlineConnected:'LUCH controls your browser.',introConnected:'Enable full browser access once. After Chrome grants access, AI commands run without per-action popup clicks.',
+  headline:'Your AI can do more in the browser.',
+  intro:'Give your AI access to work with pages, find what matters, and help you finish tasks. You decide when it can act.',
+  headlineConnected:'One step from getting things done.',introConnected:'Allow browser access once. Then ask your AI to work on a page — no repeated clicks in LUCH.',
   offline:'Waiting for cloud connection',offlineScope:'RECONNECTING',offlineTab:'Your tab approval is saved. Actions will resume after reconnection.',
   advancedTitle:'More options · tab overview & precise pointer',
   revokePending:'Access to this tab is stopped on your device. Cloud sync will retry when online.',
@@ -13,15 +13,15 @@ const strings={
   caps:['Read & understand','Navigate pages','Interact with permission','Capture evidence'],
   paired:'Browser paired',notPaired:'Browser not paired',statusScope:'SECURE LUCH CLOUD',
   tabCapacityError:'Browser has more than 500 web tabs. Close some tabs to resume automatic coverage. Existing grants are still active.',
-  setupTitle:'Connect in three steps',
+  setupTitle:'Connect LUCH to your AI',
   setupSteps:[
-   'Connect LUCH in your existing supported AI using the setup link below.',
-   'Ask your AI: Create a browser pairing code. Approve the request.',
+   'Open LUCH in the AI chat you already use.',
+   'Ask the AI for a browser connection code.',
    'Enter the eight-digit code here within ten minutes.'
   ],
-  setupBoundary:'Your AI must support custom MCP connections for LUCH to work. You stay in your existing AI chat; there is no second LUCH chat and no personal model API key.',
+  setupBoundary:'Your AI must support custom MCP connections for LUCH to work. You stay in your familiar chat — no second chat or personal API key.',
   pairLabel:'One-time pairing code',pairButton:'Connect browser',
-  pairHint:'The code comes from your own AI chat. Never share it in messages to others.',
+  pairHint:'Ask your connected AI chat: “Create a browser pairing code.” It is valid for 10 minutes.',
   localSetup:'How to connect LUCH to your existing AI',help:'Check account & setup requirements',
   tabLabel:'Current tab',grant:'Allow reading on this tab',
   interact:'Enable full browser control',revoke:'Pause browser control',
@@ -29,7 +29,7 @@ const strings={
   read:'LUCH can read this tab',interacting:'LUCH can read and interact with this tab',
   sessionNote:'Full control remains active until you pause or disconnect it. Chrome permissions can also be revoked in browser settings.',
   hostNote:'In your connected AI chat, ask: “Read my approved tab.” If LUCH is not connected to your AI yet, follow the setup guide.',
-  footer:'Only approved tabs are shared. No cookie or browsing-history access. Page content you request may be sent to your authorized AI host.',
+  footer:'Nothing happens without your permission. LUCH does not ask for your browser history or cookies.',
   learn:'How browser access works',noTab:'Open a regular website to begin',
   statusUnknown:'Could not check browser status',working:'Checking browser…',
   codeDenied:'That code was not accepted. Request a new code from ChatGPT and try again.',
@@ -51,14 +51,30 @@ const strings={
   cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome requests the optional debugger permission only if you enable this feature. Interaction and pointer access are separate choices for this tab. This is not your computer’s physical mouse.',
   enableCursor:'Enable precise pointer for this tab',disableCursor:'Disable precise pointer',
   cursorNotReady:'Approve interactions on this tab first.',
+  permissionKicker:'ONE-TIME SETUP',
+  permissionHeading:'Allow LUCH to help you in Chrome',
+  permissionDescription:'Chrome will ask for your permission. Here is what your AI will be able to do:',
+  permissionBenefits:['Read open webpages','Click, type and navigate','Work with downloads'],
+  permissionFootnote:'Access covers ordinary HTTP(S) tabs until you pause or disconnect. Chrome keeps its own permission controls.',
+  readyKicker:'READY TO GO',
+  readyHeading:'Your browser is connected',
+  readyDescription:'Go back to your AI chat and try your first request:',
+  readyPrompt:'Read the open webpage and tell me what matters most.',
+  offlineHeading:'Your connection is coming back',
+  offlineDescription:'Your browser pairing is saved. LUCH will reconnect automatically when the cloud is available.',
+  connectedReadyHeadline:'Everything is ready. Just ask.',
+  offlineHeadline:'Connection interrupted. Your setup is safe.',
+  offlineIntro:'LUCH is reconnecting. You do not need to connect your account again.',
+  connectedReadyIntro:'LUCH is connected. Keep working in the AI chat you already know.',
+  fullFooter:'LUCH can access ordinary browser webpages until you pause it. Page information requested by your AI may be shared with that AI.',
   permissionDenied:'Chrome permission was not granted.',
   error:'Something went wrong.',codePlaceholder:'••••••••'
  },
  ru:{
   eyebrow:'LUCH / BROWSER COMPANION',
-  headline:'Подключите Chrome к своему ИИ.',
-  intro:'Совместимый ИИ сможет понимать выбранную страницу только после вашего разрешения. Для полного управления нужно однократное разрешение Chrome.',
-  headlineConnected:'LUCH управляет браузером.',introConnected:'Один раз разрешите доступ ко всему браузеру. После разрешения Chrome команды ИИ выполняются без нажатий в расширении.',
+  headline:'Ваш ИИ может больше в браузере.',
+  intro:'Дайте своему ИИ возможность работать со страницами, находить нужное и помогать с задачами. Вы решаете, когда он может действовать.',
+  headlineConnected:'Один шаг — и можно поручать дела.',introConnected:'Один раз разрешите доступ браузеру. Затем давайте задания своему ИИ без повторных подтверждений в LUCH.',
   offline:'Ожидание подключения к облаку',offlineScope:'НЕТ СВЯЗИ',offlineTab:'Разрешения сохранены. Действия возобновятся после восстановления связи.',
   advancedTitle:'Дополнительно · вкладки и точный курсор',
   revokePending:'На этом устройстве доступ к вкладке закрыт. Синхронизация с облаком повторится после восстановления связи.',
@@ -66,15 +82,15 @@ const strings={
   caps:['Чтение и анализ','Переходы по страницам','Действия с разрешения','Снимки и проверка'],
   paired:'Браузер подключён',notPaired:'Браузер не подключён',statusScope:'ЗАЩИЩЁННЫЙ LUCH CLOUD',
   tabCapacityError:'В браузере больше 500 веб-вкладок. Закройте часть вкладок для возобновления полного покрытия. Ранее разрешённые вкладки остаются активными.',
-  setupTitle:'Подключение за три шага',
+  setupTitle:'Соедините LUCH с вашим ИИ',
   setupSteps:[
-   'Подключите LUCH в привычном совместимом ИИ по инструкции ниже.',
-   'Напишите ИИ: «Создай код подключения браузера». Разрешите этот запрос.',
-   'Введите восемь цифр здесь в течение десяти минут.'
+   'Откройте LUCH в том чате с ИИ, которым уже пользуетесь.',
+   'Попросите ИИ создать код подключения браузера.',
+   'Введите восемь цифр ниже в течение десяти минут.'
   ],
-  setupBoundary:'Нужна поддержка пользовательского MCP в вашем ИИ и тарифе. Вы остаетесь в привычном чате: отдельный чат LUCH и личный API-ключ не нужны.',
+  setupBoundary:'Нужна поддержка пользовательского MCP в вашем ИИ и тарифе. Вы остаётесь в привычном чате — отдельный чат LUCH и личный API-ключ не нужны.',
   pairLabel:'Одноразовый код подключения',pairButton:'Подключить браузер',
-  pairHint:'Код появится в вашем чате с ИИ. Не отправляйте его другим людям.',
+  pairHint:'Попросите свой ИИ: «Создай код подключения браузера». Код действует 10 минут.',
   localSetup:'Как подключить LUCH к существующему ИИ',help:'Проверить требования к аккаунту и подключению',
   tabLabel:'Текущая вкладка',grant:'Разрешить чтение этой вкладки',
   interact:'Включить полное управление браузером',revoke:'Приостановить управление',
@@ -82,7 +98,7 @@ const strings={
   read:'LUCH может читать эту вкладку',interacting:'LUCH может читать и взаимодействовать с вкладкой',
   sessionNote:'Полное управление работает до приостановки или отключения. Разрешения Chrome можно отозвать в настройках браузера.',
   hostNote:'В подключённом ИИ напишите: «Прочитай разрешённую вкладку». Если LUCH ещё не добавлен в ИИ, сначала откройте инструкцию подключения.',
-  footer:'Передаются только разрешённые вкладки. Нет доступа к cookie и истории браузера. Запрошенное содержимое страницы может быть передано авторизованному ИИ-клиенту.',
+  footer:'Вы управляете доступом. LUCH не запрашивает историю браузера и cookie-файлы.',
   learn:'Как работает доступ к браузеру',noTab:'Откройте обычный сайт',
   statusUnknown:'Не удалось проверить состояние браузера',working:'Проверка браузера…',
   codeDenied:'Код не принят. Запросите новый код в ChatGPT и повторите попытку.',
@@ -104,6 +120,22 @@ const strings={
   cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Только при его включении Chrome запросит дополнительное разрешение отладчика. Действия на вкладке разрешаются отдельно. Это не физическая мышь компьютера.',
   enableCursor:'Включить точный курсор на этой вкладке',disableCursor:'Выключить точный курсор',
   cursorNotReady:'Сначала разрешите действия на этой вкладке.',
+  permissionKicker:'ПОСЛЕДНИЙ ШАГ',
+  permissionHeading:'Разрешите LUCH помогать в браузере',
+  permissionDescription:'Chrome покажет системное окно. Вы разрешаете своему ИИ:',
+  permissionBenefits:['Читать веб-страницы','Нажимать, вводить текст и переходить','Работать со скачиваниями'],
+  permissionFootnote:'Доступ ко всем обычным веб-вкладкам сохранится до «Приостановить» или «Отключить». Разрешения всегда можно изменить в Chrome.',
+  readyKicker:'ВСЁ ГОТОВО',
+  readyHeading:'Браузер подключён',
+  readyDescription:'Вернитесь в привычный чат с ИИ и попробуйте первое поручение:',
+  readyPrompt:'Прочитай открытую страницу и расскажи самое важное.',
+  offlineHeading:'Восстанавливаем связь',
+  offlineDescription:'Подключение браузера сохранено. LUCH продолжит работу автоматически, когда соединение восстановится.',
+  connectedReadyHeadline:'Всё готово. Просто поручайте.',
+  offlineHeadline:'Связь прервалась. Настройки сохранены.',
+  offlineIntro:'LUCH восстанавливает соединение. Подключать аккаунт заново не нужно.',
+  connectedReadyIntro:'LUCH подключён. Продолжайте работу в своём привычном чате с ИИ.',
+  fullFooter:'LUCH может работать с обычными веб-вкладками до приостановки доступа. Запрошенные данные страницы могут передаваться вашему ИИ.',
   permissionDenied:'Разрешение Chrome не предоставлено.',
   error:'Произошла ошибка.',codePlaceholder:'••••••••'
  }
@@ -122,14 +154,20 @@ function setTexts(){
   'scope':'statusScope','session-note':'sessionNote','host-note':'hostNote',
   'learn':'learn','advanced-title':'advancedTitle',
   'tabs-heading':'tabsHeading','tabs-explain':'tabsExplain','list-tabs':'listTabs',
-  'share-tabs':'shareTabs','unshare-tabs':'unshareTabs','cursor-heading':'cursorHeading',
+  'share-tabs':'shareTabs','unshare-tabs':'unshareTabs',
+  'permission-kicker':'permissionKicker','permission-heading':'permissionHeading',
+  'permission-description':'permissionDescription','permission-footnote':'permissionFootnote',
+  'ready-kicker':'readyKicker','ready-heading':'readyHeading','ready-description':'readyDescription',
+  'ready-prompt':'readyPrompt','offline-heading':'offlineHeading','offline-description':'offlineDescription',
+  'cursor-heading':'cursorHeading',
   'cursor-explain':'cursorExplain','enable-cursor':'enableCursor','disable-cursor':'disableCursor'
  };
  for(const [id,key] of Object.entries(map))$(id).textContent=t(key);
  const steps=$('setup-steps');steps.replaceChildren();
  for(const value of t('setupSteps')){const item=document.createElement('li');item.textContent=value;steps.appendChild(item)}
  ['read','navigate','interact','capture'].forEach((key,index)=>$('cap-'+key).textContent=t('caps')[index]);
- $('pairCode').placeholder=t('codePlaceholder');
+ ['read','action','files'].forEach((key,i)=>$('permission-benefit-'+key).textContent=t('permissionBenefits')[i]);
+  $('pairCode').placeholder=t('codePlaceholder');
  $('pairCode').setAttribute('aria-label',t('pairLabel'));
  $('local-setup').textContent=t('localSetup');
  $('local-setup').href=(lang==='ru'?'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md':'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md');
@@ -141,6 +179,9 @@ function call(message){return chrome.runtime.sendMessage(message).then(r=>{if(!r
 function friendlyError(value){
  const raw=String(value||t('error'));
  const code=raw.toUpperCase();
+  if(code.includes('BROWSER_WIDE_PERMISSION_REQUIRED')||code.includes('BROWSER_CAPABILITIES_PERMISSION_REQUIRED')||code.includes('ONLY PERMISSIONS SPECIFIED IN THE MANIFEST'))
+   return t('permissionDenied');
+  if(code.includes('BROWSER_TAB_CAPACITY_EXCEEDED'))return t('tabCapacityError');
  if(code.includes('PAIRING_DENIED'))return t('codeDenied');
  if(code.includes('PAIRING_UNAVAILABLE')||code.includes('PAIRING_CODE_INVALID_OR_EXPIRED'))return t('codeExpired');
  if(code.includes('ALREADY_PAIRED'))return t('alreadyPaired');
@@ -156,8 +197,15 @@ async function refresh(){
   const connected=r.connected===true,online=connected&&r.online!==false;
   document.body.classList.toggle('is-connected',connected);
   $('pairing').hidden=connected;$('controls').hidden=!connected;
-  $('headline').textContent=connected?t('headlineConnected'):t('headline');
-  $('intro').textContent=connected?t('introConnected'):t('intro');
+  $('tab-box').hidden=!r.fullMode;
+  $('shareStatus').hidden=!r.fullMode;
+  const ready=connected&&online&&r.fullMode,offline=connected&&!online;
+  $('headline').textContent=offline?t('offlineHeadline'):(ready?t('connectedReadyHeadline'):(connected?t('headlineConnected'):t('headline')));
+  $('intro').textContent=offline?t('offlineIntro'):(ready?t('connectedReadyIntro'):(connected?t('introConnected'):t('intro')));
+  $('permission-explainer').hidden=!connected||!online||!!r.fullMode;
+  $('ready-card').hidden=!ready;
+  $('offline-card').hidden=!connected||online;
+  $('footer').textContent=r.fullMode?t('fullFooter'):t('footer');
   $('status').textContent=!connected?t('notPaired'):(online?t('paired'):t('offline'));
   $('scope').textContent=online?t('statusScope'):(connected?t('offlineScope'):t('statusScope'));
   $('dot').classList.toggle('connected',online);
@@ -183,6 +231,7 @@ async function refresh(){
  }catch(e){
   document.body.classList.remove('is-connected');
   $('pairing').hidden=false;$('controls').hidden=true;
+  $('permission-explainer').hidden=true;$('ready-card').hidden=true;$('offline-card').hidden=true;
   $('status').textContent=t('statusUnknown');$('scope').textContent=t('statusScope');
   $('dot').classList.remove('connected','offline');
   $('connection').classList.remove('offline');

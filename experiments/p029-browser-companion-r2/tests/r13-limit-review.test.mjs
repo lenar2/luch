@@ -23,7 +23,7 @@ function createWorker(tabCount=125){
   async remove(key){for(const k of (Array.isArray(key)?key:[key]))delete storage[scope][k]}
  });
  const chrome={
-  runtime:{id:'local-extension',getManifest:()=>({version:'0.8.3'}),onMessage:{addListener:cb=>handlers.msg=cb}},
+  runtime:{id:'local-extension',getManifest:()=>({version:'0.8.4'}),onMessage:{addListener:cb=>handlers.msg=cb}},
   storage:{local:persistence('local'),session:persistence('session')},
   permissions:{contains:async()=>true,onRemoved:{addListener:cb=>handlers.permissions=cb}},
   tabs:{

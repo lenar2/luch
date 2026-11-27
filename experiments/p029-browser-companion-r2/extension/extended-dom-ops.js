@@ -9,11 +9,17 @@ function luchExtendedDomExecutor({op,args={}}){
   if(!selector)throw Error('SELECTOR_REQUIRED');
   let el;try{el=document.querySelector(selector)}catch{throw Error('INVALID_SELECTOR')}
   if(!el)throw Error('ELEMENT_NOT_FOUND');
-  if(el.closest?.('[data-luch-no-ai],input[type="password"],input[type="file"],[autocomplete="current-password"],[autocomplete="new-password"]'))throw Error('SENSITIVE_ELEMENT_DENIED');
+  if(secretField(el)||el.closest?.('[data-luch-no-ai]'))throw Error('SENSITIVE_ELEMENT_DENIED');
   return el;
  };
  const describe=el=>({tag:el.tagName.toLowerCase(),id:short(el.id),role:short(el.getAttribute('role')),text:short(el.innerText||el.textContent,160),name:short(el.getAttribute('name')),type:short(el.getAttribute('type'))});
- const sensitive=el=>el.matches?.('input[type="password"],input[type="file"],[autocomplete="current-password"],[autocomplete="new-password"],[data-luch-no-ai]')||el.closest?.('[data-luch-no-ai]');
+ const secretField=el=>{
+  const id=String(el.name||el.id||el.getAttribute?.('autocomplete')||'');
+  return /(?:pass(?:word|key)?|secret|token|otp|one[-_ ]?time|two[-_ ]?factor|2fa|mfa|recovery|verification|csrf|auth(?:orization|entication)?|api[-_ ]?key)/i.test(id)||
+   el.matches?.('input[type="password"],input[type="file"],input[type="hidden"],[autocomplete="one-time-code"],[autocomplete="current-password"],[autocomplete="new-password"]');
+ };
+ const sensitive=el=>secretField(el)||el.closest?.('[data-luch-no-ai]')||el.matches?.('[data-luch-no-ai]');
+
  const limited=nodes=>Array.from(nodes).filter(el=>!sensitive(el)).slice(0,maxItems);
  const rect=el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,top:r.top,left:r.left,bottom:r.bottom,right:r.right}};
  const css=el=>getComputedStyle(el);
@@ -51,7 +57,8 @@ function luchExtendedDomExecutor({op,args={}}){
   }
   if(op==='get_form_values'){
    const form=find();if(form.tagName!=='FORM')throw Error('FORM_REQUIRED');
-   return result(limited(form.querySelectorAll('input,textarea,select')).map(el=>({name:short(el.name),type:short(el.type),value:short(valueOf(el),1000),checked:el.checked===true})));
+   return result(limited(form.querySelectorAll('input,textarea,select')).filter(el=>!secretField(el))
+    .map(el=>({name:short(el.name),type:short(el.type),value:short(valueOf(el),1000),checked:el.checked===true})));
   }
   if(op==='get_element_state'){
    const el=find();return result({...describe(el),disabled:!!el.disabled,required:!!el.required,checked:!!el.checked,selected:!!el.selected,hidden:!!el.hidden,focused:document.activeElement===el,ariaExpanded:el.getAttribute('aria-expanded'),ariaPressed:el.getAttribute('aria-pressed')});
@@ -70,7 +77,22 @@ function luchExtendedDomExecutor({op,args={}}){
   }
   if(op==='get_iframes')return result(limited(document.querySelectorAll('iframe,frame')).map(el=>({title:short(el.title),name:short(el.name),src:safeUrl(el.src),rect:rect(el)})));
   if(op==='get_dom_statistics')return result({elements:document.getElementsByTagName('*').length,links:document.links.length,forms:document.forms.length,images:document.images.length,buttons:document.querySelectorAll('button,[role="button"]').length,inputs:document.querySelectorAll('input,textarea,select').length,iframes:document.querySelectorAll('iframe').length});
-  if(op==='get_selected_html'){const selection=window.getSelection();if(!selection?.rangeCount)return result({html:'',text:''});const box=document.createElement('div');box.appendChild(selection.getRangeAt(0).cloneContents());return result({html:short(box.innerHTML,20000),text:short(selection.toString(),20000)})}
+  if(op==='get_selected_html'){
+   const selection=window.getSelection();
+   if(!selection?.rangeCount)return result({html:'',text:''});
+   const box=document.createElement('div');
+   box.appendChild(selection.getRangeAt(0).cloneContents());
+   // Do not export arbitrary DOM attributes: a default password, hidden CSRF
+   // token or opaque session identifier may be embedded in the HTML itself.
+   for(const node of [...box.querySelectorAll('*')]){
+    if(sensitive(node)){node.replaceWith(document.createTextNode('[redacted]'));continue}
+    if(['SCRIPT','STYLE','TEMPLATE','IFRAME','OBJECT','EMBED'].includes(node.tagName)){
+     node.remove();continue
+    }
+    for(const attr of [...node.attributes])node.removeAttribute(attr.name);
+   }
+   return result({html:short(box.innerHTML,20000),text:short(box.textContent,20000)});
+  }
   if(op==='get_performance'){const nav=performance.getEntriesByType('navigation')[0];return result({navigation:nav?{type:nav.type,duration:nav.duration,domContentLoaded:nav.domContentLoadedEventEnd,loadEnd:nav.loadEventEnd,transferSize:nav.transferSize}:null,now:performance.now()})}
   if(op==='get_resources')return result(performance.getEntriesByType('resource').slice(-80).map(r=>({name:safeUrl(r.name),type:short(r.initiatorType),duration:r.duration,transferSize:r.transferSize||0})));
   if(op==='get_active_element')return result(document.activeElement?describe(document.activeElement):null);

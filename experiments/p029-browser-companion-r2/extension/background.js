@@ -297,6 +297,7 @@ async function publishOverviewOnChange(){
 }
 
 async function disableFullMode(){
+ revocationSerial++; // Synchronously invalidate in-flight commands BEFORE awaits.
  await chrome.storage.local.remove('fullMode');
  // Prevent a queued tab event from restoring grants after the owner pauses.
  if(fullTabEventTimer!==null){clearTimeout(fullTabEventTimer);fullTabEventTimer=null}
@@ -331,6 +332,7 @@ async function grantActive(scope='read'){
  return {message:scope==='interact'?'Interactions allowed on this tab until you revoke':'This tab is available to LUCH until you revoke'};
 }
 async function revokeActive(){
+ revocationSerial++;
  const s=await state(),t=await activeTab();
  if(!t||!s.grants[t.id])throw new Error('NO_APPROVED_TAB_TO_REVOKE');
  // Drop the local grant first: the MV3 worker must deny all new commands
@@ -342,6 +344,7 @@ async function revokeActive(){
  return {message:'Sharing stopped for this tab',pendingSync:false};
 }
 async function disconnect(){
+ revocationSerial++;
  const s=await state();let cloudRevoked=!s.auth;
  // Stop locally FIRST, so a queued browser command cannot begin while the
  // remote token is being invalidated. Never claim remote revoke on outage.
@@ -350,7 +353,9 @@ async function disconnect(){
  if(s.auth){try{await api('/extension/disconnect',{method:'POST',token:s.auth.token});cloudRevoked=true}catch{}}
  return {message:cloudRevoked?'Browser disconnected from LUCH':'Browser access stopped locally; revoke the device in your AI when online',cloudRevoked};
 }
+let revocationSerial=0;
 async function performJob(job){
+ const commandEpoch=revocationSerial;
  // A claimed job is NOT consent. Re-read live extension session after every
  // poll so revoking a tab or disconnecting stops pending commands.
  const current=await state();
@@ -364,12 +369,20 @@ async function performJob(job){
  let t;try{t=await chrome.tabs.get(g.tabId)}catch{return {ok:false,error:'TAB_CLOSED'}};
  if(originOf(t.url)!==g.origin)return {ok:false,error:'TAB_ORIGIN_CHANGED'};
  const args=job.args&&typeof job.args==='object'&&!Array.isArray(job.args)?job.args:{};
+ const ensureLive=async()=>{
+  if(commandEpoch!==revocationSerial)throw Error('USER_TAB_PERMISSION_REVOKED');
+  const fresh=(await state()).grants[g.tabId];
+  if(commandEpoch!==revocationSerial||!fresh||fresh.grantId!==g.grantId||
+     fresh.origin!==g.origin||(INTERACT.has(op)&&fresh.scope!=='interact'))
+   throw Error('USER_TAB_PERMISSION_REVOKED');
+ };
  try{
   if(PAGE_READ.has(op)||PAGE_WRITE.has(op)){
    const latest=(await state()).grants[g.tabId];
    if(!latest||latest.grantId!==g.grantId||latest.origin!==g.origin||
       (INTERACT.has(op)&&latest.scope!=='interact'))
     return {ok:false,error:'USER_TAB_PERMISSION_REVOKED'};
+   await ensureLive();
    const r=await chrome.scripting.executeScript({target:{tabId:g.tabId},func:EXTENDED_DOM.has(op)?self.luchExtendedDomExecutor:self.luchDomExecutor,args:[{op,args}]});
    const result=r?.[0]?.result;
    if(!result||!result.ok)return {ok:false,error:result?.error||'NO_SCRIPT_RESULT'};
@@ -411,19 +424,19 @@ async function performJob(job){
   if(op==='get_tab_details')return {ok:true,data:{id:t.id,title:safeTitle(t.title),url:cleanTabUrl(t.url),status:t.status,pinned:!!t.pinned,muted:!!t.mutedInfo?.muted,audible:!!t.audible,discarded:!!t.discarded,index:t.index,windowId:t.windowId,groupId:t.groupId}};
   if(['duplicate_tab','pin_tab','unpin_tab','mute_tab','unmute_tab','move_tab','discard_tab','set_zoom'].includes(op)){
    if(op==='duplicate_tab'){
-    const next=await chrome.tabs.duplicate(g.tabId);
+    await ensureLive();const next=await chrome.tabs.duplicate(g.tabId);
     await chrome.storage.session.set({ownedTabs:[...owned,next.id]});
     return {ok:true,data:{tabId:next.id,duplicated:true,requiresApproval:!(await fullModeEnabled())}};
    }
-   if(op==='pin_tab'||op==='unpin_tab'){await chrome.tabs.update(g.tabId,{pinned:op==='pin_tab'});return {ok:true,data:{pinned:op==='pin_tab'}}}
-   if(op==='mute_tab'||op==='unmute_tab'){await chrome.tabs.update(g.tabId,{muted:op==='mute_tab'});return {ok:true,data:{muted:op==='mute_tab'}}}
+   if(op==='pin_tab'||op==='unpin_tab'){await ensureLive();await chrome.tabs.update(g.tabId,{pinned:op==='pin_tab'});return {ok:true,data:{pinned:op==='pin_tab'}}}
+   if(op==='mute_tab'||op==='unmute_tab'){await ensureLive();await chrome.tabs.update(g.tabId,{muted:op==='mute_tab'});return {ok:true,data:{muted:op==='mute_tab'}}}
    if(op==='move_tab'){
     const index=Number(args.index);if(!Number.isSafeInteger(index)||index<0||index>10000)throw Error('INVALID_TAB_INDEX');
     const config={index};if(args.windowId!==undefined){const id=Number(args.windowId);if(!Number.isSafeInteger(id)||id<0)throw Error('INVALID_WINDOW_ID');config.windowId=id}
-    const moved=await chrome.tabs.move(g.tabId,config);return {ok:true,data:{index:moved.index,windowId:moved.windowId}};
+    await ensureLive();const moved=await chrome.tabs.move(g.tabId,config);return {ok:true,data:{index:moved.index,windowId:moved.windowId}};
    }
    if(op==='discard_tab'){
-    const discarded=await chrome.tabs.discard(g.tabId);
+    await ensureLive();const discarded=await chrome.tabs.discard(g.tabId);
     if(!discarded?.discarded)throw Error('TAB_DISCARD_NOT_CONFIRMED');
     const replaced=discarded.id!==g.tabId;
     // Opera and Chromium may replace tab IDs while discarding. In owner-wide
@@ -441,7 +454,7 @@ async function performJob(job){
    }
    if(op==='set_zoom'){
     const factor=Number(args.factor);if(!Number.isFinite(factor)||factor<0.25||factor>5)throw Error('INVALID_ZOOM_FACTOR');
-    await chrome.tabs.setZoom(g.tabId,factor);return {ok:true,data:{factor}};
+    await ensureLive();await chrome.tabs.setZoom(g.tabId,factor);return {ok:true,data:{factor}};
    }
   }
   if(op==='downloads_list'||op==='download_url'){
@@ -452,7 +465,7 @@ async function performJob(job){
    }
    const url=cleanUrl(args.url);let filename;
    if(args.filename!==undefined){filename=String(args.filename);if(!filename||filename.length>160||filename.includes('..')||filename.startsWith('/')||filename.includes('\\'))throw Error('INVALID_DOWNLOAD_FILENAME')}
-   const id=await chrome.downloads.download({url,...(filename?{filename}:{}),conflictAction:'uniquify'});
+   await ensureLive();const id=await chrome.downloads.download({url,...(filename?{filename}:{}),conflictAction:'uniquify'});
    return {ok:true,data:{downloadId:id,started:true}};
   }
   if(op==='wait_for_url'||op==='wait_for_load'){
@@ -492,7 +505,7 @@ async function performJob(job){
     await chrome.debugger.attach(debuggerTab,'1.3');attached=true;
     for(const type of ['keyDown','keyUp']){
      const live=await chrome.tabs.get(g.tabId),s=await state(),grant=s.grants[g.tabId];
-     if(originOf(live.url)!==g.origin||grant?.grantId!==g.grantId||grant?.scope!=='interact')throw Error('TAB_PERMISSION_REVOKED');
+     if(commandEpoch!==revocationSerial||originOf(live.url)!==g.origin||grant?.grantId!==g.grantId||grant?.scope!=='interact')throw Error('TAB_PERMISSION_REVOKED');
      // A CDP keyDown without the text field only emits a key event. On
      // ordinary editable inputs it does NOT insert printable characters.
      const printable=single||(key in punctuation)||key==='Space';
@@ -513,24 +526,24 @@ async function performJob(job){
    if(image.length>520000)throw new Error('SCREENSHOT_TOO_LARGE');
    return {ok:true,data:{dataUrl:image,mimeType:'image/jpeg',source:'USER_CONSENTED_TAB'}};
   }
-  if(op==='navigate'){const to=cleanUrl(args.url);await chrome.tabs.update(g.tabId,{url:to});return {ok:true,data:{navigating:true,url:to}}}
-  if(op==='reload'){await chrome.tabs.reload(g.tabId);return {ok:true,data:{reloading:true}}}
-  if(op==='back'||op==='forward'){if(op==='back')await chrome.tabs.goBack(g.tabId);else await chrome.tabs.goForward(g.tabId);return {ok:true,data:{navigating:true}}}
-  if(op==='activate_tab'){await chrome.tabs.update(g.tabId,{active:true});return {ok:true,data:{active:true}}}
+  if(op==='navigate'){const to=cleanUrl(args.url);await ensureLive();await chrome.tabs.update(g.tabId,{url:to});return {ok:true,data:{navigating:true,url:to}}}
+  if(op==='reload'){await ensureLive();await chrome.tabs.reload(g.tabId);return {ok:true,data:{reloading:true}}}
+  if(op==='back'||op==='forward'){await ensureLive();if(op==='back')await chrome.tabs.goBack(g.tabId);else await chrome.tabs.goForward(g.tabId);return {ok:true,data:{navigating:true}}}
+  if(op==='activate_tab'){await ensureLive();await chrome.tabs.update(g.tabId,{active:true});return {ok:true,data:{active:true}}}
   if(op==='close_tab'){
    // The owner-authorized interactive grant permits closing this tab.
-   await chrome.tabs.remove(g.tabId);return {ok:true,data:{closed:true}};
+   await ensureLive();await chrome.tabs.remove(g.tabId);return {ok:true,data:{closed:true}};
   }
   if(op==='new_tab'||op==='new_window'){
    const url=cleanUrl(args.url);
-   if(op==='new_tab'){const added=await chrome.tabs.create({url,active:false});await chrome.storage.session.set({ownedTabs:[...owned,added.id]});return {ok:true,data:{opened:true,tabId:added.id,requiresApproval:!(await fullModeEnabled())}}}
-   const w=await chrome.windows.create({url,focused:false});return {ok:true,data:{opened:true,windowId:w.id,requiresApproval:!(await fullModeEnabled())}};
+   if(op==='new_tab'){await ensureLive();const added=await chrome.tabs.create({url,active:false});await chrome.storage.session.set({ownedTabs:[...owned,added.id]});return {ok:true,data:{opened:true,tabId:added.id,requiresApproval:!(await fullModeEnabled())}}}
+   await ensureLive();const w=await chrome.windows.create({url,focused:false});return {ok:true,data:{opened:true,windowId:w.id,requiresApproval:!(await fullModeEnabled())}};
   }
   if(op==='window_set'){
    const values={};for(const k of ['width','height','left','top']){if(args[k]!==undefined){
     const v=Number(args[k]);if(!Number.isSafeInteger(v)||(k==='width'||k==='height')&&v<100)throw new Error('INVALID_WINDOW_RECT');values[k]=v;
    }}if(!Object.keys(values).length)throw new Error('WINDOW_RECT_REQUIRED');
-   await chrome.windows.update(t.windowId,values);return {ok:true,data:{updated:true}};
+   await ensureLive();await chrome.windows.update(t.windowId,values);return {ok:true,data:{updated:true}};
   }
  }catch(e){return {ok:false,error:String(e.message||e).slice(0,100)}}
  return {ok:false,error:'OPERATION_NOT_IMPLEMENTED'};

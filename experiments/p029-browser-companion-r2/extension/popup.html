@@ -11,7 +11,7 @@
 <main>
   <header class="heading">
     <div class="brand">
-      <img src="assets/icon-48.png" alt="" width="40" height="40">
+      <img src="assets/luch-brand-r22.svg" alt="" width="46" height="46">
       <div><strong>LUCH</strong><span>Browser Companion</span></div>
     </div>
     <select id="locale" aria-label="Language">
@@ -24,6 +24,7 @@
     <span id="eyebrow"></span>
     <h1 id="headline"></h1>
     <p id="intro"></p>
+    <div class="hero-illustration" aria-hidden="true"><img src="assets/connection-journey.svg" alt="" width="360" height="130"></div>
     <div id="capabilities" class="capability-grid">
       <div><span>01</span><b id="cap-read"></b></div>
       <div><span>02</span><b id="cap-navigate"></b></div>
@@ -40,18 +41,18 @@
   <p id="feedback" role="alert" aria-live="polite"></p>
 
   <section id="pairing">
-    <div class="setup-card">
-      <h2 id="setup-title"></h2>
-      <ol id="setup-steps"></ol>
-      <p id="setup-boundary" class="boundary-note"></p>
-    </div>
     <label id="pair-label" for="pairCode"></label>
+    <p id="pair-hint" class="hint pair-leading-hint"></p>
     <div class="actions">
       <input id="pairCode" type="text" inputmode="numeric" pattern="[0-9]{8}"
         autocomplete="off" maxlength="8" spellcheck="false" placeholder="••••••••">
       <button id="pair" type="button" disabled></button>
     </div>
-    <p id="pair-hint" class="hint"></p>
+    <details class="setup-card setup-details">
+      <summary id="setup-title"></summary>
+      <ol id="setup-steps"></ol>
+      <p id="setup-boundary" class="boundary-note"></p>
+    </details>
     <div class="links">
       <a id="local-setup" href="https://luch.lenarsalimov.ru/en/connect/" target="_blank" rel="noopener noreferrer"></a>
       <a id="help" href="https://luch.lenarsalimov.ru/en/connect/" target="_blank" rel="noopener noreferrer"></a>
@@ -59,12 +60,33 @@
   </section>
 
   <section id="controls" hidden>
-    <div class="tab-box">
+    <div id="tab-box" class="tab-box">
       <span id="tab-label"></span>
       <b id="currentTab" class="truncate"></b>
       <small id="currentUrl" class="truncate"></small>
     </div>
     <div id="shareStatus" class="access-status" role="status" aria-live="polite"></div>
+    <div id="permission-explainer" class="journey-step" hidden>
+      <span class="step-kicker" id="permission-kicker"></span>
+      <h2 id="permission-heading"></h2>
+      <p id="permission-description"></p>
+      <div class="permission-benefits">
+        <span id="permission-benefit-read"></span>
+        <span id="permission-benefit-action"></span>
+        <span id="permission-benefit-files"></span>
+      </div>
+      <p id="permission-footnote" class="permission-footnote"></p>
+    </div>
+    <div id="ready-card" class="journey-step ready-step" hidden>
+      <span class="step-kicker" id="ready-kicker"></span>
+      <h2 id="ready-heading"></h2>
+      <p id="ready-description"></p>
+      <div class="prompt-suggestion" id="ready-prompt" role="note"></div>
+    </div>
+    <div id="offline-card" class="journey-step offline-step" hidden>
+      <h2 id="offline-heading"></h2>
+      <p id="offline-description"></p>
+    </div>
     <div class="control-stack">
       <button id="grant" type="button"></button>
       <button id="interact" type="button" class="interact"></button>

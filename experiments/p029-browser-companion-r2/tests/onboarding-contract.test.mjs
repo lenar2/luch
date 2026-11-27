@@ -14,7 +14,7 @@ test('popup makes browser pairing and AI-host authorization distinct',()=>{
  assert.match(html,/id="setup-boundary"/);
  assert.match(html,/id="setup-steps"/);
  assert.match(js,/Your AI must support custom MCP connections for LUCH to work/);
- assert.match(js,/existing AI chat/i);
+ assert.match(js,/familiar chat/i);
  assert.match(js,/Нужна поддержка пользовательского MCP в вашем ИИ и тарифе/);
  assert.match(js,/отдельный чат LUCH и личный API-ключ не нужны/);
  assert.match(js,/Browser paired/);

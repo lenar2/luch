@@ -38,7 +38,7 @@ test('popup executes first render without undefined locale and uses existing-cha
  assert.equal(item('local-setup').href,
   'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.md');
  assert.match(item('setup-steps').textContent||'',/^$/);
- assert.match(item('setup-boundary').textContent,/existing AI chat/);
+ assert.match(item('setup-boundary').textContent,/familiar chat/);
 });
 
 test('Russian locale uses correct URL and real ten-minute code instructions',()=>{
@@ -54,7 +54,7 @@ test('connected/read-granted HEA view prioritizes approved tab and hides advance
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(item('status').textContent,'Browser paired');
  assert.equal(item('currentTab').textContent,'Example Domain');
- assert.equal(item('headline').textContent,'LUCH controls your browser.');
+ assert.equal(item('headline').textContent,'One step from getting things done.');
  assert.equal(item('pairing').hidden,true);
  assert.equal(item('controls').hidden,false);
  assert.equal(item('grant').hidden,true);

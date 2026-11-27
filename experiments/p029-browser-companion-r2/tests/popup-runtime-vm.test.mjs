@@ -8,7 +8,7 @@ import {resolve,dirname} from 'node:path';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const code=readFileSync(resolve(root,'extension/popup.js'),'utf8');
 
-function popup(locale='en',state={}){
+function popup(locale='en',state={},savedLocale=null){
  const elements=new Map();
  const item=(id)=>{
   if(!elements.has(id))elements.set(id,{
@@ -22,7 +22,7 @@ function popup(locale='en',state={}){
  const context={
   document:{documentElement:{lang:''},body:{classList:{toggle(){},remove(){}}},getElementById:item,createElement(tag){return item('created:'+tag+':'+elements.size)}},
   navigator:{language:locale},
-  localStorage:{getItem(){return null},setItem(){}},
+  localStorage:{getItem(){return savedLocale},setItem(){}},
   chrome:{
    runtime:{sendMessage:async()=>({ok:true,connected:false,online:false,tab:null,granted:false,scope:'read',preciseCursor:false,tabOverviewSharing:false,...state})},
    permissions:{request:async()=>false}
@@ -42,7 +42,7 @@ test('popup executes first render without undefined locale and uses existing-cha
 });
 
 test('Russian locale uses correct URL and real ten-minute code instructions',()=>{
- const {item}=popup('ru-RU');
+ const {item}=popup('ru-RU',{},'ru');
  assert.equal(item('local-setup').href,
   'https://github.com/lenar2/luch/blob/main/docs/CHATGPT_CONNECT.ru.md');
  assert.match(item('setup-boundary').textContent,/привычном чате/);
@@ -54,7 +54,7 @@ test('connected/read-granted HEA view prioritizes approved tab and hides advance
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(item('status').textContent,'Browser paired');
  assert.equal(item('currentTab').textContent,'Example Domain');
- assert.equal(item('headline').textContent,'Everything is ready. Just ask.');
+ assert.equal(item('headline').textContent,'Ready for your next task.');
  assert.equal(item('pairing').hidden,true);
  assert.equal(item('controls').hidden,false);
  assert.equal(item('grant').hidden,true);
@@ -66,7 +66,7 @@ test('connected/read-granted HEA view prioritizes approved tab and hides advance
 
 test('temporary cloud outage never implies user has unpaired or that remote actions work',async()=>{
  const {item}=popup('ru-RU',{connected:true,online:false,granted:true,scope:'interact',fullMode:true,
-  tab:{title:'Тестовая страница',url:'https://example.com/'}});
+  tab:{title:'Тестовая страница',url:'https://example.com/'}},'ru');
  await new Promise(resolve=>setImmediate(resolve));
  assert.equal(item('status').textContent,'Ожидание подключения к облаку');
  assert.equal(item('pairing').hidden,true);

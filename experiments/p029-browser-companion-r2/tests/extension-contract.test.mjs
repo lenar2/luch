@@ -14,7 +14,7 @@ const html=fs.readFileSync(path.join(ext,'popup.html'),'utf8');
 const popup=fs.readFileSync(path.join(ext,'popup.js'),'utf8');
 
 test('public identity is LUCH Browser Companion without QA and uses MV3',()=>{
- assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.8.7');
+ assert.equal(man.name,'LUCH Browser Companion');assert.equal(man.version,'0.8.9');
  assert.equal(man.manifest_version,3);
  assert.ok(!JSON.stringify({manifest:man,html}).includes('QA'));
  assert.ok(html.includes('id="revoke"')&&html.includes('id="disconnect"')&&html.includes('id="interact"'));
@@ -90,7 +90,7 @@ test('grants through service worker, isolated tab, broker error rollback, revoke
  }
  const pair=await send('pair',{code:'12345678'});assert.equal(pair.ok,true);
  // This one contract specifically exercises the historical manual grant API
- // while explicitly paused; the standard 0.8.7 path is automatic/global.
+ // while explicitly paused; the standard 0.8.9 path is automatic/global.
  assert.equal((await send('disable-full')).ok,true);
  const overview=await send('list-open-tabs');
  assert.equal(overview.ok,true);assert.equal(overview.tabs.length,2);

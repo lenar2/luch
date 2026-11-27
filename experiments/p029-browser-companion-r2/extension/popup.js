@@ -48,12 +48,12 @@ const strings={
   listTabs:'Show my open tabs',tabSwitch:'Switch to tab',shareTabs:'Let authorized LUCH AI see these tab names and addresses',
   unshareTabs:'Stop sharing the tab overview',tabsShared:'Tab titles and addresses are shared with your authorized LUCH AI. Page contents are not.',
   tabsPrivate:'Only you can see this list until you choose to share it with LUCH.',
-  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome requests the optional debugger permission only if you enable this feature. Interaction and pointer access are separate choices for this tab. This is not your computer’s physical mouse.',
+  cursorHeading:'Precise on-page pointer',cursorExplain:'Advanced mode. Chrome asks for debugger permission only when you enable precise pointer on the current tab. This also unlocks keyboard shortcuts. The pointer is inside the page, not your computer mouse.',
   enableCursor:'Enable precise pointer for this tab',disableCursor:'Disable precise pointer',
   cursorNotReady:'Approve interactions on this tab first.',
   permissionKicker:'ONE-TIME SETUP',
   permissionHeading:'Allow LUCH to help you in Chrome',
-  permissionDescription:'Chrome will ask for your permission. Here is what your AI will be able to do:',
+  permissionDescription:'Chrome will ask for site, tab and download access. Precise cursor and keyboard features use a separate advanced permission:',
   permissionBenefits:['Read open webpages','Click, type and navigate','Work with downloads'],
   permissionFootnote:'Access covers ordinary HTTP(S) tabs until you pause or disconnect. Chrome keeps its own permission controls.',
   readyKicker:'READY TO GO',
@@ -117,12 +117,12 @@ const strings={
   listTabs:'Показать мои вкладки',tabSwitch:'Перейти к вкладке',shareTabs:'Разрешить моему ИИ через LUCH видеть названия и адреса вкладок',
   unshareTabs:'Перестать передавать обзор вкладок',tabsShared:'Названия и адреса вкладок доступны авторизованному ИИ через LUCH. Содержимое страниц не передаётся.',
   tabsPrivate:'Пока это список только для вас. ИИ не получит его без отдельного разрешения.',
-  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Только при его включении Chrome запросит дополнительное разрешение отладчика. Действия на вкладке разрешаются отдельно. Это не физическая мышь компьютера.',
+  cursorHeading:'Точный курсор внутри страницы',cursorExplain:'Продвинутый режим. Только при включении точного курсора для текущей вкладки Chrome запросит разрешение отладчика. Оно также включает сочетания клавиш. Это курсор внутри страницы, не физическая мышь.',
   enableCursor:'Включить точный курсор на этой вкладке',disableCursor:'Выключить точный курсор',
   cursorNotReady:'Сначала разрешите действия на этой вкладке.',
   permissionKicker:'ПОСЛЕДНИЙ ШАГ',
   permissionHeading:'Разрешите LUCH помогать в браузере',
-  permissionDescription:'Chrome покажет системное окно. Вы разрешаете своему ИИ:',
+  permissionDescription:'Chrome запросит доступ к сайтам, вкладкам и загрузкам. Точный курсор и клавиатура потребуют отдельного разрешения в дополнительных настройках:',
   permissionBenefits:['Читать веб-страницы','Нажимать, вводить текст и переходить','Работать со скачиваниями'],
   permissionFootnote:'Доступ ко всем обычным веб-вкладкам сохранится до «Приостановить» или «Отключить». Разрешения всегда можно изменить в Chrome.',
   readyKicker:'ВСЁ ГОТОВО',
@@ -270,10 +270,11 @@ act('grant',()=>({op:'grant-active'}));
 $('interact').addEventListener('click',async()=>{
  $('interact').disabled=true;
  try{
-  // Exactly one owner gesture for Chrome's site, debugger and download grants.
+  // One owner gesture for normal site, tab and download access.
+  // Powerful debugger permission is requested separately for precise cursor.
   // Never simulate or circumvent the browser's own permission UI.
   const allowed=await chrome.permissions.request({
-   permissions:['tabs','debugger','downloads'],
+   permissions:['tabs','downloads'],
    origins:['http://*/*','https://*/*']
   });
   if(!allowed)throw Error(t('permissionDenied'));

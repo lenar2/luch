@@ -92,3 +92,90 @@ test('REGRESSION: pause blocks pin_tab after revocation',async()=>{
  assert.equal(env.tabs.get(id).pinned,undefined,'no side effect after revocation');
  console.log('R14_REVOCATION_RACE_BLOCKED',JSON.stringify({resultOk:result.ok,pinnedAfterPause:false,remainingGrants:0}));
 });
+
+
+test('R14.3 permission gate: optional debugger is not mandatory for ordinary control',async()=>{
+ const e=createWorker(2);
+ e.chrome.permissions.contains=async req=>!req.permissions?.includes('debugger');
+ const enabled=await e.message('enable-full');
+ assert.equal(enabled.ok,true,JSON.stringify(enabled));
+ const grants=e.storage.session.grants;
+ assert.equal(grants[10].preciseCursor,false);
+ assert.equal(grants[11].preciseCursor,false);
+ e.context.task={targetId:'ext:10:'+grants[10].grantId,op:'pointer_move',args:{x:12,y:12}};
+ const refused=await vm.runInContext('performJob(task)',e.context);
+ assert.equal(refused.ok,false);
+ assert.match(refused.error,/PRECISE_CURSOR_APPROVAL_REQUIRED/);
+ // Permission alone does not elevate other tabs.
+ e.chrome.permissions.contains=async()=>true;
+ const approved=await e.message('precise-cursor',{enabled:true});
+ assert.equal(approved.ok,true,JSON.stringify(approved));
+ assert.equal(e.storage.session.grants[10].preciseCursor,true);
+ assert.equal(e.storage.session.grants[11].preciseCursor,false);
+ // Event-driven synchronization preserves that exact-tab opt-in.
+ e.tabs.get(11).title='Changed';
+ await e.handlers.updated(11,{title:'Changed'});
+ await new Promise(r=>setTimeout(r,290));
+ assert.equal(e.storage.session.grants[11].preciseCursor,false);
+ e.tabs.get(10).title='Changed active';
+ await e.handlers.updated(10,{title:'Changed active'});
+ await new Promise(r=>setTimeout(r,290));
+ assert.equal(e.storage.session.grants[10].preciseCursor,true);
+ // Cross-origin navigation discards the previous tab's cursor grant.
+ e.tabs.get(10).url='https://other.example.net/';
+ await e.handlers.updated(10,{url:'https://other.example.net/'});
+ await new Promise(r=>setTimeout(r,290));
+ assert.equal(e.storage.session.grants[10].preciseCursor,false);
+});
+
+test('R14.3 denied mandatory downloads permission does not persist full mode',async()=>{
+ const e=createWorker(1);
+ e.chrome.permissions.contains=async req=>!req.permissions?.includes('downloads');
+ const result=await e.message('enable-full');
+ assert.equal(result.ok,false);
+ assert.match(result.error,/BROWSER_CAPABILITIES_PERMISSION_REQUIRED/);
+ assert.equal(e.storage.local.fullMode,undefined);
+});
+
+for(const operation of ['navigate','close_tab','download_url']){
+ test('R14.3 revoke during tab lookup prevents '+operation,async()=>{
+  const e=createWorker(1);
+  assert.equal((await e.message('enable-full')).ok,true);
+  const grant=e.storage.session.grants[10];
+  let release,entered;
+  const gate=new Promise(r=>release=r), seen=new Promise(r=>entered=r);
+  e.chrome.tabs.get=async id=>{entered();await gate;return e.tabs.get(id)};
+  let writes=0;
+  e.chrome.tabs.update=async()=>{writes++;throw new Error('UNEXPECTED_UPDATE')};
+  e.chrome.tabs.remove=async()=>{writes++;throw new Error('UNEXPECTED_REMOVE')};
+  e.chrome.downloads={download:async()=>{writes++;throw new Error('UNEXPECTED_DOWNLOAD')}};
+  e.context.task={targetId:'ext:10:'+grant.grantId,op:operation,
+    args:{url:'https://example.org/next'}};
+  const pending=vm.runInContext('performJob(task)',e.context);
+  await seen;
+  const paused=await e.message('disable-full');
+  assert.equal(paused.ok,true);
+  release();
+  const result=await pending;
+  assert.equal(result.ok,false,JSON.stringify(result));
+  assert.match(result.error,/USER_TAB_PERMISSION_REVOKED/);
+  assert.equal(writes,0,'no mutable side effect after revocation');
+ });
+}
+
+
+test('R14.3 extended form submission blocks cross-origin race before requestSubmit',()=>{
+ const source=fs.readFileSync(path.join(root,'extension/extended-dom-ops.js'),'utf8');
+ let submitted=false;
+ const el={tagName:'FORM',name:'safe',id:'f',getAttribute:()=>null,matches:()=>false,closest:()=>null,requestSubmit:()=>{submitted=true}};
+ const context=vm.createContext({
+  location:{href:'https://changed.example.net/',origin:'https://changed.example.net'},
+  document:{querySelector:()=>el},
+  console
+ });
+ context.self=context;vm.runInContext(source,context);
+ const result=context.luchExtendedDomExecutor({op:'submit_form',args:{selector:'#f'},expectedOrigin:'https://original.example.org'});
+ assert.equal(result.ok,false);
+ assert.equal(result.error,'TAB_ORIGIN_CHANGED_BEFORE_ACTION');
+ assert.equal(submitted,false);
+});

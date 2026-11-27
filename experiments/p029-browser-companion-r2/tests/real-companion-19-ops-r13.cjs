@@ -3,7 +3,7 @@ const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http
 const fsp=fs.promises;
 const puppeteer=require(process.env.LUCH_TEST_PUPPETEER_CORE||'puppeteer-core');
 const ROOT=path.resolve(__dirname,'..');
-const START=Date.now(),report={browser:'Opera Chromium / isolated Mac profile',version:'0.8.4',base:'candidate-v0.8.4',tests:[],startedAt:new Date().toISOString(),isolation:'isolated temp profile + local HTTP fixture + fake local broker; extension loaded and actual Chrome API used; Chrome permission prompt not exercised'};
+const START=Date.now(),report={browser:'Opera Chromium / isolated Mac profile',version:'0.8.5',base:'candidate-v0.8.5',tests:[],startedAt:new Date().toISOString(),isolation:'isolated temp profile + local HTTP fixture + fake local broker; extension loaded and actual Chrome API used; Chrome permission prompt not exercised'};
 let currentOp='';
 const server=http.createServer((req,res)=>{
  if(req.url?.startsWith('/luch/browser/')){

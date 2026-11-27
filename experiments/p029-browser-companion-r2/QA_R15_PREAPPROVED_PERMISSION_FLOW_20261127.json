@@ -1,0 +1,65 @@
+{
+  "scenario": "R13 one-click enable/pause after host/debugger/download permissions already approved at installation",
+  "start": "2026-11-27T10:47:15.971Z",
+  "workerLoaded": true,
+  "extVersion": "0.8.5",
+  "before": {
+    "permissions": {
+      "origins": [
+        "http://*/*",
+        "http://127.0.0.1/*",
+        "https://*/*"
+      ],
+      "permissions": [
+        "activeTab",
+        "alarms",
+        "debugger",
+        "downloads",
+        "storage",
+        "tabs",
+        "scripting"
+      ]
+    },
+    "fullMode": false
+  },
+  "feedback": "Полное управление браузером включено.",
+  "after": {
+    "permissions": {
+      "origins": [
+        "http://*/*",
+        "http://127.0.0.1/*",
+        "https://*/*"
+      ],
+      "permissions": [
+        "activeTab",
+        "alarms",
+        "debugger",
+        "downloads",
+        "storage",
+        "tabs",
+        "scripting"
+      ]
+    },
+    "fullMode": true,
+    "grantCount": 1
+  },
+  "execution": {
+    "ok": true,
+    "data": {
+      "charset": "windows-1252",
+      "contentType": "text/html",
+      "doctype": "html",
+      "lang": "en",
+      "readyState": "complete",
+      "title": "One-click QA",
+      "url": "http://127.0.0.1:19499/page"
+    },
+    "title": "One-click QA",
+    "source": "USER_CONSENTED_TAB"
+  },
+  "pause": {
+    "fullMode": false,
+    "grantCount": 0
+  },
+  "end": "2026-11-27T10:47:31.600Z"
+}

@@ -284,7 +284,7 @@ function toolResult(result:any) {
 }
 
 function userMcpServer(userId:string) {
-  const server=new McpServer({name:"LUCH Browser Companion",version:"0.8.4"});
+  const server=new McpServer({name:"LUCH Browser Companion",version:"0.8.5"});
   server.registerTool("browser_companion_status",{
     title:"Browser Companion status",
     description:"Show the signed-in user's paired LUCH Browser Companion devices and online state. Does not expose page contents.",

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LUCH Browser Companion</title><link rel="stylesheet" href="popup.css"></head>
+<body>
+<main>
+ <header class="heading">
+  <div class="brand"><img src="assets/icon-48.png" alt="" width="40" height="40"><div><strong>LUCH</strong><span>Browser Companion</span></div></div>
+  <select id="locale" aria-label="Language"><option value="en">EN</option><option value="ru">RU</option></select>
+ </header>
+ <div class="connection"><span id="dot" class="dot"></span><b id="status" role="status" aria-live="polite"></b><small id="scope"></small></div>
+ <p id="intro" class="intro"></p>
+ <section id="pairing">
+  <label id="pair-label" for="pairCode"></label>
+  <div class="actions"><input id="pairCode" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="8" spellcheck="false" placeholder="••••••••"><button id="pair" type="button"></button></div>
+  <p id="pair-hint" class="hint"></p>
+  <a id="help" href="https://luch.lenarsalimov.ru/en/connect/" target="_blank" rel="noopener noreferrer"></a>
+ </section>
+ <section id="controls" hidden>
+  <div class="tab-box"><span id="tab-label"></span><b id="currentTab" class="truncate"></b><small id="currentUrl" class="truncate"></small></div>
+  <div id="shareStatus" class="access-status"></div>
+  <div class="actions"><button id="grant" type="button"></button><button id="revoke" type="button" class="secondary"></button></div>
+  <p id="expiry" class="hint" role="timer"></p>
+  <div class="separation"></div>
+  <button id="disconnect" type="button" class="danger"></button>
+ </section>
+ <p id="feedback" role="alert" aria-live="polite"></p>
+ <footer id="footer"></footer>
+</main>
+<script src="popup.js"></script>
+</body></html>
